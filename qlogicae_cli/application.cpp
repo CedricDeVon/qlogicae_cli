@@ -4,16 +4,16 @@
 
 #include "application.hpp"
 
-namespace ErwinCLI
+namespace QLogicaeCLI
 {
-	ErwinCLIApplication::ErwinCLIApplication() :
+	QLogicaeCLIApplication::QLogicaeCLIApplication() :
 		_application(
-			ErwinCLI::application_full_name
+			QLogicaeCLI::application_full_name
 		)
 	{
 	}
 
-	bool ErwinCLIApplication::setup(int argc, char** argv)
+	bool QLogicaeCLIApplication::setup(int argc, char** argv)
 	{
 		try
 		{
@@ -21,8 +21,8 @@ namespace ErwinCLI
 				_application.add_subcommand("about", ""),
 				[this]() -> bool
 				{
-					ErwinCLI::raw_logger.print(
-						ErwinCLI::application_full_name
+					QLogicaeCLI::raw_logger.print(
+						QLogicaeCLI::application_full_name
 					);
 
 					return true;
@@ -43,29 +43,29 @@ namespace ErwinCLI
 							return false;
 						}
 
-						ErwinCLI::timestamp_logger.log(
-							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						QLogicaeCLI::timestamp_logger.log(
+							"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
-						ErwinCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::raw_logger.print_with_new_line();
 
 						for (_index_1 = 0;
 							_index_1 < _generate_uuid4_input_1;
 							++_index_1)
 						{
-							ErwinCLI::raw_logger.print_with_new_line(
-								Erwin::Generator::instance().random_uuid4()
+							QLogicaeCLI::raw_logger.print_with_new_line(
+								QLogicaeCore::Generator::instance().random_uuid4()
 							);
 						}
 
-						ErwinCLI::raw_logger.print_with_new_line();
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -93,31 +93,31 @@ namespace ErwinCLI
 							return false;
 						}
 
-						ErwinCLI::timestamp_logger.log(
+						QLogicaeCLI::timestamp_logger.log(
 							"Running...",
-							Erwin::LogLevel::HIGHLIGHTED_INFO
+							QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
-						ErwinCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::raw_logger.print_with_new_line();
 
 						for (_index_1 = 0;
 							_index_1 < _generate_string_input_2;
 							++_index_1)
 						{
-							ErwinCLI::raw_logger.print_with_new_line(
-								Erwin::Generator::instance()
+							QLogicaeCLI::raw_logger.print_with_new_line(
+								QLogicaeCore::Generator::instance()
 								.random_string(_generate_string_input_1)
 							);
 						}
 
-						ErwinCLI::raw_logger.print_with_new_line();
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION
 						);
 
 						return false;
@@ -147,36 +147,36 @@ namespace ErwinCLI
 						if (_encrypt_xchacha20poly1305_input_3.empty())
 						{
 							_encrypt_xchacha20poly1305_input_3 =
-								ErwinCLI::generator.random_string(24);
+								QLogicaeCLI::generator.random_string(24);
 						}
 
-						ErwinCLI::timestamp_logger.log(
+						QLogicaeCLI::timestamp_logger.log(
 							"Running...",
-							Erwin::LogLevel::HIGHLIGHTED_INFO
+							QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
-						ErwinCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::raw_logger.print_with_new_line();
 
-						ErwinCLI::raw_logger.print_with_new_line(
-							ErwinCLI::cryptographer_1.transform(
+						QLogicaeCLI::raw_logger.print_with_new_line(
+							QLogicaeCLI::cryptographer_1.transform(
 								_encrypt_xchacha20poly1305_input_1,
 								_encrypt_xchacha20poly1305_input_2,
 								_encrypt_xchacha20poly1305_input_3
 							)
 						);
-						ErwinCLI::raw_logger.print_with_new_line();
-						ErwinCLI::raw_logger.print_with_new_line(
+						QLogicaeCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::raw_logger.print_with_new_line(
 							_encrypt_xchacha20poly1305_input_3
 						);
 
-						ErwinCLI::raw_logger.print_with_new_line();
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -192,7 +192,7 @@ namespace ErwinCLI
 				->required();
 			_commands["encrypt-xchacha20poly1305"].first
 				->add_option("--nonce", _encrypt_xchacha20poly1305_input_3, "")
-				->default_val(ErwinCLI::generator.random_string(24));
+				->default_val(QLogicaeCLI::generator.random_string(24));
 
 
 
@@ -204,28 +204,28 @@ namespace ErwinCLI
 				{
 					try
 					{
-						ErwinCLI::timestamp_logger.log(
-							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						QLogicaeCLI::timestamp_logger.log(
+							"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
-						ErwinCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::raw_logger.print_with_new_line();
 
-						ErwinCLI::raw_logger.print_with_new_line(
-							ErwinCLI::cryptographer_1.reverse(
+						QLogicaeCLI::raw_logger.print_with_new_line(
+							QLogicaeCLI::cryptographer_1.reverse(
 								_decrypt_xchacha20poly1305_input_1,
 								_decrypt_xchacha20poly1305_input_2,
 								_decrypt_xchacha20poly1305_input_3
 							)
 						);
 
-						ErwinCLI::raw_logger.print_with_new_line();
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -252,26 +252,26 @@ namespace ErwinCLI
 				{
 					try
 					{
-						ErwinCLI::timestamp_logger.log(
-							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						QLogicaeCLI::timestamp_logger.log(
+							"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
-						ErwinCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::raw_logger.print_with_new_line();
 
-						ErwinCLI::raw_logger.print_with_new_line(
-							ErwinCLI::cryptographer_3.transform(
+						QLogicaeCLI::raw_logger.print_with_new_line(
+							QLogicaeCLI::cryptographer_3.transform(
 								_hash_argon2id_input_1
 							)
 						);
 
-						ErwinCLI::raw_logger.print_with_new_line();
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION
 						);
 
 						return false;
@@ -293,29 +293,29 @@ namespace ErwinCLI
 				{
 					try
 					{
-						ErwinCLI::timestamp_logger.log(
-							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						QLogicaeCLI::timestamp_logger.log(
+							"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
-						ErwinCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::raw_logger.print_with_new_line();
 
 						const bool is_successful =
-							ErwinCLI::cryptographer_3.reverse(
+							QLogicaeCLI::cryptographer_3.reverse(
 								_verify_argon2id_input_1,
 								_verify_argon2id_input_2
 							);
-						ErwinCLI::raw_logger.print_with_new_line(
+						QLogicaeCLI::raw_logger.print_with_new_line(
 							(is_successful) ? "true" : "false"
 						);
 
-						ErwinCLI::raw_logger.print_with_new_line();
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::raw_logger.print_with_new_line();
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION
 						);
 
 						return false;
@@ -346,40 +346,40 @@ namespace ErwinCLI
 							return false;
 						}
 
-						ErwinCLI::timestamp_logger.log(
-							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						QLogicaeCLI::timestamp_logger.log(
+							"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
 
 						if (!std::filesystem::exists(
 							_set_environment_input_2
 						))
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format(
 									"File path '{}' does not exist",
 									_set_environment_input_2),
-								Erwin::LogLevel::EXCEPTION
+								QLogicaeCore::LogLevel::EXCEPTION
 							);
 
 							return false;
 						}
 
-						ErwinCLI::client_utilities_file.set_file_path(
+						QLogicaeCLI::client_utilities_file.set_file_path(
 							_set_environment_input_2
 						);
-						ErwinCLI::client_utilities_file.update_string(
+						QLogicaeCLI::client_utilities_file.update_string(
 							{ "environment", "selected" },
 							_set_environment_input_1
 						);
 
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -390,14 +390,14 @@ namespace ErwinCLI
 
 			_commands["set-environment"].first
 				->add_option("--type", _set_environment_input_1, "")
-				->check(CLI::IsMember(ErwinCLI::utilities_environment_types))
+				->check(CLI::IsMember(QLogicaeCLI::utilities_environment_types))
 				->default_val("development");
 			_commands["set-environment"].first
 				->add_option("--utilities-file-path", _set_environment_input_2, "")
 				->default_val(
 					std::filesystem::path(
-						ErwinCLI::configurations_folder_name /
-						ErwinCLI::utilities_file_name
+						QLogicaeCLI::configurations_folder_name /
+						QLogicaeCLI::utilities_file_name
 					).string()
 				);
 
@@ -413,15 +413,15 @@ namespace ErwinCLI
 							return false;
 						}
 
-						ErwinCLI::timestamp_logger.log(
-							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						QLogicaeCLI::timestamp_logger.log(
+							"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
 
-						ErwinCLI::client_utilities_file.set_file_path(
+						QLogicaeCLI::client_utilities_file.set_file_path(
 							_run_scripts_input_2
 						);
 						std::unordered_map<std::string, std::any> scripts =
-							ErwinCLI::client_utilities_file
+							QLogicaeCLI::client_utilities_file
 							.get_object({ "scripts" }
 							);
 						for (const std::string script_command :
@@ -435,23 +435,23 @@ namespace ErwinCLI
 							}
 							else
 							{
-								ErwinCLI::timestamp_logger.log(
+								QLogicaeCLI::timestamp_logger.log(
 									fmt::format(
 										"Script '{}' does not exist",
 										script_command
-									), Erwin::LogLevel::WARNING
+									), QLogicaeCore::LogLevel::WARNING
 								);
 							}
 						}
 
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -467,8 +467,8 @@ namespace ErwinCLI
 				->add_option("--utilities-file-path", _run_scripts_input_2, "")
 				->default_val(
 					std::filesystem::path(
-						ErwinCLI::configurations_folder_name /
-						ErwinCLI::utilities_file_name
+						QLogicaeCLI::configurations_folder_name /
+						QLogicaeCLI::utilities_file_name
 					).string()
 				);
 
@@ -489,70 +489,70 @@ namespace ErwinCLI
 							return false;
 						}
 
-						ErwinCLI::timestamp_logger.log(
-							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						QLogicaeCLI::timestamp_logger.log(
+							"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
 
 						if (!std::filesystem::exists(_setup_windows_registry_input_2))
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format(
 									"File path '{}' does not exist",
 									_setup_windows_registry_input_2),
-								Erwin::LogLevel::EXCEPTION
+								QLogicaeCore::LogLevel::EXCEPTION
 							);
 
 							return false;
 						}
 						if (!std::filesystem::exists(_setup_windows_registry_input_3))
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format(
 									"File path '{}' does not exist",
 									_setup_windows_registry_input_3),
-								Erwin::LogLevel::EXCEPTION
+								QLogicaeCore::LogLevel::EXCEPTION
 							);
 
 							return false;
 						}
 						if (!std::filesystem::exists(_setup_windows_registry_input_4))
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format(
 									"File path '{}' does not exist",
 									_setup_windows_registry_input_4),
-								Erwin::LogLevel::EXCEPTION
+								QLogicaeCore::LogLevel::EXCEPTION
 							);
 
 							return false;
 						}
 
-						ErwinCLI::client_public_file.set_file_path(
+						QLogicaeCLI::client_public_file.set_file_path(
 							_setup_windows_registry_input_2
 						);
-						ErwinCLI::client_utilities_file.set_file_path(
+						QLogicaeCLI::client_utilities_file.set_file_path(
 							_setup_windows_registry_input_3
 						);
-						ErwinCLI::client_private_file.set_file_path(
+						QLogicaeCLI::client_private_file.set_file_path(
 							_setup_windows_registry_input_4
 						);
 
 						std::string client_id =
-							ErwinCLI::client_public_file.get_string(
+							QLogicaeCLI::client_public_file.get_string(
 								{ "application", "id" }
 							);
 						if (_setup_windows_registry_input_1 == "all")
 						{
-							for (const std::string& environment_type : ErwinCLI::utilities_environment_types)
+							for (const std::string& environment_type : QLogicaeCLI::utilities_environment_types)
 							{
 								std::string environment_id =
-									ErwinCLI::client_utilities_file.get_string(
+									QLogicaeCLI::client_utilities_file.get_string(
 										{ "environment", "selections",
 										environment_type }
 									);
 								std::unordered_map<std::string, std::any>
 									hkcu_secrets =
-									ErwinCLI::client_private_file.get_object(
+									QLogicaeCLI::client_private_file.get_object(
 										{
 											"windows_registry",
 											environment_type,
@@ -561,7 +561,7 @@ namespace ErwinCLI
 									);
 								std::unordered_map<std::string, std::any>
 									is_root_key_used =
-									ErwinCLI::client_private_file.get_object(
+									QLogicaeCLI::client_private_file.get_object(
 										{ "windows_registry", "is_root_key_used" }
 									);
 
@@ -569,7 +569,7 @@ namespace ErwinCLI
 								{
 									for (const auto& [key, value] : hkcu_secrets)
 									{
-										Erwin::WindowsRegistry::hkcu()
+										QLogicaeCore::WindowsRegistry::hkcu()
 											.set_value_via_utf8(
 												fmt::format("Software\\{}\\{}",
 													client_id,
@@ -582,9 +582,9 @@ namespace ErwinCLI
 								}
 								else
 								{
-									ErwinCLI::timestamp_logger.log(
+									QLogicaeCLI::timestamp_logger.log(
 										"hkcu windows registry setup is disabled. instruction skipped",
-										Erwin::LogLevel::WARNING
+										QLogicaeCore::LogLevel::WARNING
 									);
 								}
 							}
@@ -592,13 +592,13 @@ namespace ErwinCLI
 						else
 						{
 							std::string environment_id =
-								ErwinCLI::client_utilities_file.get_string(
+								QLogicaeCLI::client_utilities_file.get_string(
 									{ "environment", "selections",
 									_setup_windows_registry_input_1 }
 								);
 							std::unordered_map<std::string, std::any>
 								hkcu_secrets =
-								ErwinCLI::client_private_file.get_object(
+								QLogicaeCLI::client_private_file.get_object(
 									{
 										"windows_registry",
 										_setup_windows_registry_input_1,
@@ -607,7 +607,7 @@ namespace ErwinCLI
 								);
 							std::unordered_map<std::string, std::any>
 								is_root_key_used =
-								ErwinCLI::client_private_file.get_object(
+								QLogicaeCLI::client_private_file.get_object(
 									{ "windows_registry", "is_root_key_used" }
 								);
 
@@ -615,7 +615,7 @@ namespace ErwinCLI
 							{
 								for (const auto& [key, value] : hkcu_secrets)
 								{
-									Erwin::WindowsRegistry::hkcu()
+									QLogicaeCore::WindowsRegistry::hkcu()
 										.set_value_via_utf8(
 										fmt::format("Software\\{}\\{}",
 											client_id,
@@ -628,21 +628,21 @@ namespace ErwinCLI
 							}
 							else
 							{
-								ErwinCLI::timestamp_logger.log(
+								QLogicaeCLI::timestamp_logger.log(
 									"hkcu windows registry setup is disabled. instruction skipped",
-									Erwin::LogLevel::WARNING
+									QLogicaeCore::LogLevel::WARNING
 								);
 							}
 						}
 
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -654,7 +654,7 @@ namespace ErwinCLI
 				->add_option(
 					"--environment-type",
 					_setup_windows_registry_input_1, "")
-				->check(CLI::IsMember(ErwinCLI::utilities_environment_types_options)
+				->check(CLI::IsMember(QLogicaeCLI::utilities_environment_types_options)
 				)
 				->default_val("development")
 				->required();
@@ -664,8 +664,8 @@ namespace ErwinCLI
 					_setup_windows_registry_input_2, "")
 				->default_val(
 					std::filesystem::path(
-						ErwinCLI::configurations_folder_name /
-						ErwinCLI::public_file_name
+						QLogicaeCLI::configurations_folder_name /
+						QLogicaeCLI::public_file_name
 					).string()
 				);
 			_commands["setup-windows-registry"].first
@@ -674,8 +674,8 @@ namespace ErwinCLI
 					_setup_windows_registry_input_3, "")
 				->default_val(
 					std::filesystem::path(
-						ErwinCLI::configurations_folder_name /
-						ErwinCLI::utilities_file_name
+						QLogicaeCLI::configurations_folder_name /
+						QLogicaeCLI::utilities_file_name
 					).string()
 				);
 			_commands["setup-windows-registry"].first
@@ -684,7 +684,7 @@ namespace ErwinCLI
 					_setup_windows_registry_input_4, "")
 				->default_val(
 					std::filesystem::path(
-						ErwinCLI::private_file_name
+						QLogicaeCLI::private_file_name
 					).string()
 				);
 			
@@ -702,467 +702,467 @@ namespace ErwinCLI
 							return false;
 						}
 
-						ErwinCLI::timestamp_logger.log(
+						QLogicaeCLI::timestamp_logger.log(
 							"Running...",
-							Erwin::LogLevel::HIGHLIGHTED_INFO
+							QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::configurations_folder_name
+							QLogicaeCLI::configurations_folder_name
 						))
 						{
 							std::filesystem::create_directory(
 								_setup_default_template_input_1 /
-								ErwinCLI::configurations_folder_name
+								QLogicaeCLI::configurations_folder_name
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("Folder '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::configurations_folder_name
+										QLogicaeCLI::configurations_folder_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("Folder '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::configurations_folder_name
+										QLogicaeCLI::configurations_folder_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::assets_folder_name
+							QLogicaeCLI::assets_folder_name
 						))
 						{
 							std::filesystem::create_directory(
 								_setup_default_template_input_1 /
-								ErwinCLI::assets_folder_name
+								QLogicaeCLI::assets_folder_name
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("Folder '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::assets_folder_name
+										QLogicaeCLI::assets_folder_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("Folder '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::assets_folder_name
+										QLogicaeCLI::assets_folder_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::scripts_folder_name
+							QLogicaeCLI::scripts_folder_name
 						))
 						{
 							std::filesystem::create_directory(
 								_setup_default_template_input_1 /
-								ErwinCLI::scripts_folder_name
+								QLogicaeCLI::scripts_folder_name
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("Folder '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::scripts_folder_name
+										QLogicaeCLI::scripts_folder_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("Folder '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::scripts_folder_name
+										QLogicaeCLI::scripts_folder_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::configurations_folder_name /
-							ErwinCLI::public_file_name
+							QLogicaeCLI::configurations_folder_name /
+							QLogicaeCLI::public_file_name
 						))
 						{
 							std::filesystem::copy_file(
-								ErwinCLI::application_directory /
-								ErwinCLI::templates_folder_name /
+								QLogicaeCLI::application_directory /
+								QLogicaeCLI::templates_folder_name /
 								"default" /
-								ErwinCLI::public_file_name,
+								QLogicaeCLI::public_file_name,
 								_setup_default_template_input_1 /
-								ErwinCLI::configurations_folder_name /
-								ErwinCLI::public_file_name,
+								QLogicaeCLI::configurations_folder_name /
+								QLogicaeCLI::public_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							ErwinCLI::client_public_file.set_file_path(
+							QLogicaeCLI::client_public_file.set_file_path(
 								std::filesystem::path(
 									_setup_default_template_input_1 /
-									ErwinCLI::configurations_folder_name /
-									ErwinCLI::public_file_name
+									QLogicaeCLI::configurations_folder_name /
+									QLogicaeCLI::public_file_name
 								).string()
 							);
-							ErwinCLI::client_public_file.update_string(
+							QLogicaeCLI::client_public_file.update_string(
 								{ "application", "id" },
-								ErwinCLI::generator.random_uuid4()
+								QLogicaeCLI::generator.random_uuid4()
 							);
 
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::configurations_folder_name /
-										ErwinCLI::public_file_name
+										QLogicaeCLI::configurations_folder_name /
+										QLogicaeCLI::public_file_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("Folder '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::configurations_folder_name /
-										ErwinCLI::public_file_name
+										QLogicaeCLI::configurations_folder_name /
+										QLogicaeCLI::public_file_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::configurations_folder_name /
-							ErwinCLI::utilities_file_name
+							QLogicaeCLI::configurations_folder_name /
+							QLogicaeCLI::utilities_file_name
 						))
 						{
 							std::filesystem::copy_file(
-								ErwinCLI::application_directory /
-								ErwinCLI::templates_folder_name /
+								QLogicaeCLI::application_directory /
+								QLogicaeCLI::templates_folder_name /
 								"default" /
-								ErwinCLI::utilities_file_name,
+								QLogicaeCLI::utilities_file_name,
 								_setup_default_template_input_1 /
-								ErwinCLI::configurations_folder_name /
-								ErwinCLI::utilities_file_name,
+								QLogicaeCLI::configurations_folder_name /
+								QLogicaeCLI::utilities_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							ErwinCLI::client_utilities_file.set_file_path(
+							QLogicaeCLI::client_utilities_file.set_file_path(
 								std::filesystem::path(
 									_setup_default_template_input_1 /
-									ErwinCLI::configurations_folder_name /
-									ErwinCLI::utilities_file_name
+									QLogicaeCLI::configurations_folder_name /
+									QLogicaeCLI::utilities_file_name
 								).string()
 							);
-							ErwinCLI::client_utilities_file.update_string(
+							QLogicaeCLI::client_utilities_file.update_string(
 								{ "environment", "selections", "development" },
-								ErwinCLI::generator.random_uuid4()
+								QLogicaeCLI::generator.random_uuid4()
 							);
-							ErwinCLI::client_utilities_file.update_string(
+							QLogicaeCLI::client_utilities_file.update_string(
 								{ "environment", "selections", "debug" },
-								ErwinCLI::generator.random_uuid4()
+								QLogicaeCLI::generator.random_uuid4()
 							);
-							ErwinCLI::client_utilities_file.update_string(
+							QLogicaeCLI::client_utilities_file.update_string(
 								{ "environment", "selections", "test" },
-								ErwinCLI::generator.random_uuid4()
+								QLogicaeCLI::generator.random_uuid4()
 							);
-							ErwinCLI::client_utilities_file.update_string(
+							QLogicaeCLI::client_utilities_file.update_string(
 								{ "environment", "selections", "release" },
-								ErwinCLI::generator.random_uuid4()
+								QLogicaeCLI::generator.random_uuid4()
 							);
 
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::configurations_folder_name /
-										ErwinCLI::utilities_file_name
+										QLogicaeCLI::configurations_folder_name /
+										QLogicaeCLI::utilities_file_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::configurations_folder_name /
-										ErwinCLI::utilities_file_name
+										QLogicaeCLI::configurations_folder_name /
+										QLogicaeCLI::utilities_file_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::private_file_name
+							QLogicaeCLI::private_file_name
 						))
 						{
 							std::filesystem::copy_file(
-								ErwinCLI::application_directory /
-								ErwinCLI::templates_folder_name /
+								QLogicaeCLI::application_directory /
+								QLogicaeCLI::templates_folder_name /
 								"default" /
-								ErwinCLI::private_file_name,
+								QLogicaeCLI::private_file_name,
 								_setup_default_template_input_1 /
-								ErwinCLI::private_file_name,
+								QLogicaeCLI::private_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::private_file_name
+										QLogicaeCLI::private_file_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::private_file_name
+										QLogicaeCLI::private_file_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::gitignore_file_name
+							QLogicaeCLI::gitignore_file_name
 						))
 						{
 							std::filesystem::copy_file(
-								ErwinCLI::application_directory /
-								ErwinCLI::templates_folder_name /
+								QLogicaeCLI::application_directory /
+								QLogicaeCLI::templates_folder_name /
 								"default" /
-								ErwinCLI::gitignore_file_name,
+								QLogicaeCLI::gitignore_file_name,
 								_setup_default_template_input_1 /
-								ErwinCLI::gitignore_file_name,
+								QLogicaeCLI::gitignore_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::gitignore_file_name
+										QLogicaeCLI::gitignore_file_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::gitignore_file_name
+										QLogicaeCLI::gitignore_file_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::license_file_name
+							QLogicaeCLI::license_file_name
 						))
 						{
 							std::filesystem::copy_file(
-								ErwinCLI::application_directory /
-								ErwinCLI::templates_folder_name /
+								QLogicaeCLI::application_directory /
+								QLogicaeCLI::templates_folder_name /
 								"default" /
-								ErwinCLI::license_file_name,
+								QLogicaeCLI::license_file_name,
 								_setup_default_template_input_1 /
-								ErwinCLI::license_file_name,
+								QLogicaeCLI::license_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::license_file_name
+										QLogicaeCLI::license_file_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::license_file_name
+										QLogicaeCLI::license_file_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::scripts_folder_name /
-							ErwinCLI::inno_run_file_name
+							QLogicaeCLI::scripts_folder_name /
+							QLogicaeCLI::inno_run_file_name
 						))
 						{
 							std::filesystem::copy_file(
-								ErwinCLI::application_directory /
-								ErwinCLI::templates_folder_name /
+								QLogicaeCLI::application_directory /
+								QLogicaeCLI::templates_folder_name /
 								"default" /
-								ErwinCLI::inno_run_file_name,
+								QLogicaeCLI::inno_run_file_name,
 								_setup_default_template_input_1 /
-								ErwinCLI::scripts_folder_name /
-								ErwinCLI::inno_run_file_name,
+								QLogicaeCLI::scripts_folder_name /
+								QLogicaeCLI::inno_run_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::scripts_folder_name /
-										ErwinCLI::inno_run_file_name
+										QLogicaeCLI::scripts_folder_name /
+										QLogicaeCLI::inno_run_file_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::scripts_folder_name /
-										ErwinCLI::inno_run_file_name
+										QLogicaeCLI::scripts_folder_name /
+										QLogicaeCLI::inno_run_file_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::scripts_folder_name /
-							ErwinCLI::inno_setup_file_name
+							QLogicaeCLI::scripts_folder_name /
+							QLogicaeCLI::inno_setup_file_name
 						))
 						{
 							std::filesystem::copy_file(
-								ErwinCLI::application_directory /
-								ErwinCLI::templates_folder_name /
+								QLogicaeCLI::application_directory /
+								QLogicaeCLI::templates_folder_name /
 								"default" /
-								ErwinCLI::inno_setup_file_name,
+								QLogicaeCLI::inno_setup_file_name,
 								_setup_default_template_input_1 /
-								ErwinCLI::scripts_folder_name /
-								ErwinCLI::inno_setup_file_name,
+								QLogicaeCLI::scripts_folder_name /
+								QLogicaeCLI::inno_setup_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::scripts_folder_name /
-										ErwinCLI::inno_setup_file_name
+										QLogicaeCLI::scripts_folder_name /
+										QLogicaeCLI::inno_setup_file_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::scripts_folder_name /
-										ErwinCLI::inno_setup_file_name
+										QLogicaeCLI::scripts_folder_name /
+										QLogicaeCLI::inno_setup_file_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							ErwinCLI::assets_folder_name /
-							ErwinCLI::icon_file_name
+							QLogicaeCLI::assets_folder_name /
+							QLogicaeCLI::icon_file_name
 						))
 						{
 							std::filesystem::copy_file(
-								ErwinCLI::application_directory /
-								ErwinCLI::templates_folder_name /
+								QLogicaeCLI::application_directory /
+								QLogicaeCLI::templates_folder_name /
 								"default" /
-								ErwinCLI::icon_file_name,
+								QLogicaeCLI::icon_file_name,
 								_setup_default_template_input_1 /
-								ErwinCLI::assets_folder_name /
-								ErwinCLI::icon_file_name,
+								QLogicaeCLI::assets_folder_name /
+								QLogicaeCLI::icon_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::assets_folder_name /
-										ErwinCLI::icon_file_name
+										QLogicaeCLI::assets_folder_name /
+										QLogicaeCLI::icon_file_name
 									).string()
 								),
-								Erwin::LogLevel::INFO
+								QLogicaeCore::LogLevel::INFO
 							);
 						}
 						else
 						{
-							ErwinCLI::timestamp_logger.log(
+							QLogicaeCLI::timestamp_logger.log(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										ErwinCLI::assets_folder_name /
-										ErwinCLI::icon_file_name
+										QLogicaeCLI::assets_folder_name /
+										QLogicaeCLI::icon_file_name
 									).string()
 								),
-								Erwin::LogLevel::WARNING
+								QLogicaeCore::LogLevel::WARNING
 							);
 						}
 
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -1188,44 +1188,44 @@ namespace ErwinCLI
 							return false;
 						}
 
-						ErwinCLI::timestamp_logger.log(
+						QLogicaeCLI::timestamp_logger.log(
 							"Running...",
-							Erwin::LogLevel::HIGHLIGHTED_INFO
+							QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
 
 						std::vector<std::filesystem::path> file_paths =
 						{
 							std::filesystem::path(
 								_verify_default_template_input_1 /
-								ErwinCLI::scripts_folder_name /
-								ErwinCLI::inno_run_file_name
+								QLogicaeCLI::scripts_folder_name /
+								QLogicaeCLI::inno_run_file_name
 							),
 							std::filesystem::path(
 								_verify_default_template_input_1 /
-								ErwinCLI::scripts_folder_name /
-								ErwinCLI::inno_setup_file_name
+								QLogicaeCLI::scripts_folder_name /
+								QLogicaeCLI::inno_setup_file_name
 							),
 							std::filesystem::path(
 								_verify_default_template_input_1 /
-								ErwinCLI::configurations_folder_name /
-								ErwinCLI::utilities_file_name
+								QLogicaeCLI::configurations_folder_name /
+								QLogicaeCLI::utilities_file_name
 							),
 							std::filesystem::path(
 								_verify_default_template_input_1 /
-								ErwinCLI::configurations_folder_name /
-								ErwinCLI::public_file_name
+								QLogicaeCLI::configurations_folder_name /
+								QLogicaeCLI::public_file_name
 							),
 							std::filesystem::path(
 								_verify_default_template_input_1 /
-								ErwinCLI::private_file_name
+								QLogicaeCLI::private_file_name
 							),
 							std::filesystem::path(
 								_verify_default_template_input_1 /
-								ErwinCLI::license_file_name
+								QLogicaeCLI::license_file_name
 							),
 							std::filesystem::path(
 								_verify_default_template_input_1 /
-								ErwinCLI::gitignore_file_name
+								QLogicaeCLI::gitignore_file_name
 							)
 						};
 
@@ -1233,34 +1233,34 @@ namespace ErwinCLI
 						{
 							if (std::filesystem::exists(file_path))
 							{
-								ErwinCLI::timestamp_logger.log(
+								QLogicaeCLI::timestamp_logger.log(
 									fmt::format(
 										"File '{}' exists",
 										file_path.string()
 									),
-									Erwin::LogLevel::SUCCESS
+									QLogicaeCore::LogLevel::SUCCESS
 								);
 							}
 							else
 							{
-								ErwinCLI::timestamp_logger.log(
+								QLogicaeCLI::timestamp_logger.log(
 									fmt::format(
 										"File '{}' does not exist",
 										file_path.string()
 									),
-									Erwin::LogLevel::EXCEPTION
+									QLogicaeCore::LogLevel::EXCEPTION
 								);
 							}
 						}
 
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -1281,117 +1281,117 @@ namespace ErwinCLI
 				{
 					try
 					{
-						ErwinCLI::timestamp_logger.log(
+						QLogicaeCLI::timestamp_logger.log(
 							"Running...",
-							Erwin::LogLevel::HIGHLIGHTED_INFO
+							QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 						);
 
-						ErwinCLI::client_public_file.set_file_path(
+						QLogicaeCLI::client_public_file.set_file_path(
 							std::filesystem::path(
 								_setup_installer_input_1 /
-								ErwinCLI::configurations_folder_name /
-								ErwinCLI::public_file_name
+								QLogicaeCLI::configurations_folder_name /
+								QLogicaeCLI::public_file_name
 							).string()
 						);
-						ErwinCLI::client_private_file.set_file_path(
+						QLogicaeCLI::client_private_file.set_file_path(
 							std::filesystem::path(
 								_setup_installer_input_1 /
-								ErwinCLI::private_file_name
+								QLogicaeCLI::private_file_name
 							).string()
 						);
-						ErwinCLI::client_inno_run_file.set_file_path(
+						QLogicaeCLI::client_inno_run_file.set_file_path(
 							std::filesystem::path(
 								_setup_installer_input_1 /
-								ErwinCLI::scripts_folder_name /
-								ErwinCLI::inno_run_file_name
+								QLogicaeCLI::scripts_folder_name /
+								QLogicaeCLI::inno_run_file_name
 							).string()
 						);
-						ErwinCLI::client_inno_setup_file.set_file_path(
+						QLogicaeCLI::client_inno_setup_file.set_file_path(
 							std::filesystem::path(
 								_setup_installer_input_1 /
-								ErwinCLI::scripts_folder_name /
-								ErwinCLI::inno_setup_file_name
+								QLogicaeCLI::scripts_folder_name /
+								QLogicaeCLI::inno_setup_file_name
 							).string()
 						);
-						ErwinCLI::client_inno_setup_target_file.set_file_path(
+						QLogicaeCLI::client_inno_setup_target_file.set_file_path(
 							std::filesystem::path(
 								_setup_installer_input_1 /
-								ErwinCLI::scripts_folder_name /
-								ErwinCLI::inno_setup_target_file_name
+								QLogicaeCLI::scripts_folder_name /
+								QLogicaeCLI::inno_setup_target_file_name
 							).string()
 						);
-						ErwinCLI::client_utilities_file.set_file_path(
+						QLogicaeCLI::client_utilities_file.set_file_path(
 							std::filesystem::path(
 								_setup_installer_input_1 /
-								ErwinCLI::configurations_folder_name /
-								ErwinCLI::utilities_file_name
+								QLogicaeCLI::configurations_folder_name /
+								QLogicaeCLI::utilities_file_name
 							).string()
 						);
 
 						std::filesystem::path input_folder_path = std::filesystem::absolute(
-							ErwinCLI::client_utilities_file.get_string({ "inno_setup", "input_folder_path" })
+							QLogicaeCLI::client_utilities_file.get_string({ "inno_setup", "input_folder_path" })
 						);
 						std::filesystem::path output_folder_path = std::filesystem::absolute(
-							ErwinCLI::client_utilities_file.get_string({ "inno_setup", "output_folder_path" })
+							QLogicaeCLI::client_utilities_file.get_string({ "inno_setup", "output_folder_path" })
 						);
 						
-						ErwinCLI::client_utilities_file.set_file_path(
+						QLogicaeCLI::client_utilities_file.set_file_path(
 							std::filesystem::path(
 								input_folder_path /
-								ErwinCLI::configurations_folder_name /
-								ErwinCLI::utilities_file_name
+								QLogicaeCLI::configurations_folder_name /
+								QLogicaeCLI::utilities_file_name
 							).string()
 						);
-						ErwinCLI::client_utilities_file.update_string(
+						QLogicaeCLI::client_utilities_file.update_string(
 							{ "environment", "selected" }, "release"
 						);
-						ErwinCLI::client_utilities_file.set_file_path(
+						QLogicaeCLI::client_utilities_file.set_file_path(
 							std::filesystem::path(
 								_setup_installer_input_1 /
-								ErwinCLI::configurations_folder_name /
-								ErwinCLI::utilities_file_name
+								QLogicaeCLI::configurations_folder_name /
+								QLogicaeCLI::utilities_file_name
 							).string()
 						);
 
 						if (!std::filesystem::exists(
 							_setup_installer_input_1 /
-							ErwinCLI::scripts_folder_name
+							QLogicaeCLI::scripts_folder_name
 						))
 						{
 							std::filesystem::create_directory(
 								_setup_installer_input_1 /
-								ErwinCLI::scripts_folder_name
+								QLogicaeCLI::scripts_folder_name
 							);
 						}
 
 						if (std::filesystem::exists(
 							_setup_installer_input_1 /
-							ErwinCLI::scripts_folder_name /
-							ErwinCLI::inno_setup_target_file_name)
+							QLogicaeCLI::scripts_folder_name /
+							QLogicaeCLI::inno_setup_target_file_name)
 							)
 						{
 							std::filesystem::remove(
 								_setup_installer_input_1 /
-								ErwinCLI::scripts_folder_name /
-								ErwinCLI::inno_setup_target_file_name
+								QLogicaeCLI::scripts_folder_name /
+								QLogicaeCLI::inno_setup_target_file_name
 							);
 						}
 
 						std::filesystem::copy_file(
 							_setup_installer_input_1 /
-							ErwinCLI::scripts_folder_name /
-							ErwinCLI::inno_setup_file_name,
+							QLogicaeCLI::scripts_folder_name /
+							QLogicaeCLI::inno_setup_file_name,
 							_setup_installer_input_1 /
-							ErwinCLI::scripts_folder_name /
-							ErwinCLI::inno_setup_target_file_name,
+							QLogicaeCLI::scripts_folder_name /
+							QLogicaeCLI::inno_setup_target_file_name,
 							std::filesystem::copy_options::overwrite_existing
 						);
 
 						std::unordered_map<std::string, std::any> languages =
-							ErwinCLI::client_utilities_file.get_object(
+							QLogicaeCLI::client_utilities_file.get_object(
 								{ "languages" }
 							);
-						ErwinCLI::client_inno_setup_target_file.append(
+						QLogicaeCLI::client_inno_setup_target_file.append(
 							"\n[Languages]\n"
 						);
 						for (const auto& [name, properties] : languages)
@@ -1401,7 +1401,7 @@ namespace ErwinCLI
 									std::string, std::any>>(properties);
 							if (std::any_cast<bool>(object["is_enabled"]))
 							{
-								ErwinCLI::client_inno_setup_target_file.append(
+								QLogicaeCLI::client_inno_setup_target_file.append(
 									fmt::format("Name: \"{}\"; MessagesFile: \"{}\"\n",
 										name,
 										std::any_cast<std::string>(
@@ -1413,7 +1413,7 @@ namespace ErwinCLI
 
 						std::unordered_map<std::string, std::any>
 							hkcu_secrets =
-							ErwinCLI::client_private_file.get_object(
+							QLogicaeCLI::client_private_file.get_object(
 								{
 									"windows_registry",
 									"release",
@@ -1421,7 +1421,7 @@ namespace ErwinCLI
 								}
 							);
 						std::string application_id =
-							ErwinCLI::client_public_file
+							QLogicaeCLI::client_public_file
 							.get_string(
 								{
 									"application",
@@ -1429,7 +1429,7 @@ namespace ErwinCLI
 								}
 							);
 						std::string release_id =
-							ErwinCLI::client_utilities_file
+							QLogicaeCLI::client_utilities_file
 							.get_string(
 								{
 									"environment",
@@ -1437,7 +1437,7 @@ namespace ErwinCLI
 									"release"
 								}
 							);
-						ErwinCLI::client_inno_setup_target_file.append(
+						QLogicaeCLI::client_inno_setup_target_file.append(
 							"\n[Registry]\n"
 						);
 						for (const auto& [key, value] : hkcu_secrets)
@@ -1448,7 +1448,7 @@ namespace ErwinCLI
 								release_id,
 								std::any_cast<std::string>(key),
 								std::any_cast<std::string>(value));
-							ErwinCLI::client_inno_setup_target_file.append(
+							QLogicaeCLI::client_inno_setup_target_file.append(
 								command
 							);
 						}
@@ -1458,55 +1458,55 @@ namespace ErwinCLI
 								"powershell -ExecutionPolicy Bypass -File \"{}\"",
 								std::filesystem::path(
 									_setup_installer_input_1 /
-									ErwinCLI::scripts_folder_name /
-									ErwinCLI::inno_run_file_name
+									QLogicaeCLI::scripts_folder_name /
+									QLogicaeCLI::inno_run_file_name
 								).string()
 							).c_str()
 						);
 
 						if (std::filesystem::exists(
 							_setup_installer_input_1 /
-							ErwinCLI::temporary_folder_name
+							QLogicaeCLI::temporary_folder_name
 						))
 						{
 							std::filesystem::remove_all(
 								_setup_installer_input_1 /
-								ErwinCLI::temporary_folder_name
+								QLogicaeCLI::temporary_folder_name
 							);
 						}
 						
-						ErwinCLI::client_utilities_file.update_string(
+						QLogicaeCLI::client_utilities_file.update_string(
 							{ "environment", "selected" }, "development"
 						);
-						ErwinCLI::client_utilities_file.update_string(
+						QLogicaeCLI::client_utilities_file.update_string(
 							{ "environment", "selections", "development" },	
-							ErwinCLI::generator.random_uuid4()
+							QLogicaeCLI::generator.random_uuid4()
 						);
-						ErwinCLI::client_utilities_file.update_string(
+						QLogicaeCLI::client_utilities_file.update_string(
 							{ "environment", "selections", "debug" },
-							ErwinCLI::generator.random_uuid4()
+							QLogicaeCLI::generator.random_uuid4()
 						);
-						ErwinCLI::client_utilities_file.update_string(
+						QLogicaeCLI::client_utilities_file.update_string(
 							{ "environment", "selections", "test" },
-							ErwinCLI::generator.random_uuid4()
+							QLogicaeCLI::generator.random_uuid4()
 						);
-						ErwinCLI::client_utilities_file.update_string(
+						QLogicaeCLI::client_utilities_file.update_string(
 							{ "environment", "selections", "release" },
-							ErwinCLI::generator.random_uuid4()
+							QLogicaeCLI::generator.random_uuid4()
 						);
-						ErwinCLI::client_public_file.update_string(
+						QLogicaeCLI::client_public_file.update_string(
 							{ "application", "id" },
-							ErwinCLI::generator.random_uuid4()
+							QLogicaeCLI::generator.random_uuid4()
 						);
 
-						ErwinCLI::timestamp_logger.log(
-							"Complete!", Erwin::LogLevel::SUCCESS
+						QLogicaeCLI::timestamp_logger.log(
+							"Complete!", QLogicaeCore::LogLevel::SUCCESS
 						);
 					}
 					catch (const std::exception error)
 					{
-						ErwinCLI::timestamp_logger.log(
-							error.what(), Erwin::LogLevel::EXCEPTION);
+						QLogicaeCLI::timestamp_logger.log(
+							error.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
 						return false;
 					}
@@ -1532,7 +1532,7 @@ namespace ErwinCLI
 		return true;
 	}
 
-	bool ErwinCLIApplication::parse()
+	bool QLogicaeCLIApplication::parse()
 	{
 		try
 		{
@@ -1552,9 +1552,9 @@ namespace ErwinCLI
 		return true;
 	}
 
-	ErwinCLIApplication& ErwinCLIApplication::get_instance()
+	QLogicaeCLIApplication& QLogicaeCLIApplication::get_instance()
 	{
-		static ErwinCLIApplication singleton;
+		static QLogicaeCLIApplication singleton;
 
 		return singleton;
 	}

@@ -1,10 +1,10 @@
 {
   "application": {
     "id": "392d7265-9c8a-43a1-b99b-f9583763a1ff",
-    "name": "Erwin CLI",
+    "name": "QLogicae CLI",
     "version": "v1.0.0",
-    "company": "None",
+    "company": "Qunadary Logicae",
     "authors": "Vaughn Cedric L. Araneta",
-    "description": "A C++ development tool"
+    "description": "A CLI Development Toolset"
   }
 }

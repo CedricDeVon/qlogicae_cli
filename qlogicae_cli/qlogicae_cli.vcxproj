@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -102,11 +108,23 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>../../qlogicae_core/qlogicae_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>Shlwapi.lib;Rpcrt4.lib;Shell32.lib;qlogicae_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../qlogicae_core/$(IntDir)qlogicae_core</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
+xcopy "$(ProjectDir)templates" "$(OutDir)templates" /E /Y /I
+xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -116,37 +134,48 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>../../qlogicae_core/qlogicae_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>Shlwapi.lib;Rpcrt4.lib;Shell32.lib;qlogicae_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../qlogicae_core/$(IntDir)qlogicae_core</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
+xcopy "$(ProjectDir)templates" "$(OutDir)templates" /E /Y /I
+xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
-    <ClCompile Include="erwin_cli.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="qlogicae_cli.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.hpp" />
-    <ClInclude Include="erwin_cli.hpp" />
+    <ClInclude Include="qlogicae_cli.hpp" />
     <ClInclude Include="globals.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="configurations\erwin.public.json" />
-    <None Include="configurations\erwin.utilities.json" />
+    <None Include="configurations\qlogicae.public.json" />
+    <None Include="configurations\qlogicae.utilities.json" />
     <None Include="resource.aps" />
     <None Include="resources.aps" />
-    <None Include="templates\default\erwin.gitignore" />
-    <None Include="templates\default\erwin.inno_run.ps1" />
-    <None Include="templates\default\erwin.inno_setup.iss" />
-    <None Include="templates\default\erwin.private.json" />
-    <None Include="templates\default\erwin.public.json" />
-    <None Include="templates\default\erwin.utilities.json" />
+    <None Include="templates\default\qlogicae.gitignore" />
+    <None Include="templates\default\qlogicae.inno_run.ps1" />
+    <None Include="templates\default\qlogicae.inno_setup.iss" />
+    <None Include="templates\default\qlogicae.private.json" />
+    <None Include="templates\default\qlogicae.public.json" />
+    <None Include="templates\default\qlogicae.utilities.json" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources.rc" />

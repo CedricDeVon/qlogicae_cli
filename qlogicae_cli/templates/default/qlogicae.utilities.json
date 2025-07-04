@@ -26,11 +26,11 @@
     }
   },
   "inno_setup": {
-    "output_folder_path": "C:\\Users\\User1\\source\\repos\\erwin\\client",
-    "input_folder_path": "C:\\Users\\User1\\source\\repos\\erwin\\x64\\Release\\client",
+    "output_folder_path": "",
+    "input_folder_path": "",
     "cli_path": "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe",
-    "run_path": ".\\configurations\\erwin.inno_run.ps1",
-    "template_path": ".\\scripts\\erwin.inno_setup.target.iss"
+    "run_path": ".\\configurations\\qlogicae.inno_run.ps1",
+    "template_path": ".\\scripts\\qlogicae.inno_setup.target.iss"
   },
   "application": {
     "icon_path": "./assets/icon.ico",

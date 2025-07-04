@@ -4,23 +4,23 @@
 
 #include "globals.hpp"
 
-namespace ErwinCLI
+namespace QLogicaeCLI
 {
-	class ErwinCLIApplication
+	class QLogicaeCLIApplication
 	{
 	public:
 		bool parse();
 		bool setup(int, char**);
 	
-		static ErwinCLIApplication& get_instance();
+		static QLogicaeCLIApplication& get_instance();
 
 	protected:
-		ErwinCLIApplication();
-		~ErwinCLIApplication() = default;
-		ErwinCLIApplication(const ErwinCLIApplication&) = delete;
-		ErwinCLIApplication(ErwinCLIApplication&&) noexcept = delete;
-		ErwinCLIApplication& operator = (ErwinCLIApplication&&) = delete;
-		ErwinCLIApplication& operator = (const ErwinCLIApplication&) = delete;
+		QLogicaeCLIApplication();
+		~QLogicaeCLIApplication() = default;
+		QLogicaeCLIApplication(const QLogicaeCLIApplication&) = delete;
+		QLogicaeCLIApplication(QLogicaeCLIApplication&&) noexcept = delete;
+		QLogicaeCLIApplication& operator = (QLogicaeCLIApplication&&) = delete;
+		QLogicaeCLIApplication& operator = (const QLogicaeCLIApplication&) = delete;
 
 		int64_t _index_1;
 	    int64_t _index_2;

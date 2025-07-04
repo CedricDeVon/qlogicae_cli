@@ -1,6 +1,6 @@
-$private_configurations = Get-Content erwin.private.json | ConvertFrom-Json
-$public_configurations = Get-Content configurations/erwin.public.json -Raw | ConvertFrom-Json
-$utilities_configurations = Get-Content configurations/erwin.utilities.json -Raw | ConvertFrom-Json
+$private_configurations = Get-Content qlogicae.private.json | ConvertFrom-Json
+$public_configurations = Get-Content configurations/qlogicae.public.json -Raw | ConvertFrom-Json
+$utilities_configurations = Get-Content configurations/qlogicae.utilities.json -Raw | ConvertFrom-Json
 
 & $utilities_configurations.inno_setup.cli_path`
     /DMyAppId="$($public_configurations.application.id)" `
