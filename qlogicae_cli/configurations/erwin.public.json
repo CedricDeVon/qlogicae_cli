@@ -1,0 +1,10 @@
+{
+  "application": {
+    "id": "392d7265-9c8a-43a1-b99b-f9583763a1ff",
+    "name": "Erwin CLI",
+    "version": "v1.0.0",
+    "company": "None",
+    "authors": "Vaughn Cedric L. Araneta",
+    "description": "A C++ development tool"
+  }
+}

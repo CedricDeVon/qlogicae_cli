@@ -1,0 +1,13 @@
+{
+  "application": {
+    "id": "",
+    "name": "Project Name",
+    "alias":  "client",
+    "version": "v1.0.0",
+    "company": "Company Name",
+    "authors": "Authors",
+    "description": "Description",
+    "url": "https://google.com",
+    "architecture": "x64"
+  }
+}

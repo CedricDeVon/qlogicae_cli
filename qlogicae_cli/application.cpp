@@ -1,0 +1,1561 @@
+#pragma once
+
+#include "pch.hpp"
+
+#include "application.hpp"
+
+namespace ErwinCLI
+{
+	ErwinCLIApplication::ErwinCLIApplication() :
+		_application(
+			ErwinCLI::application_full_name
+		)
+	{
+	}
+
+	bool ErwinCLIApplication::setup(int argc, char** argv)
+	{
+		try
+		{
+			_commands["about"] = std::make_pair(
+				_application.add_subcommand("about", ""),
+				[this]() -> bool
+				{
+					ErwinCLI::raw_logger.print(
+						ErwinCLI::application_full_name
+					);
+
+					return true;
+				}
+			);
+
+
+
+			_commands["generate-uuid4"] = std::make_pair(
+				_application.add_subcommand(
+					"generate-uuid4", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (!_generate_uuid4_input_1)
+						{
+							return false;
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+						ErwinCLI::raw_logger.print_with_new_line();
+
+						for (_index_1 = 0;
+							_index_1 < _generate_uuid4_input_1;
+							++_index_1)
+						{
+							ErwinCLI::raw_logger.print_with_new_line(
+								Erwin::Generator::instance().random_uuid4()
+							);
+						}
+
+						ErwinCLI::raw_logger.print_with_new_line();
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["generate-uuid4"].first
+				->add_option("--count", _generate_uuid4_input_1, "")
+				->check(CLI::NonNegativeNumber)
+				->default_val(1);
+
+
+
+			_commands["generate-string"] = std::make_pair(
+				_application.add_subcommand(
+					"generate-string", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (!_generate_string_input_1 ||
+							!_generate_string_input_2)
+						{
+							return false;
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Running...",
+							Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+						ErwinCLI::raw_logger.print_with_new_line();
+
+						for (_index_1 = 0;
+							_index_1 < _generate_string_input_2;
+							++_index_1)
+						{
+							ErwinCLI::raw_logger.print_with_new_line(
+								Erwin::Generator::instance()
+								.random_string(_generate_string_input_1)
+							);
+						}
+
+						ErwinCLI::raw_logger.print_with_new_line();
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION
+						);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["generate-string"].first
+				->add_option("--length", _generate_string_input_1, "")
+				->check(CLI::NonNegativeNumber)
+				->default_val(32);
+			_commands["generate-string"].first
+				->add_option("--count", _generate_string_input_2, "")
+				->check(CLI::NonNegativeNumber)
+				->default_val(1);
+
+
+
+			_commands["encrypt-xchacha20poly1305"] = std::make_pair(
+				_application.add_subcommand(
+					"encrypt-xchacha20poly1305", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (_encrypt_xchacha20poly1305_input_3.empty())
+						{
+							_encrypt_xchacha20poly1305_input_3 =
+								ErwinCLI::generator.random_string(24);
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Running...",
+							Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+						ErwinCLI::raw_logger.print_with_new_line();
+
+						ErwinCLI::raw_logger.print_with_new_line(
+							ErwinCLI::cryptographer_1.transform(
+								_encrypt_xchacha20poly1305_input_1,
+								_encrypt_xchacha20poly1305_input_2,
+								_encrypt_xchacha20poly1305_input_3
+							)
+						);
+						ErwinCLI::raw_logger.print_with_new_line();
+						ErwinCLI::raw_logger.print_with_new_line(
+							_encrypt_xchacha20poly1305_input_3
+						);
+
+						ErwinCLI::raw_logger.print_with_new_line();
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["encrypt-xchacha20poly1305"].first
+				->add_option("--text", _encrypt_xchacha20poly1305_input_1, "")
+				->required();
+			_commands["encrypt-xchacha20poly1305"].first
+				->add_option("--key", _encrypt_xchacha20poly1305_input_2, "")
+				->required();
+			_commands["encrypt-xchacha20poly1305"].first
+				->add_option("--nonce", _encrypt_xchacha20poly1305_input_3, "")
+				->default_val(ErwinCLI::generator.random_string(24));
+
+
+
+
+			_commands["decrypt-xchacha20poly1305"] = std::make_pair(
+				_application.add_subcommand(
+					"decrypt-xchacha20poly1305", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						ErwinCLI::timestamp_logger.log(
+							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+						ErwinCLI::raw_logger.print_with_new_line();
+
+						ErwinCLI::raw_logger.print_with_new_line(
+							ErwinCLI::cryptographer_1.reverse(
+								_decrypt_xchacha20poly1305_input_1,
+								_decrypt_xchacha20poly1305_input_2,
+								_decrypt_xchacha20poly1305_input_3
+							)
+						);
+
+						ErwinCLI::raw_logger.print_with_new_line();
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["decrypt-xchacha20poly1305"].first
+				->add_option("--text", _decrypt_xchacha20poly1305_input_1, "")
+				->required();
+			_commands["decrypt-xchacha20poly1305"].first
+				->add_option("--key", _decrypt_xchacha20poly1305_input_2, "")
+				->required();
+			_commands["decrypt-xchacha20poly1305"].first
+				->add_option("--nonce", _decrypt_xchacha20poly1305_input_3, "")
+				->required();
+
+
+
+			_commands["hash-argon2id"] = std::make_pair(
+				_application.add_subcommand(
+					"hash-argon2id", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						ErwinCLI::timestamp_logger.log(
+							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+						ErwinCLI::raw_logger.print_with_new_line();
+
+						ErwinCLI::raw_logger.print_with_new_line(
+							ErwinCLI::cryptographer_3.transform(
+								_hash_argon2id_input_1
+							)
+						);
+
+						ErwinCLI::raw_logger.print_with_new_line();
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION
+						);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["hash-argon2id"].first
+				->add_option("--text", _hash_argon2id_input_1, "")
+				->required();
+
+
+
+			_commands["verify-argon2id"] = std::make_pair(
+				_application.add_subcommand(
+					"verify-argon2id", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						ErwinCLI::timestamp_logger.log(
+							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+						ErwinCLI::raw_logger.print_with_new_line();
+
+						const bool is_successful =
+							ErwinCLI::cryptographer_3.reverse(
+								_verify_argon2id_input_1,
+								_verify_argon2id_input_2
+							);
+						ErwinCLI::raw_logger.print_with_new_line(
+							(is_successful) ? "true" : "false"
+						);
+
+						ErwinCLI::raw_logger.print_with_new_line();
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION
+						);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["verify-argon2id"].first
+				->add_option("--hash", _verify_argon2id_input_1, "")
+				->required();
+			_commands["verify-argon2id"].first
+				->add_option("--key", _verify_argon2id_input_2, "")
+				->required();
+
+
+
+			_commands["set-environment"] = std::make_pair(
+				_application.add_subcommand(
+					"set-environment", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (_set_environment_input_1.empty() ||
+							_set_environment_input_2.empty())
+						{
+							return false;
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+
+						if (!std::filesystem::exists(
+							_set_environment_input_2
+						))
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format(
+									"File path '{}' does not exist",
+									_set_environment_input_2),
+								Erwin::LogLevel::EXCEPTION
+							);
+
+							return false;
+						}
+
+						ErwinCLI::client_utilities_file.set_file_path(
+							_set_environment_input_2
+						);
+						ErwinCLI::client_utilities_file.update_string(
+							{ "environment", "selected" },
+							_set_environment_input_1
+						);
+
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+
+			_commands["set-environment"].first
+				->add_option("--type", _set_environment_input_1, "")
+				->check(CLI::IsMember(ErwinCLI::utilities_environment_types))
+				->default_val("development");
+			_commands["set-environment"].first
+				->add_option("--utilities-file-path", _set_environment_input_2, "")
+				->default_val(
+					std::filesystem::path(
+						ErwinCLI::configurations_folder_name /
+						ErwinCLI::utilities_file_name
+					).string()
+				);
+
+			_commands["run-scripts"] = std::make_pair(
+				_application.add_subcommand(
+					"run-scripts", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (_run_scripts_input_2.empty())
+						{
+							return false;
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+
+						ErwinCLI::client_utilities_file.set_file_path(
+							_run_scripts_input_2
+						);
+						std::unordered_map<std::string, std::any> scripts =
+							ErwinCLI::client_utilities_file
+							.get_object({ "scripts" }
+							);
+						for (const std::string script_command :
+						_run_scripts_input_1)
+						{
+							if (scripts.contains(script_command))
+							{
+								system(std::any_cast<std::string>(
+									scripts[script_command]
+								).c_str());
+							}
+							else
+							{
+								ErwinCLI::timestamp_logger.log(
+									fmt::format(
+										"Script '{}' does not exist",
+										script_command
+									), Erwin::LogLevel::WARNING
+								);
+							}
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["run-scripts"].first
+				->add_option("--names", _run_scripts_input_1, "")
+				->delimiter(',')
+				->required();
+			_commands["run-scripts"].first
+				->add_option("--utilities-file-path", _run_scripts_input_2, "")
+				->default_val(
+					std::filesystem::path(
+						ErwinCLI::configurations_folder_name /
+						ErwinCLI::utilities_file_name
+					).string()
+				);
+
+			
+
+			_commands["setup-windows-registry"] = std::make_pair(
+				_application.add_subcommand(
+					"setup-windows-registry", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (_setup_windows_registry_input_1.empty() ||
+							_setup_windows_registry_input_2.empty() ||
+							_setup_windows_registry_input_3.empty() ||
+							_setup_windows_registry_input_4.empty())
+						{
+							return false;
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Running...", Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+
+						if (!std::filesystem::exists(_setup_windows_registry_input_2))
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format(
+									"File path '{}' does not exist",
+									_setup_windows_registry_input_2),
+								Erwin::LogLevel::EXCEPTION
+							);
+
+							return false;
+						}
+						if (!std::filesystem::exists(_setup_windows_registry_input_3))
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format(
+									"File path '{}' does not exist",
+									_setup_windows_registry_input_3),
+								Erwin::LogLevel::EXCEPTION
+							);
+
+							return false;
+						}
+						if (!std::filesystem::exists(_setup_windows_registry_input_4))
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format(
+									"File path '{}' does not exist",
+									_setup_windows_registry_input_4),
+								Erwin::LogLevel::EXCEPTION
+							);
+
+							return false;
+						}
+
+						ErwinCLI::client_public_file.set_file_path(
+							_setup_windows_registry_input_2
+						);
+						ErwinCLI::client_utilities_file.set_file_path(
+							_setup_windows_registry_input_3
+						);
+						ErwinCLI::client_private_file.set_file_path(
+							_setup_windows_registry_input_4
+						);
+
+						std::string client_id =
+							ErwinCLI::client_public_file.get_string(
+								{ "application", "id" }
+							);
+						if (_setup_windows_registry_input_1 == "all")
+						{
+							for (const std::string& environment_type : ErwinCLI::utilities_environment_types)
+							{
+								std::string environment_id =
+									ErwinCLI::client_utilities_file.get_string(
+										{ "environment", "selections",
+										environment_type }
+									);
+								std::unordered_map<std::string, std::any>
+									hkcu_secrets =
+									ErwinCLI::client_private_file.get_object(
+										{
+											"windows_registry",
+											environment_type,
+											"hkcu"
+										}
+									);
+								std::unordered_map<std::string, std::any>
+									is_root_key_used =
+									ErwinCLI::client_private_file.get_object(
+										{ "windows_registry", "is_root_key_used" }
+									);
+
+								if (std::any_cast<bool>(is_root_key_used["hkcu"]))
+								{
+									for (const auto& [key, value] : hkcu_secrets)
+									{
+										Erwin::WindowsRegistry::hkcu()
+											.set_value_via_utf8(
+												fmt::format("Software\\{}\\{}",
+													client_id,
+													environment_id
+												),
+												key,
+												std::any_cast<std::string>(value)
+											);
+									}
+								}
+								else
+								{
+									ErwinCLI::timestamp_logger.log(
+										"hkcu windows registry setup is disabled. instruction skipped",
+										Erwin::LogLevel::WARNING
+									);
+								}
+							}
+						}
+						else
+						{
+							std::string environment_id =
+								ErwinCLI::client_utilities_file.get_string(
+									{ "environment", "selections",
+									_setup_windows_registry_input_1 }
+								);
+							std::unordered_map<std::string, std::any>
+								hkcu_secrets =
+								ErwinCLI::client_private_file.get_object(
+									{
+										"windows_registry",
+										_setup_windows_registry_input_1,
+										"hkcu"
+									}
+								);
+							std::unordered_map<std::string, std::any>
+								is_root_key_used =
+								ErwinCLI::client_private_file.get_object(
+									{ "windows_registry", "is_root_key_used" }
+								);
+
+							if (std::any_cast<bool>(is_root_key_used["hkcu"]))
+							{
+								for (const auto& [key, value] : hkcu_secrets)
+								{
+									Erwin::WindowsRegistry::hkcu()
+										.set_value_via_utf8(
+										fmt::format("Software\\{}\\{}",
+											client_id,
+											environment_id
+										),
+										key,
+										std::any_cast<std::string>(value)
+									);
+								}
+							}
+							else
+							{
+								ErwinCLI::timestamp_logger.log(
+									"hkcu windows registry setup is disabled. instruction skipped",
+									Erwin::LogLevel::WARNING
+								);
+							}
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["setup-windows-registry"].first
+				->add_option(
+					"--environment-type",
+					_setup_windows_registry_input_1, "")
+				->check(CLI::IsMember(ErwinCLI::utilities_environment_types_options)
+				)
+				->default_val("development")
+				->required();
+			_commands["setup-windows-registry"].first
+				->add_option(
+					"--public-file-path",
+					_setup_windows_registry_input_2, "")
+				->default_val(
+					std::filesystem::path(
+						ErwinCLI::configurations_folder_name /
+						ErwinCLI::public_file_name
+					).string()
+				);
+			_commands["setup-windows-registry"].first
+				->add_option(
+					"--utilities-file-path",
+					_setup_windows_registry_input_3, "")
+				->default_val(
+					std::filesystem::path(
+						ErwinCLI::configurations_folder_name /
+						ErwinCLI::utilities_file_name
+					).string()
+				);
+			_commands["setup-windows-registry"].first
+				->add_option(
+					"--private-file-path",
+					_setup_windows_registry_input_4, "")
+				->default_val(
+					std::filesystem::path(
+						ErwinCLI::private_file_name
+					).string()
+				);
+			
+			
+
+			_commands["setup-default-template"] = std::make_pair(
+				_application.add_subcommand(
+					"setup-default-template", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (_setup_default_template_input_1.empty())
+						{
+							return false;
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Running...",
+							Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::configurations_folder_name
+						))
+						{
+							std::filesystem::create_directory(
+								_setup_default_template_input_1 /
+								ErwinCLI::configurations_folder_name
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("Folder '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::configurations_folder_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("Folder '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::configurations_folder_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::assets_folder_name
+						))
+						{
+							std::filesystem::create_directory(
+								_setup_default_template_input_1 /
+								ErwinCLI::assets_folder_name
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("Folder '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::assets_folder_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("Folder '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::assets_folder_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::scripts_folder_name
+						))
+						{
+							std::filesystem::create_directory(
+								_setup_default_template_input_1 /
+								ErwinCLI::scripts_folder_name
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("Folder '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::scripts_folder_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("Folder '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::scripts_folder_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::configurations_folder_name /
+							ErwinCLI::public_file_name
+						))
+						{
+							std::filesystem::copy_file(
+								ErwinCLI::application_directory /
+								ErwinCLI::templates_folder_name /
+								"default" /
+								ErwinCLI::public_file_name,
+								_setup_default_template_input_1 /
+								ErwinCLI::configurations_folder_name /
+								ErwinCLI::public_file_name,
+								std::filesystem::copy_options::overwrite_existing
+							);
+							ErwinCLI::client_public_file.set_file_path(
+								std::filesystem::path(
+									_setup_default_template_input_1 /
+									ErwinCLI::configurations_folder_name /
+									ErwinCLI::public_file_name
+								).string()
+							);
+							ErwinCLI::client_public_file.update_string(
+								{ "application", "id" },
+								ErwinCLI::generator.random_uuid4()
+							);
+
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::configurations_folder_name /
+										ErwinCLI::public_file_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("Folder '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::configurations_folder_name /
+										ErwinCLI::public_file_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::configurations_folder_name /
+							ErwinCLI::utilities_file_name
+						))
+						{
+							std::filesystem::copy_file(
+								ErwinCLI::application_directory /
+								ErwinCLI::templates_folder_name /
+								"default" /
+								ErwinCLI::utilities_file_name,
+								_setup_default_template_input_1 /
+								ErwinCLI::configurations_folder_name /
+								ErwinCLI::utilities_file_name,
+								std::filesystem::copy_options::overwrite_existing
+							);
+							ErwinCLI::client_utilities_file.set_file_path(
+								std::filesystem::path(
+									_setup_default_template_input_1 /
+									ErwinCLI::configurations_folder_name /
+									ErwinCLI::utilities_file_name
+								).string()
+							);
+							ErwinCLI::client_utilities_file.update_string(
+								{ "environment", "selections", "development" },
+								ErwinCLI::generator.random_uuid4()
+							);
+							ErwinCLI::client_utilities_file.update_string(
+								{ "environment", "selections", "debug" },
+								ErwinCLI::generator.random_uuid4()
+							);
+							ErwinCLI::client_utilities_file.update_string(
+								{ "environment", "selections", "test" },
+								ErwinCLI::generator.random_uuid4()
+							);
+							ErwinCLI::client_utilities_file.update_string(
+								{ "environment", "selections", "release" },
+								ErwinCLI::generator.random_uuid4()
+							);
+
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::configurations_folder_name /
+										ErwinCLI::utilities_file_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::configurations_folder_name /
+										ErwinCLI::utilities_file_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::private_file_name
+						))
+						{
+							std::filesystem::copy_file(
+								ErwinCLI::application_directory /
+								ErwinCLI::templates_folder_name /
+								"default" /
+								ErwinCLI::private_file_name,
+								_setup_default_template_input_1 /
+								ErwinCLI::private_file_name,
+								std::filesystem::copy_options::overwrite_existing
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::private_file_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::private_file_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::gitignore_file_name
+						))
+						{
+							std::filesystem::copy_file(
+								ErwinCLI::application_directory /
+								ErwinCLI::templates_folder_name /
+								"default" /
+								ErwinCLI::gitignore_file_name,
+								_setup_default_template_input_1 /
+								ErwinCLI::gitignore_file_name,
+								std::filesystem::copy_options::overwrite_existing
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::gitignore_file_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::gitignore_file_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::license_file_name
+						))
+						{
+							std::filesystem::copy_file(
+								ErwinCLI::application_directory /
+								ErwinCLI::templates_folder_name /
+								"default" /
+								ErwinCLI::license_file_name,
+								_setup_default_template_input_1 /
+								ErwinCLI::license_file_name,
+								std::filesystem::copy_options::overwrite_existing
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::license_file_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::license_file_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::scripts_folder_name /
+							ErwinCLI::inno_run_file_name
+						))
+						{
+							std::filesystem::copy_file(
+								ErwinCLI::application_directory /
+								ErwinCLI::templates_folder_name /
+								"default" /
+								ErwinCLI::inno_run_file_name,
+								_setup_default_template_input_1 /
+								ErwinCLI::scripts_folder_name /
+								ErwinCLI::inno_run_file_name,
+								std::filesystem::copy_options::overwrite_existing
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::scripts_folder_name /
+										ErwinCLI::inno_run_file_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::scripts_folder_name /
+										ErwinCLI::inno_run_file_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::scripts_folder_name /
+							ErwinCLI::inno_setup_file_name
+						))
+						{
+							std::filesystem::copy_file(
+								ErwinCLI::application_directory /
+								ErwinCLI::templates_folder_name /
+								"default" /
+								ErwinCLI::inno_setup_file_name,
+								_setup_default_template_input_1 /
+								ErwinCLI::scripts_folder_name /
+								ErwinCLI::inno_setup_file_name,
+								std::filesystem::copy_options::overwrite_existing
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::scripts_folder_name /
+										ErwinCLI::inno_setup_file_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::scripts_folder_name /
+										ErwinCLI::inno_setup_file_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 /
+							ErwinCLI::assets_folder_name /
+							ErwinCLI::icon_file_name
+						))
+						{
+							std::filesystem::copy_file(
+								ErwinCLI::application_directory /
+								ErwinCLI::templates_folder_name /
+								"default" /
+								ErwinCLI::icon_file_name,
+								_setup_default_template_input_1 /
+								ErwinCLI::assets_folder_name /
+								ErwinCLI::icon_file_name,
+								std::filesystem::copy_options::overwrite_existing
+							);
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' created",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::assets_folder_name /
+										ErwinCLI::icon_file_name
+									).string()
+								),
+								Erwin::LogLevel::INFO
+							);
+						}
+						else
+						{
+							ErwinCLI::timestamp_logger.log(
+								fmt::format("File '{}' already exists",
+									std::filesystem::path(
+										_setup_default_template_input_1 /
+										ErwinCLI::assets_folder_name /
+										ErwinCLI::icon_file_name
+									).string()
+								),
+								Erwin::LogLevel::WARNING
+							);
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["setup-default-template"].first
+				->add_option("--target-root-project-directory", _setup_default_template_input_1, "")
+				->default_val(".");
+
+
+
+			_commands["verify-default-filesystem"] = std::make_pair(
+				_application.add_subcommand(
+					"verify-default-filesystem", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (_verify_default_template_input_1.empty())
+						{
+							return false;
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Running...",
+							Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+
+						std::vector<std::filesystem::path> file_paths =
+						{
+							std::filesystem::path(
+								_verify_default_template_input_1 /
+								ErwinCLI::scripts_folder_name /
+								ErwinCLI::inno_run_file_name
+							),
+							std::filesystem::path(
+								_verify_default_template_input_1 /
+								ErwinCLI::scripts_folder_name /
+								ErwinCLI::inno_setup_file_name
+							),
+							std::filesystem::path(
+								_verify_default_template_input_1 /
+								ErwinCLI::configurations_folder_name /
+								ErwinCLI::utilities_file_name
+							),
+							std::filesystem::path(
+								_verify_default_template_input_1 /
+								ErwinCLI::configurations_folder_name /
+								ErwinCLI::public_file_name
+							),
+							std::filesystem::path(
+								_verify_default_template_input_1 /
+								ErwinCLI::private_file_name
+							),
+							std::filesystem::path(
+								_verify_default_template_input_1 /
+								ErwinCLI::license_file_name
+							),
+							std::filesystem::path(
+								_verify_default_template_input_1 /
+								ErwinCLI::gitignore_file_name
+							)
+						};
+
+						for (const auto& file_path : file_paths)
+						{
+							if (std::filesystem::exists(file_path))
+							{
+								ErwinCLI::timestamp_logger.log(
+									fmt::format(
+										"File '{}' exists",
+										file_path.string()
+									),
+									Erwin::LogLevel::SUCCESS
+								);
+							}
+							else
+							{
+								ErwinCLI::timestamp_logger.log(
+									fmt::format(
+										"File '{}' does not exist",
+										file_path.string()
+									),
+									Erwin::LogLevel::EXCEPTION
+								);
+							}
+						}
+
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["verify-default-filesystem"].first
+				->add_option("--target-root-project-directory", _verify_default_template_input_1, "")
+				->default_val(".");
+
+
+
+			_commands["setup-installer"] = std::make_pair(
+				_application.add_subcommand(
+					"setup-installer", ""),
+				[this]() -> bool
+				{
+					try
+					{
+						ErwinCLI::timestamp_logger.log(
+							"Running...",
+							Erwin::LogLevel::HIGHLIGHTED_INFO
+						);
+
+						ErwinCLI::client_public_file.set_file_path(
+							std::filesystem::path(
+								_setup_installer_input_1 /
+								ErwinCLI::configurations_folder_name /
+								ErwinCLI::public_file_name
+							).string()
+						);
+						ErwinCLI::client_private_file.set_file_path(
+							std::filesystem::path(
+								_setup_installer_input_1 /
+								ErwinCLI::private_file_name
+							).string()
+						);
+						ErwinCLI::client_inno_run_file.set_file_path(
+							std::filesystem::path(
+								_setup_installer_input_1 /
+								ErwinCLI::scripts_folder_name /
+								ErwinCLI::inno_run_file_name
+							).string()
+						);
+						ErwinCLI::client_inno_setup_file.set_file_path(
+							std::filesystem::path(
+								_setup_installer_input_1 /
+								ErwinCLI::scripts_folder_name /
+								ErwinCLI::inno_setup_file_name
+							).string()
+						);
+						ErwinCLI::client_inno_setup_target_file.set_file_path(
+							std::filesystem::path(
+								_setup_installer_input_1 /
+								ErwinCLI::scripts_folder_name /
+								ErwinCLI::inno_setup_target_file_name
+							).string()
+						);
+						ErwinCLI::client_utilities_file.set_file_path(
+							std::filesystem::path(
+								_setup_installer_input_1 /
+								ErwinCLI::configurations_folder_name /
+								ErwinCLI::utilities_file_name
+							).string()
+						);
+
+						std::filesystem::path input_folder_path = std::filesystem::absolute(
+							ErwinCLI::client_utilities_file.get_string({ "inno_setup", "input_folder_path" })
+						);
+						std::filesystem::path output_folder_path = std::filesystem::absolute(
+							ErwinCLI::client_utilities_file.get_string({ "inno_setup", "output_folder_path" })
+						);
+						
+						ErwinCLI::client_utilities_file.set_file_path(
+							std::filesystem::path(
+								input_folder_path /
+								ErwinCLI::configurations_folder_name /
+								ErwinCLI::utilities_file_name
+							).string()
+						);
+						ErwinCLI::client_utilities_file.update_string(
+							{ "environment", "selected" }, "release"
+						);
+						ErwinCLI::client_utilities_file.set_file_path(
+							std::filesystem::path(
+								_setup_installer_input_1 /
+								ErwinCLI::configurations_folder_name /
+								ErwinCLI::utilities_file_name
+							).string()
+						);
+
+						if (!std::filesystem::exists(
+							_setup_installer_input_1 /
+							ErwinCLI::scripts_folder_name
+						))
+						{
+							std::filesystem::create_directory(
+								_setup_installer_input_1 /
+								ErwinCLI::scripts_folder_name
+							);
+						}
+
+						if (std::filesystem::exists(
+							_setup_installer_input_1 /
+							ErwinCLI::scripts_folder_name /
+							ErwinCLI::inno_setup_target_file_name)
+							)
+						{
+							std::filesystem::remove(
+								_setup_installer_input_1 /
+								ErwinCLI::scripts_folder_name /
+								ErwinCLI::inno_setup_target_file_name
+							);
+						}
+
+						std::filesystem::copy_file(
+							_setup_installer_input_1 /
+							ErwinCLI::scripts_folder_name /
+							ErwinCLI::inno_setup_file_name,
+							_setup_installer_input_1 /
+							ErwinCLI::scripts_folder_name /
+							ErwinCLI::inno_setup_target_file_name,
+							std::filesystem::copy_options::overwrite_existing
+						);
+
+						std::unordered_map<std::string, std::any> languages =
+							ErwinCLI::client_utilities_file.get_object(
+								{ "languages" }
+							);
+						ErwinCLI::client_inno_setup_target_file.append(
+							"\n[Languages]\n"
+						);
+						for (const auto& [name, properties] : languages)
+						{
+							std::unordered_map<std::string, std::any> object =
+								std::any_cast<std::unordered_map<
+									std::string, std::any>>(properties);
+							if (std::any_cast<bool>(object["is_enabled"]))
+							{
+								ErwinCLI::client_inno_setup_target_file.append(
+									fmt::format("Name: \"{}\"; MessagesFile: \"{}\"\n",
+										name,
+										std::any_cast<std::string>(
+											object["message_file"]
+										))
+								);
+							}
+						}
+
+						std::unordered_map<std::string, std::any>
+							hkcu_secrets =
+							ErwinCLI::client_private_file.get_object(
+								{
+									"windows_registry",
+									"release",
+									"hkcu"
+								}
+							);
+						std::string application_id =
+							ErwinCLI::client_public_file
+							.get_string(
+								{
+									"application",
+									"id"
+								}
+							);
+						std::string release_id =
+							ErwinCLI::client_utilities_file
+							.get_string(
+								{
+									"environment",
+									"selections",
+									"release"
+								}
+							);
+						ErwinCLI::client_inno_setup_target_file.append(
+							"\n[Registry]\n"
+						);
+						for (const auto& [key, value] : hkcu_secrets)
+						{
+							std::string command = fmt::format(
+								"Root: HKCU; Subkey: \"Software\\{}\\{}\"; ValueType: string; ValueName: \"{}\"; ValueData: \"{}\"; Flags: uninsdeletekeyifempty\n",
+								application_id,
+								release_id,
+								std::any_cast<std::string>(key),
+								std::any_cast<std::string>(value));
+							ErwinCLI::client_inno_setup_target_file.append(
+								command
+							);
+						}
+
+						system(
+							fmt::format(
+								"powershell -ExecutionPolicy Bypass -File \"{}\"",
+								std::filesystem::path(
+									_setup_installer_input_1 /
+									ErwinCLI::scripts_folder_name /
+									ErwinCLI::inno_run_file_name
+								).string()
+							).c_str()
+						);
+
+						if (std::filesystem::exists(
+							_setup_installer_input_1 /
+							ErwinCLI::temporary_folder_name
+						))
+						{
+							std::filesystem::remove_all(
+								_setup_installer_input_1 /
+								ErwinCLI::temporary_folder_name
+							);
+						}
+						
+						ErwinCLI::client_utilities_file.update_string(
+							{ "environment", "selected" }, "development"
+						);
+						ErwinCLI::client_utilities_file.update_string(
+							{ "environment", "selections", "development" },	
+							ErwinCLI::generator.random_uuid4()
+						);
+						ErwinCLI::client_utilities_file.update_string(
+							{ "environment", "selections", "debug" },
+							ErwinCLI::generator.random_uuid4()
+						);
+						ErwinCLI::client_utilities_file.update_string(
+							{ "environment", "selections", "test" },
+							ErwinCLI::generator.random_uuid4()
+						);
+						ErwinCLI::client_utilities_file.update_string(
+							{ "environment", "selections", "release" },
+							ErwinCLI::generator.random_uuid4()
+						);
+						ErwinCLI::client_public_file.update_string(
+							{ "application", "id" },
+							ErwinCLI::generator.random_uuid4()
+						);
+
+						ErwinCLI::timestamp_logger.log(
+							"Complete!", Erwin::LogLevel::SUCCESS
+						);
+					}
+					catch (const std::exception error)
+					{
+						ErwinCLI::timestamp_logger.log(
+							error.what(), Erwin::LogLevel::EXCEPTION);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands["setup-installer"].first
+				->add_option("--target-project-folder", _setup_installer_input_1, "")
+				->default_val(".");
+			_commands["setup-installer"].first
+				->add_option("--output-directory", _setup_installer_input_2, "")
+				->default_val(".");
+
+
+			CLI11_PARSE(_application, argc, argv);
+		}
+		catch (...)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	bool ErwinCLIApplication::parse()
+	{
+		try
+		{
+			for (const auto& [key, value] : _commands)
+			{
+				if (value.first->parsed())
+				{
+					return value.second();
+				}
+			}
+		}
+		catch (...)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	ErwinCLIApplication& ErwinCLIApplication::get_instance()
+	{
+		static ErwinCLIApplication singleton;
+
+		return singleton;
+	}
+}
