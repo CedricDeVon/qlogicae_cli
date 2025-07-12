@@ -25,10 +25,10 @@ namespace QLogicaeCLI
     static std::filesystem::path application_public_file_path = QLogicaeCLI::application_directory / QLogicaeCLI::configurations_folder_name / QLogicaeCLI::public_file_name;
     static std::filesystem::path application_utilities_file_path = QLogicaeCLI::application_directory / QLogicaeCLI::configurations_folder_name / QLogicaeCLI::utilities_file_name;
 
-    static QLogicaeCore::Cryptographer1 cryptographer_1;
-    static QLogicaeCore::Cryptographer2 cryptographer_2;
-    static QLogicaeCore::Cryptographer3 cryptographer_3;
-    static QLogicaeCore::Cryptographer4 cryptographer_4;
+    static QLogicaeCore::XChaCha20Poly1305CipherCryptographer cryptographer_1;
+    static QLogicaeCore::AES256CipherCryptographer cryptographer_2;
+    static QLogicaeCore::Argon2idHashCryptographer cryptographer_3;
+    static QLogicaeCore::AES256SignatureCryptographer cryptographer_4;
 
     static QLogicaeCore::Logger timestamp_logger;
     static QLogicaeCore::CliIO& raw_logger = QLogicaeCore::CliIO::instance();
