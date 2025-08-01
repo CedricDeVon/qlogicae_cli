@@ -22,15 +22,19 @@ namespace QLogicaeCLI
 		QLogicaeCLIApplication& operator = (QLogicaeCLIApplication&&) = delete;
 		QLogicaeCLIApplication& operator = (const QLogicaeCLIApplication&) = delete;
 
-		int64_t _index_1;
-	    int64_t _index_2;
-		int64_t _index_3;
-		int64_t _index_4;
+		void _log_running_timestamp();
+		void _log_complete_timestamp();
+		void _log_exception_timestamp(const std::string_view);
 
-		int64_t _generate_uuid4_input_1;
+		uint64_t _index_1;
+	    uint64_t _index_2;
+		uint64_t _index_3;
+		uint64_t _index_4;
 
-		int64_t _generate_string_input_1;
-		int64_t _generate_string_input_2;
+		uint64_t _generate_uuid4_input_1;
+
+		uint64_t _generate_string_input_1;
+		uint64_t _generate_string_input_2;
 
 		std::string _encrypt_xchacha20poly1305_input_1;
 		std::string _encrypt_xchacha20poly1305_input_2;
@@ -51,6 +55,8 @@ namespace QLogicaeCLI
 		std::vector<std::string> _run_scripts_input_1;
 		std::string _run_scripts_input_2;
 
+		std::string _view_windows_registry_input_1;
+
 		std::string _setup_windows_registry_input_1;
 		std::string _setup_windows_registry_input_2;
 		std::string _setup_windows_registry_input_3;
@@ -62,6 +68,7 @@ namespace QLogicaeCLI
 
 		std::string _setup_installer_input_1;
 		std::string _setup_installer_input_2;
+
 
 		CLI::App _application;
 		std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> _commands;
