@@ -4,7 +4,7 @@
 
 namespace QLogicaeCLI
 {
-    static std::filesystem::path application_directory = QLogicaeCore::SystemAccess::instance().get_executable_dir();
+    static std::filesystem::path application_directory = QLogicaeCore::SystemAccess::get_instance().get_executable_dir();
     static std::filesystem::path public_file_name = "qlogicae.public.json";
     static std::filesystem::path gitignore_file_name = "qlogicae.gitignore";
     static std::filesystem::path private_file_name = "qlogicae.private.json";
@@ -31,8 +31,8 @@ namespace QLogicaeCLI
     static QLogicaeCore::AES256SignatureCryptographer cryptographer_4;
 
     static QLogicaeCore::Logger timestamp_logger;
-    static QLogicaeCore::CliIO& raw_logger = QLogicaeCore::CliIO::instance();
-    static QLogicaeCore::Generator& generator = QLogicaeCore::Generator::instance();
+    static QLogicaeCore::CliIO& raw_logger = QLogicaeCore::CliIO::get_instance();
+    static QLogicaeCore::Generator& generator = QLogicaeCore::Generator::get_instance();
 
     static QLogicaeCore::TextFileIO client_inno_run_file;
     static QLogicaeCore::TextFileIO client_inno_setup_file;

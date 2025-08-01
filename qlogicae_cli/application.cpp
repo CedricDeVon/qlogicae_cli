@@ -53,7 +53,7 @@ namespace QLogicaeCLI
 							++_index_1)
 						{
 							QLogicaeCLI::raw_logger.print_with_new_line(
-								QLogicaeCore::Generator::instance().random_uuid4()
+								QLogicaeCore::Generator::get_instance().random_uuid4()
 							);
 						}
 
@@ -104,7 +104,7 @@ namespace QLogicaeCLI
 							++_index_1)
 						{
 							QLogicaeCLI::raw_logger.print_with_new_line(
-								QLogicaeCore::Generator::instance()
+								QLogicaeCore::Generator::get_instance()
 								.random_string(_generate_string_input_1)
 							);
 						}
