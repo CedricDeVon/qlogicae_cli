@@ -6,6 +6,7 @@ namespace QLogicaeCLI
 {
     static QLogicaeCore::Constants constants;
     static QLogicaeCore::Logger timestamp_logger;
+    static QLogicaeCore::TextFileIO text_file_io;
     static QLogicaeCore::AES256CipherCryptographer cryptographer_2;
     static QLogicaeCore::Argon2idHashCryptographer cryptographer_3;
     static QLogicaeCore::AES256SignatureCryptographer cryptographer_4;

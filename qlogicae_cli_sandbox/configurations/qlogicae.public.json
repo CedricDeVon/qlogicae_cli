@@ -1,0 +1,13 @@
+{
+    "application": {
+        "id": "91256a6b-fcb5-4848-ba58-34cadba221a6",
+        "name": "Project Name",
+        "alias": "client",
+        "version": "v1.0.0",
+        "company": "Company Name",
+        "authors": "Authors",
+        "description": "Description",
+        "url": "https://google.com",
+        "architecture": "x64"
+    }
+}

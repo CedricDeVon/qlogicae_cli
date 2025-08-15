@@ -4,13 +4,14 @@
 
 int main(int argc, char** argv)
 {
-    const bool is_setup_successful =
-        QLogicaeCLI::QLogicaeCLIApplication::get_instance().setup(argc, argv);
+    QLogicaeCLI::QLogicaeCLIApplication& cli_application =
+        QLogicaeCLI::QLogicaeCLIApplication::get_instance();
+
+    const bool is_setup_successful = cli_application.setup(argc, argv);
     if (!is_setup_successful)
     {
         return EXIT_FAILURE;
     }
 
-    return (QLogicaeCLI::QLogicaeCLIApplication::get_instance().parse()) ?
-        EXIT_SUCCESS : EXIT_FAILURE;
+    return (cli_application.parse()) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

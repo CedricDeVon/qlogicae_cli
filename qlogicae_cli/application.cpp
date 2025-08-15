@@ -13,39 +13,73 @@ namespace QLogicaeCLI
 	{
 	}
 
-	void QLogicaeCLIApplication::_log_running_timestamp()
-	{
-		QLogicaeCLI::timestamp_logger.log(
-			"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
-		);
-	}
-
-	void QLogicaeCLIApplication::_log_complete_timestamp()
-	{
-		QLogicaeCLI::timestamp_logger.log(
-			"Complete!", QLogicaeCore::LogLevel::SUCCESS
-		);
-	}
-
-	void QLogicaeCLIApplication::_log_exception_timestamp(
-		const std::string_view text
-	)
-	{
-		QLogicaeCLI::timestamp_logger.log(
-			text, QLogicaeCore::LogLevel::EXCEPTION
-		);
-	}
-
 	bool QLogicaeCLIApplication::setup(int argc, char** argv)
 	{
 		try
 		{
-			std::string current_command_name;
+			if (!_setup_about_command() ||
+				!_setup_generate_uuid4_command() ||
+				!_setup_generate_string_command() ||
+				!_setup_encrypt_xchacha20poly1305_command() ||
+				!_setup_decrypt_xchacha20poly1305_command() ||
+				!_setup_hash_argon2id_command() ||
+				!_setup_verify_argon2id_command() ||
+				!_setup_run_scripts_command() ||
+				!_setup_set_environment_command() ||
+				!_setup_view_windows_registry_command() ||
+				!_setup_setup_windows_registry_command() ||
+				!_setup_setup_default_template_command() ||
+				!_setup_verify_default_template_command() ||
+				!_setup_setup_installer_command())
+			{
+				return false;
+			}
 
-			current_command_name = "about";
-			_commands[current_command_name] = std::make_pair(
+			CLI11_PARSE(_application, argc, argv);
+		}
+		catch (...)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	bool QLogicaeCLIApplication::parse()
+	{
+		try
+		{
+			for (const auto& [key, value] : _commands)
+			{
+				if (value.first->parsed())
+				{
+					return value.second();
+				}
+			}
+		}
+		catch (...)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	QLogicaeCLIApplication& QLogicaeCLIApplication::get_instance()
+	{
+		static QLogicaeCLIApplication singleton;
+
+		return singleton;
+	}
+
+	bool QLogicaeCLIApplication::_setup_about_command()
+	{
+		try
+		{
+			std::string command_name = "about";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					raw_logger.print(application_full_name);
@@ -54,14 +88,24 @@ namespace QLogicaeCLI
 				}
 			);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_about_command(): ") + exception.what());
 
+			return false;
+		}
+	}
 
-
-
-			current_command_name = "generate-uuid4";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_generate_uuid4_command()
+	{
+		try
+		{
+			std::string command_name = "generate-uuid4";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
@@ -71,22 +115,39 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp();
+						_log_running_timestamp(_generate_uuid4_input_3);
 
-						for (_index_1 = 0;
-							_index_1 < _generate_uuid4_input_1;
-							++_index_1)
+						size_t index_1, size_a = _generate_uuid4_input_1 - 1;
+						std::string output_string = "";
+						for (index_1 = 0;
+							index_1 < _generate_uuid4_input_1;
+							++index_1)
+						{
+							output_string += generator.random_uuid4();
+							if (index_1 < size_a)
+							{
+								output_string += "\n";
+							}
+						}
+
+						if (_generate_uuid4_input_3)
 						{
 							raw_logger.print_with_new_line(
-								generator.random_uuid4()
+								output_string
 							);
 						}
 
-						_log_complete_timestamp();
+						if (_generate_uuid4_input_4)
+						{
+							text_file_io.set_file_path(_generate_uuid4_input_2);
+							text_file_io.write_async(output_string);
+						}
+
+						_log_complete_timestamp(_generate_uuid4_input_3);
 					}
-					catch (const std::exception error)
+					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_generate_uuid4_command(): ") + exception.what(), _generate_uuid4_input_3);
 
 						return false;
 					}
@@ -94,21 +155,46 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--count",
 					_generate_uuid4_input_1,
-					constants.EMPTY_STRING)
+					"")
 				->check(CLI::NonNegativeNumber)
 				->default_val(1);
+			_commands[command_name].first
+				->add_option("--output-file-path",
+					_generate_uuid4_input_2,
+					"")
+				->default_val("");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_generate_uuid4_input_3,
+					"")
+				->default_val(true);
+			_commands[command_name].first
+				->add_option("--is-file-output-enabled",
+					_generate_uuid4_input_4,
+					"")
+				->default_val(false);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_generate_uuid4_command(): ") + exception.what(), _generate_uuid4_input_3);
 
+			return false;
+		}
+	}
 
-
-
-			current_command_name = "generate-string";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_generate_string_command()
+	{
+		try
+		{
+			std::string command_name = "generate-string";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
@@ -119,24 +205,45 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp();
+						_log_running_timestamp(_generate_string_input_5);
 
-						for (_index_1 = 0;
-							_index_1 < _generate_string_input_2;
-							++_index_1)
+						size_t index_1, size_a = _generate_string_input_2 - 1;
+						std::string output_string = "",
+							character_set = (_generate_string_input_3.empty()) ?
+							constants.FULL_VISIBLE_ASCII_CHARACTERSET.data() :
+							_generate_string_input_3;
+						for (index_1 = 0;
+							index_1 < _generate_string_input_2;
+							++index_1)
+						{
+							output_string += generator.random_string(
+								_generate_string_input_1,
+								character_set
+							);
+							if (index_1 < size_a)
+							{
+								output_string += "\n";
+							}
+						}
+
+						if (_generate_string_input_5)
 						{
 							raw_logger.print_with_new_line(
-								generator.random_string(
-									_generate_string_input_1
-								)
+								output_string
 							);
 						}
 
-						_log_complete_timestamp();
+						if (_generate_string_input_6)
+						{
+							text_file_io.set_file_path(_generate_string_input_4);
+							text_file_io.write_async(output_string);
+						}
+
+						_log_complete_timestamp(_generate_string_input_5);
 					}
-					catch (const std::exception error)
+					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_generate_string_command(): ") + exception.what(), _generate_string_input_5);
 
 						return false;
 					}
@@ -144,24 +251,57 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--length",
 					_generate_string_input_1,
-					constants.EMPTY_STRING)
+					"")
 				->check(CLI::NonNegativeNumber)
 				->default_val(32);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--count",
 					_generate_string_input_2,
-					constants.EMPTY_STRING)
+					"")
 				->check(CLI::NonNegativeNumber)
 				->default_val(1);
+			_commands[command_name].first
+				->add_option("--character-set",
+					_generate_string_input_3,
+					"")
+				->default_val("");
+			_commands[command_name].first
+				->add_option("--output-file-path",
+					_generate_string_input_4,
+					"")
+				->default_val("");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_generate_string_input_5,
+					"")
+				->default_val(true);
+			_commands[command_name].first
+				->add_option("--is-file-output-enabled",
+					_generate_string_input_6,
+					"")
+				->default_val(false);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_generate_string_command(): ") + exception.what(), _generate_string_input_5);
 
-			current_command_name = "encrypt-xchacha20poly1305";
-			_commands[current_command_name] = std::make_pair(
+			return false;
+		}
+	}
+
+	bool QLogicaeCLIApplication::_setup_encrypt_xchacha20poly1305_command()
+	{
+		try
+		{
+			std::string command_name = "encrypt-xchacha20poly1305";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
@@ -172,22 +312,34 @@ namespace QLogicaeCLI
 								generator.random_string(24);
 						}
 
-						_log_running_timestamp();
+						_log_running_timestamp(_encrypt_xchacha20poly1305_input_5);
 
-						raw_logger.print_with_new_line(
+						std::string output_string =
 							cryptographer_1.transform(
 								_encrypt_xchacha20poly1305_input_1,
 								_encrypt_xchacha20poly1305_input_2,
 								_encrypt_xchacha20poly1305_input_3
 							) + "\n" +
-							_encrypt_xchacha20poly1305_input_3
-						);
+							_encrypt_xchacha20poly1305_input_3;
 
-						_log_complete_timestamp();
+						if (_encrypt_xchacha20poly1305_input_5)
+						{
+							raw_logger.print_with_new_line(
+								output_string
+							);
+						}
+
+						if (_encrypt_xchacha20poly1305_input_6)
+						{
+							text_file_io.set_file_path(_encrypt_xchacha20poly1305_input_4);
+							text_file_io.write_async(output_string);
+						}
+
+						_log_complete_timestamp(_encrypt_xchacha20poly1305_input_5);
 					}
-					catch (const std::exception error)
+					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_encrypt_xchacha20poly1305_command(): ") + exception.what(), _encrypt_xchacha20poly1305_input_5);
 
 						return false;
 					}
@@ -195,47 +347,86 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--text",
 					_encrypt_xchacha20poly1305_input_1,
-					constants.EMPTY_STRING)
+					"")
 				->required();
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--key",
 					_encrypt_xchacha20poly1305_input_2,
-					constants.EMPTY_STRING)
+					"")
 				->required();
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--nonce",
 					_encrypt_xchacha20poly1305_input_3,
-					constants.EMPTY_STRING)
+					"")
 				->default_val(QLogicaeCLI::generator.random_string(24));
+			_commands[command_name].first
+				->add_option("--output-file-path",
+					_encrypt_xchacha20poly1305_input_4,
+					"")
+				->default_val("");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_encrypt_xchacha20poly1305_input_5,
+					"")
+				->default_val(true);
+			_commands[command_name].first
+				->add_option("--is-file-output-enabled",
+					_encrypt_xchacha20poly1305_input_6,
+					"")
+				->default_val(false);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_encrypt_xchacha20poly1305_command(): ") + exception.what(), _encrypt_xchacha20poly1305_input_5);
 
+			return false;
+		}
+	}
 
-			current_command_name = "decrypt-xchacha20poly1305";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_decrypt_xchacha20poly1305_command()
+	{
+		try
+		{
+			std::string command_name = "decrypt-xchacha20poly1305";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
 					{
-						_log_running_timestamp();
+						_log_running_timestamp(_decrypt_xchacha20poly1305_input_5);
 
-						raw_logger.print_with_new_line(
+						std::string output_string =
 							cryptographer_1.reverse(
 								_decrypt_xchacha20poly1305_input_1,
 								_decrypt_xchacha20poly1305_input_2,
 								_decrypt_xchacha20poly1305_input_3
-							)
-						);
+							);
 
-						_log_complete_timestamp();
+						if (_decrypt_xchacha20poly1305_input_5)
+						{
+							raw_logger.print_with_new_line(
+								output_string
+							);
+						}
+
+						if (_decrypt_xchacha20poly1305_input_6)
+						{
+							text_file_io.set_file_path(_decrypt_xchacha20poly1305_input_4);
+							text_file_io.write_async(output_string);
+						}
+
+						_log_complete_timestamp(_decrypt_xchacha20poly1305_input_5);
 					}
-					catch (const std::exception error)
+					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_decrypt_xchacha20poly1305_command(): ") + exception.what(), _decrypt_xchacha20poly1305_input_5);
 
 						return false;
 					}
@@ -243,47 +434,84 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--text",
 					_decrypt_xchacha20poly1305_input_1,
-					constants.EMPTY_STRING)
+					"")
 				->required();
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--key",
 					_decrypt_xchacha20poly1305_input_2,
-					constants.EMPTY_STRING)
+					"")
 				->required();
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--nonce",
 					_decrypt_xchacha20poly1305_input_3,
-					constants.EMPTY_STRING)
+					"")
 				->required();
+			_commands[command_name].first
+				->add_option("--output-file-path",
+					_decrypt_xchacha20poly1305_input_4,
+					"")
+				->default_val("");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_decrypt_xchacha20poly1305_input_5,
+					"")
+				->default_val(true);
+			_commands[command_name].first
+				->add_option("--is-file-output-enabled",
+					_decrypt_xchacha20poly1305_input_6,
+					"")
+				->default_val(false);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_decrypt_xchacha20poly1305_command(): ") + exception.what(), _decrypt_xchacha20poly1305_input_5);
 
+			return false;
+		}
+	}
 
-
-
-			current_command_name = "hash-argon2id";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_hash_argon2id_command()
+	{
+		try
+		{
+			std::string command_name = "hash-argon2id";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
 					{
-						_log_running_timestamp();
+						_log_running_timestamp(_hash_argon2id_input_3);
 
-						raw_logger.print_with_new_line(
+						std::string output_string =
 							cryptographer_3.transform(
 								_hash_argon2id_input_1
-							)
-						);
+							);
 
-						_log_complete_timestamp();
+						if (_hash_argon2id_input_3)
+						{
+							raw_logger.print_with_new_line(
+								output_string
+							);
+						}
+
+						if (_hash_argon2id_input_4)
+						{
+							text_file_io.set_file_path(_hash_argon2id_input_2);
+							text_file_io.write_async(output_string);
+						}
+
+						_log_complete_timestamp(_hash_argon2id_input_3);
 					}
-					catch (const std::exception error)
+					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_hash_argon2id_command(): ") + exception.what(), _hash_argon2id_input_3);
 
 						return false;
 					}
@@ -291,35 +519,75 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--text",
 					_hash_argon2id_input_1,
-					constants.EMPTY_STRING)
+					"")
 				->required();
+			_commands[command_name].first
+				->add_option("--output-file-path",
+					_hash_argon2id_input_2,
+					"")
+				->default_val("");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_hash_argon2id_input_3,
+					"")
+				->default_val(true);
+			_commands[command_name].first
+				->add_option("--is-file-output-enabled",
+					_hash_argon2id_input_4,
+					"")
+				->default_val(false);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_hash_argon2id_command(): ") + exception.what(), _hash_argon2id_input_3);
 
-			current_command_name = "verify-argon2id";
-			_commands[current_command_name] = std::make_pair(
+			return false;
+		}
+	}
+
+	bool QLogicaeCLIApplication::_setup_verify_argon2id_command()
+	{
+		try
+		{
+			std::string command_name = "verify-argon2id";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
 					{
-						_log_running_timestamp();
+						_log_running_timestamp(_verify_argon2id_input_4);
 
-						raw_logger.print_with_new_line(
+						std::string output_string =
 							(cryptographer_3.reverse(
 								_verify_argon2id_input_1,
 								_verify_argon2id_input_2
-							)) ? "true" : "false"
-						);
+							)) ? "true" : "false";
 
-						_log_complete_timestamp();
+						if (_verify_argon2id_input_4)
+						{
+							raw_logger.print_with_new_line(
+								output_string
+							);
+						}
+
+						if (_verify_argon2id_input_5)
+						{
+							text_file_io.set_file_path(_verify_argon2id_input_3);
+							text_file_io.write_async(output_string);
+						}
+
+						_log_complete_timestamp(_verify_argon2id_input_4);
 					}
-					catch (const std::exception error)
+					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_verify_argon2id_command(): ") + exception.what(), _verify_argon2id_input_4);
 
 						return false;
 					}
@@ -327,90 +595,50 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--hash",
 					_verify_argon2id_input_1,
-					constants.EMPTY_STRING)
+					"")
 				->required();
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--key",
 					_verify_argon2id_input_2,
-					constants.EMPTY_STRING)
+					"")
 				->required();
+			_commands[command_name].first
+				->add_option("--output-file-path",
+					_verify_argon2id_input_3,
+					"")
+				->default_val("");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_verify_argon2id_input_4,
+					"")
+				->default_val(true);
+			_commands[command_name].first
+				->add_option("--is-file-output-enabled",
+					_verify_argon2id_input_5,
+					"")
+				->default_val(false);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_verify_argon2id_command(): ") + exception.what(), _verify_argon2id_input_4);
 
+			return false;
+		}
+	}
 
-			current_command_name = "set-environment";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_run_scripts_command()
+	{
+		try
+		{
+			std::string command_name = "run-scripts";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
-				[this]() -> bool
-				{
-					try
-					{
-						if (_set_environment_input_1.empty() ||
-							_set_environment_input_2.empty())
-						{
-							return false;
-						}
-
-						_log_running_timestamp();
-
-						if (!std::filesystem::exists(
-							_set_environment_input_2
-						))
-						{
-							timestamp_logger.log(
-								"File path '" + _set_environment_input_2 +
-								"' does not exist",
-								QLogicaeCore::LogLevel::EXCEPTION
-							);
-
-							return false;
-						}
-
-						client_utilities_file.set_file_path(
-							_set_environment_input_2
-						);
-						client_utilities_file.update_string(
-							{ "environment", "selected" },
-							_set_environment_input_1
-						);
-
-						_log_complete_timestamp();
-					}
-					catch (const std::exception error)
-					{
-						_log_exception_timestamp(error.what());
-
-						return false;
-					}
-
-					return true;
-				}
-			);
-			_commands[current_command_name].first
-				->add_option("--type",
-					_set_environment_input_1,
-					constants.EMPTY_STRING)
-				->check(CLI::IsMember(utilities_environment_types))
-				->default_val("development");
-			_commands[current_command_name].first
-				->add_option("--utilities-file-path",
-					_set_environment_input_2,
-					constants.EMPTY_STRING)
-				->default_val(
-					std::filesystem::path(
-						configurations_folder_name / utilities_file_name
-					).string()
-				);
-
-
-
-			current_command_name = "run-scripts";
-			_commands[current_command_name] = std::make_pair(
-				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
@@ -421,7 +649,7 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp();
+						_log_running_timestamp(_run_scripts_input_3);
 
 						client_utilities_file.set_file_path(
 							_run_scripts_input_2
@@ -440,19 +668,22 @@ namespace QLogicaeCLI
 							}
 							else
 							{
-								timestamp_logger.log(
-									"Script '" + script_command +
-									"' does not exist",
-									QLogicaeCore::LogLevel::WARNING
-								);
+								if (_run_scripts_input_3)
+								{
+									timestamp_logger.log(
+										"Script '" + script_command +
+										"' does not exist",
+										QLogicaeCore::LogLevel::WARNING
+									);
+								}
 							}
 						}
 
-						_log_complete_timestamp();
+						_log_complete_timestamp(_run_scripts_input_3);
 					}
-					catch (const std::exception error)
+					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_run_scripts_command(): ") + exception.what(), _run_scripts_input_3);
 
 						return false;
 					}
@@ -460,31 +691,133 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--names",
 					_run_scripts_input_1,
-					constants.EMPTY_STRING)
+					"")
 				->delimiter(',')
 				->required();
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--utilities-file-path",
 					_run_scripts_input_2,
-					constants.EMPTY_STRING)
+					"")
 				->default_val(
 					std::filesystem::path(
 						configurations_folder_name /
 						utilities_file_name
 					).string()
 				);
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_run_scripts_input_3,
+					"")
+				->default_val(true);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_run_scripts_command(): ") + exception.what(), _run_scripts_input_3);
 
+			return false;
+		}
 
+	}
 
-
-			current_command_name = "view-windows-registry";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_set_environment_command()
+	{
+		try
+		{
+			std::string command_name = "set-environment";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
+				[this]() -> bool
+				{
+					try
+					{
+						if (_set_environment_input_1.empty() ||
+							_set_environment_input_2.empty())
+						{
+							return false;
+						}
+
+						_log_running_timestamp(_set_environment_input_3);
+
+						if (_set_environment_input_3 &&
+							!std::filesystem::exists(
+								_set_environment_input_2
+							))
+						{
+							timestamp_logger.log(
+								"File path '" + _set_environment_input_2 +
+								"' does not exist",
+								QLogicaeCore::LogLevel::EXCEPTION
+							);
+
+							return false;
+						}
+
+						client_utilities_file.set_file_path(
+							_set_environment_input_2
+						);
+						client_utilities_file.update_string(
+							{ "environment", "selected" },
+							_set_environment_input_1
+						);
+
+						_log_complete_timestamp(_set_environment_input_3);
+					}
+					catch (const std::exception& exception)
+					{
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_set_environment_command(): ") + exception.what(), _set_environment_input_3);
+
+						return false;
+					}
+
+					return true;
+				}
+			);
+			_commands[command_name].first
+				->add_option("--type",
+					_set_environment_input_1,
+					"")
+				->check(CLI::IsMember(utilities_environment_types))
+				->default_val("development");
+			_commands[command_name].first
+				->add_option("--utilities-file-path",
+					_set_environment_input_2,
+					"")
+				->default_val(
+					std::filesystem::path(
+						configurations_folder_name / utilities_file_name
+					).string()
+				);
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_set_environment_input_3,
+					"")
+				->default_val(true);
+
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_set_environment_command(): ") + exception.what(), _set_environment_input_3);
+
+			return false;
+		}
+
+	}
+
+	bool QLogicaeCLIApplication::_setup_view_windows_registry_command()
+	{
+		try
+		{
+			std::string command_name = "view-windows-registry";
+			_commands[command_name] = std::make_pair(
+				_application.add_subcommand(
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
@@ -494,24 +827,30 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp();
+						_log_running_timestamp(_view_windows_registry_input_2);
 
-						std::unordered_map<std::string, std::string> items =
-							hkcu_windows_registry.get_values_via_utf8(
-								_view_windows_registry_input_1
-							);
-						for (const auto& [key, value] : items)
+						if (_view_windows_registry_input_2)
 						{
+							std::unordered_map<std::string, std::string> items =
+								hkcu_windows_registry.get_values_via_utf8(
+									_view_windows_registry_input_1
+								);
+
+							std::string output_string = "";
+							for (const auto& [key, value] : items)
+							{
+								output_string += key + "\t -> " + value + "\n";
+							}
 							raw_logger.print_with_new_line(
-								key + "\t -> " + value
+								output_string
 							);
 						}
 
-						_log_complete_timestamp();
+						_log_complete_timestamp(_view_windows_registry_input_2);
 					}
-					catch (const std::exception error)
+					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_view_windows_registry_command(): ") + exception.what(), _view_windows_registry_input_2);
 
 						return false;
 					}
@@ -519,22 +858,37 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--sub-path",
 					_view_windows_registry_input_1,
-					constants.EMPTY_STRING)
-				->default_val(constants.EMPTY_STRING)
+					"")
+				->default_val("")
 				->required();
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_view_windows_registry_input_2,
+					"")
+				->default_val(true);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_view_windows_registry_command(): ") + exception.what(), _view_windows_registry_input_2);
 
+			return false;
+		}
+	}
 
-
-
-			current_command_name = "setup-windows-registry";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_setup_windows_registry_command()
+	{
+		try
+		{
+			std::string command_name = "setup-windows-registry";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name,
-					constants.EMPTY_STRING),
+					command_name,
+					""),
 				[this]() -> bool
 				{
 					try
@@ -547,7 +901,7 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp();
+						_log_running_timestamp(_setup_windows_registry_input_5);
 
 						if (!std::filesystem::exists(_setup_windows_registry_input_2))
 						{
@@ -691,11 +1045,11 @@ namespace QLogicaeCLI
 							}
 						}
 
-						_log_complete_timestamp();
+						_log_complete_timestamp(_setup_windows_registry_input_5);
 					}
-					catch (const std::exception error)
+					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_setup_windows_registry_command(): ") + exception.what(), _setup_windows_registry_input_5);
 
 						return false;
 					}
@@ -703,50 +1057,67 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option(
 					"--environment-type",
-					_setup_windows_registry_input_1, constants.EMPTY_STRING)
+					_setup_windows_registry_input_1, "")
 				->check(CLI::IsMember(utilities_environment_types_options)
 				)
 				->default_val("development")
 				->required();
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option(
 					"--public-file-path",
-					_setup_windows_registry_input_2, constants.EMPTY_STRING)
+					_setup_windows_registry_input_2, "")
 				->default_val(
 					std::filesystem::path(
 						configurations_folder_name /
 						public_file_name
 					).string()
 				);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option(
 					"--utilities-file-path",
-					_setup_windows_registry_input_3, constants.EMPTY_STRING)
+					_setup_windows_registry_input_3, "")
 				->default_val(
 					std::filesystem::path(
 						configurations_folder_name /
 						utilities_file_name
 					).string()
 				);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option(
 					"--private-file-path",
-					_setup_windows_registry_input_4, constants.EMPTY_STRING)
+					_setup_windows_registry_input_4, "")
 				->default_val(
 					std::filesystem::path(
 						private_file_name
 					).string()
 				);
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_setup_windows_registry_input_5,
+					"")
+				->default_val(true);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_setup_windows_registry_command(): ") + exception.what(), _setup_windows_registry_input_5);
 
+			return false;
+		}
+	}
 
-			current_command_name = "setup-default-template";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_setup_default_template_command()
+	{
+		try
+		{
+			std::string command_name = "setup-default-template";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
@@ -756,7 +1127,7 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp();
+						_log_running_timestamp(_setup_default_template_input_2);
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
@@ -1206,11 +1577,11 @@ namespace QLogicaeCLI
 							);
 						}
 
-						_log_complete_timestamp();
+						_log_complete_timestamp(_setup_default_template_input_2);
 					}
-					catch (const std::exception error)
+					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_setup_default_template_command(): ") + exception.what(), _setup_default_template_input_2);
 
 						return false;
 					}
@@ -1218,16 +1589,33 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
-				->add_option("--target-root-project-directory", _setup_default_template_input_1, constants.EMPTY_STRING)
+			_commands[command_name].first
+				->add_option("--target-root-project-directory", _setup_default_template_input_1, "")
 				->default_val(".");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_setup_default_template_input_2,
+					"")
+				->default_val(true);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_setup_default_template_command(): ") + exception.what(), _setup_default_template_input_2);
 
+			return false;
+		}
+	}
 
-			current_command_name = "verify-default-filesystem";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_verify_default_template_command()
+	{
+		try
+		{
+			std::string command_name = "verify-default-filesystem";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
@@ -1237,7 +1625,7 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp();
+						_log_running_timestamp(_verify_default_template_input_2);
 
 						std::vector<std::filesystem::path> file_paths =
 						{
@@ -1299,11 +1687,11 @@ namespace QLogicaeCLI
 							}
 						}
 
-						_log_complete_timestamp();
+						_log_complete_timestamp(_verify_default_template_input_2);
 					}
-					catch (const std::exception error)
+					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_verify_default_template_command(): ") + exception.what(), _verify_default_template_input_2);
 
 						return false;
 					}
@@ -1311,21 +1699,38 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
-				->add_option("--target-root-project-directory", _verify_default_template_input_1, constants.EMPTY_STRING)
+			_commands[command_name].first
+				->add_option("--target-root-project-directory", _verify_default_template_input_1, "")
 				->default_val(".");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_verify_default_template_input_2,
+					"")
+				->default_val(true);
 
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_verify_default_template_command(): ") + exception.what(), _verify_default_template_input_2);
 
+			return false;
+		}
+	}
 
-			current_command_name = "setup-installer";
-			_commands[current_command_name] = std::make_pair(
+	bool QLogicaeCLIApplication::_setup_setup_installer_command()
+	{
+		try
+		{
+			std::string command_name = "setup-installer";
+			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					current_command_name, constants.EMPTY_STRING),
+					command_name, ""),
 				[this]() -> bool
 				{
 					try
 					{
-						_log_running_timestamp();
+						_log_running_timestamp(_setup_installer_input_3);
 
 						client_public_file.set_file_path(
 							std::filesystem::path(
@@ -1371,16 +1776,16 @@ namespace QLogicaeCLI
 
 						std::filesystem::path input_folder_path =
 							std::filesystem::absolute(
-							client_utilities_file.get_string(
-								{ "inno_setup", "input_folder_path" }
-							)
-						);
+								client_utilities_file.get_string(
+									{ "inno_setup", "input_folder_path" }
+								)
+							);
 						std::filesystem::path output_folder_path =
 							std::filesystem::absolute(
-							client_utilities_file.get_string(
-								{ "inno_setup", "output_folder_path" }
-							)
-						);
+								client_utilities_file.get_string(
+									{ "inno_setup", "output_folder_path" }
+								)
+							);
 
 						client_utilities_file.set_file_path(
 							std::filesystem::path(
@@ -1509,8 +1914,8 @@ namespace QLogicaeCLI
 									_setup_installer_input_1 /
 									scripts_folder_name /
 									inno_run_file_name
-								).string() + "\""	
-							).c_str()
+								).string() + "\""
+								).c_str()
 						);
 
 						if (std::filesystem::exists(
@@ -1548,11 +1953,11 @@ namespace QLogicaeCLI
 							generator.random_uuid4()
 						);
 
-						_log_complete_timestamp();
+						_log_complete_timestamp(_setup_installer_input_3);
 					}
-					catch (const std::exception error)
+					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(error.what());
+						_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_setup_installer_command(): ") + exception.what(), _setup_installer_input_3);
 
 						return false;
 					}
@@ -1560,52 +1965,61 @@ namespace QLogicaeCLI
 					return true;
 				}
 			);
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--target-project-folder",
 					_setup_installer_input_1,
-					constants.EMPTY_STRING)
+					"")
 				->default_val(".");
-			_commands[current_command_name].first
+			_commands[command_name].first
 				->add_option("--output-directory",
 					_setup_installer_input_2,
-					constants.EMPTY_STRING)
+					"")
 				->default_val(".");
+			_commands[command_name].first
+				->add_option("--is-cli-output-enabled",
+					_setup_installer_input_3,
+					"")
+				->default_val(true);
 
-
-			CLI11_PARSE(_application, argc, argv);
+			return true;
 		}
-		catch (...)
+		catch (const std::exception& exception)
 		{
+			_log_exception_timestamp(std::string("Exception within QLogicaeCLIApplication::_setup_setup_installer_command(): ") + exception.what(), _setup_installer_input_3);
+
 			return false;
 		}
-
-		return true;
 	}
 
-	bool QLogicaeCLIApplication::parse()
+	void QLogicaeCLIApplication::_log_running_timestamp(const bool& is_enabled)
 	{
-		try
+		if (is_enabled)
 		{
-			for (const auto& [key, value] : _commands)
-			{
-				if (value.first->parsed())
-				{
-					return value.second();
-				}
-			}
+			QLogicaeCLI::timestamp_logger.log(
+				"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
+			);
 		}
-		catch (...)
-		{
-			return false;
-		}
-
-		return true;
 	}
 
-	QLogicaeCLIApplication& QLogicaeCLIApplication::get_instance()
+	void QLogicaeCLIApplication::_log_complete_timestamp(const bool& is_enabled)
 	{
-		static QLogicaeCLIApplication singleton;
+		if (is_enabled)
+		{
+			QLogicaeCLI::timestamp_logger.log(
+				"Complete!", QLogicaeCore::LogLevel::SUCCESS
+			);
+		}
+	}
 
-		return singleton;
+	void QLogicaeCLIApplication::_log_exception_timestamp(
+		const std::string_view text, const bool& is_enabled
+	)
+	{
+		if (is_enabled)
+		{
+			QLogicaeCLI::timestamp_logger.log(
+				text, QLogicaeCore::LogLevel::EXCEPTION
+			);
+		}
 	}
 }
