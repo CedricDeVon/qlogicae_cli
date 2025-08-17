@@ -1,11 +1,11 @@
 {
     "environment": {
-        "selected": "development",
+        "selected": "release",
         "selections": {
-            "development": "35995ce2-961b-46fc-b370-6bfff039032a",
-            "debug": "8b423631-25da-464c-a11f-43433363a729",
-            "test": "4d088d00-ebac-42e7-850f-a1eb453d76f5",
-            "release": "329b7de6-8c86-4715-b37c-afb58c0b4405"
+            "development": "00d3b477-b091-4f81-ac9f-c720e481f4de",
+            "debug": "e7f972f3-238f-40c5-b574-f140c3aa2f32",
+            "test": "f6e8d3a8-f364-4b7f-b895-478ebc8b2f75",
+            "release": "d37b5f1a-ec7c-4272-b7a6-15d6808fc52a"
         }
     },
     "scripts": {
@@ -26,8 +26,8 @@
         }
     },
     "inno_setup": {
-        "output_folder_path": "",
-        "input_folder_path": "",
+        "output_folder_path": "C:\\Users\\User1\\source\\repos\\qlogicae_cli\\x64\\Release",
+        "input_folder_path": "C:\\Users\\User1\\source\\repos\\qlogicae_cli\\x64\\Release\\qlogicae_cli_sandbox",
         "cli_path": "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe",
         "run_path": ".\\configurations\\qlogicae.inno_run.ps1",
         "template_path": ".\\scripts\\qlogicae.inno_setup.target.iss"

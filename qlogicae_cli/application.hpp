@@ -22,11 +22,6 @@ namespace QLogicaeCLI
 		QLogicaeCLIApplication& operator = (QLogicaeCLIApplication&&) = delete;
 		QLogicaeCLIApplication& operator = (const QLogicaeCLIApplication&) = delete;
 
-		size_t _index_1;
-	    size_t _index_2;
-		size_t _index_3;
-		size_t _index_4;
-
 		size_t _generate_uuid4_input_1;
 		std::string _generate_uuid4_input_2;
 		bool _generate_uuid4_input_3;
@@ -111,6 +106,28 @@ namespace QLogicaeCLI
 
 		void _log_running_timestamp(const bool& is_enabled = true);
 		void _log_complete_timestamp(const bool& is_enabled = true);
-		void _log_exception_timestamp(const std::string_view, const bool& is_enabled = true);
+		void _log_info_timestamp(
+			const std::string& text, const bool& is_enabled = true);
+		void _log_success_timestamp(
+			const std::string& text, const bool& is_enabled = true);
+		void _log_warning_timestamp(
+			const std::string& text, const bool& is_enabled = true);
+		void _log_exception_timestamp(
+			const std::string& text, const bool& is_enabled = true);
+
+		std::string _transform_log_running_timestamp(
+			const bool& is_enabled = true);
+		std::string _transform_log_complete_timestamp(
+			const bool& is_enabled = true);
+		std::string _transform_log_info_timestamp(
+			const std::string& text = "", const bool& is_enabled = true);
+		std::string _transform_log_success_timestamp(
+			const std::string& text = "", const bool& is_enabled = true);
+		std::string _transform_log_warning_timestamp(
+			const std::string& text = "", const bool& is_enabled = true);
+		std::string _transform_log_exception_timestamp(
+			const std::string& text = "", const bool& is_enabled = true);
+
+
 	};
 }

@@ -120,6 +120,7 @@
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
 xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
+xcopy "$(ProjectDir)scripts" "$(OutDir)scripts" /E /Y /I
 
 </Command>
     </PostBuildEvent>
@@ -144,12 +145,13 @@ xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
 xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
+xcopy "$(ProjectDir)scripts" "$(OutDir)scripts" /E /Y /I
 
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="qlogicae_cli_sandbox.cpp" />
+    <ClCompile Include="client.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\icon.ico" />
@@ -162,7 +164,10 @@ xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
     <None Include="scripts\qlogicae.inno_setup.iss" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="LICENSE.txt" />
+    <CopyFileToFolders Include="LICENSE.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
