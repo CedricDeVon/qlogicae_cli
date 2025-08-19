@@ -121,10 +121,11 @@ namespace QLogicaeCLI
 							return false;
 						}
 
+						std::string output_string = "";
+						size_t index_1, size_a = _generate_uuid4_input_1 - 1;
+
 						_log_running_timestamp(_generate_uuid4_input_3);
 
-						size_t index_1, size_a = _generate_uuid4_input_1 - 1;
-						std::string output_string = "";
 						for (index_1 = 0;
 							index_1 < _generate_uuid4_input_1;
 							++index_1)
@@ -208,13 +209,14 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp(_generate_string_input_5);
-
 						size_t index_1, size_a = _generate_string_input_2 - 1;
 						std::string output_string = "",
 							character_set = (_generate_string_input_3.empty()) ?
 							QLogicaeCore::Constants::FULL_VISIBLE_ASCII_CHARACTERSET.data() :
 							_generate_string_input_3;
+						
+						_log_running_timestamp(_generate_string_input_5);
+
 						for (index_1 = 0;
 							index_1 < _generate_string_input_2;
 							++index_1)
@@ -736,17 +738,20 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp(_set_environment_input_3);
+						std::string output_string =
+							_transform_log_running_timestamp(
+								_set_environment_input_3
+							);
 
 						if (!std::filesystem::exists(
 								_set_environment_input_2
 							))
 						{
-							timestamp_logger.log(
-								"File path '" + _set_environment_input_2 +
-								"' does not exist",
-								QLogicaeCore::LogLevel::EXCEPTION
-							);
+							output_string +=
+								_transform_log_exception_timestamp(
+									"File '" + _set_environment_input_2 + "' does not exist"
+								);
+							QLogicaeCore::CLI_IO.print(output_string);
 
 							return false;
 						}
@@ -759,7 +764,12 @@ namespace QLogicaeCLI
 							_set_environment_input_1
 						);
 
-						_log_complete_timestamp(_set_environment_input_3);
+						output_string +=
+							_transform_log_complete_timestamp(
+								_verify_default_template_input_2
+							);
+
+						QLogicaeCore::CLI_IO.print(output_string);
 					}
 					catch (const std::exception& exception)
 					{
@@ -820,15 +830,18 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp(_view_windows_registry_input_2);
-
 						std::unordered_map<std::string, std::string> items =
 							QLogicaeCore::WINDOWS_REGISTRY_HKCU.get_values_via_utf8(
 								_view_windows_registry_input_1
 							);
 
 						size_t index_a = 0, size_a = items.size() - 1;
-						std::string output_string = "";
+
+						std::string output_string =
+							_transform_log_running_timestamp(
+								_verify_default_template_input_2
+							);
+
 						for (const auto& [key, value] : items)
 						{
 							output_string += key + "\t -> " + value;
@@ -837,11 +850,10 @@ namespace QLogicaeCLI
 								output_string += "\n";
 							}
 						}
-						QLogicaeCore::CLI_IO.print_with_new_line(
-							output_string
-						);
+						output_string +=
+							_transform_log_complete_timestamp(_verify_default_template_input_2);
 
-						_log_complete_timestamp(_view_windows_registry_input_2);
+						QLogicaeCore::CLI_IO.print(output_string);
 					}
 					catch (const std::exception& exception)
 					{

@@ -1,6 +1,6 @@
 {
     "environment": {
-        "selected": "release",
+        "selected": "debug",
         "selections": {
             "development": "00d3b477-b091-4f81-ac9f-c720e481f4de",
             "debug": "e7f972f3-238f-40c5-b574-f140c3aa2f32",

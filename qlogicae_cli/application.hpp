@@ -127,7 +127,5 @@ namespace QLogicaeCLI
 			const std::string& text = "", const bool& is_enabled = true);
 		std::string _transform_log_exception_timestamp(
 			const std::string& text = "", const bool& is_enabled = true);
-
-
 	};
 }
