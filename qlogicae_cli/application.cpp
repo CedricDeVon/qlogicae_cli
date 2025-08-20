@@ -41,7 +41,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::setup(): ") + exception.what());
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::setup(): ") + exception.what());
 
 			return false;
 		}
@@ -63,7 +63,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::parse(): ") + exception.what());
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::parse(): ") + exception.what());
 
 			return false;
 		}
@@ -98,7 +98,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_about_command(): ") + exception.what());
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_about_command(): ") + exception.what());
 
 			return false;
 		}
@@ -116,6 +116,8 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_generate_uuid4_input_3);
+
 						if (!_generate_uuid4_input_1)
 						{
 							return false;
@@ -123,8 +125,6 @@ namespace QLogicaeCLI
 
 						std::string output_string = "";
 						size_t index_1, size_a = _generate_uuid4_input_1 - 1;
-
-						_log_running_timestamp(_generate_uuid4_input_3);
 
 						for (index_1 = 0;
 							index_1 < _generate_uuid4_input_1;
@@ -137,7 +137,7 @@ namespace QLogicaeCLI
 							}
 						}
 
-						QLogicaeCore::CLI_IO.print_with_new_line(
+						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
@@ -147,11 +147,11 @@ namespace QLogicaeCLI
 							text_file_io.write_async(output_string);
 						}
 
-						_log_complete_timestamp(_generate_uuid4_input_3);
+						_log_complete_timestamp_async(_generate_uuid4_input_3);
 					}
 					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_generate_uuid4_command(): ") + exception.what(), _generate_uuid4_input_3);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_generate_uuid4_command(): ") + exception.what(), _generate_uuid4_input_3);
 
 						return false;
 					}
@@ -185,7 +185,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_generate_uuid4_command(): ") + exception.what(), _generate_uuid4_input_3);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_generate_uuid4_command(): ") + exception.what(), _generate_uuid4_input_3);
 
 			return false;
 		}
@@ -203,6 +203,8 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_generate_string_input_5);
+
 						if (!_generate_string_input_1 ||
 							!_generate_string_input_2)
 						{
@@ -215,8 +217,6 @@ namespace QLogicaeCLI
 							QLogicaeCore::Constants::FULL_VISIBLE_ASCII_CHARACTERSET.data() :
 							_generate_string_input_3;
 						
-						_log_running_timestamp(_generate_string_input_5);
-
 						for (index_1 = 0;
 							index_1 < _generate_string_input_2;
 							++index_1)
@@ -231,7 +231,7 @@ namespace QLogicaeCLI
 							}
 						}
 
-						QLogicaeCore::CLI_IO.print_with_new_line(
+						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
@@ -241,11 +241,11 @@ namespace QLogicaeCLI
 							text_file_io.write_async(output_string);
 						}
 
-						_log_complete_timestamp(_generate_string_input_5);
+						_log_complete_timestamp_async(_generate_string_input_5);
 					}
 					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_generate_string_command(): ") + exception.what(), _generate_string_input_5);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_generate_string_command(): ") + exception.what(), _generate_string_input_5);
 
 						return false;
 					}
@@ -290,7 +290,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_generate_string_command(): ") + exception.what(), _generate_string_input_5);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_generate_string_command(): ") + exception.what(), _generate_string_input_5);
 
 			return false;
 		}
@@ -308,13 +308,13 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_encrypt_xchacha20poly1305_input_5);
+
 						if (_encrypt_xchacha20poly1305_input_3.empty())
 						{
 							_encrypt_xchacha20poly1305_input_3 =
 								QLogicaeCore::GENERATOR.random_string(24);
 						}
-
-						_log_running_timestamp(_encrypt_xchacha20poly1305_input_5);
 
 						std::string output_string =
 							cryptographer_1.transform(
@@ -324,7 +324,7 @@ namespace QLogicaeCLI
 							) + "\n" +
 							_encrypt_xchacha20poly1305_input_3;
 
-						QLogicaeCore::CLI_IO.print_with_new_line(
+						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
@@ -334,11 +334,11 @@ namespace QLogicaeCLI
 							text_file_io.write_async(output_string);
 						}
 
-						_log_complete_timestamp(_encrypt_xchacha20poly1305_input_5);
+						_log_complete_timestamp_async(_encrypt_xchacha20poly1305_input_5);
 					}
 					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_encrypt_xchacha20poly1305_command(): ") + exception.what(), _encrypt_xchacha20poly1305_input_5);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_encrypt_xchacha20poly1305_command(): ") + exception.what(), _encrypt_xchacha20poly1305_input_5);
 
 						return false;
 					}
@@ -381,7 +381,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_encrypt_xchacha20poly1305_command(): ") + exception.what(), _encrypt_xchacha20poly1305_input_5);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_encrypt_xchacha20poly1305_command(): ") + exception.what(), _encrypt_xchacha20poly1305_input_5);
 
 			return false;
 		}
@@ -399,7 +399,7 @@ namespace QLogicaeCLI
 				{
 					try
 					{
-						_log_running_timestamp(_decrypt_xchacha20poly1305_input_5);
+						_log_running_timestamp_async(_decrypt_xchacha20poly1305_input_5);
 
 						std::string output_string =
 							cryptographer_1.reverse(
@@ -408,7 +408,7 @@ namespace QLogicaeCLI
 								_decrypt_xchacha20poly1305_input_3
 							);
 
-						QLogicaeCore::CLI_IO.print_with_new_line(
+						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 						
@@ -418,11 +418,11 @@ namespace QLogicaeCLI
 							text_file_io.write_async(output_string);
 						}
 
-						_log_complete_timestamp(_decrypt_xchacha20poly1305_input_5);
+						_log_complete_timestamp_async(_decrypt_xchacha20poly1305_input_5);
 					}
 					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_decrypt_xchacha20poly1305_command(): ") + exception.what(), _decrypt_xchacha20poly1305_input_5);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_decrypt_xchacha20poly1305_command(): ") + exception.what(), _decrypt_xchacha20poly1305_input_5);
 
 						return false;
 					}
@@ -465,7 +465,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_decrypt_xchacha20poly1305_command(): ") + exception.what(), _decrypt_xchacha20poly1305_input_5);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_decrypt_xchacha20poly1305_command(): ") + exception.what(), _decrypt_xchacha20poly1305_input_5);
 
 			return false;
 		}
@@ -483,7 +483,7 @@ namespace QLogicaeCLI
 				{
 					try
 					{
-						_log_running_timestamp(_hash_argon2id_input_3);
+						_log_running_timestamp_async(_hash_argon2id_input_3);
 
 						std::string output_string =
 							cryptographer_3.transform(
@@ -492,7 +492,7 @@ namespace QLogicaeCLI
 
 						if (_hash_argon2id_input_3)
 						{
-							QLogicaeCore::CLI_IO.print_with_new_line(
+							QLogicaeCore::CLI_IO.print_with_new_line_async(
 								output_string
 							);
 						}
@@ -503,11 +503,11 @@ namespace QLogicaeCLI
 							text_file_io.write_async(output_string);
 						}
 
-						_log_complete_timestamp(_hash_argon2id_input_3);
+						_log_complete_timestamp_async(_hash_argon2id_input_3);
 					}
 					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_hash_argon2id_command(): ") + exception.what(), _hash_argon2id_input_3);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_hash_argon2id_command(): ") + exception.what(), _hash_argon2id_input_3);
 
 						return false;
 					}
@@ -540,7 +540,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_hash_argon2id_command(): ") + exception.what(), _hash_argon2id_input_3);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_hash_argon2id_command(): ") + exception.what(), _hash_argon2id_input_3);
 
 			return false;
 		}
@@ -558,7 +558,7 @@ namespace QLogicaeCLI
 				{
 					try
 					{
-						_log_running_timestamp(_verify_argon2id_input_4);
+						_log_running_timestamp_async(_verify_argon2id_input_4);
 
 						std::string output_string =
 							(cryptographer_3.reverse(
@@ -568,7 +568,7 @@ namespace QLogicaeCLI
 
 						if (_verify_argon2id_input_4)
 						{
-							QLogicaeCore::CLI_IO.print_with_new_line(
+							QLogicaeCore::CLI_IO.print_with_new_line_async(
 								output_string
 							);
 						}
@@ -579,11 +579,11 @@ namespace QLogicaeCLI
 							text_file_io.write_async(output_string);
 						}
 
-						_log_complete_timestamp(_verify_argon2id_input_4);
+						_log_complete_timestamp_async(_verify_argon2id_input_4);
 					}
 					catch (const std::exception exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_verify_argon2id_command(): ") + exception.what(), _verify_argon2id_input_4);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_argon2id_command(): ") + exception.what(), _verify_argon2id_input_4);
 
 						return false;
 					}
@@ -621,7 +621,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_verify_argon2id_command(): ") + exception.what(), _verify_argon2id_input_4);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_argon2id_command(): ") + exception.what(), _verify_argon2id_input_4);
 
 			return false;
 		}
@@ -639,13 +639,13 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_run_scripts_input_3);
+
 						if (_run_scripts_input_1.empty() ||
 							_run_scripts_input_2.empty())
 						{
 							return false;
 						}
-
-						_log_running_timestamp(_run_scripts_input_3);
 
 						client_utilities_file.set_file_path(
 							_run_scripts_input_2
@@ -664,22 +664,19 @@ namespace QLogicaeCLI
 							}
 							else
 							{
-								if (_run_scripts_input_3)
-								{
-									timestamp_logger.log(
-										"Script '" + script_command +
-										"' does not exist",
-										QLogicaeCore::LogLevel::WARNING
-									);
-								}
+								_log_warning_timestamp_async(
+									"Script '" + script_command +
+									"' does not exist",
+									_run_scripts_input_3
+								);
 							}
 						}
 
-						_log_complete_timestamp(_run_scripts_input_3);
+						_log_complete_timestamp_async(_run_scripts_input_3);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_run_scripts_command(): ") + exception.what(), _run_scripts_input_3);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_run_scripts_command(): ") + exception.what(), _run_scripts_input_3);
 
 						return false;
 					}
@@ -713,7 +710,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_run_scripts_command(): ") + exception.what(), _run_scripts_input_3);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_run_scripts_command(): ") + exception.what(), _run_scripts_input_3);
 
 			return false;
 		}
@@ -732,26 +729,21 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_set_environment_input_3);
+
 						if (_set_environment_input_1.empty() ||
 							_set_environment_input_2.empty())
 						{
 							return false;
 						}
-
-						std::string output_string =
-							_transform_log_running_timestamp(
-								_set_environment_input_3
-							);
-
+						
 						if (!std::filesystem::exists(
 								_set_environment_input_2
 							))
 						{
-							output_string +=
-								_transform_log_exception_timestamp(
-									"File '" + _set_environment_input_2 + "' does not exist"
-								);
-							QLogicaeCore::CLI_IO.print(output_string);
+							_log_exception_timestamp_async(
+								"File '" + _set_environment_input_2 + "' does not exist"
+							);
 
 							return false;
 						}
@@ -764,16 +756,11 @@ namespace QLogicaeCLI
 							_set_environment_input_1
 						);
 
-						output_string +=
-							_transform_log_complete_timestamp(
-								_verify_default_template_input_2
-							);
-
-						QLogicaeCore::CLI_IO.print(output_string);
+						_log_complete_timestamp_async(_set_environment_input_3);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_set_environment_command(): ") + exception.what(), _set_environment_input_3);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_set_environment_command(): ") + exception.what(), _set_environment_input_3);
 
 						return false;
 					}
@@ -806,7 +793,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_set_environment_command(): ") + exception.what(), _set_environment_input_3);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_set_environment_command(): ") + exception.what(), _set_environment_input_3);
 
 			return false;
 		}
@@ -825,39 +812,31 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_view_windows_registry_input_2);
+
 						if (_view_windows_registry_input_1.empty())
 						{
 							return false;
 						}
 
+						std::string output_string = "";
 						std::unordered_map<std::string, std::string> items =
 							QLogicaeCore::WINDOWS_REGISTRY_HKCU.get_values_via_utf8(
 								_view_windows_registry_input_1
 							);
-
 						size_t index_a = 0, size_a = items.size() - 1;
-
-						std::string output_string =
-							_transform_log_running_timestamp(
-								_verify_default_template_input_2
-							);
 
 						for (const auto& [key, value] : items)
 						{
-							output_string += key + "\t -> " + value;
-							if (index_a++ < size_a)
-							{
-								output_string += "\n";
-							}
+							output_string += key + " -> " + value + "\n";
 						}
-						output_string +=
-							_transform_log_complete_timestamp(_verify_default_template_input_2);
-
-						QLogicaeCore::CLI_IO.print(output_string);
+						QLogicaeCore::CLI_IO.print_async(output_string);
+						
+						_log_complete_timestamp_async(_view_windows_registry_input_2);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_view_windows_registry_command(): ") + exception.what(), _view_windows_registry_input_2);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_view_windows_registry_command(): ") + exception.what(), _view_windows_registry_input_2);
 
 						return false;
 					}
@@ -881,7 +860,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_view_windows_registry_command(): ") + exception.what(), _view_windows_registry_input_2);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_view_windows_registry_command(): ") + exception.what(), _view_windows_registry_input_2);
 
 			return false;
 		}
@@ -900,6 +879,8 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_setup_windows_registry_input_5);
+
 						if (_setup_windows_registry_input_1.empty() ||
 							_setup_windows_registry_input_2.empty() ||
 							_setup_windows_registry_input_3.empty() ||
@@ -908,37 +889,26 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp(_setup_windows_registry_input_5);
-
 						if (!std::filesystem::exists(_setup_windows_registry_input_2))
 						{
-							timestamp_logger.log(
-								fmt::format(
-									"File path '{}' does not exist",
-									_setup_windows_registry_input_2),
-								QLogicaeCore::LogLevel::EXCEPTION
+							_log_exception_timestamp_async(
+								"File path '" + _setup_windows_registry_input_2 + "' does not exist"
 							);
 
 							return false;
 						}
 						if (!std::filesystem::exists(_setup_windows_registry_input_3))
 						{
-							timestamp_logger.log(
-								fmt::format(
-									"File path '{}' does not exist",
-									_setup_windows_registry_input_3),
-								QLogicaeCore::LogLevel::EXCEPTION
+							_log_exception_timestamp_async(
+								"File path '" + _setup_windows_registry_input_3 + "' does not exist"							
 							);
 
 							return false;
 						}
 						if (!std::filesystem::exists(_setup_windows_registry_input_4))
 						{
-							timestamp_logger.log(
-								fmt::format(
-									"File path '{}' does not exist",
-									_setup_windows_registry_input_4),
-								QLogicaeCore::LogLevel::EXCEPTION
+							_log_exception_timestamp_async(
+								"File path '" + _setup_windows_registry_input_4 + "' does not exist"
 							);
 
 							return false;
@@ -988,8 +958,10 @@ namespace QLogicaeCLI
 									{
 										QLogicaeCore::WINDOWS_REGISTRY_HKCU
 											.set_value_via_utf8(
-												fmt::format("Software\\{}\\{}",
+												absl::StrCat("Software",
+													"\\",
 													client_id,
+													"\\",
 													environment_id
 												),
 												key,
@@ -999,9 +971,8 @@ namespace QLogicaeCLI
 								}
 								else
 								{
-									timestamp_logger.log(
-										"hkcu windows registry setup is disabled. instruction skipped",
-										QLogicaeCore::LogLevel::WARNING
+									_log_warning_timestamp_async(
+										"HKCU windows registry setup is disabled. Instruction skipped"
 									);
 								}
 							}
@@ -1045,18 +1016,17 @@ namespace QLogicaeCLI
 							}
 							else
 							{
-								timestamp_logger.log(
-									"hkcu windows registry setup is disabled. instruction skipped",
-									QLogicaeCore::LogLevel::WARNING
+								_log_warning_timestamp_async(
+									"HKCU windows registry setup is disabled. Instruction skipped"
 								);
 							}
 						}
 
-						_log_complete_timestamp(_setup_windows_registry_input_5);
+						_log_complete_timestamp_async(_setup_windows_registry_input_5);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_setup_windows_registry_command(): ") + exception.what(), _setup_windows_registry_input_5);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_windows_registry_command(): ") + exception.what(), _setup_windows_registry_input_5);
 
 						return false;
 					}
@@ -1111,7 +1081,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_setup_windows_registry_command(): ") + exception.what(), _setup_windows_registry_input_5);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_windows_registry_command(): ") + exception.what(), _setup_windows_registry_input_5);
 
 			return false;
 		}
@@ -1134,7 +1104,7 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						_log_running_timestamp(_setup_default_template_input_2);
+						_log_running_timestamp_async(_setup_default_template_input_2);
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
@@ -1145,26 +1115,24 @@ namespace QLogicaeCLI
 								_setup_default_template_input_1 /
 								configurations_folder_name
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("Folder '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										configurations_folder_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("Folder '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										configurations_folder_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1177,26 +1145,24 @@ namespace QLogicaeCLI
 								_setup_default_template_input_1 /
 								assets_folder_name
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("Folder '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										assets_folder_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("Folder '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										assets_folder_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1209,26 +1175,24 @@ namespace QLogicaeCLI
 								_setup_default_template_input_1 /
 								scripts_folder_name
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("Folder '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										scripts_folder_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("Folder '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										scripts_folder_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1260,28 +1224,26 @@ namespace QLogicaeCLI
 								QLogicaeCore::GENERATOR.random_uuid4()
 							);
 
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										configurations_folder_name /
 										public_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("Folder '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										configurations_folder_name /
 										public_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1325,28 +1287,26 @@ namespace QLogicaeCLI
 								QLogicaeCore::GENERATOR.random_uuid4()
 							);
 
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										configurations_folder_name /
 										utilities_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										configurations_folder_name /
 										utilities_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1364,26 +1324,24 @@ namespace QLogicaeCLI
 								private_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										private_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										private_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1401,26 +1359,24 @@ namespace QLogicaeCLI
 								gitignore_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										gitignore_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										gitignore_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1438,26 +1394,24 @@ namespace QLogicaeCLI
 								license_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										license_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										license_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1477,28 +1431,26 @@ namespace QLogicaeCLI
 								inno_run_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										scripts_folder_name /
 										inno_run_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										scripts_folder_name /
 										inno_run_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1518,28 +1470,26 @@ namespace QLogicaeCLI
 								inno_setup_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										scripts_folder_name /
 										inno_setup_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										scripts_folder_name /
 										inno_setup_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
@@ -1559,36 +1509,34 @@ namespace QLogicaeCLI
 								icon_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							timestamp_logger.log(
+							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										assets_folder_name /
 										icon_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::INFO
+								)
 							);
 						}
 						else
 						{
-							timestamp_logger.log(
+							_log_warning_timestamp_async(
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										assets_folder_name /
 										icon_file_name
 									).string()
-								),
-								QLogicaeCore::LogLevel::WARNING
+								)
 							);
 						}
 
-						_log_complete_timestamp(_setup_default_template_input_2);
+						_log_complete_timestamp_async(_setup_default_template_input_2);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_setup_default_template_command(): ") + exception.what(), _setup_default_template_input_2);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_default_template_command(): ") + exception.what(), _setup_default_template_input_2);
 
 						return false;
 					}
@@ -1609,7 +1557,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_setup_default_template_command(): ") + exception.what(), _setup_default_template_input_2);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_default_template_command(): ") + exception.what(), _setup_default_template_input_2);
 
 			return false;
 		}
@@ -1627,11 +1575,14 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_verify_default_template_input_2);
+
 						if (_verify_default_template_input_1.empty())
 						{
 							return false;
 						}
 
+						std::string output_string = "";
 						std::vector<std::string> file_paths =
 						{
 							_verify_default_template_input_1 +
@@ -1647,11 +1598,6 @@ namespace QLogicaeCLI
 							_verify_default_template_input_1 +
 								gitignore_file_path
 						};
-
-						std::string output_string =
-							_transform_log_running_timestamp(
-								_verify_default_template_input_2
-							);
 
 						for (const std::string& file_path : file_paths)
 						{
@@ -1670,15 +1616,13 @@ namespace QLogicaeCLI
 									);
 							}
 						}
+						QLogicaeCore::CLI_IO.print_async(output_string);
 
-						output_string +=
-							_transform_log_complete_timestamp(_verify_default_template_input_2);
-						
-						QLogicaeCore::CLI_IO.print(output_string);
+						_log_complete_timestamp_async(_verify_default_template_input_2);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_verify_default_template_command(): ") + exception.what(), _verify_default_template_input_2);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_default_template_command(): ") + exception.what(), _verify_default_template_input_2);
 
 						return false;
 					}
@@ -1699,7 +1643,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_verify_default_template_command(): ") + exception.what(), _verify_default_template_input_2);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_default_template_command(): ") + exception.what(), _verify_default_template_input_2);
 
 			return false;
 		}
@@ -1717,7 +1661,7 @@ namespace QLogicaeCLI
 				{
 					try
 					{
-						_log_running_timestamp(_setup_installer_input_3);
+						_log_running_timestamp_async(_setup_installer_input_3);
 
 						client_public_file.set_file_path(
 							std::filesystem::path(
@@ -1940,11 +1884,11 @@ namespace QLogicaeCLI
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						_log_complete_timestamp(_setup_installer_input_3);
+						_log_complete_timestamp_async(_setup_installer_input_3);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_setup_installer_command(): ") + exception.what(), _setup_installer_input_3);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_installer_command(): ") + exception.what(), _setup_installer_input_3);
 
 						return false;
 					}
@@ -1972,7 +1916,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp(std::string("Exception at QLogicaeCLIApplication::_setup_setup_installer_command(): ") + exception.what(), _setup_installer_input_3);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_installer_command(): ") + exception.what(), _setup_installer_input_3);
 
 			return false;
 		}
@@ -2041,6 +1985,76 @@ namespace QLogicaeCLI
 		if (is_enabled)
 		{
 			QLogicaeCLI::timestamp_logger.log(
+				text, QLogicaeCore::LogLevel::EXCEPTION
+			);
+		}
+	}
+
+	void QLogicaeCLIApplication::_log_running_timestamp_async(
+		const bool& is_enabled)
+	{
+		if (is_enabled)
+		{
+			QLogicaeCLI::timestamp_logger.log_async(
+				"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
+			);
+		}
+	}
+
+	void QLogicaeCLIApplication::_log_complete_timestamp_async(
+		const bool& is_enabled)
+	{
+		if (is_enabled)
+		{
+			QLogicaeCLI::timestamp_logger.log_async(
+				"Complete!", QLogicaeCore::LogLevel::SUCCESS
+			);
+		}
+	}
+
+	void QLogicaeCLIApplication::_log_info_timestamp_async(
+		const std::string& text,
+		const bool& is_enabled)
+	{
+		if (is_enabled)
+		{
+			QLogicaeCLI::timestamp_logger.log_async(
+				text, QLogicaeCore::LogLevel::INFO
+			);
+		}
+	}
+
+	void QLogicaeCLIApplication::_log_success_timestamp_async(
+		const std::string& text,
+		const bool& is_enabled)
+	{
+		if (is_enabled)
+		{
+			QLogicaeCLI::timestamp_logger.log_async(
+				text, QLogicaeCore::LogLevel::SUCCESS
+			);
+		}
+	}
+
+	void QLogicaeCLIApplication::_log_warning_timestamp_async(
+		const std::string& text,
+		const bool& is_enabled)
+	{
+		if (is_enabled)
+		{
+			QLogicaeCLI::timestamp_logger.log_async(
+				text, QLogicaeCore::LogLevel::WARNING
+			);
+		}
+	}
+
+	void QLogicaeCLIApplication::_log_exception_timestamp_async(
+		const std::string& text, const bool& is_enabled
+	)
+	{
+		if (is_enabled)
+		{
+			QLogicaeCLI::timestamp_logger.log_async(
 				text, QLogicaeCore::LogLevel::EXCEPTION
 			);
 		}

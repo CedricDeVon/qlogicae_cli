@@ -115,6 +115,17 @@ namespace QLogicaeCLI
 		void _log_exception_timestamp(
 			const std::string& text, const bool& is_enabled = true);
 
+		void _log_running_timestamp_async(const bool& is_enabled = true);
+		void _log_complete_timestamp_async(const bool& is_enabled = true);
+		void _log_info_timestamp_async(
+			const std::string& text, const bool& is_enabled = true);
+		void _log_success_timestamp_async(
+			const std::string& text, const bool& is_enabled = true);
+		void _log_warning_timestamp_async(
+			const std::string& text, const bool& is_enabled = true);
+		void _log_exception_timestamp_async(
+			const std::string& text, const bool& is_enabled = true);
+
 		std::string _transform_log_running_timestamp(
 			const bool& is_enabled = true);
 		std::string _transform_log_complete_timestamp(
@@ -129,3 +140,31 @@ namespace QLogicaeCLI
 			const std::string& text = "", const bool& is_enabled = true);
 	};
 }
+
+/*
+						std::string output_string =
+							_transform_log_running_timestamp(
+								_verify_default_template_input_2
+							);
+
+						for (const auto& [key, value] : items)
+						{
+							output_string += key + "\t -> " + value;
+							if (index_a++ < size_a)
+							{
+								output_string += "\n";
+							}
+						}
+						output_string +=
+							_transform_log_complete_timestamp(
+								_verify_default_template_input_2
+							);
+
+						output_string +=
+								_transform_log_exception_timestamp(
+									"File '" + _set_environment_input_2 + "' does not exist"
+								);
+						QLogicaeCore::CLI_IO.print(output_string);
+
+						QLogicaeCore::CLI_IO.print(output_string);
+*/
