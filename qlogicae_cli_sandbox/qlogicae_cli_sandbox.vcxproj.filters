@@ -19,19 +19,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\icon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="configurations\qlogicae.public.json" />
-    <None Include="configurations\qlogicae.utilities.json" />
-    <None Include="qlogicae.gitignore" />
-    <None Include="scripts\qlogicae.inno_run.ps1" />
-    <None Include="scripts\qlogicae.inno_setup.iss" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="LICENSE.txt" />
-  </ItemGroup>
 </Project>

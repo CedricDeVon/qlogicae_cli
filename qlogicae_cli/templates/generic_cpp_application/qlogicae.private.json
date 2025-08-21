@@ -1,29 +1,32 @@
 {
-  "environment": {
-    "selected": "development",
-    "selections": {
-      "development": "",
-      "debug": "",
-      "test": "",
-      "release": ""
+  "windows_registry": {
+    "development": {
+      "hkcu": {
+        "name": "hkcu.name.development"
+      }
+    },
+    "debug": {
+      "hkcu": {
+        "name": "hkcu.name.debug"
+      }
+    },
+    "test": {
+      "hkcu": {
+        "name": "hkcu.name.test"
+      }
+    },
+    "release": {
+      "hkcu": {
+        "name": "hkcu.name.release"
+      }
+    },
+    "is_root_key_used": {
+      "hkcu": true
     }
   },
   "scripts": {
     "start": "echo start",
     "end": "echo end"
-  },
-  "logging": {
-    "all": {
-      "is_enabled": false
-    },
-    "console": {
-      "is_enabled": true,
-      "is_coloring_enabled": false
-    },
-    "file": {
-      "is_enabled": false,
-      "output_directory_path": "./logs"
-    }
   },
   "inno_setup": {
     "output_folder_path": "",

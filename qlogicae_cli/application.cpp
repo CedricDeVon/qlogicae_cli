@@ -30,8 +30,8 @@ namespace QLogicaeCLI
 				!_setup_set_environment_command() ||
 				!_setup_view_windows_registry_command() ||
 				!_setup_setup_windows_registry_command() ||
-				!_setup_setup_default_template_command() ||
-				!_setup_verify_default_template_command() ||
+				!_setup_setup_generic_cpp_application_template_command() ||
+				!_setup_verify_generic_cpp_application_template_command() ||
 				!_setup_setup_installer_command())
 			{
 				return false;
@@ -1087,11 +1087,11 @@ namespace QLogicaeCLI
 		}
 	}
 
-	bool QLogicaeCLIApplication::_setup_setup_default_template_command()
+	bool QLogicaeCLIApplication::_setup_setup_generic_cpp_application_template_command()
 	{
 		try
 		{
-			std::string command_name = "setup-default-template";
+			std::string command_name = "setup-generic-cpp-application-template";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
 					command_name, ""),
@@ -1099,12 +1099,12 @@ namespace QLogicaeCLI
 				{
 					try
 					{
+						_log_running_timestamp_async(_setup_default_template_input_2);
+
 						if (_setup_default_template_input_1.empty())
 						{
 							return false;
-						}
-
-						_log_running_timestamp_async(_setup_default_template_input_2);
+						}						
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
@@ -1205,7 +1205,7 @@ namespace QLogicaeCLI
 							std::filesystem::copy_file(
 								application_directory /
 								templates_folder_name /
-								"default" /
+								"generic_cpp_application" /
 								public_file_name,
 								_setup_default_template_input_1 /
 								configurations_folder_name /
@@ -1221,6 +1221,22 @@ namespace QLogicaeCLI
 							);
 							client_public_file.update_string(
 								{ "application", "id" },
+								QLogicaeCore::GENERATOR.random_uuid4()
+							);
+							client_public_file.update_string(
+								{ "environment", "selections", "development" },
+								QLogicaeCore::GENERATOR.random_uuid4()
+							);
+							client_public_file.update_string(
+								{ "environment", "selections", "debug" },
+								QLogicaeCore::GENERATOR.random_uuid4()
+							);
+							client_public_file.update_string(
+								{ "environment", "selections", "test" },
+								QLogicaeCore::GENERATOR.random_uuid4()
+							);
+							client_public_file.update_string(
+								{ "environment", "selections", "release" },
 								QLogicaeCore::GENERATOR.random_uuid4()
 							);
 
@@ -1249,50 +1265,23 @@ namespace QLogicaeCLI
 
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 /
-							configurations_folder_name /
-							utilities_file_name
+							license_file_name
 						))
 						{
 							std::filesystem::copy_file(
 								application_directory /
 								templates_folder_name /
-								"default" /
-								utilities_file_name,
+								"generic_cpp_application" /
+								license_file_name,
 								_setup_default_template_input_1 /
-								configurations_folder_name /
-								utilities_file_name,
+								license_file_name,
 								std::filesystem::copy_options::overwrite_existing
 							);
-							client_utilities_file.set_file_path(
-								std::filesystem::path(
-									_setup_default_template_input_1 /
-									configurations_folder_name /
-									utilities_file_name
-								).string()
-							);
-							client_utilities_file.update_string(
-								{ "environment", "selections", "development" },
-								QLogicaeCore::GENERATOR.random_uuid4()
-							);
-							client_utilities_file.update_string(
-								{ "environment", "selections", "debug" },
-								QLogicaeCore::GENERATOR.random_uuid4()
-							);
-							client_utilities_file.update_string(
-								{ "environment", "selections", "test" },
-								QLogicaeCore::GENERATOR.random_uuid4()
-							);
-							client_utilities_file.update_string(
-								{ "environment", "selections", "release" },
-								QLogicaeCore::GENERATOR.random_uuid4()
-							);
-
 							_log_info_timestamp_async(
 								fmt::format("File '{}' created",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										configurations_folder_name /
-										utilities_file_name
+										license_file_name
 									).string()
 								)
 							);
@@ -1303,8 +1292,7 @@ namespace QLogicaeCLI
 								fmt::format("File '{}' already exists",
 									std::filesystem::path(
 										_setup_default_template_input_1 /
-										configurations_folder_name /
-										utilities_file_name
+										license_file_name
 									).string()
 								)
 							);
@@ -1318,7 +1306,7 @@ namespace QLogicaeCLI
 							std::filesystem::copy_file(
 								application_directory /
 								templates_folder_name /
-								"default" /
+								"generic_cpp_application" /
 								private_file_name,
 								_setup_default_template_input_1 /
 								private_file_name,
@@ -1340,76 +1328,6 @@ namespace QLogicaeCLI
 									std::filesystem::path(
 										_setup_default_template_input_1 /
 										private_file_name
-									).string()
-								)
-							);
-						}
-
-						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							gitignore_file_name
-						))
-						{
-							std::filesystem::copy_file(
-								application_directory /
-								templates_folder_name /
-								"default" /
-								gitignore_file_name,
-								_setup_default_template_input_1 /
-								gitignore_file_name,
-								std::filesystem::copy_options::overwrite_existing
-							);
-							_log_info_timestamp_async(
-								fmt::format("File '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										gitignore_file_name
-									).string()
-								)
-							);
-						}
-						else
-						{
-							_log_warning_timestamp_async(
-								fmt::format("File '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										gitignore_file_name
-									).string()
-								)
-							);
-						}
-
-						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							license_file_name
-						))
-						{
-							std::filesystem::copy_file(
-								application_directory /
-								templates_folder_name /
-								"default" /
-								license_file_name,
-								_setup_default_template_input_1 /
-								license_file_name,
-								std::filesystem::copy_options::overwrite_existing
-							);
-							_log_info_timestamp_async(
-								fmt::format("File '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										license_file_name
-									).string()
-								)
-							);
-						}
-						else
-						{
-							_log_warning_timestamp_async(
-								fmt::format("File '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										license_file_name
 									).string()
 								)
 							);
@@ -1424,7 +1342,7 @@ namespace QLogicaeCLI
 							std::filesystem::copy_file(
 								application_directory /
 								templates_folder_name /
-								"default" /
+								"generic_cpp_application" /
 								inno_run_file_name,
 								_setup_default_template_input_1 /
 								scripts_folder_name /
@@ -1463,7 +1381,7 @@ namespace QLogicaeCLI
 							std::filesystem::copy_file(
 								application_directory /
 								templates_folder_name /
-								"default" /
+								"generic_cpp_application" /
 								inno_setup_file_name,
 								_setup_default_template_input_1 /
 								scripts_folder_name /
@@ -1502,7 +1420,7 @@ namespace QLogicaeCLI
 							std::filesystem::copy_file(
 								application_directory /
 								templates_folder_name /
-								"default" /
+								"generic_cpp_application" /
 								icon_file_name,
 								_setup_default_template_input_1 /
 								assets_folder_name /
@@ -1536,7 +1454,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_default_template_command(): ") + exception.what(), _setup_default_template_input_2);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_generic_cpp_application_template_command(): ") + exception.what(), _setup_default_template_input_2);
 
 						return false;
 					}
@@ -1557,17 +1475,17 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_default_template_command(): ") + exception.what(), _setup_default_template_input_2);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_generic_cpp_application_template_command(): ") + exception.what(), _setup_default_template_input_2);
 
 			return false;
 		}
 	}
 
-	bool QLogicaeCLIApplication::_setup_verify_default_template_command()
+	bool QLogicaeCLIApplication::_setup_verify_generic_cpp_application_template_command()
 	{
 		try
 		{
-			std::string command_name = "verify-default-filesystem";
+			std::string command_name = "verify-generic-cpp-application-template";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
 					command_name, ""),
@@ -1575,29 +1493,41 @@ namespace QLogicaeCLI
 				{
 					try
 					{
-						_log_running_timestamp_async(_verify_default_template_input_2);
+						_log_running_timestamp_async(
+							_verify_generic_cpp_application_template_input_2
+						);
 
-						if (_verify_default_template_input_1.empty())
+						if (_verify_generic_cpp_application_template_input_1
+							.empty()
+							)
 						{
 							return false;
 						}
-
+						
 						std::string output_string = "";
+						size_t success_count = 0, total_count;
 						std::vector<std::string> file_paths =
 						{
-							_verify_default_template_input_1 +
-								scripts_inno_run_file_path,
-							_verify_default_template_input_1 +
-								scripts_inno_setup_file_path,
-							_verify_default_template_input_1 +
-								configurations_public_file_path,
-							_verify_default_template_input_1 +
-								private_file_path,
-							_verify_default_template_input_1 +
+							_verify_generic_cpp_application_template_input_1 +
+								assets_folder_path,
+							_verify_generic_cpp_application_template_input_1 +
+								scripts_folder_path,
+							_verify_generic_cpp_application_template_input_1 +
+								configurations_folder_path,
+							_verify_generic_cpp_application_template_input_1 +
 								license_file_path,
-							_verify_default_template_input_1 +
-								gitignore_file_path
+							_verify_generic_cpp_application_template_input_1 +
+								private_file_path,
+							_verify_generic_cpp_application_template_input_1 +
+								assets_icon_file_path,
+							_verify_generic_cpp_application_template_input_1 +
+								scripts_inno_run_file_path,
+							_verify_generic_cpp_application_template_input_1 +
+								scripts_inno_setup_file_path,
+							_verify_generic_cpp_application_template_input_1 +
+								configurations_public_file_path
 						};
+						total_count = file_paths.size();
 
 						for (const std::string& file_path : file_paths)
 						{
@@ -1605,24 +1535,35 @@ namespace QLogicaeCLI
 							{
 								output_string +=
 									_transform_log_success_timestamp(
-										"File '" + file_path + "' exists"
+										file_path +
+										"' Exists"
 									);
+								++success_count;
 							}
 							else
 							{
 								output_string +=
 									_transform_log_exception_timestamp(
-										"File '" + file_path + "' does not exist"
+										file_path +
+										"' Not Found"
 									);
 							}
 						}
+						output_string +=
+							_transform_log_info_timestamp(
+								"Results: " + 
+								absl::StrCat(success_count) + " / " +
+								absl::StrCat(total_count) + " Test Cases Succeeded"
+							);
 						QLogicaeCore::CLI_IO.print_async(output_string);
 
-						_log_complete_timestamp_async(_verify_default_template_input_2);
+						_log_complete_timestamp_async(
+							_verify_generic_cpp_application_template_input_2
+						);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_default_template_command(): ") + exception.what(), _verify_default_template_input_2);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_generic_cpp_application_template_command(): ") + exception.what(), _verify_generic_cpp_application_template_input_2);
 
 						return false;
 					}
@@ -1631,19 +1572,24 @@ namespace QLogicaeCLI
 				}
 			);
 			_commands[command_name].first
-				->add_option("--target-root-project-directory", _verify_default_template_input_1, "")
+				->add_option(
+					"--target-root-project-directory",
+					_verify_generic_cpp_application_template_input_1,
+					""
+				)
 				->default_val(".");
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
-					_verify_default_template_input_2,
-					"")
+					_verify_generic_cpp_application_template_input_2,
+					""
+				)
 				->default_val(true);
 
 			return true;
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_default_template_command(): ") + exception.what(), _verify_default_template_input_2);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_generic_cpp_template_command(): ") + exception.what(), _verify_generic_cpp_application_template_input_2);
 
 			return false;
 		}
@@ -1937,7 +1883,7 @@ namespace QLogicaeCLI
 		if (is_enabled)
 		{
 			QLogicaeCLI::timestamp_logger.log(
-				"Complete!", QLogicaeCore::LogLevel::SUCCESS
+				"Complete!", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 			);
 		}
 	}
@@ -2007,7 +1953,7 @@ namespace QLogicaeCLI
 		if (is_enabled)
 		{
 			QLogicaeCLI::timestamp_logger.log_async(
-				"Complete!", QLogicaeCore::LogLevel::SUCCESS
+				"Complete!", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 			);
 		}
 	}
@@ -2061,7 +2007,6 @@ namespace QLogicaeCLI
 	}
 
 	std::string QLogicaeCLIApplication::_transform_log_running_timestamp(
-
 		const bool& is_enabled)
 	{
 		if (is_enabled)
@@ -2076,14 +2021,13 @@ namespace QLogicaeCLI
 	}
 
 	std::string QLogicaeCLIApplication::_transform_log_complete_timestamp(
-
 		const bool& is_enabled)
 	{
 		if (is_enabled)
 		{
 			return QLogicaeCore::TRANSFORMER.to_log_format(
 				"Complete!",
-				QLogicaeCore::LogLevel::SUCCESS
+				QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 			);
 		}
 
@@ -2150,3 +2094,106 @@ namespace QLogicaeCLI
 		return "";
 	}
 }
+
+/*
+if (!std::filesystem::exists(
+	_setup_default_template_input_1 /
+	gitignore_file_name
+))
+{
+	std::filesystem::copy_file(
+		application_directory /
+		templates_folder_name /
+		"generic_cpp_application" /
+		gitignore_file_name,
+		_setup_default_template_input_1 /
+		gitignore_file_name,
+		std::filesystem::copy_options::overwrite_existing
+	);
+	_log_info_timestamp_async(
+		fmt::format("File '{}' created",
+			std::filesystem::path(
+				_setup_default_template_input_1 /
+				gitignore_file_name
+			).string()
+		)
+	);
+}
+else
+{
+	_log_warning_timestamp_async(
+		fmt::format("File '{}' already exists",
+			std::filesystem::path(
+				_setup_default_template_input_1 /
+				gitignore_file_name
+			).string()
+		)
+	);
+}
+
+*/
+
+/*
+if (!std::filesystem::exists(
+	_setup_default_template_input_1 /
+	configurations_folder_name /
+	utilities_file_name
+))
+{
+	std::filesystem::copy_file(
+		application_directory /
+		templates_folder_name /
+		"generic_cpp_application" /
+		utilities_file_name,
+		_setup_default_template_input_1 /
+		configurations_folder_name /
+		utilities_file_name,
+		std::filesystem::copy_options::overwrite_existing
+	);
+	client_utilities_file.set_file_path(
+		std::filesystem::path(
+			_setup_default_template_input_1 /
+			configurations_folder_name /
+			utilities_file_name
+		).string()
+	);
+	client_utilities_file.update_string(
+		{ "environment", "selections", "development" },
+		QLogicaeCore::GENERATOR.random_uuid4()
+	);
+	client_utilities_file.update_string(
+		{ "environment", "selections", "debug" },
+		QLogicaeCore::GENERATOR.random_uuid4()
+	);
+	client_utilities_file.update_string(
+		{ "environment", "selections", "test" },
+		QLogicaeCore::GENERATOR.random_uuid4()
+	);
+	client_utilities_file.update_string(
+		{ "environment", "selections", "release" },
+		QLogicaeCore::GENERATOR.random_uuid4()
+	);
+
+	_log_info_timestamp_async(
+		fmt::format("File '{}' created",
+			std::filesystem::path(
+				_setup_default_template_input_1 /
+				configurations_folder_name /
+				utilities_file_name
+			).string()
+		)
+	);
+}
+else
+{
+	_log_warning_timestamp_async(
+		fmt::format("File '{}' already exists",
+			std::filesystem::path(
+				_setup_default_template_input_1 /
+				configurations_folder_name /
+				utilities_file_name
+			).string()
+		)
+	);
+}
+*/

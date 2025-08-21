@@ -79,8 +79,8 @@ namespace QLogicaeCLI
 		std::string _setup_default_template_input_1;
 		bool _setup_default_template_input_2;
 
-		std::string _verify_default_template_input_1;
-		bool _verify_default_template_input_2;
+		std::string _verify_generic_cpp_application_template_input_1;
+		bool _verify_generic_cpp_application_template_input_2;
 
 		std::string _setup_installer_input_1;
 		std::string _setup_installer_input_2;
@@ -100,8 +100,8 @@ namespace QLogicaeCLI
 		bool _setup_set_environment_command();
 		bool _setup_view_windows_registry_command();
 		bool _setup_setup_windows_registry_command();
-		bool _setup_setup_default_template_command();
-		bool _setup_verify_default_template_command();
+		bool _setup_setup_generic_cpp_application_template_command();
+		bool _setup_verify_generic_cpp_application_template_command();
 		bool _setup_setup_installer_command();
 
 		void _log_running_timestamp(const bool& is_enabled = true);

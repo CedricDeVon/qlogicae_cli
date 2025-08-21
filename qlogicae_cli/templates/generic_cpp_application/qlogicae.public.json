@@ -1,0 +1,35 @@
+{
+  "application": {
+    "id": "",
+    "name": "Project Name",
+    "alias": "client",
+    "version": "v1.0.0",
+    "company": "Company Name",
+    "authors": "Authors",
+    "description": "Description",
+    "url": "https://google.com",
+    "architecture": "x64"
+  },
+  "environment": {
+    "selected": "development",
+    "selections": {
+      "development": "",
+      "debug": "",
+      "test": "",
+      "release": ""
+    }
+  },
+  "logging": {
+    "all": {
+      "is_enabled": false
+    },
+    "console": {
+      "is_enabled": true,
+      "is_coloring_enabled": false
+    },
+    "file": {
+      "is_enabled": false,
+      "output_directory_path": "./logs"
+    }
+  }
+}

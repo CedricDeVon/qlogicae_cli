@@ -24,7 +24,7 @@ namespace QLogicaeCLI
     static std::filesystem::path license_file_name =
         "LICENSE.txt";
     static std::filesystem::path icon_file_name =
-        "icon.ico";
+        "qlogicae.application.ico";
     static std::filesystem::path inno_run_file_name =
         "qlogicae.inno_run.ps1";
     static std::filesystem::path inno_setup_file_name =
@@ -56,7 +56,7 @@ namespace QLogicaeCLI
     static std::string license_file_name_string =
         "LICENSE.txt";
     static std::string icon_file_name_string =
-        "icon.ico";
+        "qlogicae.application.ico";
     static std::string inno_run_file_name_string =
         "qlogicae.inno_run.ps1";
     static std::string inno_setup_file_name_string =
@@ -77,6 +77,15 @@ namespace QLogicaeCLI
     static std::string configurations_folder_name_string =
         "configurations";
 
+    static std::string assets_folder_path =
+        "/" + assets_folder_name_string;
+    static std::string scripts_folder_path =
+        "/" + scripts_folder_name_string;
+    static std::string configurations_folder_path =
+        "/" + configurations_folder_name_string;
+    static std::string assets_icon_file_path =
+        "/" + assets_folder_name_string +
+        "/" + icon_file_name_string;
     static std::string scripts_inno_run_file_path =
         "/" + scripts_folder_name_string +
         "/" + inno_run_file_name_string;
@@ -86,6 +95,9 @@ namespace QLogicaeCLI
     static std::string configurations_public_file_path =
         "/" + configurations_folder_name_string +
         "/" + public_file_name_string;
+    static std::string configurations_utilities_file_path =
+        "/" + configurations_folder_name_string +
+        "/" + utilities_file_name_string;
     static std::string private_file_path =
         "/" + private_file_name_string;
     static std::string license_file_path =

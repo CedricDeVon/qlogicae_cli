@@ -1,13 +1,35 @@
 {
     "application": {
-        "id": "99319900-41fe-4533-b1a6-6d2c5ff0f784",
+        "id": "57745e5c-4529-4307-87bf-1f6bc9e913dc",
         "name": "Project Name",
-        "alias": "qlogicae_cli_sandbox",
+        "alias": "client",
         "version": "v1.0.0",
         "company": "Company Name",
         "authors": "Authors",
         "description": "Description",
         "url": "https://google.com",
         "architecture": "x64"
+    },
+    "environment": {
+        "selected": "development",
+        "selections": {
+            "development": "8b007100-fc55-453f-896f-0321e0d32645",
+            "debug": "0255b6cb-8fdf-42a6-a4cb-1f87ee37eda5",
+            "test": "ddb56a94-9464-4aeb-991d-7c1066603d5a",
+            "release": "fdd6de79-2e0e-4e03-beb3-29339012218e"
+        }
+    },
+    "logging": {
+        "all": {
+            "is_enabled": false
+        },
+        "console": {
+            "is_enabled": true,
+            "is_coloring_enabled": false
+        },
+        "file": {
+            "is_enabled": false,
+            "output_directory_path": "./logs"
+        }
     }
 }
