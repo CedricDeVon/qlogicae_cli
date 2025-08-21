@@ -120,7 +120,6 @@
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
 xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
-xcopy "$(ProjectDir)scripts" "$(OutDir)scripts" /E /Y /I
 
 </Command>
     </PostBuildEvent>
@@ -145,7 +144,6 @@ xcopy "$(ProjectDir)scripts" "$(OutDir)scripts" /E /Y /I
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
 xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
-xcopy "$(ProjectDir)scripts" "$(OutDir)scripts" /E /Y /I
 
 </Command>
     </PostBuildEvent>

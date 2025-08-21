@@ -1610,114 +1610,84 @@ namespace QLogicaeCLI
 						_log_running_timestamp_async(_setup_installer_input_3);
 
 						client_public_file.set_file_path(
-							std::filesystem::path(
-								_setup_installer_input_1 /
-								configurations_folder_name /
-								public_file_name
-							).string()
+							_setup_installer_input_1 +
+							configurations_public_file_path
 						);
 						client_private_file.set_file_path(
-							std::filesystem::path(
-								_setup_installer_input_1 /
-								private_file_name
-							).string()
+							_setup_installer_input_1 +
+							private_file_path
 						);
 						client_inno_run_file.set_file_path(
-							std::filesystem::path(
-								_setup_installer_input_1 /
-								scripts_folder_name /
-								inno_run_file_name
-							).string()
+							_setup_installer_input_1 +
+							scripts_inno_run_file_path
 						);
 						client_inno_setup_file.set_file_path(
-							std::filesystem::path(
-								_setup_installer_input_1 /
-								scripts_folder_name /
-								inno_setup_file_name
-							).string()
+							_setup_installer_input_1 +
+							scripts_inno_setup_file_path
 						);
 						client_inno_setup_target_file.set_file_path(
-							std::filesystem::path(
-								_setup_installer_input_1 /
-								scripts_folder_name /
-								inno_setup_target_file_name
-							).string()
-						);
-						client_utilities_file.set_file_path(
-							std::filesystem::path(
-								_setup_installer_input_1 /
-								configurations_folder_name /
-								utilities_file_name
-							).string()
-						);
-
-						std::filesystem::path input_folder_path =
-							std::filesystem::absolute(
-								client_utilities_file.get_string(
-									{ "inno_setup", "input_folder_path" }
-								)
-							);
-						std::filesystem::path output_folder_path =
-							std::filesystem::absolute(
-								client_utilities_file.get_string(
-									{ "inno_setup", "output_folder_path" }
-								)
-							);
-
-						client_utilities_file.set_file_path(
-							std::filesystem::path(
-								input_folder_path /
-								configurations_folder_name /
-								utilities_file_name
-							).string()
-						);
-						client_utilities_file.update_string(
-							{ "environment", "selected" }, "release"
-						);
-						client_utilities_file.set_file_path(
-							std::filesystem::path(
-								_setup_installer_input_1 /
-								configurations_folder_name /
-								utilities_file_name
-							).string()
+							_setup_installer_input_1 +
+							scripts_inno_target_file_path
 						);
 
 						if (!std::filesystem::exists(
-							_setup_installer_input_1 /
-							scripts_folder_name
+							_setup_installer_input_1 +
+							scripts_folder_name_string
 						))
 						{
 							std::filesystem::create_directory(
-								_setup_installer_input_1 /
-								scripts_folder_name
+								_setup_installer_input_1 +
+								scripts_folder_name_string
 							);
 						}
 
 						if (std::filesystem::exists(
-							_setup_installer_input_1 /
-							scripts_folder_name /
-							inno_setup_target_file_name)
+							_setup_installer_input_1 +
+							scripts_inno_target_file_path)
 							)
 						{
 							std::filesystem::remove(
-								_setup_installer_input_1 /
-								scripts_folder_name /
-								inno_setup_target_file_name
+								_setup_installer_input_1 +
+								scripts_inno_target_file_path
 							);
 						}
 
 						std::filesystem::copy_file(
-							_setup_installer_input_1 /
-							scripts_folder_name /
-							inno_setup_file_name,
-							_setup_installer_input_1 /
-							scripts_folder_name /
-							inno_setup_target_file_name,
+							_setup_installer_input_1 +
+							scripts_inno_setup_file_path,
+							_setup_installer_input_1 +
+							scripts_inno_target_file_path,
+							std::filesystem::copy_options::overwrite_existing
+						);
+
+						client_public_file.update_string(
+							{ "environment", "selected" }, "release"
+						);
+
+						std::string input_folder_path =
+							std::filesystem::absolute(
+								client_private_file.get_string(
+									{ "inno_setup", "input_folder_path" }
+								)
+							).string();
+
+						std::string output_folder_path =
+							std::filesystem::absolute(
+								client_private_file.get_string(
+									{ "inno_setup", "output_folder_path" }
+								)
+							).string();
+
+						std::filesystem::copy_file(
+							_setup_installer_input_1 +
+							configurations_public_file_path,
+							input_folder_path +
+							configurations_public_file_path,
 							std::filesystem::copy_options::overwrite_existing
 						);
 
 						std::unordered_map<std::string, std::any> languages =
-							client_utilities_file.get_object(
+							client_private_file.get_object(
 								{ "languages" }
 							);
 						client_inno_setup_target_file.append(
@@ -1758,7 +1728,7 @@ namespace QLogicaeCLI
 								}
 							);
 						std::string release_id =
-							client_utilities_file
+							client_public_file
 							.get_string(
 								{
 									"environment",
@@ -1795,33 +1765,22 @@ namespace QLogicaeCLI
 								).c_str()
 						);
 
-						if (std::filesystem::exists(
-							_setup_installer_input_1 /
-							temporary_folder_name
-						))
-						{
-							std::filesystem::remove_all(
-								_setup_installer_input_1 /
-								temporary_folder_name
-							);
-						}
-
-						client_utilities_file.update_string(
+						client_public_file.update_string(
 							{ "environment", "selected" }, "development"
 						);
-						client_utilities_file.update_string(
+						client_public_file.update_string(
 							{ "environment", "selections", "development" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
-						client_utilities_file.update_string(
+						client_public_file.update_string(
 							{ "environment", "selections", "debug" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
-						client_utilities_file.update_string(
+						client_public_file.update_string(
 							{ "environment", "selections", "test" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
-						client_utilities_file.update_string(
+						client_public_file.update_string(
 							{ "environment", "selections", "release" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);

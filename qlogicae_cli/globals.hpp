@@ -78,32 +78,37 @@ namespace QLogicaeCLI
         "configurations";
 
     static std::string assets_folder_path =
-        "/" + assets_folder_name_string;
+        "\\" + assets_folder_name_string;
     static std::string scripts_folder_path =
-        "/" + scripts_folder_name_string;
+        "\\" + scripts_folder_name_string;
     static std::string configurations_folder_path =
-        "/" + configurations_folder_name_string;
+        "\\" + configurations_folder_name_string;
     static std::string assets_icon_file_path =
-        "/" + assets_folder_name_string +
-        "/" + icon_file_name_string;
+        "\\" + assets_folder_name_string +
+        "\\" + icon_file_name_string;
+
     static std::string scripts_inno_run_file_path =
-        "/" + scripts_folder_name_string +
-        "/" + inno_run_file_name_string;
+        "\\" + scripts_folder_name_string +
+        "\\" + inno_run_file_name_string;
     static std::string scripts_inno_setup_file_path =
-        "/" + scripts_folder_name_string +
-        "/" + inno_setup_file_name_string;
+        "\\" + scripts_folder_name_string +
+        "\\" + inno_setup_file_name_string;
+    static std::string scripts_inno_target_file_path =
+        "\\" + scripts_folder_name_string +
+        "\\" + inno_setup_target_file_name_string;
+    
     static std::string configurations_public_file_path =
-        "/" + configurations_folder_name_string +
-        "/" + public_file_name_string;
+        "\\" + configurations_folder_name_string +
+        "\\" + public_file_name_string;
     static std::string configurations_utilities_file_path =
-        "/" + configurations_folder_name_string +
-        "/" + utilities_file_name_string;
+        "\\" + configurations_folder_name_string +
+        "\\" + utilities_file_name_string;
     static std::string private_file_path =
-        "/" + private_file_name_string;
+        "\\" + private_file_name_string;
     static std::string license_file_path =
-        "/" + license_file_name_string;
+        "\\" + license_file_name_string;
     static std::string gitignore_file_path =
-        "/" + gitignore_file_name_string;
+        "\\" + gitignore_file_name_string;
 
 
     static std::filesystem::path application_public_file_path =

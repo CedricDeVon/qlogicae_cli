@@ -29,15 +29,15 @@
     "end": "echo end"
   },
   "inno_setup": {
-    "output_folder_path": "",
+    "output_folder_path": "..\\..\\x64",
     "input_folder_path": "",
     "cli_path": "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe",
     "run_path": ".\\configurations\\qlogicae.inno_run.ps1",
     "template_path": ".\\scripts\\qlogicae.inno_setup.target.iss"
   },
   "application": {
-    "icon_path": "./assets/icon.ico",
-    "license_path": "./LICENSE.txt"
+    "icon_path": ".\\assets\\qlogicae.application.ico",
+    "license_path": ".\\LICENSE.txt"
   },
   "languages": {
     "english": {
