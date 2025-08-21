@@ -647,11 +647,11 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						client_utilities_file.set_file_path(
+						client_private_file.set_file_path(
 							_run_scripts_input_2
 						);
 						std::unordered_map<std::string, std::any> scripts =
-							client_utilities_file.get_object({ "scripts" }
+							client_private_file.get_object({ "scripts" }
 							);
 						for (const std::string script_command :
 						_run_scripts_input_1)
@@ -691,14 +691,11 @@ namespace QLogicaeCLI
 				->delimiter(',')
 				->required();
 			_commands[command_name].first
-				->add_option("--utilities-file-path",
+				->add_option("--private-file-path",
 					_run_scripts_input_2,
 					"")
 				->default_val(
-					std::filesystem::path(
-						configurations_folder_name /
-						utilities_file_name
-					).string()
+					configurations_folder_name_string + "\\" + private_file_name_string
 				);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
@@ -714,7 +711,6 @@ namespace QLogicaeCLI
 
 			return false;
 		}
-
 	}
 
 	bool QLogicaeCLIApplication::_setup_set_environment_command()
@@ -748,10 +744,10 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						client_utilities_file.set_file_path(
+						client_public_file.set_file_path(
 							_set_environment_input_2
 						);
-						client_utilities_file.update_string(
+						client_public_file.update_string(
 							{ "environment", "selected" },
 							_set_environment_input_1
 						);
@@ -775,13 +771,11 @@ namespace QLogicaeCLI
 				->check(CLI::IsMember(utilities_environment_types))
 				->default_val("development");
 			_commands[command_name].first
-				->add_option("--utilities-file-path",
+				->add_option("--public-file-path",
 					_set_environment_input_2,
 					"")
 				->default_val(
-					std::filesystem::path(
-						configurations_folder_name / utilities_file_name
-					).string()
+					configurations_folder_name_string + "\\" + private_file_name_string
 				);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
@@ -883,7 +877,6 @@ namespace QLogicaeCLI
 
 						if (_setup_windows_registry_input_1.empty() ||
 							_setup_windows_registry_input_2.empty() ||
-							_setup_windows_registry_input_3.empty() ||
 							_setup_windows_registry_input_4.empty())
 						{
 							return false;
@@ -893,14 +886,6 @@ namespace QLogicaeCLI
 						{
 							_log_exception_timestamp_async(
 								"File path '" + _setup_windows_registry_input_2 + "' does not exist"
-							);
-
-							return false;
-						}
-						if (!std::filesystem::exists(_setup_windows_registry_input_3))
-						{
-							_log_exception_timestamp_async(
-								"File path '" + _setup_windows_registry_input_3 + "' does not exist"							
 							);
 
 							return false;
@@ -917,9 +902,6 @@ namespace QLogicaeCLI
 						client_public_file.set_file_path(
 							_setup_windows_registry_input_2
 						);
-						client_utilities_file.set_file_path(
-							_setup_windows_registry_input_3
-						);
 						client_private_file.set_file_path(
 							_setup_windows_registry_input_4
 						);
@@ -933,7 +915,7 @@ namespace QLogicaeCLI
 							for (const std::string& environment_type : utilities_environment_types)
 							{
 								std::string environment_id =
-									client_utilities_file.get_string(
+									client_public_file.get_string(
 										{ "environment", "selections",
 										environment_type }
 									);
@@ -980,7 +962,7 @@ namespace QLogicaeCLI
 						else
 						{
 							std::string environment_id =
-								client_utilities_file.get_string(
+								client_public_file.get_string(
 									{ "environment", "selections",
 									_setup_windows_registry_input_1 }
 								);
@@ -1047,29 +1029,14 @@ namespace QLogicaeCLI
 					"--public-file-path",
 					_setup_windows_registry_input_2, "")
 				->default_val(
-					std::filesystem::path(
-						configurations_folder_name /
-						public_file_name
-					).string()
-				);
-			_commands[command_name].first
-				->add_option(
-					"--utilities-file-path",
-					_setup_windows_registry_input_3, "")
-				->default_val(
-					std::filesystem::path(
-						configurations_folder_name /
-						utilities_file_name
-					).string()
+					configurations_folder_name_string + "\\" + public_file_name_string
 				);
 			_commands[command_name].first
 				->add_option(
 					"--private-file-path",
 					_setup_windows_registry_input_4, "")
 				->default_val(
-					std::filesystem::path(
-						private_file_name
-					).string()
+					private_file_name_string
 				);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
@@ -1107,116 +1074,261 @@ namespace QLogicaeCLI
 						}						
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							configurations_folder_name
+							_setup_default_template_input_1 +
+							assets_folder_path
 						))
 						{
 							std::filesystem::create_directory(
-								_setup_default_template_input_1 /
-								configurations_folder_name
+								_setup_default_template_input_1 +
+								assets_folder_path
 							);
 							_log_info_timestamp_async(
-								fmt::format("Folder '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										configurations_folder_name
-									).string()
-								)
+								"'" +
+								_setup_default_template_input_1 +
+								assets_folder_path +
+								"' Created"
 							);
 						}
 						else
 						{
 							_log_warning_timestamp_async(
-								fmt::format("Folder '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										configurations_folder_name
-									).string()
-								)
+								"'" +
+								_setup_default_template_input_1 +
+								assets_folder_path +
+								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							assets_folder_name
+							_setup_default_template_input_1 +
+							scripts_folder_path
 						))
 						{
 							std::filesystem::create_directory(
-								_setup_default_template_input_1 /
-								assets_folder_name
+								_setup_default_template_input_1 +
+								scripts_folder_path
 							);
 							_log_info_timestamp_async(
-								fmt::format("Folder '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										assets_folder_name
-									).string()
-								)
+								"'" +
+								_setup_default_template_input_1 +
+								scripts_folder_path +
+								"' Created"
 							);
 						}
 						else
 						{
 							_log_warning_timestamp_async(
-								fmt::format("Folder '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										assets_folder_name
-									).string()
-								)
+								"'" +
+								_setup_default_template_input_1 +
+								scripts_folder_path +
+								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							scripts_folder_name
+							_setup_default_template_input_1 +
+							configurations_folder_path
 						))
 						{
 							std::filesystem::create_directory(
-								_setup_default_template_input_1 /
-								scripts_folder_name
+								_setup_default_template_input_1 +
+								configurations_folder_path
 							);
 							_log_info_timestamp_async(
-								fmt::format("Folder '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										scripts_folder_name
-									).string()
-								)
+								"'" +
+								_setup_default_template_input_1 +
+								configurations_folder_path +
+								"' Created"
 							);
 						}
 						else
 						{
 							_log_warning_timestamp_async(
-								fmt::format("Folder '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										scripts_folder_name
-									).string()
-								)
+								"'" +
+								_setup_default_template_input_1 +
+								configurations_folder_path +
+								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							configurations_folder_name /
-							public_file_name
+							_setup_default_template_input_1 +
+							license_file_path
 						))
 						{
 							std::filesystem::copy_file(
-								application_directory /
-								templates_folder_name /
-								"generic_cpp_application" /
-								public_file_name,
-								_setup_default_template_input_1 /
-								configurations_folder_name /
-								public_file_name,
+								application_directory_name_string +
+								templates_folder_path +
+								generic_cpp_application_path +
+								license_file_name_string,
+								_setup_default_template_input_1 +
+								license_file_path,
+								std::filesystem::copy_options::overwrite_existing
+							);
+
+							_log_info_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								license_file_path +
+								"' Created"
+							);
+						}
+						else
+						{
+							_log_warning_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								license_file_path +
+								"' Already Exists"
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 +
+							private_file_path
+						))
+						{
+							std::filesystem::copy_file(
+								application_directory_name_string +
+								templates_folder_path +
+								generic_cpp_application_path +
+								private_file_name_string,
+								_setup_default_template_input_1 +
+								private_file_path,
+								std::filesystem::copy_options::overwrite_existing
+							);
+
+							_log_info_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								private_file_path +
+								"' Created"
+							);
+						}
+						else
+						{
+							_log_warning_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								private_file_path +
+								"' Already Exists"
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 +
+							assets_icon_file_path
+						))
+						{
+							std::filesystem::copy_file(
+								application_directory_name_string +
+								templates_folder_path +
+								generic_cpp_application_path +
+								icon_file_name_string,
+								_setup_default_template_input_1 +
+								assets_icon_file_path,
+								std::filesystem::copy_options::overwrite_existing
+							);
+
+							_log_info_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								assets_icon_file_path +
+								"' Created"
+							);
+						}
+						else
+						{
+							_log_warning_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								assets_icon_file_path +
+								"' Already Exists"
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 +
+							scripts_inno_run_file_path
+						))
+						{
+							std::filesystem::copy_file(
+								application_directory_name_string +
+								templates_folder_path +
+								generic_cpp_application_path +
+								inno_run_file_name_string,
+								_setup_default_template_input_1 +
+								scripts_inno_run_file_path,
+								std::filesystem::copy_options::overwrite_existing
+							);
+
+							_log_info_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								scripts_inno_run_file_path +
+								"' Created"
+							);
+						}
+						else
+						{
+							_log_warning_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								scripts_inno_run_file_path +
+								"' Already Exists"
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 +
+							scripts_inno_setup_file_path
+						))
+						{
+							std::filesystem::copy_file(
+								application_directory_name_string +
+								templates_folder_path +
+								generic_cpp_application_path +
+								inno_setup_file_name_string,
+								_setup_default_template_input_1 +
+								scripts_inno_setup_file_path,
+								std::filesystem::copy_options::overwrite_existing
+							);
+
+							_log_info_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								scripts_inno_setup_file_path +
+								"' Created"
+							);
+						}
+						else
+						{
+							_log_warning_timestamp_async(
+								"'" +
+								_setup_default_template_input_1 +
+								scripts_inno_setup_file_path +
+								"' Already Exists"
+							);
+						}
+
+						if (!std::filesystem::exists(
+							_setup_default_template_input_1 +
+							configurations_public_file_path
+						))
+						{
+							std::filesystem::copy_file(
+								application_directory_name_string +
+								templates_folder_path +
+								generic_cpp_application_path +
+								public_file_name_string,
+								_setup_default_template_input_1 +
+								configurations_public_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
 							client_public_file.set_file_path(
 								std::filesystem::path(
-									_setup_default_template_input_1 /
-									configurations_folder_name /
-									public_file_name
+									_setup_default_template_input_1 +
+									configurations_public_file_path
 								).string()
 							);
 							client_public_file.update_string(
@@ -1241,212 +1353,19 @@ namespace QLogicaeCLI
 							);
 
 							_log_info_timestamp_async(
-								fmt::format("File '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										configurations_folder_name /
-										public_file_name
-									).string()
-								)
+								"'" +
+								_setup_default_template_input_1 +
+								configurations_public_file_path +
+								"' Created"
 							);
 						}
 						else
 						{
 							_log_warning_timestamp_async(
-								fmt::format("Folder '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										configurations_folder_name /
-										public_file_name
-									).string()
-								)
-							);
-						}
-
-						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							license_file_name
-						))
-						{
-							std::filesystem::copy_file(
-								application_directory /
-								templates_folder_name /
-								"generic_cpp_application" /
-								license_file_name,
-								_setup_default_template_input_1 /
-								license_file_name,
-								std::filesystem::copy_options::overwrite_existing
-							);
-							_log_info_timestamp_async(
-								fmt::format("File '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										license_file_name
-									).string()
-								)
-							);
-						}
-						else
-						{
-							_log_warning_timestamp_async(
-								fmt::format("File '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										license_file_name
-									).string()
-								)
-							);
-						}
-
-						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							private_file_name
-						))
-						{
-							std::filesystem::copy_file(
-								application_directory /
-								templates_folder_name /
-								"generic_cpp_application" /
-								private_file_name,
-								_setup_default_template_input_1 /
-								private_file_name,
-								std::filesystem::copy_options::overwrite_existing
-							);
-							_log_info_timestamp_async(
-								fmt::format("File '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										private_file_name
-									).string()
-								)
-							);
-						}
-						else
-						{
-							_log_warning_timestamp_async(
-								fmt::format("File '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										private_file_name
-									).string()
-								)
-							);
-						}
-
-						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							scripts_folder_name /
-							inno_run_file_name
-						))
-						{
-							std::filesystem::copy_file(
-								application_directory /
-								templates_folder_name /
-								"generic_cpp_application" /
-								inno_run_file_name,
-								_setup_default_template_input_1 /
-								scripts_folder_name /
-								inno_run_file_name,
-								std::filesystem::copy_options::overwrite_existing
-							);
-							_log_info_timestamp_async(
-								fmt::format("File '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										scripts_folder_name /
-										inno_run_file_name
-									).string()
-								)
-							);
-						}
-						else
-						{
-							_log_warning_timestamp_async(
-								fmt::format("File '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										scripts_folder_name /
-										inno_run_file_name
-									).string()
-								)
-							);
-						}
-
-						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							scripts_folder_name /
-							inno_setup_file_name
-						))
-						{
-							std::filesystem::copy_file(
-								application_directory /
-								templates_folder_name /
-								"generic_cpp_application" /
-								inno_setup_file_name,
-								_setup_default_template_input_1 /
-								scripts_folder_name /
-								inno_setup_file_name,
-								std::filesystem::copy_options::overwrite_existing
-							);
-							_log_info_timestamp_async(
-								fmt::format("File '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										scripts_folder_name /
-										inno_setup_file_name
-									).string()
-								)
-							);
-						}
-						else
-						{
-							_log_warning_timestamp_async(
-								fmt::format("File '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										scripts_folder_name /
-										inno_setup_file_name
-									).string()
-								)
-							);
-						}
-
-						if (!std::filesystem::exists(
-							_setup_default_template_input_1 /
-							assets_folder_name /
-							icon_file_name
-						))
-						{
-							std::filesystem::copy_file(
-								application_directory /
-								templates_folder_name /
-								"generic_cpp_application" /
-								icon_file_name,
-								_setup_default_template_input_1 /
-								assets_folder_name /
-								icon_file_name,
-								std::filesystem::copy_options::overwrite_existing
-							);
-							_log_info_timestamp_async(
-								fmt::format("File '{}' created",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										assets_folder_name /
-										icon_file_name
-									).string()
-								)
-							);
-						}
-						else
-						{
-							_log_warning_timestamp_async(
-								fmt::format("File '{}' already exists",
-									std::filesystem::path(
-										_setup_default_template_input_1 /
-										assets_folder_name /
-										icon_file_name
-									).string()
-								)
+								"'" +
+								_setup_default_template_input_1 +
+								configurations_public_file_path +
+								"' Already Exists"
 							);
 						}
 
@@ -1756,13 +1675,9 @@ namespace QLogicaeCLI
 						}
 
 						system(
-							("powershell -ExecutionPolicy Bypass -File \"" +
-								std::filesystem::path(
-									_setup_installer_input_1 /
-									scripts_folder_name /
-									inno_run_file_name
-								).string() + "\""
-								).c_str()
+							("powershell -ExecutionPolicy Bypass -File \".\\" +
+								scripts_inno_run_file_path + "\""
+							).c_str()
 						);
 
 						client_public_file.update_string(
@@ -2053,106 +1968,3 @@ namespace QLogicaeCLI
 		return "";
 	}
 }
-
-/*
-if (!std::filesystem::exists(
-	_setup_default_template_input_1 /
-	gitignore_file_name
-))
-{
-	std::filesystem::copy_file(
-		application_directory /
-		templates_folder_name /
-		"generic_cpp_application" /
-		gitignore_file_name,
-		_setup_default_template_input_1 /
-		gitignore_file_name,
-		std::filesystem::copy_options::overwrite_existing
-	);
-	_log_info_timestamp_async(
-		fmt::format("File '{}' created",
-			std::filesystem::path(
-				_setup_default_template_input_1 /
-				gitignore_file_name
-			).string()
-		)
-	);
-}
-else
-{
-	_log_warning_timestamp_async(
-		fmt::format("File '{}' already exists",
-			std::filesystem::path(
-				_setup_default_template_input_1 /
-				gitignore_file_name
-			).string()
-		)
-	);
-}
-
-*/
-
-/*
-if (!std::filesystem::exists(
-	_setup_default_template_input_1 /
-	configurations_folder_name /
-	utilities_file_name
-))
-{
-	std::filesystem::copy_file(
-		application_directory /
-		templates_folder_name /
-		"generic_cpp_application" /
-		utilities_file_name,
-		_setup_default_template_input_1 /
-		configurations_folder_name /
-		utilities_file_name,
-		std::filesystem::copy_options::overwrite_existing
-	);
-	client_utilities_file.set_file_path(
-		std::filesystem::path(
-			_setup_default_template_input_1 /
-			configurations_folder_name /
-			utilities_file_name
-		).string()
-	);
-	client_utilities_file.update_string(
-		{ "environment", "selections", "development" },
-		QLogicaeCore::GENERATOR.random_uuid4()
-	);
-	client_utilities_file.update_string(
-		{ "environment", "selections", "debug" },
-		QLogicaeCore::GENERATOR.random_uuid4()
-	);
-	client_utilities_file.update_string(
-		{ "environment", "selections", "test" },
-		QLogicaeCore::GENERATOR.random_uuid4()
-	);
-	client_utilities_file.update_string(
-		{ "environment", "selections", "release" },
-		QLogicaeCore::GENERATOR.random_uuid4()
-	);
-
-	_log_info_timestamp_async(
-		fmt::format("File '{}' created",
-			std::filesystem::path(
-				_setup_default_template_input_1 /
-				configurations_folder_name /
-				utilities_file_name
-			).string()
-		)
-	);
-}
-else
-{
-	_log_warning_timestamp_async(
-		fmt::format("File '{}' already exists",
-			std::filesystem::path(
-				_setup_default_template_input_1 /
-				configurations_folder_name /
-				utilities_file_name
-			).string()
-		)
-	);
-}
-*/

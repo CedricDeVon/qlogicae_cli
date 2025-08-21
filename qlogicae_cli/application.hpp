@@ -72,7 +72,6 @@ namespace QLogicaeCLI
 
 		std::string _setup_windows_registry_input_1;
 		std::string _setup_windows_registry_input_2;
-		std::string _setup_windows_registry_input_3;
 		std::string _setup_windows_registry_input_4;
 		bool _setup_windows_registry_input_5;
 
@@ -140,31 +139,3 @@ namespace QLogicaeCLI
 			const std::string& text = "", const bool& is_enabled = true);
 	};
 }
-
-/*
-						std::string output_string =
-							_transform_log_running_timestamp(
-								_verify_default_template_input_2
-							);
-
-						for (const auto& [key, value] : items)
-						{
-							output_string += key + "\t -> " + value;
-							if (index_a++ < size_a)
-							{
-								output_string += "\n";
-							}
-						}
-						output_string +=
-							_transform_log_complete_timestamp(
-								_verify_default_template_input_2
-							);
-
-						output_string +=
-								_transform_log_exception_timestamp(
-									"File '" + _set_environment_input_2 + "' does not exist"
-								);
-						QLogicaeCore::CLI_IO.print(output_string);
-
-						QLogicaeCore::CLI_IO.print(output_string);
-*/
