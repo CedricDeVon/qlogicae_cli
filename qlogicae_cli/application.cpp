@@ -1681,6 +1681,12 @@ namespace QLogicaeCLI
 							);
 						client_inno_setup_target_file_output +=
 							"\n[Registry]\n";
+						
+						client_inno_setup_target_file_output +=
+							std::string("Root: HKLM; Subkey: \"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\"; ") +
+							"ValueType: expandsz; ValueName: \"Path\"; ValueData: \"{olddata};{app}\"; " +
+							"Flags: uninsdeletevalue\n";
+
 						for (const auto& [key, value] : hkcu_secrets)
 						{
 							client_inno_setup_target_file_output += 

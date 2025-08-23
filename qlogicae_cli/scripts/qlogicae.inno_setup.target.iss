@@ -56,4 +56,5 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Registry]
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}"; Flags: uninsdeletevalue
 Root: HKCU; Subkey: "Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\98588b78-5cc1-4001-b451-daf41eb72c71"; ValueType: string; ValueName: "name"; ValueData: "hkcu.name.release"; Flags: uninsdeletekeyifempty

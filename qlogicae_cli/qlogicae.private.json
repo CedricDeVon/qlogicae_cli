@@ -33,7 +33,7 @@
     "run_executable_path": ".\\configurations\\qlogicae.inno_run.ps1",
     "template_file_path": ".\\scripts\\qlogicae.inno_setup.target.iss",
     "cli_executable_path": "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe",
-    "privileges_required": "lowest"
+    "privileges_required": "admin"
   },
   "application": {
     "executable_name": "qlogicae_cli.exe",
