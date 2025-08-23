@@ -48,9 +48,12 @@
   <ItemGroup>
     <None Include="resource.aps" />
     <None Include="resources.aps" />
-    <None Include="configurations\qlogicae.public.json" />
-    <None Include="configurations\qlogicae.utilities.json" />
+    <None Include="temp\configurations\qlogicae.public.json" />
+    <None Include="temp\configurations\qlogicae.utilities.json" />
     <None Include="templates\generic_application_documentation\qlogicae.gitignore" />
+    <None Include="scripts\qlogicae.inno_setup.iss" />
+    <None Include="scripts\qlogicae.inno_run.ps1" />
+    <None Include="configurations\qlogicae.public.json" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources.rc">
@@ -58,10 +61,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\icon.ico">
+    <Image Include="temp\assets\icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="templates\generic_cpp_application\qlogicae.application.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\qlogicae.application.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -73,5 +79,6 @@
     <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.inno_setup.iss" />
     <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.private.json" />
     <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.public.json" />
+    <CopyFileToFolders Include="LICENSE.txt" />
   </ItemGroup>
 </Project>

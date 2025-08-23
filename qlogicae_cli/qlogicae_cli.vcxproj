@@ -167,7 +167,10 @@ xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="configurations\qlogicae.public.json" />
-    <None Include="configurations\qlogicae.utilities.json" />
+    <None Include="scripts\qlogicae.inno_run.ps1" />
+    <None Include="scripts\qlogicae.inno_setup.iss" />
+    <None Include="temp\configurations\qlogicae.public.json" />
+    <None Include="temp\configurations\qlogicae.utilities.json" />
     <None Include="resource.aps" />
     <None Include="resources.aps" />
     <None Include="templates\generic_application_documentation\qlogicae.gitignore" />
@@ -196,10 +199,15 @@ xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I</Command>
     <ResourceCompile Include="resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\icon.ico" />
+    <Image Include="assets\qlogicae.application.ico" />
+    <Image Include="temp\assets\icon.ico" />
     <Image Include="templates\generic_cpp_application\qlogicae.application.ico" />
   </ItemGroup>
   <ItemGroup>
+    <CopyFileToFolders Include="LICENSE.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </CopyFileToFolders>
     <Text Include="templates\generic_cpp_application\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
