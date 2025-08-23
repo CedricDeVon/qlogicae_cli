@@ -88,7 +88,14 @@ namespace QLogicaeCLI
 					command_name, ""),
 				[this]() -> bool
 				{
-					QLogicaeCore::CLI_IO.print(application_full_name);
+					std::string text =
+						application_name + "\n\n"
+						"Version:\n" + application_version + "\n\n"
+						"Description:\n" + application_description + "\n\n"
+						"Author(s):\n" + application_authors;
+
+
+					QLogicaeCore::CLI_IO.print(text);
 
 					return true;
 				}

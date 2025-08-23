@@ -1,14 +1,14 @@
 {
-  "application": {
-    "id": "f0e1efe1-3d0d-492d-9290-ca975b6ca652",
-    "name": "QLogicae CLI",
-    "version": "v1.0.0",
-    "company": "QLogicae",
-    "authors": "Vaughn Cedric L. Araneta",
-    "description": "A C++ Development Tool",
-    "url": "https://github.com/CedricDeVon/qlogicae-cli",
-    "architecture": "x64"
-  },
+    "application": {
+        "id": "f0e1efe1-3d0d-492d-9290-ca975b6ca652",
+        "name": "QLogicae CLI",
+        "version": "v1.0.0",
+        "company": "QLogicae",
+        "authors": "Vaughn Cedric L. Araneta",
+        "description": "A C++ Development Tool",
+        "url": "https://github.com/CedricDeVon/qlogicae-cli",
+        "architecture": "x64"
+    },
     "environment": {
         "selected": "development",
         "selections": {

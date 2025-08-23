@@ -48,8 +48,6 @@
   <ItemGroup>
     <None Include="resource.aps" />
     <None Include="resources.aps" />
-    <None Include="temp\configurations\qlogicae.public.json" />
-    <None Include="temp\configurations\qlogicae.utilities.json" />
     <None Include="templates\generic_application_documentation\qlogicae.gitignore" />
     <None Include="scripts\qlogicae.inno_setup.iss" />
     <None Include="scripts\qlogicae.inno_run.ps1" />
@@ -61,9 +59,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="temp\assets\icon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="templates\generic_cpp_application\qlogicae.application.ico">
       <Filter>Resource Files</Filter>
     </Image>
