@@ -1,10 +1,9 @@
 {
   "application": {
     "id": "",
-    "name": "Project Name",
-    "alias": "client",
+    "name": "Project",
     "version": "v1.0.0",
-    "company": "Company Name",
+    "company": "Company",
     "authors": "Authors",
     "description": "Description",
     "url": "https://google.com",

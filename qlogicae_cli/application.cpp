@@ -1073,6 +1073,7 @@ namespace QLogicaeCLI
 							return false;
 						}						
 
+						size_t success_count = 0, total_count = 9;
 						if (!std::filesystem::exists(
 							_setup_default_template_input_1 +
 							assets_folder_path
@@ -1082,6 +1083,8 @@ namespace QLogicaeCLI
 								_setup_default_template_input_1 +
 								assets_folder_path
 							);
+							++success_count;
+
 							_log_info_timestamp_async(
 								"'" +
 								_setup_default_template_input_1 +
@@ -1108,6 +1111,8 @@ namespace QLogicaeCLI
 								_setup_default_template_input_1 +
 								scripts_folder_path
 							);
+							++success_count;
+
 							_log_info_timestamp_async(
 								"'" +
 								_setup_default_template_input_1 +
@@ -1134,6 +1139,8 @@ namespace QLogicaeCLI
 								_setup_default_template_input_1 +
 								configurations_folder_path
 							);
+							++success_count;
+
 							_log_info_timestamp_async(
 								"'" +
 								_setup_default_template_input_1 +
@@ -1165,6 +1172,7 @@ namespace QLogicaeCLI
 								license_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
+							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
@@ -1197,6 +1205,7 @@ namespace QLogicaeCLI
 								private_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
+							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
@@ -1229,6 +1238,7 @@ namespace QLogicaeCLI
 								assets_icon_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
+							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
@@ -1261,6 +1271,7 @@ namespace QLogicaeCLI
 								scripts_inno_run_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
+							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
@@ -1293,6 +1304,7 @@ namespace QLogicaeCLI
 								scripts_inno_setup_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
+							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
@@ -1351,6 +1363,7 @@ namespace QLogicaeCLI
 								{ "environment", "selections", "release" },
 								QLogicaeCore::GENERATOR.random_uuid4()
 							);
+							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
@@ -1368,6 +1381,12 @@ namespace QLogicaeCLI
 								"' Already Exists"
 							);
 						}
+
+						_log_info_timestamp_async(
+							"Results: " +
+							absl::StrCat(success_count) + " / " +
+							absl::StrCat(total_count) + " Test Cases Passed"
+						);
 
 						_log_complete_timestamp_async(_setup_default_template_input_2);
 					}
@@ -1472,7 +1491,7 @@ namespace QLogicaeCLI
 							_transform_log_info_timestamp(
 								"Results: " + 
 								absl::StrCat(success_count) + " / " +
-								absl::StrCat(total_count) + " Test Cases Succeeded"
+								absl::StrCat(total_count) + " Test Cases Passed"
 							);
 						QLogicaeCore::CLI_IO.print_async(output_string);
 
@@ -1551,12 +1570,12 @@ namespace QLogicaeCLI
 
 						if (!std::filesystem::exists(
 							_setup_installer_input_1 +
-							scripts_folder_name_string
+							scripts_folder_path
 						))
 						{
 							std::filesystem::create_directory(
 								_setup_installer_input_1 +
-								scripts_folder_name_string
+								scripts_folder_path
 							);
 						}
 
@@ -1595,7 +1614,8 @@ namespace QLogicaeCLI
 								client_private_file.get_string(
 									{ "inno_setup", "output_folder_path" }
 								)
-							).string();
+							).string(),
+							client_inno_setup_target_file_output = "";
 
 						std::filesystem::copy_file(
 							_setup_installer_input_1 +
@@ -1609,9 +1629,7 @@ namespace QLogicaeCLI
 							client_private_file.get_object(
 								{ "languages" }
 							);
-						client_inno_setup_target_file.append(
-							"\n[Languages]\n"
-						);
+						client_inno_setup_target_file_output += "\n[Languages]\n";
 						for (const auto& [name, properties] : languages)
 						{
 							std::unordered_map<std::string, std::any> object =
@@ -1619,13 +1637,12 @@ namespace QLogicaeCLI
 								std::string, std::any>>(properties);
 							if (std::any_cast<bool>(object["is_enabled"]))
 							{
-								client_inno_setup_target_file.append(
+								client_inno_setup_target_file_output +=
 									"Name: \"" + name +
 									"\"; MessagesFile: \"" +
 									std::any_cast<std::string>(
 										object["message_file"]
-									) + "\"\n"
-								);
+									) + "\"\n";
 							}
 						}
 
@@ -1655,12 +1672,11 @@ namespace QLogicaeCLI
 									"release"
 								}
 							);
-						client_inno_setup_target_file.append(
-							"\n[Registry]\n"
-						);
+						client_inno_setup_target_file_output +=
+							"\n[Registry]\n";
 						for (const auto& [key, value] : hkcu_secrets)
 						{
-							std::string command =
+							client_inno_setup_target_file_output += 
 								"Root: HKCU; Subkey: \"Software\\" +
 								application_id +
 								"\\" + release_id +
@@ -1669,13 +1685,13 @@ namespace QLogicaeCLI
 								"\"; ValueData: \"" +
 								std::any_cast<std::string>(value) +
 								"\"; Flags: uninsdeletekeyifempty\n";
-							client_inno_setup_target_file.append(
-								command
-							);
 						}
+						client_inno_setup_target_file.append(
+							client_inno_setup_target_file_output
+						);
 
 						system(
-							("powershell -ExecutionPolicy Bypass -File \".\\" +
+							(execute_inno_run_command +
 								scripts_inno_run_file_path + "\""
 							).c_str()
 						);
@@ -1683,27 +1699,7 @@ namespace QLogicaeCLI
 						client_public_file.update_string(
 							{ "environment", "selected" }, "development"
 						);
-						client_public_file.update_string(
-							{ "environment", "selections", "development" },
-							QLogicaeCore::GENERATOR.random_uuid4()
-						);
-						client_public_file.update_string(
-							{ "environment", "selections", "debug" },
-							QLogicaeCore::GENERATOR.random_uuid4()
-						);
-						client_public_file.update_string(
-							{ "environment", "selections", "test" },
-							QLogicaeCore::GENERATOR.random_uuid4()
-						);
-						client_public_file.update_string(
-							{ "environment", "selections", "release" },
-							QLogicaeCore::GENERATOR.random_uuid4()
-						);
-						client_public_file.update_string(
-							{ "application", "id" },
-							QLogicaeCore::GENERATOR.random_uuid4()
-						);
-
+						
 						_log_complete_timestamp_async(_setup_installer_input_3);
 					}
 					catch (const std::exception& exception)

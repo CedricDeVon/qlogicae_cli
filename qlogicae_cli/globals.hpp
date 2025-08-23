@@ -169,6 +169,9 @@ namespace QLogicaeCLI
     static std::vector<std::string> utilities_setup_template_types
         { "default", "custom" };
 
+    static std::string execute_inno_run_command =
+        "powershell -ExecutionPolicy Bypass -File \".\\";
+
     static std::string application_full_name =
         application_name + " " + "(" + application_version + ")";
 }

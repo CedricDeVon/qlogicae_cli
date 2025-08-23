@@ -151,6 +151,12 @@ xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
   <ItemGroup>
     <ClCompile Include="client.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="LICENSE.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </CopyFileToFolders>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
