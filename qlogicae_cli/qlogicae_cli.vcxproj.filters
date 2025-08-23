@@ -49,9 +49,9 @@
     <None Include="resource.aps" />
     <None Include="resources.aps" />
     <None Include="templates\generic_application_documentation\qlogicae.gitignore" />
-    <None Include="scripts\qlogicae.inno_setup.iss" />
     <None Include="scripts\qlogicae.inno_run.ps1" />
     <None Include="configurations\qlogicae.public.json" />
+    <None Include="scripts\qlogicae.inno_setup.iss" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources.rc">

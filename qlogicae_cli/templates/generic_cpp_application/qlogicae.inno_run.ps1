@@ -14,4 +14,5 @@ $public_configurations = Get-Content configurations/qlogicae.public.json -Raw | 
     /DMyOutputDir="$($private_configurations.inno_setup.output_folder_path)" `
     /DMyAppExeSource="$($private_configurations.inno_setup.input_folder_path)\$($private_configurations.application.executable_name)" `
     /DMyAppFolderSource="$($private_configurations.inno_setup.input_folder_path)" `
+    /DMyAppPrivilegesRequired="$($private_configurations.inno_setup.privileges_required)" `
     $private_configurations.inno_setup.template_file_path
