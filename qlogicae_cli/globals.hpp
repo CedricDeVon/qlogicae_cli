@@ -19,11 +19,11 @@ namespace QLogicaeCLI
     static std::string application_directory_name_string =
         QLogicaeCore::SYSTEM_ACCESS.get_executable_dir();
 
-    static std::string generic_cpp_application_name_string =
+    static std::string generic_application_name_string =
         "generic_cpp_application";
     
-    static std::string generic_cpp_application_path =
-        "\\" + generic_cpp_application_name_string + "\\";
+    static std::string generic_application_path =
+        "\\" + generic_application_name_string + "\\";
 
     static std::string public_file_name_string =
         "qlogicae.public.json";
@@ -156,6 +156,12 @@ namespace QLogicaeCLI
 
     static std::string application_description =
         application_public_file.get_string({ "application", "description" });
+    
+    static std::string application_url =
+        application_public_file.get_string({ "application", "url" });
+
+    static std::string application_architecture =
+        application_public_file.get_string({ "application", "architecture" });
 
     static std::string utilities_environment_selected =
         application_private_file.get_string({ "environment", "selected" });

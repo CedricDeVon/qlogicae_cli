@@ -75,11 +75,11 @@ namespace QLogicaeCLI
 		std::string _setup_windows_registry_input_4;
 		bool _setup_windows_registry_input_5;
 
-		std::string _setup_default_template_input_1;
-		bool _setup_default_template_input_2;
+		std::string _setup_vs2022_application_input_1;
+		bool _setup_vs2022_application_input_2;
 
-		std::string _verify_generic_cpp_application_template_input_1;
-		bool _verify_generic_cpp_application_template_input_2;
+		std::string _verify_vs2022_application_input_1;
+		bool _verify_vs2022_application_input_2;
 
 		std::string _setup_installer_input_1;
 		std::string _setup_installer_input_2;
@@ -89,53 +89,113 @@ namespace QLogicaeCLI
 		std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> _commands;
 
 		bool _setup_about_command();
+		
 		bool _setup_generate_uuid4_command();
+		
 		bool _setup_generate_string_command();
+		
 		bool _setup_encrypt_xchacha20poly1305_command();
+		
 		bool _setup_decrypt_xchacha20poly1305_command();
+		
 		bool _setup_hash_argon2id_command();
+		
 		bool _setup_verify_argon2id_command();
+		
 		bool _setup_run_scripts_command();
+		
 		bool _setup_set_environment_command();
+		
 		bool _setup_view_windows_registry_command();
+		
 		bool _setup_setup_windows_registry_command();
-		bool _setup_setup_generic_cpp_application_template_command();
-		bool _setup_verify_generic_cpp_application_template_command();
+		
+		bool _setup_setup_vs2022_application_command();
+		
+		bool _setup_verify_vs2022_application_command();
+		
 		bool _setup_setup_installer_command();
 
 		void _log_running_timestamp(const bool& is_enabled = true);
+
 		void _log_complete_timestamp(const bool& is_enabled = true);
+
 		void _log_info_timestamp(
 			const std::string& text, const bool& is_enabled = true);
+
 		void _log_success_timestamp(
 			const std::string& text, const bool& is_enabled = true);
+
 		void _log_warning_timestamp(
 			const std::string& text, const bool& is_enabled = true);
+
 		void _log_exception_timestamp(
 			const std::string& text, const bool& is_enabled = true);
 
 		void _log_running_timestamp_async(const bool& is_enabled = true);
+
 		void _log_complete_timestamp_async(const bool& is_enabled = true);
+
 		void _log_info_timestamp_async(
 			const std::string& text, const bool& is_enabled = true);
+
 		void _log_success_timestamp_async(
 			const std::string& text, const bool& is_enabled = true);
+
 		void _log_warning_timestamp_async(
 			const std::string& text, const bool& is_enabled = true);
+
 		void _log_exception_timestamp_async(
 			const std::string& text, const bool& is_enabled = true);
 
 		std::string _transform_log_running_timestamp(
 			const bool& is_enabled = true);
+
 		std::string _transform_log_complete_timestamp(
 			const bool& is_enabled = true);
+
 		std::string _transform_log_info_timestamp(
 			const std::string& text = "", const bool& is_enabled = true);
+
 		std::string _transform_log_success_timestamp(
 			const std::string& text = "", const bool& is_enabled = true);
+
 		std::string _transform_log_warning_timestamp(
 			const std::string& text = "", const bool& is_enabled = true);
+
 		std::string _transform_log_exception_timestamp(
 			const std::string& text = "", const bool& is_enabled = true);
 	};
 }
+
+/*
+
+_commands["test"] = std::make_pair(
+	_application.add_subcommand("one", "First level subcommand.")
+	->add_subcommand("two", "Second level subcommand.")
+	->add_subcommand("three", "Third level subcommand.")
+	->add_subcommand("four", "Fourth level subcommand."),
+	[this]() -> bool
+	{
+		std::cout << "Executing 'command one two three four'..." << std::endl;
+
+		return true;
+	}
+);
+
+uuid4 generate
+string generate
+xchacha20poly1305 encrypt
+xchacha20poly1305 decrypt
+argon2id hash
+argon2id verify
+scripts run
+environment set
+windows-registry view
+windows-registry setup
+vs2022 application setup
+vs2022 application verify
+installer setup
+
+
+*/

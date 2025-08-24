@@ -30,8 +30,8 @@ namespace QLogicaeCLI
 				!_setup_set_environment_command() ||
 				!_setup_view_windows_registry_command() ||
 				!_setup_setup_windows_registry_command() ||
-				!_setup_setup_generic_cpp_application_template_command() ||
-				!_setup_verify_generic_cpp_application_template_command() ||
+				!_setup_setup_vs2022_application_command() ||
+				!_setup_verify_vs2022_application_command() ||
 				!_setup_setup_installer_command())
 			{
 				return false;
@@ -85,14 +85,15 @@ namespace QLogicaeCLI
 			std::string command_name = "about";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name,
+					"Project and application details"),
 				[this]() -> bool
 				{
 					std::string text =
-						application_name + "\n\n"
-						"Version:\n" + application_version + "\n\n"
-						"Description:\n" + application_description + "\n\n"
-						"Author(s):\n" + application_authors;
+						application_full_name + "\n\n" +
+						"Description:\n" + application_description + "\n\n" +
+						"Authors:\n" + application_authors + "\n\n" +
+						"Repository:\n" + application_url;
 
 
 					QLogicaeCore::CLI_IO.print(text);
@@ -118,7 +119,7 @@ namespace QLogicaeCLI
 			std::string command_name = "generate-uuid4";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name, "Random uuid4 generation"),
 				[this]() -> bool
 				{
 					try
@@ -169,23 +170,23 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--count",
 					_generate_uuid4_input_1,
-					"")
+					"The number of generated uuid4s")
 				->check(CLI::NonNegativeNumber)
 				->default_val(1);
 			_commands[command_name].first
 				->add_option("--output-file-path",
 					_generate_uuid4_input_2,
-					"")
+					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			_commands[command_name].first
 				->add_option("--is-file-output-enabled",
 					_generate_uuid4_input_4,
-					"")
+					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_generate_uuid4_input_3,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -205,7 +206,7 @@ namespace QLogicaeCLI
 			std::string command_name = "generate-string";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name, "Random string generation"),
 				[this]() -> bool
 				{
 					try
@@ -223,7 +224,7 @@ namespace QLogicaeCLI
 							character_set = (_generate_string_input_3.empty()) ?
 							QLogicaeCore::Constants::FULL_VISIBLE_ASCII_CHARACTERSET.data() :
 							_generate_string_input_3;
-						
+
 						for (index_1 = 0;
 							index_1 < _generate_string_input_2;
 							++index_1)
@@ -263,34 +264,34 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--length",
 					_generate_string_input_1,
-					"")
+					"The character length of each individual string output")
 				->check(CLI::NonNegativeNumber)
 				->default_val(32);
 			_commands[command_name].first
 				->add_option("--count",
 					_generate_string_input_2,
-					"")
+					"The number of generated string outputs")
 				->check(CLI::NonNegativeNumber)
 				->default_val(1);
 			_commands[command_name].first
 				->add_option("--character-set",
 					_generate_string_input_3,
-					"")
+					"A string of characters where each individual character can possibly be found within each string output")
 				->default_val("");
 			_commands[command_name].first
 				->add_option("--output-file-path",
 					_generate_string_input_4,
-					"")
+					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			_commands[command_name].first
 				->add_option("--is-file-output-enabled",
 					_generate_string_input_6,
-					"")
+					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_generate_string_input_5,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -310,7 +311,7 @@ namespace QLogicaeCLI
 			std::string command_name = "encrypt-xchacha20poly1305";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name, "Text encryption via XChaCha20-Poly1305"),
 				[this]() -> bool
 				{
 					try
@@ -356,32 +357,32 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--text",
 					_encrypt_xchacha20poly1305_input_1,
-					"")
+					"The string input to be encrypted")
 				->required();
 			_commands[command_name].first
 				->add_option("--key",
 					_encrypt_xchacha20poly1305_input_2,
-					"")
+					"Encryption key")
 				->required();
 			_commands[command_name].first
 				->add_option("--nonce",
 					_encrypt_xchacha20poly1305_input_3,
-					"")
-				->default_val(QLogicaeCore::GENERATOR.random_string(24));
+					"Encryption nonce. WARNING: Nonces must be 32 characters long")
+				->default_val(QLogicaeCore::GENERATOR.random_string(32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS));
 			_commands[command_name].first
 				->add_option("--output-file-path",
 					_encrypt_xchacha20poly1305_input_4,
-					"")
+					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			_commands[command_name].first
 				->add_option("--is-file-output-enabled",
 					_encrypt_xchacha20poly1305_input_6,
-					"")
-				->default_val(true);
+					"Enables or disables the option '--output-file-path'")
+				->default_val(false);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_encrypt_xchacha20poly1305_input_5,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -401,7 +402,7 @@ namespace QLogicaeCLI
 			std::string command_name = "decrypt-xchacha20poly1305";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name, "Cipher decryption via XChaCha20-Poly1305"),
 				[this]() -> bool
 				{
 					try
@@ -418,7 +419,7 @@ namespace QLogicaeCLI
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
-						
+
 						if (_decrypt_xchacha20poly1305_input_6)
 						{
 							text_file_io.set_file_path(_decrypt_xchacha20poly1305_input_4);
@@ -440,32 +441,32 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--text",
 					_decrypt_xchacha20poly1305_input_1,
-					"")
+					"The string cipher to be decrypted")
 				->required();
 			_commands[command_name].first
 				->add_option("--key",
 					_decrypt_xchacha20poly1305_input_2,
-					"")
+					"Encryption key")
 				->required();
 			_commands[command_name].first
 				->add_option("--nonce",
 					_decrypt_xchacha20poly1305_input_3,
-					"")
+					"Encryption nonce. WARNING: Nonces must be 32 characters long")
 				->required();
 			_commands[command_name].first
 				->add_option("--output-file-path",
 					_decrypt_xchacha20poly1305_input_4,
-					"")
+					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			_commands[command_name].first
 				->add_option("--is-file-output-enabled",
 					_decrypt_xchacha20poly1305_input_6,
-					"")
+					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_decrypt_xchacha20poly1305_input_5,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -485,7 +486,7 @@ namespace QLogicaeCLI
 			std::string command_name = "hash-argon2id";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name, "Text hashing via Argon2ID"),
 				[this]() -> bool
 				{
 					try
@@ -525,22 +526,22 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--text",
 					_hash_argon2id_input_1,
-					"")
+					"The string text to be hashed")
 				->required();
 			_commands[command_name].first
 				->add_option("--output-file-path",
 					_hash_argon2id_input_2,
-					"")
+					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			_commands[command_name].first
 				->add_option("--is-file-output-enabled",
 					_hash_argon2id_input_4,
-					"")
+					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_hash_argon2id_input_3,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -560,7 +561,7 @@ namespace QLogicaeCLI
 			std::string command_name = "verify-argon2id";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name, "Hash verification via Argon2ID"),
 				[this]() -> bool
 				{
 					try
@@ -601,27 +602,27 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--hash",
 					_verify_argon2id_input_1,
-					"")
+					"The string hash to be verified")
 				->required();
 			_commands[command_name].first
 				->add_option("--key",
 					_verify_argon2id_input_2,
-					"")
+					"The original text to be compared with the hash")
 				->required();
 			_commands[command_name].first
 				->add_option("--output-file-path",
 					_verify_argon2id_input_3,
-					"")
+					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			_commands[command_name].first
 				->add_option("--is-file-output-enabled",
 					_verify_argon2id_input_5,
-					"")
+					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_verify_argon2id_input_4,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -641,7 +642,7 @@ namespace QLogicaeCLI
 			std::string command_name = "run-scripts";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name, "Extracts and executes command-line scripts"),
 				[this]() -> bool
 				{
 					try
@@ -694,20 +695,20 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--names",
 					_run_scripts_input_1,
-					"")
+					"Selected script commands")
 				->delimiter(',')
 				->required();
 			_commands[command_name].first
 				->add_option("--private-file-path",
 					_run_scripts_input_2,
-					"")
+					"File path to the 'qlogicae.private.json' file")
 				->default_val(
 					configurations_folder_name_string + "\\" + private_file_name_string
 				);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_run_scripts_input_3,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -727,7 +728,7 @@ namespace QLogicaeCLI
 			std::string command_name = "set-environment";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name, "Changes the selected environment"),
 				[this]() -> bool
 				{
 					try
@@ -739,10 +740,10 @@ namespace QLogicaeCLI
 						{
 							return false;
 						}
-						
+
 						if (!std::filesystem::exists(
-								_set_environment_input_2
-							))
+							_set_environment_input_2
+						))
 						{
 							_log_exception_timestamp_async(
 								"File '" + _set_environment_input_2 + "' does not exist"
@@ -774,20 +775,20 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--type",
 					_set_environment_input_1,
-					"")
+					"Selected environment type")
 				->check(CLI::IsMember(utilities_environment_types))
 				->default_val("development");
 			_commands[command_name].first
 				->add_option("--public-file-path",
 					_set_environment_input_2,
-					"")
+					"File path to the 'qlogicae.public.json' file")
 				->default_val(
 					configurations_folder_name_string + "\\" + private_file_name_string
 				);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_set_environment_input_3,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -808,7 +809,8 @@ namespace QLogicaeCLI
 			std::string command_name = "view-windows-registry";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name,
+					"Displays the key-value pairs of a selected Windows Registry path"),
 				[this]() -> bool
 				{
 					try
@@ -832,7 +834,7 @@ namespace QLogicaeCLI
 							output_string += key + " -> " + value + "\n";
 						}
 						QLogicaeCore::CLI_IO.print_async(output_string);
-						
+
 						_log_complete_timestamp_async(_view_windows_registry_input_2);
 					}
 					catch (const std::exception& exception)
@@ -848,13 +850,13 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option("--sub-path",
 					_view_windows_registry_input_1,
-					"")
+					"Windows Registry path")
 				->default_val("")
 				->required();
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_view_windows_registry_input_2,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -875,7 +877,7 @@ namespace QLogicaeCLI
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
 					command_name,
-					""),
+					"Creates or updates the key-value pairs of a selected Windows Registry path"),
 				[this]() -> bool
 				{
 					try
@@ -1026,7 +1028,8 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option(
 					"--environment-type",
-					_setup_windows_registry_input_1, "")
+					_setup_windows_registry_input_1,
+					"Selected environment type")
 				->check(CLI::IsMember(utilities_environment_types_options)
 				)
 				->default_val("development")
@@ -1034,21 +1037,23 @@ namespace QLogicaeCLI
 			_commands[command_name].first
 				->add_option(
 					"--public-file-path",
-					_setup_windows_registry_input_2, "")
+					_setup_windows_registry_input_2,
+					"File path to the 'qlogicae.public.json' file")
 				->default_val(
 					configurations_folder_name_string + "\\" + public_file_name_string
 				);
 			_commands[command_name].first
 				->add_option(
 					"--private-file-path",
-					_setup_windows_registry_input_4, "")
+					_setup_windows_registry_input_4,
+					"File path to the 'qlogicae.private.json' file")
 				->default_val(
 					private_file_name_string
 				);
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_setup_windows_registry_input_5,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
@@ -1061,40 +1066,41 @@ namespace QLogicaeCLI
 		}
 	}
 
-	bool QLogicaeCLIApplication::_setup_setup_generic_cpp_application_template_command()
+	bool QLogicaeCLIApplication::_setup_setup_vs2022_application_command()
 	{
 		try
 		{
-			std::string command_name = "setup-generic-cpp-application-template";
+			std::string command_name = "setup-vs2022-application";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name,
+					"Generates a Visual Studio 2022 C++ application template"),
 				[this]() -> bool
 				{
 					try
 					{
-						_log_running_timestamp_async(_setup_default_template_input_2);
+						_log_running_timestamp_async(_setup_vs2022_application_input_2);
 
-						if (_setup_default_template_input_1.empty())
+						if (_setup_vs2022_application_input_1.empty())
 						{
 							return false;
-						}						
+						}
 
 						size_t success_count = 0, total_count = 9;
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							assets_folder_path
 						))
 						{
 							std::filesystem::create_directory(
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								assets_folder_path
 							);
 							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								assets_folder_path +
 								"' Created"
 							);
@@ -1103,26 +1109,26 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								assets_folder_path +
 								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							scripts_folder_path
 						))
 						{
 							std::filesystem::create_directory(
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_folder_path
 							);
 							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_folder_path +
 								"' Created"
 							);
@@ -1131,26 +1137,26 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_folder_path +
 								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							configurations_folder_path
 						))
 						{
 							std::filesystem::create_directory(
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								configurations_folder_path
 							);
 							++success_count;
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								configurations_folder_path +
 								"' Created"
 							);
@@ -1159,23 +1165,23 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								configurations_folder_path +
 								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							license_file_path
 						))
 						{
 							std::filesystem::copy_file(
 								application_directory_name_string +
 								templates_folder_path +
-								generic_cpp_application_path +
+								generic_application_path +
 								license_file_name_string,
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								license_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
@@ -1183,7 +1189,7 @@ namespace QLogicaeCLI
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								license_file_path +
 								"' Created"
 							);
@@ -1192,23 +1198,23 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								license_file_path +
 								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							private_file_path
 						))
 						{
 							std::filesystem::copy_file(
 								application_directory_name_string +
 								templates_folder_path +
-								generic_cpp_application_path +
+								generic_application_path +
 								private_file_name_string,
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								private_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
@@ -1216,7 +1222,7 @@ namespace QLogicaeCLI
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								private_file_path +
 								"' Created"
 							);
@@ -1225,23 +1231,23 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								private_file_path +
 								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							assets_icon_file_path
 						))
 						{
 							std::filesystem::copy_file(
 								application_directory_name_string +
 								templates_folder_path +
-								generic_cpp_application_path +
+								generic_application_path +
 								icon_file_name_string,
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								assets_icon_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
@@ -1249,7 +1255,7 @@ namespace QLogicaeCLI
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								assets_icon_file_path +
 								"' Created"
 							);
@@ -1258,23 +1264,23 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								assets_icon_file_path +
 								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							scripts_inno_run_file_path
 						))
 						{
 							std::filesystem::copy_file(
 								application_directory_name_string +
 								templates_folder_path +
-								generic_cpp_application_path +
+								generic_application_path +
 								inno_run_file_name_string,
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_inno_run_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
@@ -1282,7 +1288,7 @@ namespace QLogicaeCLI
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_inno_run_file_path +
 								"' Created"
 							);
@@ -1291,23 +1297,23 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_inno_run_file_path +
 								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							scripts_inno_setup_file_path
 						))
 						{
 							std::filesystem::copy_file(
 								application_directory_name_string +
 								templates_folder_path +
-								generic_cpp_application_path +
+								generic_application_path +
 								inno_setup_file_name_string,
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_inno_setup_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
@@ -1315,7 +1321,7 @@ namespace QLogicaeCLI
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_inno_setup_file_path +
 								"' Created"
 							);
@@ -1324,29 +1330,29 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								scripts_inno_setup_file_path +
 								"' Already Exists"
 							);
 						}
 
 						if (!std::filesystem::exists(
-							_setup_default_template_input_1 +
+							_setup_vs2022_application_input_1 +
 							configurations_public_file_path
 						))
 						{
 							std::filesystem::copy_file(
 								application_directory_name_string +
 								templates_folder_path +
-								generic_cpp_application_path +
+								generic_application_path +
 								public_file_name_string,
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								configurations_public_file_path,
 								std::filesystem::copy_options::overwrite_existing
 							);
 							client_public_file.set_file_path(
 								std::filesystem::path(
-									_setup_default_template_input_1 +
+									_setup_vs2022_application_input_1 +
 									configurations_public_file_path
 								).string()
 							);
@@ -1374,7 +1380,7 @@ namespace QLogicaeCLI
 
 							_log_info_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								configurations_public_file_path +
 								"' Created"
 							);
@@ -1383,7 +1389,7 @@ namespace QLogicaeCLI
 						{
 							_log_warning_timestamp_async(
 								"'" +
-								_setup_default_template_input_1 +
+								_setup_vs2022_application_input_1 +
 								configurations_public_file_path +
 								"' Already Exists"
 							);
@@ -1395,11 +1401,11 @@ namespace QLogicaeCLI
 							absl::StrCat(total_count) + " Test Cases Passed"
 						);
 
-						_log_complete_timestamp_async(_setup_default_template_input_2);
+						_log_complete_timestamp_async(_setup_vs2022_application_input_2);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_generic_cpp_application_template_command(): ") + exception.what(), _setup_default_template_input_2);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_vs2022_application_command(): ") + exception.what(), _setup_vs2022_application_input_2);
 
 						return false;
 					}
@@ -1408,68 +1414,72 @@ namespace QLogicaeCLI
 				}
 			);
 			_commands[command_name].first
-				->add_option("--target-root-project-directory", _setup_default_template_input_1, "")
+				->add_option(
+					"--input-folder-path",
+					_setup_vs2022_application_input_1,
+					"Selected input folder path")
 				->default_val(".");
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
-					_setup_default_template_input_2,
-					"")
+					_setup_vs2022_application_input_2,
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_generic_cpp_application_template_command(): ") + exception.what(), _setup_default_template_input_2);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_vs2022_application_command(): ") + exception.what(), _setup_vs2022_application_input_2);
 
 			return false;
 		}
 	}
 
-	bool QLogicaeCLIApplication::_setup_verify_generic_cpp_application_template_command()
+	bool QLogicaeCLIApplication::_setup_verify_vs2022_application_command()
 	{
 		try
 		{
-			std::string command_name = "verify-generic-cpp-application-template";
+			std::string command_name = "verify-vs2022-application";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name,
+					"Verifies a selected Visual Studio 2022 C++ application file system"),
 				[this]() -> bool
 				{
 					try
 					{
 						_log_running_timestamp_async(
-							_verify_generic_cpp_application_template_input_2
+							_verify_vs2022_application_input_2
 						);
 
-						if (_verify_generic_cpp_application_template_input_1
+						if (_verify_vs2022_application_input_1
 							.empty()
 							)
 						{
 							return false;
 						}
-						
+
 						std::string output_string = "";
 						size_t success_count = 0, total_count;
 						std::vector<std::string> file_paths =
 						{
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								assets_folder_path,
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								scripts_folder_path,
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								configurations_folder_path,
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								license_file_path,
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								private_file_path,
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								assets_icon_file_path,
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								scripts_inno_run_file_path,
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								scripts_inno_setup_file_path,
-							_verify_generic_cpp_application_template_input_1 +
+							_verify_vs2022_application_input_1 +
 								configurations_public_file_path
 						};
 						total_count = file_paths.size();
@@ -1496,19 +1506,19 @@ namespace QLogicaeCLI
 						}
 						output_string +=
 							_transform_log_info_timestamp(
-								"Results: " + 
+								"Results: " +
 								absl::StrCat(success_count) + " / " +
 								absl::StrCat(total_count) + " Test Cases Passed"
 							);
 						QLogicaeCore::CLI_IO.print_async(output_string);
 
 						_log_complete_timestamp_async(
-							_verify_generic_cpp_application_template_input_2
+							_verify_vs2022_application_input_2
 						);
 					}
 					catch (const std::exception& exception)
 					{
-						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_generic_cpp_application_template_command(): ") + exception.what(), _verify_generic_cpp_application_template_input_2);
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_vs2022_application_command(): ") + exception.what(), _verify_vs2022_application_input_2);
 
 						return false;
 					}
@@ -1518,15 +1528,15 @@ namespace QLogicaeCLI
 			);
 			_commands[command_name].first
 				->add_option(
-					"--target-root-project-directory",
-					_verify_generic_cpp_application_template_input_1,
-					""
+					"--input-folder-path",
+					_verify_vs2022_application_input_1,
+					"Selected input folder path"
 				)
 				->default_val(".");
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
-					_verify_generic_cpp_application_template_input_2,
-					""
+					_verify_vs2022_application_input_2,
+					"Enables or disables verbose console logging"
 				)
 				->default_val(true);
 
@@ -1534,7 +1544,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_generic_cpp_template_command(): ") + exception.what(), _verify_generic_cpp_application_template_input_2);
+			_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_vs2022_application_command(): ") + exception.what(), _verify_vs2022_application_input_2);
 
 			return false;
 		}
@@ -1547,7 +1557,8 @@ namespace QLogicaeCLI
 			std::string command_name = "setup-installer";
 			_commands[command_name] = std::make_pair(
 				_application.add_subcommand(
-					command_name, ""),
+					command_name,
+					"Creates an application installer"),
 				[this]() -> bool
 				{
 					try
@@ -1679,9 +1690,9 @@ namespace QLogicaeCLI
 									"release"
 								}
 							);
+
 						client_inno_setup_target_file_output +=
-							"\n[Registry]\n";
-						
+							"\n[Registry]\n";						
 						client_inno_setup_target_file_output +=
 							std::string("Root: HKLM; Subkey: \"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\"; ") +
 							"ValueType: expandsz; ValueName: \"Path\"; ValueData: \"{olddata};{app}\"; " +
@@ -1726,19 +1737,19 @@ namespace QLogicaeCLI
 				}
 			);
 			_commands[command_name].first
-				->add_option("--target-project-folder",
+				->add_option("--input-folder-path",
 					_setup_installer_input_1,
-					"")
+					"Selected input folder path")
 				->default_val(".");
 			_commands[command_name].first
-				->add_option("--output-directory",
+				->add_option("--output-folder-path",
 					_setup_installer_input_2,
-					"")
+					"Selected output folder path")
 				->default_val(".");
 			_commands[command_name].first
 				->add_option("--is-verbose-logging-enabled",
 					_setup_installer_input_3,
-					"")
+					"Enables or disables verbose console logging")
 				->default_val(true);
 
 			return true;
