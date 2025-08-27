@@ -24,6 +24,7 @@
     },
     "console": {
       "is_enabled": true,
+      "is_verbose_enabled": true,
       "is_coloring_enabled": false
     },
     "file": {

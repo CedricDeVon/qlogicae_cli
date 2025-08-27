@@ -22,10 +22,11 @@
         "all": {
             "is_enabled": false
         },
-        "console": {
-            "is_enabled": true,
-            "is_coloring_enabled": false
-        },
+      "console": {
+        "is_enabled": true,
+        "is_verbose_enabled": true,
+        "is_coloring_enabled": false
+      },
         "file": {
             "is_enabled": false,
             "output_directory_path": ".qlogicae/logs"
