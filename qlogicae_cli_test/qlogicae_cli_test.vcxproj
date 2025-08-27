@@ -117,7 +117,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".qlogicae\about_tests.ps1" />
+    <None Include="string_tests.ps1" />
+    <None Include="about_tests.ps1" />
     <None Include="qlogicae_cli_tests.ps1" />
     <None Include="all_tests.ps1" />
     <None Include="qlogicae\configurations\utilities.ps1" />

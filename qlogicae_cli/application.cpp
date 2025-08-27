@@ -227,13 +227,13 @@ namespace QLogicaeCLI
 				->add_option("--length",
 					_generate_string_input_1,
 					"The character length of each individual string output")
-				->check(CLI::NonNegativeNumber)
+				->check(CLI::PositiveNumber)
 				->default_val(32);
 			string_generate_command
 				->add_option("--count",
 					_generate_string_input_2,
 					"The number of generated string outputs")
-				->check(CLI::NonNegativeNumber)
+				->check(CLI::PositiveNumber)
 				->default_val(1);
 			string_generate_command
 				->add_option("--character-set",
@@ -263,12 +263,6 @@ namespace QLogicaeCLI
 					try
 					{
 						_log_running_timestamp_async(_generate_string_input_5);
-
-						if (!_generate_string_input_1 ||
-							!_generate_string_input_2)
-						{
-							return false;
-						}
 
 						size_t index_1, size_a = _generate_string_input_2 - 1;
 						std::string output_string = "",

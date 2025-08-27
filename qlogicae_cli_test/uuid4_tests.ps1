@@ -1,92 +1,174 @@
 
 Describe "[qlogicae_cli uuid4] test suite" {
     BeforeAll {
-        . $PSScriptRoot/qlogicae/configurations/imports.ps1
+        . $PSScriptRoot/imports.ps1
 
-        $UUID4GenerateOutputFile = ".qlogicae/cli/uuid4-generate.txt"
+        $defaultOutputFile = ".qlogicae/cli/uuid4-generate.txt"
 
-        if (Test-Path $UUID4GenerateOutputFile) {
-            Remove-Item $UUID4GenerateOutputFile
-        }
+        QLogicaePesterTest_BeforeAllTestsSetup
     }
 
     AfterAll {
-        if (Test-Path $UUID4GenerateOutputFile) {
-            Remove-Item $UUID4GenerateOutputFile
+        QLogicaePesterTest_AfterAllTestsSetup
+    }
+
+    Context ("[qlogicae_cli uuid4] test cases") {
+        It ("[qlogicae_cli uuid4]: terminate") {
+            $testResult = qlogicae_cli uuid4 | Out-String        
+
+            $testResult | Should -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 --help]: should not be null or empty") {
+            $testResult = qlogicae_cli uuid4 --help | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
+
+            $testResult | Should -Not -BeNullOrEmpty
         }
     }
 
-    It "[qlogicae_cli uuid4]: should be null or empty" {
-        $TestResult = qlogicae_cli uuid4 | Out-String        
+    Context ("[qlogicae_cli uuid4 generate (defaults)] test cases") {
+        It ("[qlogicae_cli uuid4 generate]: generate instance(s) based on default parameters") {
+            $testResult = qlogicae_cli uuid4 generate | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
 
-        $TestResult | Should -BeNullOrEmpty
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+        }
     }
 
-    It "[qlogicae_cli uuid4 --help]: should not be null or empty" {
-        $TestResult = qlogicae_cli uuid4 --help | Out-String
-        QLogicaePesterTest_Log -Text $TestResult
-
-        $TestResult | Should -Not -BeNullOrEmpty
-    }
-    
-    It "[qlogicae_cli uuid4 generate --count='-10'']: should terminate" {
-        $TestResult = qlogicae_cli uuid4 generate --count='-10' | Out-String
+    Context ("[qlogicae_cli uuid4 generate --count] test cases") {
+        It ("[qlogicae_cli uuid4 generate --count='']: should terminate") {
+            $testResult = qlogicae_cli uuid4 generate --count='' | Out-String
         
-        $TestResult | Should -BeNullOrEmpty
-    }
+            $testResult | Should -BeNullOrEmpty
+        }
 
-    It "[qlogicae_cli uuid4 generate --count='-1']: should terminate" {
-        $TestResult = qlogicae_cli uuid4 generate --count='-1' | Out-String
+        It ("[qlogicae_cli uuid4 generate --count='-10']: should terminate") {
+            $testResult = qlogicae_cli uuid4 generate --count='-10' | Out-String
         
-        $TestResult | Should -BeNullOrEmpty
-    }
+            $testResult | Should -BeNullOrEmpty
+        }
 
-    It "[qlogicae_cli uuid4 generate --count='0']: should terminate" {
-        $TestResult = qlogicae_cli uuid4 generate --count='0' | Out-String
+        It ("[qlogicae_cli uuid4 generate --count='-1']: should terminate") {
+            $testResult = qlogicae_cli uuid4 generate --count='-1' | Out-String
         
-        $TestResult | Should -BeNullOrEmpty
+            $testResult | Should -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --count='0']: should terminate") {
+            $testResult = qlogicae_cli uuid4 generate --count='0' | Out-String
+        
+            $testResult | Should -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --count='1']: should generate 1 instance(s) on the console") {
+            $testResult = qlogicae_cli uuid4 generate --count='1' | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
+
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --count='10']: should generate 10 instance(s) on the console") {
+            $testResult = qlogicae_cli uuid4 generate --count='10' | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
+
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 10
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 10
+            $testResult | Should -Not -BeNullOrEmpty
+        }
     }
 
-    It "[qlogicae_cli uuid4 generate]: should generate 1 uuid4(s) on the console" {
-        $TestResult = qlogicae_cli uuid4 generate | Out-String
-        QLogicaePesterTest_Log -Text $TestResult
+    Context ("[qlogicae_cli uuid4 generate --is-file-output-enabled] test cases") {
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='']: should terminate") {
+            $testResult = qlogicae_cli uuid4 generate --is-file-output-enabled='' | Out-String
+        
+            $testResult | Should -BeNullOrEmpty
+        }
 
-        $TestResult | Should -Not -BeNullOrEmpty
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='false']: should generate 1 instance(s) on the console but not the file") {
+            $testResult = qlogicae_cli uuid4 generate --is-file-output-enabled='false' | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
+
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and file") {
+            $testResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
+
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+        }        
     }
 
-    It "[qlogicae_cli uuid4 generate --count='10']: should generate 10 uuid4(s) on the console" {
-        $TestResult = qlogicae_cli uuid4 generate --count='10' | Out-String
-        QLogicaePesterTest_Log -Text $TestResult
+    Context ("[qlogicae_cli uuid4 generate --is-verbose-logging-enabled] test cases") {
+        It ("[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='']: should terminate") {
+            $testResult = qlogicae_cli uuid4 generate --is-verbose-logging-enabled='' | Out-String
+        
+            $testResult | Should -BeNullOrEmpty
+        }
 
-        $TestResult | Should -Not -BeNullOrEmpty
+        It ("[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='false']: should generate 1 instance(s) on the console") {
+            $testResult = qlogicae_cli uuid4 generate --is-verbose-logging-enabled='false' | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
+
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='true']: should generate 1 instance(s) on the console") {
+            $testResult = qlogicae_cli uuid4 generate --is-verbose-logging-enabled='true' | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
+
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+        }
     }
 
-    It "[qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='false']: should generate 10 uuid4(s) on the console but not the file" {
-        $TestResult = qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='false' | Out-String
-        QLogicaePesterTest_Log -Text $TestResult
+    Context ("[qlogicae_cli uuid4 generate --output-file-path] test cases") {
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='']: should terminate") {
+            $testResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='' | Out-String
+        
+            $testResult | Should -BeNullOrEmpty
+        }
 
-        $TestResult | Should -Not -BeNullOrEmpty
-    }
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file") {
+            $testResult = qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path=$global:QLogicaePesterTest_DotQLogicaeCLICustomOutputFilePath | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
 
-    It "[qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='true']: should generate 10 uuid4(s) on the console and file" {
-        $TestResult = qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='true' | Out-String
-        QLogicaePesterTest_Log -Text $TestResult
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+            Test-Path $global:QLogicaePesterTest_DotQLogicaeCLICustomOutputFilePath | Should -BeFalse
+        }
 
-        $TestResult | Should -Not -BeNullOrEmpty
-        Test-Path $UUID4GenerateOutputFile | Should -BeTrue
-    }
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and default file") {
+            $testResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
 
-    It "[qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='false']: should generate 10 uuid4(s) on the console" {
-        $TestResult = qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='false' | Out-String
-        QLogicaePesterTest_Log -Text $TestResult
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+            Test-Path $defaultOutputFile | Should -BeTrue
+        }
 
-        $TestResult | Should -Not -BeNullOrEmpty
-    }
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file") {
+            $testResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path=$global:QLogicaePesterTest_DotQLogicaeCLICustomOutputFilePath | Out-String
+            QLogicaePesterTest_ConsoleLog -Text $testResult
 
-    It "[qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='true'']: should generate 10 uuid4(s) on the console" {
-        $TestResult = qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='true' | Out-String
-        QLogicaePesterTest_Log -Text $TestResult
-
-        $TestResult | Should -Not -BeNullOrEmpty
+            (QLogicaePesterTest_GetLineCount -Text $testResult) | Should -BeGreaterOrEqual 1
+            (QLogicaePesterTest_GetUUIDv4Count -Text $testResult) | Should -Be 1
+            $testResult | Should -Not -BeNullOrEmpty
+            Test-Path $global:QLogicaePesterTest_DotQLogicaeCLICustomOutputFilePath | Should -BeTrue
+        }
     }
 }

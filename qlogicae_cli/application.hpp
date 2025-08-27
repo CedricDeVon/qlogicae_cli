@@ -189,22 +189,10 @@ namespace QLogicaeCLI
 
 /*
 
-qlogicae_cli string
-qlogicae_cli string --help
-qlogicae_cli string generate
-qlogicae_cli string generate --help
-qlogicae_cli string generate --length='-1'
-qlogicae_cli string generate --length='0'
-qlogicae_cli string generate --length='1'
-qlogicae_cli string generate --length='10'
-qlogicae_cli string generate --length='10' --count='-1'
-qlogicae_cli string generate --length='10' --count='0'
-qlogicae_cli string generate --length='10' --count='1'
-qlogicae_cli string generate --length='10' --count='10'
-qlogicae_cli string generate --length='10' --count='10' --character-set='a'
-qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF'
+
 qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='false'
 qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='true'
+
 qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
 qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
 
