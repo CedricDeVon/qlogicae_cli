@@ -1,5 +1,5 @@
 
-Describe "[qlogicae_cli uuid4] test suite" {
+Describe "'qlogicae_cli uuid4' test suite" {
     BeforeAll {
         . $PSScriptRoot/qlogicae/configurations/imports.ps1
 
@@ -16,59 +16,59 @@ Describe "[qlogicae_cli uuid4] test suite" {
         }
     }
 
-    It "[qlogicae_cli uuid4]: should be null or empty" {
+    It "'qlogicae_cli uuid4' test: should be null or empty" {
         $TestResult = qlogicae_cli uuid4 | Out-String        
 
         $TestResult | Should -BeNullOrEmpty
     }
 
-    It "[qlogicae_cli uuid4 --help]: should not be null or empty" {
+    It "'qlogicae_cli uuid4 --help' test: should not be null or empty" {
         $TestResult = qlogicae_cli uuid4 --help | Out-String
         QLogicaePesterTest_Log -Text $TestResult
 
         $TestResult | Should -Not -BeNullOrEmpty
     }
     
-    It "[qlogicae_cli uuid4 generate --count='-10'']: should terminate" {
+    It "'qlogicae_cli uuid4 generate --count='-10' test: should terminate" {
         $TestResult = qlogicae_cli uuid4 generate --count='-10' | Out-String
         
         $TestResult | Should -BeNullOrEmpty
     }
 
-    It "[qlogicae_cli uuid4 generate --count='-1']: should terminate" {
+    It "'qlogicae_cli uuid4 generate --count='-1' test: should terminate" {
         $TestResult = qlogicae_cli uuid4 generate --count='-1' | Out-String
         
         $TestResult | Should -BeNullOrEmpty
     }
 
-    It "[qlogicae_cli uuid4 generate --count='0']: should terminate" {
+    It "'qlogicae_cli uuid4 generate --count='0' test: should terminate" {
         $TestResult = qlogicae_cli uuid4 generate --count='0' | Out-String
         
         $TestResult | Should -BeNullOrEmpty
     }
 
-    It "[qlogicae_cli uuid4 generate]: should generate 1 uuid4(s) on the console" {
+    It "'qlogicae_cli uuid4 generate test: should generate 1 uuid4(s) on the console" {
         $TestResult = qlogicae_cli uuid4 generate | Out-String
         QLogicaePesterTest_Log -Text $TestResult
 
         $TestResult | Should -Not -BeNullOrEmpty
     }
 
-    It "[qlogicae_cli uuid4 generate --count='10']: should generate 10 uuid4(s) on the console" {
+    It "'qlogicae_cli uuid4 generate --count='10' test: should generate 10 uuid4(s) on the console" {
         $TestResult = qlogicae_cli uuid4 generate --count='10' | Out-String
         QLogicaePesterTest_Log -Text $TestResult
 
         $TestResult | Should -Not -BeNullOrEmpty
     }
 
-    It "[qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='false']: should generate 10 uuid4(s) on the console but not the file" {
+    It "'qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='false'' test: should generate 10 uuid4(s) on the console but not the file" {
         $TestResult = qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='false' | Out-String
         QLogicaePesterTest_Log -Text $TestResult
 
         $TestResult | Should -Not -BeNullOrEmpty
     }
 
-    It "[qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='true']: should generate 10 uuid4(s) on the console and file" {
+    It "'qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='true'' test: should generate 10 uuid4(s) on the console and file" {
         $TestResult = qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='true' | Out-String
         QLogicaePesterTest_Log -Text $TestResult
 
@@ -76,14 +76,14 @@ Describe "[qlogicae_cli uuid4] test suite" {
         Test-Path $UUID4GenerateOutputFile | Should -BeTrue
     }
 
-    It "[qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='false']: should generate 10 uuid4(s) on the console" {
+    It "'qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='false' test: should generate 10 uuid4(s) on the console" {
         $TestResult = qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='false' | Out-String
         QLogicaePesterTest_Log -Text $TestResult
 
         $TestResult | Should -Not -BeNullOrEmpty
     }
 
-    It "[qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='true'']: should generate 10 uuid4(s) on the console" {
+    It "'qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='true' test: should generate 10 uuid4(s) on the console" {
         $TestResult = qlogicae_cli uuid4 generate --count='10' --is-verbose-logging-enabled='true' | Out-String
         QLogicaePesterTest_Log -Text $TestResult
 

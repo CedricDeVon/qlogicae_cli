@@ -189,22 +189,6 @@ namespace QLogicaeCLI
 
 /*
 
-
-qlogicae_cli --help
-
-qlogicae_cli uuid4
-qlogicae_cli uuid4 --help
-qlogicae_cli uuid4 generate
-qlogicae_cli uuid4 generate --help
-qlogicae_cli uuid4 generate --count='-1'
-qlogicae_cli uuid4 generate --count='0'
-qlogicae_cli uuid4 generate --count='1'
-qlogicae_cli uuid4 generate --count='10'
-qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='false'
-qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='true'
-qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
-qlogicae_cli uuid4 generate --count='10' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
-
 qlogicae_cli string
 qlogicae_cli string --help
 qlogicae_cli string generate

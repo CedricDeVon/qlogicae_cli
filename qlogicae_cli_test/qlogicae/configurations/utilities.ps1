@@ -1,6 +1,6 @@
 $global:QLogicaePesterTest_IsLoggingEnabled = $true
 
-function Log {
+function QLogicaePesterTest_Log {
     param(
         [AllowEmptyString()][AllowNull()][string]$Text,
         [bool]$IsEnabled = $global:QLogicaePesterTest_IsLoggingEnabled
