@@ -1,22 +1,36 @@
 
+</br>
+
+<div style="width: 100%; display: flex; justify-content: center;">
+    <image src="./assets/application-icon.ico" style="width: 128px;">
+</div>
+
+</br>
+
+
 
 <div style="text-align: center;">
-    <h1>[Project Name]</h1>
-    <p style="font-style: italic;">[Project Memo]</p>
-    <div style="margin: 32px 64px;">
+  <h1>[Project Name]</h1>
+  <p style="font-style: italic;">[Project Memo]</p>
+  <div style="margin: 32px 64px;">
     
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue)
-![GTest](https://img.shields.io/badge/GTest-100%25-brightgreen)
-![License: MIT](https://img.shields.io/badge/License-MIT-green)
-![Windows](https://img.shields.io/badge/Platform-Windows-blue)
-![iOS](https://img.shields.io/badge/Platform-IOS-lightgrey)
-![Linux](https://img.shields.io/badge/Platform-Linux-yellow)
-![x86](https://img.shields.io/badge/Architecture-x86-blue)
-![x64](https://img.shields.io/badge/Architecture-x64-blue)
-![C](https://img.shields.io/badge/Language-C-blue)
-![C++](https://img.shields.io/badge/Language-C++-blue)
-![x64 MASM](https://img.shields.io/badge/Language-MASM-lightgrey)
-    
+![GTest](https://img.shields.io/badge/GTest-NA-red)
+![Windows](https://img.shields.io/badge/OS-Windows-blue)
+
+![x64](https://img.shields.io/badge/Architecture-x64-yellow)
+![C](https://img.shields.io/badge/Language-C-white)
+![C++](https://img.shields.io/badge/Language-C++-white)
+
+<!--
+![License: MIT](https://img.shields.io/badge/License-MIT-white)
+![iOS](https://img.shields.io/badge/OS-IOS-white)
+![Linux](https://img.shields.io/badge/OS-Linux-yellow)
+
+![x86](https://img.shields.io/badge/Architecture-x86-yellow)
+![x64 MASM](https://img.shields.io/badge/Language-MASM-white)
+![x86 MASM](https://img.shields.io/badge/Language-MASM-white)
+
 [![Gmail](https://img.shields.io/badge/Gmail-Visit-red)](sample@gmail.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Visit-white?logo=github)](https://github.com/sample)
 [![Facebook](https://img.shields.io/badge/Facebook-Visit-blue?logo=facebook)](https://facebook.com/sample)
@@ -24,8 +38,9 @@
 [![Discord](https://img.shields.io/badge/Discord-Visit-indigo?logo=discord)](https://discord.gg/sample)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Visit-blue)](https://linkedin.com/in/sample)
 [![Slack](https://img.shields.io/badge/Slack-Visit-green?logo=slack)](https://sample.slack.com)
-[![Website](https://img.shields.io/badge/Website-Visit-lightgrey)](https://sample.com)
-    </div>
+[![Website](https://img.shields.io/badge/Website-Visit-white)](https://sample.com)
+-->
+  </div>
 </div>
 
 </br>
@@ -46,7 +61,6 @@
       <li><a href="#getting-started-installation">Installation</a></li>
       <li><a href="#getting-started-setup">Setup</a></li>
       <li><a href="#getting-started-usage-examples">Usage Examples</a></li>
-      <li><a href="#getting-started-quality-assurance">Quality Assurance</a></li>
     </ul>
   </li>
   <li><a href="./documentation/index.md">Extended Documentation</a></li>  
@@ -114,12 +128,6 @@
 <p>
   [Description]
 </p>
-<h3 id="getting-started-quality-assurance">
-  🧪 Quality Assurance
-</h3>
-<p>
-  [Description]
-</p>
 
 </br>
 
@@ -129,10 +137,8 @@
   🗂️ Extended Documentation
 </h2>
 <p>
-  [Describe introduction]
+  [Description]
 </p>
 <a href="./documentation/index.md">🔗 Navigate To Page</a>
 
 </br>
-
-

@@ -118,8 +118,8 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
-xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
+      <Command>xcopy "$(ProjectDir)qlogicae/configurations" "$(OutDir)qlogicae/configurations" /E /Y /I
+xcopy "$(ProjectDir)qlogicae/assets" "$(OutDir)qlogicae/assets" /E /Y /I
 
 </Command>
     </PostBuildEvent>
@@ -142,8 +142,8 @@ xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
-xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I
+      <Command>xcopy "$(ProjectDir)qlogicae/configurations" "$(OutDir)qlogicae/configurations" /E /Y /I
+xcopy "$(ProjectDir)qlogicae/assets" "$(OutDir)qlogicae/assets" /E /Y /I
 
 </Command>
     </PostBuildEvent>

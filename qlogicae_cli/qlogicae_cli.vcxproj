@@ -123,9 +123,10 @@
       <AdditionalLibraryDirectories>../$(IntDir)qlogicae_core</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
-xcopy "$(ProjectDir)templates" "$(OutDir)templates" /E /Y /I
-xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I</Command>
+      <Command>xcopy "$(ProjectDir)qlogicae\configurations" "$(OutDir)qlogicae\configurations" /E /Y /I
+xcopy "$(ProjectDir)qlogicae\templates" "$(OutDir)qlogicae\templates" /E /Y /I
+xcopy "$(ProjectDir)qlogicae\assets" "$(OutDir)qlogicae\assets" /E /Y /I
+xcopy "$(ProjectDir)qlogicae\scripts" "$(OutDir)qlogicae\scripts" /E /Y /I</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,9 +150,10 @@ xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I</Command>
       <AdditionalLibraryDirectories>../$(IntDir)qlogicae_core</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)configurations" "$(OutDir)configurations" /E /Y /I
-xcopy "$(ProjectDir)templates" "$(OutDir)templates" /E /Y /I
-xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I</Command>
+      <Command>xcopy "$(ProjectDir)qlogicae\configurations" "$(OutDir)qlogicae\configurations" /E /Y /I
+xcopy "$(ProjectDir)qlogicae\templates" "$(OutDir)qlogicae\templates" /E /Y /I
+xcopy "$(ProjectDir)qlogicae\assets" "$(OutDir)qlogicae\assets" /E /Y /I
+xcopy "$(ProjectDir)qlogicae\scripts" "$(OutDir)qlogicae\scripts" /E /Y /I</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -168,67 +170,34 @@ xcopy "$(ProjectDir)assets" "$(OutDir)assets" /E /Y /I</Command>
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="configurations\qlogicae.public.json">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-    <None Include="scripts\qlogicae.inno_run.ps1">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
+    <None Include="qlogicae\cli\tests\test.ps1" />
+    <None Include="qlogicae\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
+    <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
+    <None Include="qlogicae\templates\vs2022\application\qlogicae.private.json" />
+    <None Include="qlogicae\templates\vs2022\application\qlogicae\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\templates\vs2022\application\qlogicae\scripts\qlogicae.inno_run.ps1" />
+    <None Include="qlogicae\templates\vs2022\application\qlogicae\scripts\qlogicae.inno_setup.iss" />
     <None Include="resource.aps" />
     <None Include="resources.aps" />
-    <None Include="scripts\qlogicae.inno_setup.iss">
+    <None Include="templates\generic_documentation\qlogicae.gitignore">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="templates\generic_application_documentation\qlogicae.gitignore">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-    <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.inno_run.ps1">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.inno_setup.iss">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.private.json">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.public.json">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\qlogicae.application.ico">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Image>
-    <Image Include="templates\generic_cpp_application\qlogicae.application.ico">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Image>
+    <Image Include="qlogicae\assets\qlogicae.application.ico" />
+    <Image Include="qlogicae\templates\vs2022\application\qlogicae\assets\qlogicae.application.ico" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="LICENSE.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </CopyFileToFolders>
-    <Text Include="templates\generic_cpp_application\LICENSE.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
+    <Text Include="qlogicae\templates\vs2022\application\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

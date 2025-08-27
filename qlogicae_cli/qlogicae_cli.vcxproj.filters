@@ -48,10 +48,15 @@
   <ItemGroup>
     <None Include="resource.aps" />
     <None Include="resources.aps" />
-    <None Include="templates\generic_application_documentation\qlogicae.gitignore" />
-    <None Include="scripts\qlogicae.inno_run.ps1" />
-    <None Include="configurations\qlogicae.public.json" />
-    <None Include="scripts\qlogicae.inno_setup.iss" />
+    <None Include="templates\generic_documentation\qlogicae.gitignore" />
+    <None Include="qlogicae\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
+    <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
+    <None Include="qlogicae\templates\vs2022\application\qlogicae\scripts\qlogicae.inno_run.ps1" />
+    <None Include="qlogicae\templates\vs2022\application\qlogicae\scripts\qlogicae.inno_setup.iss" />
+    <None Include="qlogicae\templates\vs2022\application\qlogicae.private.json" />
+    <None Include="qlogicae\templates\vs2022\application\qlogicae\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\cli\tests\test.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources.rc">
@@ -59,21 +64,17 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="templates\generic_cpp_application\qlogicae.application.ico">
+    <Image Include="qlogicae\assets\qlogicae.application.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\qlogicae.application.ico">
+    <Image Include="qlogicae\templates\vs2022\application\qlogicae\assets\qlogicae.application.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="templates\generic_cpp_application\LICENSE.txt" />
+    <Text Include="qlogicae\templates\vs2022\application\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.inno_run.ps1" />
-    <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.inno_setup.iss" />
-    <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.private.json" />
-    <CopyFileToFolders Include="templates\generic_cpp_application\qlogicae.public.json" />
     <CopyFileToFolders Include="LICENSE.txt" />
   </ItemGroup>
 </Project>

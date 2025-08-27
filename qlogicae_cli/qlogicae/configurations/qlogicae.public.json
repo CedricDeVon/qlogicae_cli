@@ -28,7 +28,7 @@
         },
         "file": {
             "is_enabled": false,
-            "output_directory_path": "./logs"
+            "output_directory_path": ".qlogicae/logs"
         }
     }
 }
