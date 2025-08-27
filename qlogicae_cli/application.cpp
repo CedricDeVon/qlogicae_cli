@@ -33,7 +33,16 @@ namespace QLogicaeCLI
 				return false;
 			}
 
-			CLI11_PARSE(_application, argc, argv);
+			try
+			{
+				_application.parse(argc, argv);				   
+			}
+			catch (const CLI::ParseError& exception)
+			{
+				_application.exit(exception);
+
+				return false;                     
+			}
 
 			return true;
 		}
@@ -122,7 +131,7 @@ namespace QLogicaeCLI
 				->add_option("--count",
 					_generate_uuid4_input_1,
 					"The number of generated uuid4s")
-				->check(CLI::NonNegativeNumber)
+				->check(CLI::PositiveNumber)
 				->default_val(1);
 			uuid4_generate_command
 				->add_option("--output-file-path",
@@ -147,11 +156,6 @@ namespace QLogicaeCLI
 					try
 					{
 						_log_running_timestamp_async(_generate_uuid4_input_3);
-
-						if (!_generate_uuid4_input_1)
-						{
-							return false;
-						}
 
 						std::string output_string = "";
 						size_t index_1, size_a = _generate_uuid4_input_1 - 1;
