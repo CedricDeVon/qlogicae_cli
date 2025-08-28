@@ -1,267 +1,238 @@
 
-<#
 Describe "[qlogicae_cli string] test suite" {
     BeforeAll {
         . $PSScriptRoot/imports.ps1
 
-        $outputFile = ".qlogicae/cli/string-generate.txt"
-
-        if (Test-Path $outputFile) {
-            Remove-Item $outputFile
-        }
+        $QLogicaeKmandInstance.BeforeAllTestsSetup()
     }
 
     AfterAll {
-        if (Test-Path $outputFile) {
-            Remove-Item $outputFile
+        $QLogicaeKmandInstance.AfterAllTestsSetup()
+    }
+
+    Context ("[qlogicae_cli string] test cases") {
+        It "[qlogicae_cli string]: should terminate" {
+            $TestResult = qlogicae_cli string | Out-String        
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string --help]: should not be null or empty" {
+            $TestResult = qlogicae_cli string --help | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
         }
     }
 
+    Context ("[qlogicae_cli string generate] test cases") {
+        It "[qlogicae_cli string generate]: generate instance(s) based on default parameters" {
+            $TestResult = qlogicae_cli string generate | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetStringLength($TestResult)) | Should -BeGreaterOrEqual 10
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
 
+        It "[qlogicae_cli string generate --help]: should not be null or empty" {
+            $TestResult = qlogicae_cli string generate --help | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
-
-    It "[qlogicae_cli string]: should be null or empty" {
-        $testResult = qlogicae_cli string | Out-String        
-
-        $testResult | Should -BeNullOrEmpty
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
     }
 
-    It "[qlogicae_cli string --help]: should not be null or empty" {
-        $testResult = qlogicae_cli string --help | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
+    Context ("[qlogicae_cli string generate --length] test cases") {
+        It "[qlogicae_cli string generate --length='']: should terminate" {
+            $TestResult = qlogicae_cli string generate --length='' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
 
-        $testResult | Should -Not -BeNullOrEmpty
+        It "[qlogicae_cli string generate --length='-10']: should terminate" {
+            $TestResult = qlogicae_cli string generate --length='-10' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --length='-1']: should terminate" {
+            $TestResult = qlogicae_cli string generate --length='-1' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --length='0']: should terminate" {
+            $TestResult = qlogicae_cli string generate --length='0' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --length='1']: should contain 1 characters" {
+            $TestResult = qlogicae_cli string generate --length='1' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetStringLength($TestResult)) | Should -BeGreaterOrEqual 1
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --length='10']: should contain 10 characters" {
+            $TestResult = qlogicae_cli string generate --length='10' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetStringLength($TestResult)) | Should -BeGreaterOrEqual 10
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
     }
+
+    Context ("[qlogicae_cli string generate --count] test cases") {
+        It "[qlogicae_cli string generate --count='']: should terminate" {
+            $TestResult = qlogicae_cli string generate --count='' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --count='-10']: should terminate" {
+            $TestResult = qlogicae_cli string generate --count='-10' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --count='-1']: should terminate" {
+            $TestResult = qlogicae_cli string generate --count='-1' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --count='0']: should terminate" {
+            $TestResult = qlogicae_cli string generate --count='0' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --count='1']: should generate 10 instance(s)" {
+            $TestResult = qlogicae_cli string generate --count='1' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --count='10']: should generate 10 instance(s)" {
+            $TestResult = qlogicae_cli string generate --count='10' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 10
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context ("[qlogicae_cli string generate --character-set] test cases") {
+        It "[qlogicae_cli string generate --character-set='']: should terminate" {
+            $TestResult = qlogicae_cli string generate --character-set='' | Out-String
+        
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --character-set='a']: should generate 1 instance(s) with character(s) 'a'" {
+            $TestResult = qlogicae_cli string generate --character-set='a' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "[a]")) | Should -BeGreaterOrEqual 1
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --character-set='ab']: should generate 1 instance(s) with character(s) 'ab'" {
+            $TestResult = qlogicae_cli string generate --character-set='ab' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "[ab]")) | Should -BeGreaterOrEqual 1
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --character-set='aba']: should generate 1 instance(s) with character(s) 'aaaaabaaaaa'" {
+            $TestResult = qlogicae_cli string generate --character-set='aaaaabaaaaa' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "[ab]")) | Should -BeGreaterOrEqual 1
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --character-set='0123456789ABCDEF']: should generate 1 instance(s) with character(s) '0123456789ABCDEF'" {
+            $TestResult = qlogicae_cli string generate --character-set='0123456789ABCDEF' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "[0123456789ABCDEF]")) | Should -BeGreaterOrEqual 1
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context ("[qlogicae_cli string generate --is-verbose-logging-enabled] test cases") {
+        It "[qlogicae_cli string generate --is-verbose-logging-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli string generate --is-verbose-logging-enabled='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
     
+        It "[qlogicae_cli string generate --is-verbose-logging-enabled='false']: should generate 1 instance(s)" {
+            $TestResult = qlogicae_cli string generate --is-verbose-logging-enabled='false' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
 
+        It "[qlogicae_cli string generate --is-verbose-logging-enabled='true']: should generate 1 instance(s)" {
+            $TestResult = qlogicae_cli string generate --is-verbose-logging-enabled='true' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
-
-    It "[qlogicae_cli string generate]: generate instance(s) based on default parameters" {
-        $testResult = qlogicae_cli string generate | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 3
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
     }
 
-    It "[qlogicae_cli string generate --help]: should not be null or empty" {
-        $testResult = qlogicae_cli string generate --help | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
+    Context ("[qlogicae_cli string generate --is-file-output-enabled] test cases") {
+        It "[qlogicae_cli string generate --is-file-output-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli string generate --is-file-output-enabled='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }    
+    
+        It "[qlogicae_cli string generate --is-file-output-enabled='false']: should should generate 1 instance(s) on the console but not the file" {
+            $TestResult = qlogicae_cli string generate --is-file-output-enabled='false' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
-        $testResult | Should -Not -BeNullOrEmpty
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli string generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and file" {
+            $TestResult = qlogicae_cli string generate --is-file-output-enabled='true' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+            Test-Path ".qlogicae/cli/string-generate.txt" | Should -BeTrue
+        }        
     }
 
+    Context ("[qlogicae_cli string generate --is-file-output-enabled --output-file-path] test cases") {
+        It "[qlogicae_cli string generate --is-file-output-enabled='true' --output-file-path='']: should terminate" {
+            $TestResult = qlogicae_cli string generate --is-file-output-enabled='true' --output-file-path='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }    
+    
+        It "[qlogicae_cli string generate --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and file" {
+            $TestResult = qlogicae_cli string generate --is-file-output-enabled='true' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQlogicaeCLICustomOutputFilePath)" | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
-
-
-    It "[qlogicae_cli string generate --length='']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='-10']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='-10' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='-1']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='-1' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='0']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='0' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='1']: should generate 1 instance(s)" {
-        $testResult = qlogicae_cli string generate --length='1' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10']: should generate 10 instance(s)" {
-        $testResult = qlogicae_cli string generate --length='10' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-
-
-
-    It "[qlogicae_cli string generate --length='10' --count='']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='10' --count='' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='-10']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='10' --count='-10' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='-1']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='10' --count='-1' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='0']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='10' --count='0' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='1']: should generate 10 instance(s) with 1 character length" {
-        $testResult = qlogicae_cli string generate --length='10' --count='1' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='10']: should generate 10 instance(s) with 10 character length" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-
-
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='']: should terminate" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='a']: should generate 10 instance(s) with character(s) 'a'" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='a' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='ab']: should generate 10 instance(s) with character(s) 'ab'" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='ab' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='aba']: should generate 10 instance(s) with character(s) 'ab'" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='aba' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF']: should generate 10 instance(s) with character(s) '0123456789ABCDEF'" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-
-
-
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-verbose-logging-enabled='false']: should generate 10 instance(s) with character(s) '0123456789ABCDEF'" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-verbose-logging-enabled='false' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-verbose-logging-enabled='true']: should generate 10 instance(s) with character(s) '0123456789ABCDEF'" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-verbose-logging-enabled='true' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-
-
-
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='false']: should generate instance(s) on the console but not the file" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='false' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='true']: should generate instance(s) on the console and file" {
-        $testResult = qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='true' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-
-        Test-Path $outputFile | Should -BeTrue
+            $TestResult | Should -Not -BeNullOrEmpty
+            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQlogicaeCLICustomOutputFilePath)" | Should -BeTrue
+        }        
     }
 }
-
-    It "[qlogicae_cli string generate --count='-1']: should terminate" {
-        $testResult = qlogicae_cli string generate --count='-1' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --count='0']: should terminate" {
-        $testResult = qlogicae_cli string generate --count='0' | Out-String
-        
-        $testResult | Should -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate]: should generate 1 string(s) on the console" {
-        $testResult = qlogicae_cli string generate | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --count='10']: should generate 10 string(s) on the console" {
-        $testResult = qlogicae_cli string generate --count='10' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --count='10' --is-file-output-enabled='false']: should generate 10 string(s) on the console but not the file" {
-        $testResult = qlogicae_cli string generate --count='10' --is-file-output-enabled='false' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --count='10' --is-file-output-enabled='true']: should generate 10 string(s) on the console and file" {
-        $testResult = qlogicae_cli string generate --count='10' --is-file-output-enabled='true' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-        Test-Path $outputFile | Should -BeTrue
-    }
-
-    It "[qlogicae_cli string generate --count='10' --is-verbose-logging-enabled='false']: should generate 10 string(s) on the console" {
-        $testResult = qlogicae_cli string generate --count='10' --is-verbose-logging-enabled='false' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-
-    It "[qlogicae_cli string generate --count='10' --is-verbose-logging-enabled='true'']: should generate 10 string(s) on the console" {
-        $testResult = qlogicae_cli string generate --count='10' --is-verbose-logging-enabled='true' | Out-String
-        QLogicaePesterTest_ConsoleLog -Text $testResult
-
-        $testResult | Should -Not -BeNullOrEmpty
-    }
-#>

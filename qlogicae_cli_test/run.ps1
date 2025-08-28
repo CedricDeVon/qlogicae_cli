@@ -4,6 +4,6 @@ param(
 
 . $PSScriptRoot/imports.ps1
 
-QLogicaeKmand_GlobalTestsSetup -ScriptPath $ScriptPath
+$QlogicaeKmandInstance.Setup($ScriptPath)
 
-Invoke-Pester -Configuration $QLogicaeKmand_Configurations.PesterConfigurations *>&1 | Tee-Object -FilePath $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterConsoleFile
+Invoke-Pester -Configuration $QlogicaeKmandInstance.Configurations.PesterConfigurations *>&1 | Tee-Object -FilePath $QlogicaeKmandInstance.Configurations.DotQLogicaeLogsPesterConsoleFile
