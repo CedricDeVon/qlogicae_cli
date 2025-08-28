@@ -1,5 +1,5 @@
 
-Describe "[qlogicae_cli string] test suite" {
+Describe "[qlogicae_cli environment] test suite" {
     BeforeAll {
         . $PSScriptRoot/imports.ps1
 
