@@ -147,13 +147,13 @@ Describe "[qlogicae_cli uuid4] test suite" {
         }
 
         It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file") {
-            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQlogicaeCLICustomOutputFilePath)" | Out-String
+            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetUUIDv4Count($TestResult)) | Should -Be 1
             $TestResult | Should -Not -BeNullOrEmpty
-            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQlogicaeCLICustomOutputFilePath)" | Should -BeFalse
+            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Should -BeFalse
         }
 
         It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and default file") {
@@ -167,13 +167,13 @@ Describe "[qlogicae_cli uuid4] test suite" {
         }
 
         It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file") {
-            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQlogicaeCLICustomOutputFilePath)" | Out-String
+            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
             
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetUUIDv4Count($TestResult)) | Should -Be 1
             $TestResult | Should -Not -BeNullOrEmpty
-            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQlogicaeCLICustomOutputFilePath)" | Should -BeTrue
+            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Should -BeTrue
         }
     }
 }

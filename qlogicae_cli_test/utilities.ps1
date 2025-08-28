@@ -10,14 +10,16 @@ class QLogicaeKmand {
 
             UUID4Pattern = "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
 
-            DotQlogicaeFolderPath = ".qlogicae"
-            DotQlogicaeCLIFolderPath = ".qlogicae/cli"
-            DotQlogicaeLogsFolderPath = ".qlogicae/logs"
-            DotQlogicaeLogsPesterFolderPath = ".qlogicae/logs/pester"
-            DotQlogicaeLogsPesterJUnitFile = ".qlogicae/logs/pester/junit.xml"          
-            DotQlogicaeLogsPesterConsoleFile = ".qlogicae/logs/pester/console.txt"
-            DotQlogicaeCLICustomOutputFilePath = ".qlogicae/cli/custom_output.txt"
-            DotQlogicaeCLIDefaultOutputFilePath = ".qlogicae/cli/default_output.txt"
+            DotQLogicaeFolderPath = ".qlogicae"
+            DotQLogicaeCLIFolderPath = ".qlogicae/cli"
+            DotQLogicaeLogsFolderPath = ".qlogicae/logs"
+            DotQLogicaeLogsPesterFolderPath = ".qlogicae/logs/pester"
+            DotQLogicaeLogsPesterJUnitFile = ".qlogicae/logs/pester/junit.xml"          
+            DotQLogicaeLogsPesterConsoleFile = ".qlogicae/logs/pester/console.txt"
+            DotQLogicaeCLICustomOutputFilePath = ".qlogicae/cli/custom_output.txt"
+            DotQLogicaeCLIDefaultOutputFilePath = ".qlogicae/cli/default_output.txt"
+            QLogicaeConfigurationsPublicFilePath = "qlogicae/configurations/qlogicae.public.json"
+            QLogicaePrivateFilePath = "qlogicae.private.json"
 
             PesterConfigurations = @{
                 Run = @{
@@ -56,20 +58,20 @@ class QLogicaeKmand {
     }
 
     [void] Setup([string]$ScriptPath) {
-        $this.CreateFolderTree($this.Configurations.DotQlogicaeFolderPath)
-        $this.CreateFolderTree($this.Configurations.DotQlogicaeCLIFolderPath)
-        $this.CreateFolderTree($this.Configurations.DotQlogicaeLogsFolderPath)
-        $this.CreateFolderTree($this.Configurations.DotQlogicaeLogsPesterFolderPath)
+        $this.CreateFolderTree($this.Configurations.DotQLogicaeFolderPath)
+        $this.CreateFolderTree($this.Configurations.DotQLogicaeCLIFolderPath)
+        $this.CreateFolderTree($this.Configurations.DotQLogicaeLogsFolderPath)
+        $this.CreateFolderTree($this.Configurations.DotQLogicaeLogsPesterFolderPath)
 
         $this.Configurations.PesterConfigurations.Run.Path = $ScriptPath
     }
 
     [void] BeforeAllTestsSetup() {
-        $this.ClearFolder($this.Configurations.DotQlogicaeCLIFolderPath)
+        $this.ClearFolder($this.Configurations.DotQLogicaeCLIFolderPath)
     }
 
     [void] AfterAllTestsSetup() {
-        $this.ClearFolder($this.Configurations.DotQlogicaeCLIFolderPath)
+        $this.ClearFolder($this.Configurations.DotQLogicaeCLIFolderPath)
     }
 
     [void] ClearFolder([string]$Path) {

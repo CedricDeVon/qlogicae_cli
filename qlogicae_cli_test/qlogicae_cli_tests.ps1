@@ -1,11 +1,11 @@
 
 Describe "[qlogicae_cli] test suite" {
     BeforeAll {
-        $QlogicaeKmandInstance.BeforeAllTestsSetup()
+        $QLogicaeKmandInstance.BeforeAllTestsSetup()
     }
 
     AfterAll {
-        $QlogicaeKmandInstance.AfterAllTestsSetup()
+        $QLogicaeKmandInstance.AfterAllTestsSetup()
     }
 
     Context "[qlogicae_cli] test cases" {
@@ -17,7 +17,7 @@ Describe "[qlogicae_cli] test suite" {
 
         It "[qlogicae_cli --help]: should not be null or empty" {
             $TestResult = qlogicae_cli --help | Out-String
-            $QlogicaeKmandInstance.ConsoleLog($TestResult)
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
         }

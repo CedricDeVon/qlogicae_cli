@@ -259,19 +259,6 @@ qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQh
 qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
 qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
 
-qlogicae_cli environment
-qlogicae_cli environment --help
-qlogicae_cli environment set
-qlogicae_cli environment set --help
-qlogicae_cli environment set --type=''
-qlogicae_cli environment set --type='a'
-qlogicae_cli environment set --type='development'
-qlogicae_cli environment set --type='debug'
-qlogicae_cli environment set --type='test'
-qlogicae_cli environment set --type='release'
-qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='false'
-qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='true'
-
 qlogicae_cli windows-registry
 qlogicae_cli windows-registry --help
 qlogicae_cli windows-registry hkcu

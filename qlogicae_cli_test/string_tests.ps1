@@ -228,11 +228,11 @@ Describe "[qlogicae_cli string] test suite" {
         }    
     
         It "[qlogicae_cli string generate --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and file" {
-            $TestResult = qlogicae_cli string generate --is-file-output-enabled='true' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQlogicaeCLICustomOutputFilePath)" | Out-String
+            $TestResult = qlogicae_cli string generate --is-file-output-enabled='true' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQlogicaeCLICustomOutputFilePath)" | Should -BeTrue
+            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Should -BeTrue
         }        
     }
 }
