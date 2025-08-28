@@ -147,7 +147,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_generate_uuid4_input_3,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["uuid4-generate"] = std::make_pair(
 				uuid4_generate_command,
@@ -254,7 +254,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_generate_string_input_5,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["string-generate"] = std::make_pair(
 				string_generate_command,
@@ -367,7 +367,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_encrypt_xchacha20poly1305_input_5,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["xchacha20poly1305-encrypt"] = std::make_pair(
 				xchacha20poly1305_encrypt_command,
@@ -454,7 +454,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_decrypt_xchacha20poly1305_input_5,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["xchacha20poly1305-decrypt"] = std::make_pair(
 				xchacha20poly1305_decrypt_command,
@@ -543,7 +543,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_hash_argon2id_input_3,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["argon2id-hash"] = std::make_pair(
 				argon2id_encrypt_command,
@@ -619,7 +619,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_verify_argon2id_input_4,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["argon2id-verify"] = std::make_pair(
 				argon2id_verify_command,
@@ -701,7 +701,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_run_scripts_input_3,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["scripts-run"] = std::make_pair(
 				scripts_run_command,
@@ -792,7 +792,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_set_environment_input_3,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["environment-set"] = std::make_pair(
 				environment_set_command,
@@ -869,7 +869,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_view_windows_registry_input_2,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["windows-registry-hkcu-get"] = std::make_pair(
 				windows_registry_hkcu_get_command,
@@ -928,7 +928,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_setup_windows_registry_input_5,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["windows-registry-hkcu-set"] = std::make_pair(
 				windows_registry_hkcu_set_command,
@@ -1100,7 +1100,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_setup_installer_input_3,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["deploy-inno-setup"] = std::make_pair(
 				deploy_inno_setup_command,
@@ -1284,7 +1284,7 @@ namespace QLogicaeCLI
 				->add_option("--is-verbose-logging-enabled",
 					_setup_vs2022_application_input_2,
 					"Enables or disables verbose console logging")
-				->default_val(true);
+				->default_val(false);
 
 			_commands["setup-vs2022-application"] = std::make_pair(
 				setup_vs2022_application_command,

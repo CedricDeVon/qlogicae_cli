@@ -190,11 +190,6 @@ namespace QLogicaeCLI
 /*
 
 
-qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='false'
-qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='true'
-
-qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
-qlogicae_cli string generate --length='10' --count='10' --character-set='0123456789ABCDEF' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
 
 qlogicae_cli xchacha20poly1305
 qlogicae_cli xchacha20poly1305 --help
@@ -264,16 +259,6 @@ qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQh
 qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
 qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
 
-qlogicae_cli scripts
-qlogicae_cli scripts --help
-qlogicae_cli scripts run
-qlogicae_cli scripts run --help
-qlogicae_cli scripts run --names='
-qlogicae_cli scripts run --names='sample'
-qlogicae_cli scripts run --names='sample,nonexistent'
-qlogicae_cli scripts run --names='sample' --is-verbose-logging-enabled='false'
-qlogicae_cli scripts run --names='sample' --is-verbose-logging-enabled='true'
-
 qlogicae_cli environment
 qlogicae_cli environment --help
 qlogicae_cli environment set
@@ -328,6 +313,7 @@ qlogicae_cli setup vs2022 application
 qlogicae_cli setup vs2022 application --help
 qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='false'
 qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='true'
+
 
 
 
