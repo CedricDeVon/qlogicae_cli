@@ -1,4 +1,8 @@
 
+if (-not $QLogicaeKmand_Configurations) {
+    $QLogicaeKmand_Configurations = [pscustomobject]@{}
+}
+
 $script:QLogicaeKmand_Configurations = [PSCustomObject]@{
     IsConsoleLoggingEnabled = $true
     IsFileLoggingEnabled    = $true
@@ -17,14 +21,39 @@ $script:QLogicaeKmand_Configurations = [PSCustomObject]@{
     DotQlogicaeCLIDefaultOutputFilePath = ".qlogicae/cli/default_output.txt"
 
     IsConfigurationsSetup = $false
-    PesterConfigurations = [PesterConfiguration]::Default
+    PesterConfigurations = @{
+        Run = @{
+            Path = $PSScriptRoot
+        }
+        Output = @{
+            Verbosity = 'Detailed'
+        }
+        Should = @{
+            ErrorAction = 'Continue'
+        }
+        CodeCoverage = @{
+            Enabled = $true
+            OutputFormat = 'CoverageGutters'
+            OutputPath = $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterCoverageFile
+        }
+        Debug = @{
+            ShowFullErrors = $true
+            WriteDebugMessages = $true
+        }
+        TestResult = @{
+            Enabled = $true
+            OutputPath = $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterNUnitFile
+            OutputFormat = "NUnitXml"
+        }
+    }
 }
+
 
 function QLogicaeKmand_GlobalTestsSetup {
     param(
         [string]$ScriptPath
     )
-
+    
     if ($QLogicaeKmand_Configurations.IsConfigurationsSetup) {
         Write-Information "Exception at QLogicaeKmand_GlobalTestsSetup: Already Called"
 
@@ -37,23 +66,7 @@ function QLogicaeKmand_GlobalTestsSetup {
     QLogicaeKmand_CreateFolderTree -Path $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterFolderPath
 
     $QLogicaeKmand_Configurations.PesterConfigurations.Run.Path = $ScriptPath
-    $QLogicaeKmand_Configurations.PesterConfigurations.Output.Verbosity = 'Diagnostic'
-    $QLogicaeKmand_Configurations.PesterConfigurations.Should.ErrorAction = 'Continue'
-
-    $QLogicaeKmand_Configurations.PesterConfigurations.CodeCoverage.Enabled = $true
-    if ($QLogicaeKmand_Configurations.PesterConfigurations.CodeCoverage.Enabled) {
-        $QLogicaeKmand_Configurations.PesterConfigurations.CodeCoverage.OutputPath = $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterCoverageFile
-    }
-
-    $QLogicaeKmand_Configurations.PesterConfigurations.Debug.ShowFullErrors = $true
-    $QLogicaeKmand_Configurations.PesterConfigurations.Debug.WriteDebugMessages = $true
-
-    if ($QLogicaeKmand_Configurations.IsFileLoggingEnabled) {
-        $QLogicaeKmand_Configurations.PesterConfigurations.TestResult.Enabled = $true
-        $QLogicaeKmand_Configurations.PesterConfigurations.TestResult.OutputPath  = $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterNUnitFile
-        $QLogicaeKmand_Configurations.PesterConfigurations.TestResult.OutputFormat = "NUnitXml"
-    }
-
+    
     $QLogicaeKmand_Configurations.IsConfigurationsSetup = $true
 }
 

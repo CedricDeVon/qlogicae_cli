@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="23" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-08-28" time="17:14:00">
+  <environment clr-version="4.0.30319.42000" user-domain="USER" cwd="C:\Users\User1\source\repos\qlogicae_cli\qlogicae_cli_test" platform="Microsoft Windows 11 Home Single Language|C:\Windows|\Device\Harddisk0\Partition3" machine-name="USER" nunit-version="2.5.8.0" os-version="10.0.22000" user="User1" />
+  <culture-info current-culture="en-PH" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="2.1056" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\User1\source\repos\qlogicae_cli\qlogicae_cli_test\all_tests.ps1" executed="True" result="Success" success="True" time="2.1056" asserts="0" description="C:\Users\User1\source\repos\qlogicae_cli\qlogicae_cli_test\all_tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[qlogicae_cli] test suite" executed="True" result="Success" success="True" time="0.2426" asserts="0" description="[qlogicae_cli] test suite">
+            <results>
+              <test-suite type="TestFixture" name="[qlogicae_cli] test suite.[qlogicae_cli] test cases" executed="True" result="Success" success="True" time="0.2192" asserts="0" description="[qlogicae_cli] test suite.[qlogicae_cli] test cases">
+                <results>
+                  <test-case description="[qlogicae_cli]: should be null or empty" name="[qlogicae_cli] test suite.[qlogicae_cli] test cases.[qlogicae_cli]: should be null or empty" time="0.1608" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli --help]: should not be null or empty" name="[qlogicae_cli] test suite.[qlogicae_cli] test cases.[qlogicae_cli --help]: should not be null or empty" time="0.0419" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="[qlogicae_cli about] test suite" executed="True" result="Success" success="True" time="0.3361" asserts="0" description="[qlogicae_cli about] test suite">
+            <results>
+              <test-suite type="TestFixture" name="[qlogicae_cli about] test suite.[qlogicae_cli about] test cases" executed="True" result="Success" success="True" time="0.0659" asserts="0" description="[qlogicae_cli about] test suite.[qlogicae_cli about] test cases">
+                <results>
+                  <test-case description="[qlogicae_cli about]: should not be null or empty" name="[qlogicae_cli about] test suite.[qlogicae_cli about] test cases.[qlogicae_cli about]: should not be null or empty" time="0.0464" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="[qlogicae_cli uuid4] test suite" executed="True" result="Success" success="True" time="2.0005" asserts="0" description="[qlogicae_cli uuid4] test suite">
+            <results>
+              <test-suite type="TestFixture" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4] test cases" executed="True" result="Success" success="True" time="0.2072" asserts="0" description="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4] test cases">
+                <results>
+                  <test-case description="[qlogicae_cli uuid4]: terminate" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4] test cases.[qlogicae_cli uuid4]: terminate" time="0.0439" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 --help]: should not be null or empty" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4] test cases.[qlogicae_cli uuid4 --help]: should not be null or empty" time="0.1447" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate (defaults)] test cases" executed="True" result="Success" success="True" time="0.3059" asserts="0" description="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate (defaults)] test cases">
+                <results>
+                  <test-case description="[qlogicae_cli uuid4 generate]: generate instance(s) based on default parameters" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate (defaults)] test cases.[qlogicae_cli uuid4 generate]: generate instance(s) based on default parameters" time="0.0449" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --help]: should not be null or empty" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate (defaults)] test cases.[qlogicae_cli uuid4 generate --help]: should not be null or empty" time="0.0364" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --count] test cases" executed="True" result="Success" success="True" time="0.6952" asserts="0" description="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --count] test cases">
+                <results>
+                  <test-case description="[qlogicae_cli uuid4 generate --count='']: should terminate" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --count] test cases.[qlogicae_cli uuid4 generate --count='']: should terminate" time="0.0559" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --count='-10']: should terminate" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --count] test cases.[qlogicae_cli uuid4 generate --count='-10']: should terminate" time="0.0348" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --count='-1']: should terminate" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --count] test cases.[qlogicae_cli uuid4 generate --count='-1']: should terminate" time="0.0419" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --count='0']: should terminate" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --count] test cases.[qlogicae_cli uuid4 generate --count='0']: should terminate" time="0.0394" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --count='1']: should generate 1 instance(s) on the console" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --count] test cases.[qlogicae_cli uuid4 generate --count='1']: should generate 1 instance(s) on the console" time="0.1585" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --count='10']: should generate 10 instance(s) on the console" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --count] test cases.[qlogicae_cli uuid4 generate --count='10']: should generate 10 instance(s) on the console" time="0.0409" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-file-output-enabled] test cases" executed="True" result="Success" success="True" time="0.9517" asserts="0" description="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-file-output-enabled] test cases">
+                <results>
+                  <test-case description="[qlogicae_cli uuid4 generate --is-file-output-enabled='']: should terminate" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-file-output-enabled] test cases.[qlogicae_cli uuid4 generate --is-file-output-enabled='']: should terminate" time="0.1537" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --is-file-output-enabled='false']: should generate 1 instance(s) on the console but not the file" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-file-output-enabled] test cases.[qlogicae_cli uuid4 generate --is-file-output-enabled='false']: should generate 1 instance(s) on the console but not the file" time="0.043" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and file" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-file-output-enabled] test cases.[qlogicae_cli uuid4 generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and file" time="0.0427" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-verbose-logging-enabled] test cases" executed="True" result="Success" success="True" time="1.3154" asserts="0" description="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-verbose-logging-enabled] test cases">
+                <results>
+                  <test-case description="[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='']: should terminate" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-verbose-logging-enabled] test cases.[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='']: should terminate" time="0.1517" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='false']: should generate 1 instance(s) on the console" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-verbose-logging-enabled] test cases.[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='false']: should generate 1 instance(s) on the console" time="0.1508" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='true']: should generate 1 instance(s) on the console" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --is-verbose-logging-enabled] test cases.[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='true']: should generate 1 instance(s) on the console" time="0.0419" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --output-file-path] test cases" executed="True" result="Success" success="True" time="1.6415" asserts="0" description="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --output-file-path] test cases">
+                <results>
+                  <test-case description="[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='']: should terminate" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --output-file-path] test cases.[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='']: should terminate" time="0.0518" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --output-file-path] test cases.[qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file" time="0.0468" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and default file" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --output-file-path] test cases.[qlogicae_cli uuid4 generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and default file" time="0.0489" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file" name="[qlogicae_cli uuid4] test suite.[qlogicae_cli uuid4 generate --output-file-path] test cases.[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file" time="0.1503" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
