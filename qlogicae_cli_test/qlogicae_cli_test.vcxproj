@@ -117,14 +117,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="qlogicae\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
+    <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
+    <None Include="run.ps1" />
     <None Include="string_tests.ps1" />
     <None Include="about_tests.ps1" />
     <None Include="qlogicae_cli_tests.ps1" />
     <None Include="all_tests.ps1" />
-    <None Include="qlogicae\configurations\utilities.ps1" />
+    <None Include="utilities.ps1" />
     <None Include="packages.config" />
-    <None Include="qlogicae\configurations\imports.ps1" />
+    <None Include="imports.ps1" />
     <None Include="uuid4_tests.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="qlogicae\assets\qlogicae.application.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

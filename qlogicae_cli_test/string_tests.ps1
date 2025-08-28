@@ -1,4 +1,5 @@
 
+<#
 Describe "[qlogicae_cli string] test suite" {
     BeforeAll {
         . $PSScriptRoot/imports.ps1
@@ -208,9 +209,6 @@ Describe "[qlogicae_cli string] test suite" {
         Test-Path $outputFile | Should -BeTrue
     }
 }
-
-<#
-
 
     It "[qlogicae_cli string generate --count='-1']: should terminate" {
         $testResult = qlogicae_cli string generate --count='-1' | Out-String

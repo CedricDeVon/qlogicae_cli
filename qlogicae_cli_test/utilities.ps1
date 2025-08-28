@@ -1,73 +1,75 @@
-$global:QLogicaePesterTest_IsConsoleLoggingEnabled = $true
-$global:QLogicaePesterTest_IsFileLoggingEnabled = $true
 
-$global:QLogicaePesterTest_UUID4Pattern = "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+$script:QLogicaeKmand_Configurations = [PSCustomObject]@{
+    IsConsoleLoggingEnabled = $true
+    IsFileLoggingEnabled    = $true
 
-$global:QLogicaePesterTest_DotQLogicaeFolderPath = ".qlogicae"
-$global:QLogicaePesterTest_DotQLogicaeCLIFolderPath = ".qlogicae/cli"
-$global:QLogicaePesterTest_DotQLogicaeLogsFolderPath = ".qlogicae/logs"
-$global:QLogicaePesterTest_DotQLogicaeLogsPesterFolderPath = ".qlogicae/logs/pester"
-$global:QLogicaePesterTest_DotQLogicaeLogsPesterJUnitFile = ".qlogicae/logs/pester/junit.xml"
-$global:QLogicaePesterTest_DotQLogicaeLogsPesterNUnitFile = ".qlogicae/logs/pester/nunit.xml"
-$global:QLogicaePesterTest_DotQLogicaeLogsPesterCoverageFile = ".qlogicae/logs/pester/coverage.xml"
-$global:QLogicaePesterTest_DotQLogicaeLogsPesterConsoleFile = ".qlogicae/logs/pester/console.txt"
+    UUID4Pattern = "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
 
-$global:QLogicaePesterTest_DotQLogicaeCLICustomOutputFilePath = ".qlogicae/cli/custom_output.txt"
-$global:QLogicaePesterTest_DotQLogicaeCLIDefaultOutputFilePath = ".qlogicae/cli/default_output.txt"
+    DotQlogicaeFolderPath = ".qlogicae"
+    DotQlogicaeCLIFolderPath = ".qlogicae/cli"
+    DotQlogicaeLogsFolderPath = ".qlogicae/logs"
+    DotQlogicaeLogsPesterFolderPath = ".qlogicae/logs/pester"
+    DotQlogicaeLogsPesterJUnitFile = ".qlogicae/logs/pester/junit.xml"
+    DotQlogicaeLogsPesterNUnitFile = ".qlogicae/logs/pester/nunit.xml"
+    DotQlogicaeLogsPesterCoverageFile = ".qlogicae/logs/pester/coverage.xml"
+    DotQlogicaeLogsPesterConsoleFile = ".qlogicae/logs/pester/console.txt"
+    DotQlogicaeCLICustomOutputFilePath = ".qlogicae/cli/custom_output.txt"
+    DotQlogicaeCLIDefaultOutputFilePath = ".qlogicae/cli/default_output.txt"
 
-$global:QLogicaePesterTest_IsConfigurationsSetup = $false
-$global:QLogicaePesterTest_Configurations = [PesterConfiguration]::Default
+    IsConfigurationsSetup = $false
+    PesterConfigurations = [PesterConfiguration]::Default
+}
 
-function QLogicaePesterTest_GlobalTestsSetup {    
+function QLogicaeKmand_GlobalTestsSetup {
     param(
         [string]$ScriptPath
     )
 
-    if ($global:QLogicaePesterTest_IsConfigurationsSetup) {
-        Write-Host "Exception at QLogicaePesterTest_GlobalTestsSetup: Already Called"
+    if ($QLogicaeKmand_Configurations.IsConfigurationsSetup) {
+        Write-Information "Exception at QLogicaeKmand_GlobalTestsSetup: Already Called"
 
         Exit 1
     }
 
-    QLogicaePesterTest_CreateFolderTree -Path $global:QLogicaePesterTest_DotQLogicaeFolderPath
-    QLogicaePesterTest_CreateFolderTree -Path $global:QLogicaePesterTest_DotQLogicaeCLIFolderPath
-    QLogicaePesterTest_CreateFolderTree -Path $global:QLogicaePesterTest_DotQLogicaeLogsFolderPath
-    QLogicaePesterTest_CreateFolderTree -Path $global:QLogicaePesterTest_DotQLogicaeLogsPesterFolderPath
+    QLogicaeKmand_CreateFolderTree -Path $QLogicaeKmand_Configurations.DotQLogicaeFolderPath
+    QLogicaeKmand_CreateFolderTree -Path $QLogicaeKmand_Configurations.DotQLogicaeCLIFolderPath
+    QLogicaeKmand_CreateFolderTree -Path $QLogicaeKmand_Configurations.DotQLogicaeLogsFolderPath
+    QLogicaeKmand_CreateFolderTree -Path $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterFolderPath
 
-    $global:QLogicaePesterTest_Configurations.Run.Path = $ScriptPath
-    $global:QLogicaePesterTest_Configurations.Output.Verbosity = 'Diagnostic'
-    $global:QLogicaePesterTest_Configurations.Should.ErrorAction = 'Continue'
+    $QLogicaeKmand_Configurations.PesterConfigurations.Run.Path = $ScriptPath
+    $QLogicaeKmand_Configurations.PesterConfigurations.Output.Verbosity = 'Diagnostic'
+    $QLogicaeKmand_Configurations.PesterConfigurations.Should.ErrorAction = 'Continue'
 
-    $global:QLogicaePesterTest_Configurations.CodeCoverage.Enabled = $true
-    if ($global:QLogicaePesterTest_Configurations.CodeCoverage.Enabled) {
-        $global:QLogicaePesterTest_Configurations.CodeCoverage.OutputPath = $global:QLogicaePesterTest_DotQLogicaeLogsPesterCoverageFile
-    }    
-    
-    $global:QLogicaePesterTest_Configurations.Debug.ShowFullErrors = $true
-    $global:QLogicaePesterTest_Configurations.Debug.WriteDebugMessages = $true
-
-    if ($global:QLogicaePesterTest_IsFileLoggingEnabled) {
-        $global:QLogicaePesterTest_Configurations.TestResult.Enabled = $true
-        $global:QLogicaePesterTest_Configurations.TestResult.OutputPath  = $global:QLogicaePesterTest_DotQLogicaeLogsPesterNUnitFile
-        $global:QLogicaePesterTest_Configurations.TestResult.OutputFormat = "NUnitXml"        
+    $QLogicaeKmand_Configurations.PesterConfigurations.CodeCoverage.Enabled = $true
+    if ($QLogicaeKmand_Configurations.PesterConfigurations.CodeCoverage.Enabled) {
+        $QLogicaeKmand_Configurations.PesterConfigurations.CodeCoverage.OutputPath = $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterCoverageFile
     }
 
-    $global:QLogicaePesterTest_IsConfigurationsSetup = $true
+    $QLogicaeKmand_Configurations.PesterConfigurations.Debug.ShowFullErrors = $true
+    $QLogicaeKmand_Configurations.PesterConfigurations.Debug.WriteDebugMessages = $true
+
+    if ($QLogicaeKmand_Configurations.IsFileLoggingEnabled) {
+        $QLogicaeKmand_Configurations.PesterConfigurations.TestResult.Enabled = $true
+        $QLogicaeKmand_Configurations.PesterConfigurations.TestResult.OutputPath  = $QLogicaeKmand_Configurations.DotQLogicaeLogsPesterNUnitFile
+        $QLogicaeKmand_Configurations.PesterConfigurations.TestResult.OutputFormat = "NUnitXml"
+    }
+
+    $QLogicaeKmand_Configurations.IsConfigurationsSetup = $true
 }
 
-function QLogicaePesterTest_BeforeAllTestsSetup {    
-    QLogicaePesterTest_ClearFolder -Path $global:QLogicaePesterTest_DotQLogicaeCLIFolderPath
+function QLogicaeKmand_BeforeAllTestsSetup {
+    QLogicaeKmand_ClearFolder -Path $QLogicaeKmand_Configurations.DotQLogicaeCLIFolderPath
 }
 
-function QLogicaePesterTest_AfterAllTestsSetup {
-    QLogicaePesterTest_ClearFolder -Path $global:QLogicaePesterTest_DotQLogicaeCLIFolderPath
+function QLogicaeKmand_AfterAllTestsSetup {
+    QLogicaeKmand_ClearFolder -Path $QLogicaeKmand_Configurations.DotQLogicaeCLIFolderPath
 }
 
-function QLogicaePesterTest_ClearFolder {
+function QLogicaeKmand_ClearFolder {
     param(
         [AllowEmptyString()][AllowNull()][string]$Path
     )
-    
+
     if ([string]::IsNullOrEmpty($Path)) {
         return
     }
@@ -75,7 +77,7 @@ function QLogicaePesterTest_ClearFolder {
     Get-ChildItem -Path $Path -Recurse -Force | Remove-Item -Recurse -Force
 }
 
-function QLogicaePesterTest_CreateFolderTree {
+function QLogicaeKmand_CreateFolderTree {
     param(
         [AllowEmptyString()][AllowNull()][string]$Path
     )
@@ -89,11 +91,10 @@ function QLogicaePesterTest_CreateFolderTree {
     }
 }
 
-function QLogicaePesterTest_ConsoleLog {
+function QLogicaeKmand_ConsoleLog {
     param(
         [AllowEmptyString()][AllowNull()][string]$Text,
-        [bool]$IsConsoleLoggingEnabled = $global:QLogicaePesterTest_IsConsoleLoggingEnabled,
-        [bool]$IsFileLoggingEnabled = $global:QLogicaePesterTest_IsFileLoggingEnabled
+        [bool]$IsConsoleLoggingEnabled = $QLogicaeKmand_Configurations.IsConsoleLoggingEnabled
     )
 
     if ([string]::IsNullOrEmpty($Text)) {
@@ -101,38 +102,146 @@ function QLogicaePesterTest_ConsoleLog {
     }
 
     if ($IsConsoleLoggingEnabled) {
-        Write-Host $Text
+        Write-Information $Text
     }
 }
 
-function QLogicaePesterTest_GetLineCount {
+function QLogicaeKmand_GetLineCount {
     param(
         [AllowEmptyString()][AllowNull()][string]$Text
     )
-    
+
     $lines = ($Text -split "`r?`n") | Where-Object { $_.Trim() -ne "" }
 
     return $lines.Count
 }
 
-function QLogicaePesterTest_GetPatternMatchCount {
+function QLogicaeKmand_GetPatternMatchCount {
     param(
         [AllowEmptyString()][AllowNull()][string]$Text,
         [AllowEmptyString()][AllowNull()][string]$Pattern,
         [AllowEmptyString()][AllowNull()][string]$CaseSensitivity = 'IgnoreCase'
     )
 
-    $matches = [regex]::Matches($Text, $Pattern, $CaseSensitivity)
-    
-    return $matches.Count
+    $regexMatches = [regex]::Matches($Text, $Pattern, $CaseSensitivity)
+
+    return $regexMatches.Count
 }
 
-function QLogicaePesterTest_GetUUIDv4Count {
+function QLogicaeKmand_GetUUIDv4Count {
     param(
         [AllowEmptyString()][AllowNull()][string]$Text
     )
 
-    $matches = [regex]::Matches($Text, $global:QLogicaePesterTest_UUID4Pattern, 'IgnoreCase')
-    
-    return $matches.Count
+    $regexMatches = [regex]::Matches($Text, $QLogicaeKmand_Configurations.UUID4Pattern, 'IgnoreCase')
+
+    return $regexMatches.Count
 }
+
+<#
+class QLogicaeKmand {
+    hidden static [QLogicaeKmand]$Instance
+    static [PSCustomObject]$Configurations = [PSCustomObject]@{
+        IsConsoleLoggingEnabled = $true
+        IsFileLoggingEnabled    = $true
+
+        UUID4Pattern = "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+
+        DotQlogicaeFolderPath = ".qlogicae"
+        DotQlogicaeCLIFolderPath = ".qlogicae/cli"
+        DotQlogicaeLogsFolderPath = ".qlogicae/logs"
+        DotQlogicaeLogsPesterFolderPath = ".qlogicae/logs/pester"
+        DotQlogicaeLogsPesterJUnitFile = ".qlogicae/logs/pester/junit.xml"
+        DotQlogicaeLogsPesterNUnitFile = ".qlogicae/logs/pester/nunit.xml"
+        DotQlogicaeLogsPesterCoverageFile = ".qlogicae/logs/pester/coverage.xml"
+        DotQlogicaeLogsPesterConsoleFile = ".qlogicae/logs/pester/console.txt"
+        DotQlogicaeCLICustomOutputFilePath = ".qlogicae/cli/custom_output.txt"
+        DotQlogicaeCLIDefaultOutputFilePath = ".qlogicae/cli/default_output.txt"
+
+        IsConfigurationsSetup = $false
+        PesterConfigurations = [PesterConfiguration]::Default
+    }
+
+    hidden QLogicaeKmand() {}
+
+    static [QLogicaeKmand] GetInstance() {
+        if (-not [QLogicaeKmand]::Instance) {
+            [QLogicaeKmand]::Instance = [QLogicaeKmand]::new()
+        }
+        return [QLogicaeKmand]::Instance
+    }
+
+    [void] SayHello() {
+        Write-Host "Hello from QLogicaeKmand!"
+    }
+
+    [void] GlobalTestsSetup([string]$ScriptPath) {
+        if ([QLogicaeKmand]::Configurations.IsConfigurationsSetup) {
+            Write-Information "Exception at GlobalTestsSetup: Already Called"
+            Exit 1
+        }
+
+        $this.CreateFolderTree([QLogicaeKmand]::Configurations.DotQlogicaeFolderPath)
+        $this.CreateFolderTree([QLogicaeKmand]::Configurations.DotQlogicaeCLIFolderPath)
+        $this.CreateFolderTree([QLogicaeKmand]::Configurations.DotQlogicaeLogsFolderPath)
+        $this.CreateFolderTree([QLogicaeKmand]::Configurations.DotQlogicaeLogsPesterFolderPath)
+
+        $cfg = [QLogicaeKmand]::Configurations
+        $cfg.PesterConfigurations.Run.Path = $ScriptPath
+        $cfg.PesterConfigurations.Output.Verbosity = 'Diagnostic'
+        $cfg.PesterConfigurations.Should.ErrorAction = 'Continue'
+        $cfg.PesterConfigurations.CodeCoverage.Enabled = $true
+        $cfg.PesterConfigurations.CodeCoverage.OutputPath = $cfg.DotQlogicaeLogsPesterCoverageFile
+        $cfg.PesterConfigurations.Debug.ShowFullErrors = $true
+        $cfg.PesterConfigurations.Debug.WriteDebugMessages = $true
+
+        if ($cfg.IsFileLoggingEnabled) {
+            $cfg.PesterConfigurations.TestResult.Enabled = $true
+            $cfg.PesterConfigurations.TestResult.OutputPath = $cfg.DotQlogicaeLogsPesterNUnitFile
+            $cfg.PesterConfigurations.TestResult.OutputFormat = "NUnitXml"
+        }
+
+        $cfg.IsConfigurationsSetup = $true
+    }
+
+    [void] BeforeAllTestsSetup() {
+        $this.ClearFolder([QLogicaeKmand]::Configurations.DotQlogicaeCLIFolderPath)
+    }
+
+    [void] AfterAllTestsSetup() {
+        $this.ClearFolder([QLogicaeKmand]::Configurations.DotQlogicaeCLIFolderPath)
+    }
+
+    [void] ClearFolder([string]$Path) {
+        if ([string]::IsNullOrEmpty($Path)) { return }
+        Get-ChildItem -Path $Path -Recurse -Force | Remove-Item -Recurse -Force
+    }
+
+    [void] CreateFolderTree([string]$Path) {
+        if ([string]::IsNullOrEmpty($Path)) { return }
+        if (-not (Test-Path $Path)) { New-Item -Path $Path -ItemType Directory -Force | Out-Null }
+    }
+
+    [void] ConsoleLog([string]$Text, [bool]$IsConsoleLoggingEnabled = $null) {
+        if ([string]::IsNullOrEmpty($Text)) { return }
+        if ($null -eq $IsConsoleLoggingEnabled) { $IsConsoleLoggingEnabled = [QLogicaeKmand]::Configurations.IsConsoleLoggingEnabled }
+        if ($IsConsoleLoggingEnabled) { Write-Information $Text }
+    }
+
+    [int] GetLineCount([string]$Text) {
+        return ($Text -split "`r?`n" | Where-Object { $_.Trim() -ne "" }).Count
+    }
+
+    [int] GetPatternMatchCount([string]$Text, [string]$Pattern, [string]$CaseSensitivity = 'IgnoreCase') {
+        return ([regex]::Matches($Text, $Pattern, $CaseSensitivity)).Count
+    }
+
+    [int] GetUUIDv4Count([string]$Text) {
+        return ([regex]::Matches($Text, [QLogicaeKmand]::Configurations.UUID4Pattern, 'IgnoreCase')).Count
+    }
+}
+
+$script:QlogicaeKmandInstance = [QLogicaeKmand]::GetInstance()
+
+
+#>
