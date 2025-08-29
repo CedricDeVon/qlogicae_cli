@@ -1,6 +1,8 @@
 
 Describe "[qlogicae_cli] test suite" {
     BeforeAll {
+        . $PSScriptRoot/imports.ps1
+
         $QLogicaeKmandInstance.BeforeAllTestsSetup()
     }
 

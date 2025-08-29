@@ -199,7 +199,6 @@ qlogicae_cli windows-registry hkcu get --sub-path=''
 qlogicae_cli windows-registry hkcu get --sub-path='a'
 qlogicae_cli windows-registry hkcu get --sub-path='HelloWorld' --is-verbose-logging-enabled='false'
 qlogicae_cli windows-registry hkcu get --sub-path='HelloWorld' --is-verbose-logging-enabled='true'
-
 qlogicae_cli windows-registry
 qlogicae_cli windows-registry --help
 qlogicae_cli windows-registry hkcu

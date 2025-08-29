@@ -52,6 +52,7 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "argon2id")) | Should -Be 1
         }
 
@@ -60,6 +61,7 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "argon2id")) | Should -Be 1
         }
     }
@@ -76,7 +78,9 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "argon2id")) | Should -Be 1
+            Test-Path ".qlogicae/cli/argon2id-hash.txt" | Should -BeFalse
         }
 
         It "[qlogicae_cli argon2id hash --text='@Password_1234' --is-file-output-enabled='true']: should generate an argon2id hash" {
@@ -84,7 +88,27 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "argon2id")) | Should -Be 1
+            Test-Path ".qlogicae/cli/argon2id-hash.txt" | Should -BeTrue
+        }
+    }
+
+    Context "[qlogicae_cli argon2id hash --text --is-file-output-enabled --output-file-path] test cases" {
+        It "[qlogicae_cli argon2id hash --text='@Password_1234' --is-file-output-enabled='true' --output-file-path='']: terminate" {
+            $TestResult = qlogicae_cli argon2id hash --text='@Password_1234' --is-file-output-enabled='true' --output-file-path='' | Out-String
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli argon2id hash --text='@Password_1234' --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate an argon2id hash" {
+            $TestResult = qlogicae_cli argon2id hash --text='@Password_1234' --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "argon2id")) | Should -Be 1
+            Test-Path ".qlogicae/cli/custom_output.txt" | Should -BeTrue
         }
     }
     
@@ -100,6 +124,7 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "argon2id")) | Should -Be 1
         }
 
@@ -108,6 +133,7 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -BeGreaterOrEqual 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "argon2id")) | Should -Be 1
         }
     }
@@ -146,8 +172,8 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli argon2id verify --hash='' --key='@Password_1234']: should terminate" {
-            $TestResult = qlogicae_cli argon2id verify --hash='' --key='@Password_1234' | Out-String
+        It "[qlogicae_cli argon2id verify --key='@Password_1234' --hash='']: should terminate" {
+            $TestResult = qlogicae_cli argon2id verify --key='@Password_1234' --hash='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
@@ -158,11 +184,12 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
         
-        It "[qlogicae_cli argon2id verify --hash='a' --key='@Password_1234']: should return 'fals'e" {
+        It "[qlogicae_cli argon2id verify --hash='a' --key='@Password_1234']: should return 'false'" {
             $TestResult = qlogicae_cli argon2id verify --hash='a' --key='@Password_1234' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "false")) | Should -Be 1
         }
 
@@ -171,6 +198,7 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "false")) | Should -Be 1
         }
 
@@ -179,6 +207,7 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "true")) | Should -Be 1
         }
     }
@@ -190,11 +219,12 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$fMWT7AlyfqZ5BwsUcAU/+A$cJZ3S6DSFAt1AP2VRX64OTtWUu+WqUQ3wkAEifcGr7k' --key='@Password_1234' --is-verbose-logging-enabled='false']: should return 'true'" {
+        It "[qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$fMWT7AlyfqZ5BwsUcAU/+A$cJZ3S6DSFAt1AP2VRX64OTtWUu+WqUQ3wkAEifcGr7k' --key='@Password_1234' --is-verbose-logging-enabled='false']: should return 'false'" {
             $TestResult = qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$fMWT7AlyfqZ5BwsUcAU/+A$cJZ3S6DSFAt1AP2VRX64OTtWUu+WqUQ3wkAEifcGr7k' --key='@Password_1234' --is-verbose-logging-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "true")) | Should -Be 1
         }
 
@@ -203,6 +233,7 @@ Describe "[qlogicae_cli argon2id] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -BeGreaterOrEqual 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "true")) | Should -Be 1
         }
     }

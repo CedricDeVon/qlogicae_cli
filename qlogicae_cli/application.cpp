@@ -352,7 +352,7 @@ namespace QLogicaeCLI
 				->add_option("--nonce",
 					_encrypt_xchacha20poly1305_input_3,
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
-				->required();
+				->default_val(QLogicaeCore::GENERATOR.random_string(32, Constants::ALPHA_NUMERIC_CHARACTERS));
 			xchacha20poly1305_encrypt_command
 				->add_option("--output-file-path",
 					_encrypt_xchacha20poly1305_input_4,
@@ -377,10 +377,13 @@ namespace QLogicaeCLI
 					{
 						_log_running_timestamp_async(_encrypt_xchacha20poly1305_input_5);
 
-						if (_encrypt_xchacha20poly1305_input_3.empty())
+						if (!_encrypt_xchacha20poly1305_input_1.length() ||
+							!_encrypt_xchacha20poly1305_input_2.length() ||
+							!_encrypt_xchacha20poly1305_input_3.length())
 						{
-							_encrypt_xchacha20poly1305_input_3 =
-								QLogicaeCore::GENERATOR.random_string(24);
+							_log_complete_timestamp_async(_encrypt_xchacha20poly1305_input_5);
+
+							return false;
 						}
 
 						std::string output_string =
@@ -463,6 +466,15 @@ namespace QLogicaeCLI
 					try
 					{
 						_log_running_timestamp_async(_decrypt_xchacha20poly1305_input_5);
+
+						if (!_decrypt_xchacha20poly1305_input_1.length() ||
+							!_decrypt_xchacha20poly1305_input_2.length() ||
+							!_decrypt_xchacha20poly1305_input_3.length())
+						{
+							_log_complete_timestamp_async(_decrypt_xchacha20poly1305_input_5);
+
+							return false;
+						}
 
 						std::string output_string =
 							cryptographer_1.reverse(
@@ -553,6 +565,13 @@ namespace QLogicaeCLI
 					{
 						_log_running_timestamp_async(_hash_argon2id_input_3);
 
+						if (!_hash_argon2id_input_1.length())
+						{
+							_log_complete_timestamp_async(_hash_argon2id_input_3);
+
+							return false;
+						}
+
 						std::string output_string =
 							cryptographer_3.transform(
 								_hash_argon2id_input_1
@@ -625,6 +644,14 @@ namespace QLogicaeCLI
 					try
 					{
 						_log_running_timestamp_async(_verify_argon2id_input_4);
+
+						if (!_verify_argon2id_input_1.length() ||
+							!_verify_argon2id_input_2.length())
+						{
+							_log_complete_timestamp_async(_verify_argon2id_input_4);
+
+							return false;
+						}
 
 						std::string output_string =
 							(cryptographer_3.reverse(

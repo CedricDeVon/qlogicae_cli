@@ -41,7 +41,7 @@ Describe "[qlogicae_cli string] test suite" {
     }
 
     Context "[qlogicae_cli scripts run --names] test cases" {
-        It "[qlogicae_cli scripts run --names]: should terminate" {
+        It "[qlogicae_cli scripts run --names='']: should terminate" {
             $TestResult = qlogicae_cli scripts run --names='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty

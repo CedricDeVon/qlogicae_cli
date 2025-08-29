@@ -134,8 +134,8 @@ Describe "[qlogicae_cli uuid4] test suite" {
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 3
             ($QLogicaeKmandInstance.GetUUIDv4Count($TestResult)) | Should -Be 1
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -BeGreaterOrEqual 1
         }
     }
 

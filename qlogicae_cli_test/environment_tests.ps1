@@ -53,28 +53,28 @@ Describe "[qlogicae_cli environment] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli environment set --type='development']: should set 'environment.selected' propery to 'development'" {
+        It "[qlogicae_cli environment set --type='development']: should set 'environment.selected' property to 'development'" {
             $TestResult = qlogicae_cli environment set --type='development' | Out-String           
 
             $TestResult | Should -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
         }
 
-        It "[qlogicae_cli environment set --type='debug']: should set 'environment.selected' propery to 'debug'" {
+        It "[qlogicae_cli environment set --type='debug']: should set 'environment.selected' property to 'debug'" {
             $TestResult = qlogicae_cli environment set --type='debug' | Out-String           
 
             $TestResult | Should -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "debug"
         }
 
-        It "[qlogicae_cli environment set --type='test']: should set 'environment.selected' propery to 'test'" {
+        It "[qlogicae_cli environment set --type='test']: should set 'environment.selected' property to 'test'" {
             $TestResult = qlogicae_cli environment set --type='test' | Out-String           
 
             $TestResult | Should -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "test"
         }
 
-        It "[qlogicae_cli environment set --type='release']: should set 'environment.selected' propery to 'release'" {
+        It "[qlogicae_cli environment set --type='release']: should set 'environment.selected' property to 'release'" {
             $TestResult = qlogicae_cli environment set --type='release' | Out-String           
 
             $TestResult | Should -BeNullOrEmpty
@@ -89,14 +89,14 @@ Describe "[qlogicae_cli environment] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='false']: should set 'environment.selected' propery to 'development'" {
+        It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='false']: should set 'environment.selected' property to 'development'" {
             $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='false' | Out-String           
 
             $TestResult | Should -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
         }
 
-        It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='true']: should set 'environment.selected' propery to 'development'" {
+        It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='true']: should set 'environment.selected' property to 'development'" {
             $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='true' | Out-String           
 
             $TestResult | Should -Not -BeNullOrEmpty

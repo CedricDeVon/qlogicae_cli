@@ -47,14 +47,14 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --text='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --text='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --key='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --key='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
@@ -63,6 +63,13 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
             $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
+        }
+        
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234']: should not be null or empty" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
         }
 
         It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt']: should not be null or empty" {
@@ -142,14 +149,14 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --cipher='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --cipher='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --key='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --key='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
@@ -177,7 +184,7 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
             Test-Path ".qlogicae/cli/xchacha20poly1305-decrypt.txt" | Should -BeFalse
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false']: should return '@_The Quick Brown Fox Jumps Over The Lazy Dog' on the console except the file" {
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false']: should return '@_The Quick Brown Fox Jumps Over The Lazy Dog' on the console but not the file" {
             $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
