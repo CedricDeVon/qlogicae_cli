@@ -188,32 +188,6 @@ namespace QLogicaeCLI
 }
 
 /*
-
-qlogicae_cli windows-registry
-qlogicae_cli windows-registry --help
-qlogicae_cli windows-registry hkcu
-qlogicae_cli windows-registry hkcu --help
-qlogicae_cli windows-registry hkcu get
-qlogicae_cli windows-registry hkcu get --help
-qlogicae_cli windows-registry hkcu get --sub-path=''
-qlogicae_cli windows-registry hkcu get --sub-path='a'
-qlogicae_cli windows-registry hkcu get --sub-path='HelloWorld' --is-verbose-logging-enabled='false'
-qlogicae_cli windows-registry hkcu get --sub-path='HelloWorld' --is-verbose-logging-enabled='true'
-qlogicae_cli windows-registry
-qlogicae_cli windows-registry --help
-qlogicae_cli windows-registry hkcu
-qlogicae_cli windows-registry hkcu --help
-qlogicae_cli windows-registry hkcu set
-qlogicae_cli windows-registry hkcu set --help
-qlogicae_cli windows-registry hkcu set --environment-type='a'
-qlogicae_cli windows-registry hkcu set --environment-type='development'
-qlogicae_cli windows-registry hkcu set --environment-type='debug'
-qlogicae_cli windows-registry hkcu set --environment-type='test'
-qlogicae_cli windows-registry hkcu set --environment-type='release'
-qlogicae_cli windows-registry hkcu set --environment-type='all'
-qlogicae_cli windows-registry hkcu set --environment-type='all' --is-verbose-logging-enabled='false'
-qlogicae_cli windows-registry hkcu set --environment-type='all' --is-verbose-logging-enabled='true'
-
 qlogicae_cli deploy
 qlogicae_cli deploy --help
 qlogicae_cli deploy inno-setup

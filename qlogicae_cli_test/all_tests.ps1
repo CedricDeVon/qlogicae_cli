@@ -7,3 +7,4 @@
 . "./argon2id_tests.ps1"
 . "./scripts_tests.ps1"
 . "./environment_tests.ps1"
+. "./windows_registry_tests.ps1"
