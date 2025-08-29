@@ -32,6 +32,12 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -120,6 +126,8 @@
     <None Include="qlogicae\configurations\qlogicae.public.json" />
     <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
     <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
+    <None Include="environment_tests.ps1" />
+    <None Include="scripts_tests.ps1" />
     <None Include="run.ps1" />
     <None Include="string_tests.ps1" />
     <None Include="about_tests.ps1" />

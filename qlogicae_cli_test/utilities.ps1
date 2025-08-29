@@ -12,10 +12,10 @@ class QLogicaeKmand {
 
             DotQLogicaeFolderPath = ".qlogicae"
             DotQLogicaeCLIFolderPath = ".qlogicae/cli"
-            DotQLogicaeLogsFolderPath = ".qlogicae/logs"
-            DotQLogicaeLogsPesterFolderPath = ".qlogicae/logs/pester"
-            DotQLogicaeLogsPesterJUnitFile = ".qlogicae/logs/pester/junit.xml"          
-            DotQLogicaeLogsPesterConsoleFile = ".qlogicae/logs/pester/console.txt"
+            DotQLogicaeLogsFolderPath = ".qlogicae/kmand/logs"
+            DotQLogicaeLogsPesterFolderPath = ".qlogicae/kmand/logs/pester"
+            DotQLogicaeLogsPesterJUnitFile = ".qlogicae/kmand/logs/pester/junit.xml"          
+            DotQLogicaeLogsPesterConsoleFile = ".qlogicae/kmand/logs/pester/console.txt"
             DotQLogicaeCLICustomOutputFilePath = ".qlogicae/cli/custom_output.txt"
             DotQLogicaeCLIDefaultOutputFilePath = ".qlogicae/cli/default_output.txt"
             QLogicaeConfigurationsPublicFilePath = "qlogicae/configurations/qlogicae.public.json"
@@ -34,7 +34,7 @@ class QLogicaeKmand {
                 CodeCoverage = @{
                     Enabled = $true
                     OutputFormat = "CoverageGutters"
-                    OutputPath = ".qlogicae/logs/pester/coverage.xml"
+                    OutputPath = ".qlogicae/kmand/logs/pester/coverage.xml"
                 }
                 Debug = @{
                     ShowFullErrors = $true
@@ -42,7 +42,7 @@ class QLogicaeKmand {
                 }
                 TestResult = @{
                     Enabled = $true
-                    OutputPath = ".qlogicae/logs/pester/nunit.xml"
+                    OutputPath = ".qlogicae/kmand/logs/pester/nunit.xml"
                     OutputFormat = "NUnitXml"
                 }
             }

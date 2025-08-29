@@ -1278,7 +1278,7 @@ namespace QLogicaeCLI
 				->add_option(
 					"--output-folder-path",
 					_setup_vs2022_application_input_1,
-					"Selected input folder path")
+					"Selected output folder path")
 				->default_val(".");
 			setup_vs2022_application_command
 				->add_option("--is-verbose-logging-enabled",
@@ -1294,14 +1294,14 @@ namespace QLogicaeCLI
 					{
 						_log_running_timestamp_async(_setup_vs2022_application_input_2);
 
-						std::string input_path =
+						std::string output_path =
 							application_directory_name_string + "\\" +
 							public_qlogicae_folder_path + "\\" +
 							templates_folder_name_string + "\\" +
 							vs2022_folder_name_string + "\\" +
 							application_folder_name_string;
 						
-						system(("xcopy \"" + input_path + "\" \"" + _setup_vs2022_application_input_1 + "\" /E /Y /I").c_str());
+						system(("xcopy \"" + output_path + "\" \"" + _setup_vs2022_application_input_1 + "\" /E /Y /I").c_str());
 
 						client_public_file.set_file_path(
 							_setup_vs2022_application_input_1 + "\\" +

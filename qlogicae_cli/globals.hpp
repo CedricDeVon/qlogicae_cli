@@ -114,7 +114,9 @@ namespace QLogicaeCLI
         "\\" + public_file_name_string;
 
     static std::string qlogicae_private_file_path =
-        private_file_name_string;
+        private_qlogicae_folder_path +
+        "\\" + configurations_folder_name_string +
+        "\\" + private_file_name_string;
 
     static std::string qlogicae_license_file_path =
         license_file_name_string;

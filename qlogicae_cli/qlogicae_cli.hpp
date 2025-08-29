@@ -11,5 +11,3 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
     return main(__argc, __argv);
 }
-
-

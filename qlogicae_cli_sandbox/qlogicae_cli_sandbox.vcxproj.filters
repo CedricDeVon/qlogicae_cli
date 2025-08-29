@@ -20,16 +20,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
-    <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
-    <None Include="qlogicae\configurations\qlogicae.public.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="qlogicae\assets\qlogicae.application.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="qlogicae\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
+    <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="LICENSE.txt" />
   </ItemGroup>
 </Project>

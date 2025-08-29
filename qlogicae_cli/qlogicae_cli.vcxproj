@@ -174,7 +174,7 @@ xcopy "$(ProjectDir)qlogicae\scripts" "$(OutDir)qlogicae\scripts" /E /Y /I</Comm
     <None Include="qlogicae\configurations\qlogicae.public.json" />
     <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
     <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
-    <None Include="qlogicae\templates\vs2022\application\qlogicae.private.json" />
+    <None Include="qlogicae\templates\vs2022\application\.qlogicae\configurations\qlogicae.private.json" />
     <None Include="qlogicae\templates\vs2022\application\qlogicae\configurations\qlogicae.public.json" />
     <None Include="qlogicae\templates\vs2022\application\qlogicae\scripts\qlogicae.inno_run.ps1" />
     <None Include="qlogicae\templates\vs2022\application\qlogicae\scripts\qlogicae.inno_setup.iss" />

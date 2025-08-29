@@ -1,4 +1,4 @@
-$private_configurations = Get-Content qlogicae.private.json | ConvertFrom-Json
+$private_configurations = Get-Content .qlogicae/configurations/qlogicae.private.json | ConvertFrom-Json
 $public_configurations = Get-Content qlogicae/configurations/qlogicae.public.json -Raw | ConvertFrom-Json
 
 & $private_configurations.inno_setup.cli_executable_path`

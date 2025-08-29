@@ -1,34 +1,35 @@
 {
-  "application": {
-    "id": "3123969a-2885-4e33-aa14-1cab0f4e9575",
-    "name": "Project",
-    "version": "1.0.0",
-    "company": "Company",
-    "authors": "Authors",
-    "description": "Description",
-    "url": "https://google.com",
-    "architecture": "x64"
-  },
-  "environment": {
-    "selected": "development",
-    "selections": {
-      "development": "c2411d29-3205-4a8e-8324-a97b2c5d5f09",
-      "debug": "c6e18dea-7070-4003-b800-715b277e7ad2",
-      "test": "e2d8ed91-e331-4389-8606-a505cd889aa5",
-      "release": "b7b43660-e2cc-4be1-9ef3-fd4cbc5b17ac"
-    }
-  },
-  "logging": {
-    "all": {
-      "is_enabled": false
+    "application": {
+        "id": "7987d761-f28d-442a-b16d-a3906b4d9a18",
+        "name": "Project",
+        "version": "1.0.0",
+        "company": "Company",
+        "authors": "Authors",
+        "description": "Description",
+        "url": "https://google.com",
+        "architecture": "x64"
     },
-    "console": {
-      "is_enabled": true,
-      "is_coloring_enabled": false
+    "environment": {
+        "selected": "development",
+        "selections": {
+            "development": "1762ef44-4865-4cc7-9713-078410f07489",
+            "debug": "635af0a1-74a5-497d-a226-062c68fbf767",
+            "test": "4d060379-0af0-439c-b67f-dae80a73e38c",
+            "release": "595dae24-6b8e-4f18-9820-c2041d0bfdc1"
+        }
     },
-    "file": {
-      "is_enabled": false,
-      "output_directory_path": ".qlogicae/logs"
+    "logging": {
+        "all": {
+            "is_enabled": false
+        },
+        "console": {
+            "is_enabled": true,
+            "is_verbose_enabled": true,
+            "is_coloring_enabled": false
+        },
+        "file": {
+            "is_enabled": false,
+            "output_directory_path": ".qlogicae/logs"
+        }
     }
-  }
 }
