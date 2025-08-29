@@ -189,49 +189,6 @@ namespace QLogicaeCLI
 
 /*
 
-
-
-qlogicae_cli xchacha20poly1305
-qlogicae_cli xchacha20poly1305 --help
-qlogicae_cli xchacha20poly1305 encrypt
-qlogicae_cli xchacha20poly1305 encrypt --help
-qlogicae_cli xchacha20poly1305 encrypt --text='' --key='' --nonce=''
-qlogicae_cli xchacha20poly1305 encrypt --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 encrypt --text='' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 encrypt --text='a' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='a' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='$Password_1234'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='$Password_1234' --nonce=''
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='$Password_1234' --nonce='a'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
-qlogicae_cli xchacha20poly1305 encrypt --text='$_The Quick Brown Fox Jumps Over The Lazy Dog' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
-
-qlogicae_cli xchacha20poly1305
-qlogicae_cli xchacha20poly1305 --help
-qlogicae_cli xchacha20poly1305 decrypt
-qlogicae_cli xchacha20poly1305 decrypt --help
-qlogicae_cli xchacha20poly1305 decrypt --cipher='' --key='' --nonce=''
-qlogicae_cli xchacha20poly1305 decrypt --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='a' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='a' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce=''
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce='a'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
-qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
-
-
 qlogicae_cli windows-registry
 qlogicae_cli windows-registry --help
 qlogicae_cli windows-registry hkcu

@@ -56,29 +56,29 @@ Describe "[qlogicae_cli environment] test suite" {
         It "[qlogicae_cli environment set --type='development']: should set 'environment.selected' propery to 'development'" {
             $TestResult = qlogicae_cli environment set --type='development' | Out-String           
 
-            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
             $TestResult | Should -BeNullOrEmpty
+            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
         }
 
         It "[qlogicae_cli environment set --type='debug']: should set 'environment.selected' propery to 'debug'" {
             $TestResult = qlogicae_cli environment set --type='debug' | Out-String           
 
-            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "debug"
             $TestResult | Should -BeNullOrEmpty
+            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "debug"
         }
 
         It "[qlogicae_cli environment set --type='test']: should set 'environment.selected' propery to 'test'" {
             $TestResult = qlogicae_cli environment set --type='test' | Out-String           
 
-            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "test"
             $TestResult | Should -BeNullOrEmpty
+            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "test"
         }
 
         It "[qlogicae_cli environment set --type='release']: should set 'environment.selected' propery to 'release'" {
             $TestResult = qlogicae_cli environment set --type='release' | Out-String           
 
-            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "release"
             $TestResult | Should -BeNullOrEmpty
+            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "release"
         }
     }
     
@@ -92,15 +92,15 @@ Describe "[qlogicae_cli environment] test suite" {
         It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='false']: should set 'environment.selected' propery to 'development'" {
             $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='false' | Out-String           
 
-            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
             $TestResult | Should -BeNullOrEmpty
+            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
         }
 
         It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='true']: should set 'environment.selected' propery to 'development'" {
             $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='true' | Out-String           
 
-            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
             $TestResult | Should -Not -BeNullOrEmpty
+            (Get-Content "$($QLogicaeKmandInstance.Configurations.QLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
         }
     }    
 }

@@ -352,7 +352,7 @@ namespace QLogicaeCLI
 				->add_option("--nonce",
 					_encrypt_xchacha20poly1305_input_3,
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
-				->default_val(QLogicaeCore::GENERATOR.random_string(32, constants.ALPHA_NUMERIC_CHARACTERS));
+				->required();
 			xchacha20poly1305_encrypt_command
 				->add_option("--output-file-path",
 					_encrypt_xchacha20poly1305_input_4,
@@ -400,7 +400,7 @@ namespace QLogicaeCLI
 							text_file_io.set_file_path(
 								_setup_result_output_file(
 									_encrypt_xchacha20poly1305_input_4,
-									"xchacha20poly1305-encrypted.txt"
+									"xchacha20poly1305-encrypt.txt"
 								)
 							);
 							text_file_io.write_async(output_string);
@@ -480,7 +480,7 @@ namespace QLogicaeCLI
 							text_file_io.set_file_path(
 								_setup_result_output_file(
 									_decrypt_xchacha20poly1305_input_4,
-									"xchacha20poly1305-decrypted.txt"
+									"xchacha20poly1305-decrypt.txt"
 								)
 							);
 							text_file_io.write_async(output_string);

@@ -30,9 +30,9 @@ Describe "[qlogicae_cli string] test suite" {
             $TestResult = qlogicae_cli string generate | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetStringLength($TestResult)) | Should -BeGreaterOrEqual 10
-            $TestResult | Should -Not -BeNullOrEmpty
         }
 
         It "[qlogicae_cli string generate --help]: should not be null or empty" {
@@ -72,18 +72,18 @@ Describe "[qlogicae_cli string] test suite" {
             $TestResult = qlogicae_cli string generate --length='1' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetStringLength($TestResult)) | Should -BeGreaterOrEqual 1
-            $TestResult | Should -Not -BeNullOrEmpty
         }
 
         It "[qlogicae_cli string generate --length='10']: should contain 10 characters" {
             $TestResult = qlogicae_cli string generate --length='10' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetStringLength($TestResult)) | Should -BeGreaterOrEqual 10
-            $TestResult | Should -Not -BeNullOrEmpty
         }
     }
 
@@ -116,16 +116,16 @@ Describe "[qlogicae_cli string] test suite" {
             $TestResult = qlogicae_cli string generate --count='1' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
-            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
         }
 
         It "[qlogicae_cli string generate --count='10']: should generate 10 instance(s)" {
             $TestResult = qlogicae_cli string generate --count='10' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
-            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 10
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 10
         }
     }
 
@@ -140,36 +140,36 @@ Describe "[qlogicae_cli string] test suite" {
             $TestResult = qlogicae_cli string generate --character-set='a' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "[a]")) | Should -BeGreaterOrEqual 1
-            $TestResult | Should -Not -BeNullOrEmpty
         }
 
         It "[qlogicae_cli string generate --character-set='ab']: should generate 1 instance(s) with character(s) 'ab'" {
             $TestResult = qlogicae_cli string generate --character-set='ab' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "[ab]")) | Should -BeGreaterOrEqual 1
-            $TestResult | Should -Not -BeNullOrEmpty
         }
 
         It "[qlogicae_cli string generate --character-set='aba']: should generate 1 instance(s) with character(s) 'aaaaabaaaaa'" {
             $TestResult = qlogicae_cli string generate --character-set='aaaaabaaaaa' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "[ab]")) | Should -BeGreaterOrEqual 1
-            $TestResult | Should -Not -BeNullOrEmpty
         }
 
         It "[qlogicae_cli string generate --character-set='0123456789ABCDEF']: should generate 1 instance(s) with character(s) '0123456789ABCDEF'" {
             $TestResult = qlogicae_cli string generate --character-set='0123456789ABCDEF' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
+            $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "[0123456789ABCDEF]")) | Should -BeGreaterOrEqual 1
-            $TestResult | Should -Not -BeNullOrEmpty
         }
     }
 
@@ -184,16 +184,16 @@ Describe "[qlogicae_cli string] test suite" {
             $TestResult = qlogicae_cli string generate --is-verbose-logging-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
-            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
         }
 
         It "[qlogicae_cli string generate --is-verbose-logging-enabled='true']: should generate 1 instance(s)" {
             $TestResult = qlogicae_cli string generate --is-verbose-logging-enabled='true' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
-            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 3
             $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 3
         }
     }
 
