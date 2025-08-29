@@ -558,12 +558,9 @@ namespace QLogicaeCLI
 								_hash_argon2id_input_1
 							);
 
-						if (_hash_argon2id_input_3)
-						{
-							QLogicaeCore::CLI_IO.print_with_new_line_async(
-								output_string
-							);
-						}
+						QLogicaeCore::CLI_IO.print_with_new_line_async(
+							output_string
+						);
 
 						if (_hash_argon2id_input_4)
 						{
@@ -635,12 +632,9 @@ namespace QLogicaeCLI
 								_verify_argon2id_input_2
 							)) ? "true" : "false";
 
-						if (_verify_argon2id_input_4)
-						{
-							QLogicaeCore::CLI_IO.print_with_new_line_async(
-								output_string
-							);
-						}
+						QLogicaeCore::CLI_IO.print_with_new_line_async(
+							output_string
+						);
 
 						if (_verify_argon2id_input_5)
 						{

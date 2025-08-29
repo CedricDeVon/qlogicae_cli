@@ -123,6 +123,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="argon2id_tests.ps1" />
+    <None Include="xchacha20poly1305_tests.ps1" />
     <None Include="qlogicae\configurations\qlogicae.public.json" />
     <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
     <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />

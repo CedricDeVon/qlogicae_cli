@@ -25,7 +25,7 @@ Describe "[qlogicae_cli uuid4] test suite" {
         }
     }
 
-    Context ("[qlogicae_cli uuid4 generate (defaults)] test cases") {
+    Context ("[qlogicae_cli uuid4 generate] test cases") {
         It ("[qlogicae_cli uuid4 generate]: generate instance(s) based on default parameters") {
             $TestResult = qlogicae_cli uuid4 generate | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)

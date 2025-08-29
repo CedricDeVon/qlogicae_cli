@@ -231,33 +231,6 @@ qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSR
 qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
 qlogicae_cli xchacha20poly1305 decrypt --cipher='yNoUFyE8KvmnHIRHnJp8C3FfebpEzSRRv5qHT43mnO3Liwa4rIzULGAYzB/mtgDRw1Y1i6ERSg2rVeM=' --key='$Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
 
-qlogicae_cli argon2id hash
-qlogicae_cli argon2id --help
-qlogicae_cli argon2id hash --help
-qlogicae_cli argon2id hash --text=''
-qlogicae_cli argon2id hash --text='a'
-qlogicae_cli argon2id hash --text='$Password_1234'
-qlogicae_cli argon2id hash --text='$Password_1234' --is-file-output-enabled='false'
-qlogicae_cli argon2id hash --text='$Password_1234' --is-file-output-enabled='true'
-qlogicae_cli argon2id hash --text='$Password_1234' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
-qlogicae_cli argon2id hash --text='$Password_1234' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
-
-qlogicae_cli argon2id
-qlogicae_cli argon2id --help
-qlogicae_cli argon2id verify
-qlogicae_cli argon2id verify --help
-qlogicae_cli argon2id verify --key='$Password_1234'
-qlogicae_cli argon2id verify --hash='' --key=''
-qlogicae_cli argon2id verify --hash='' --key='$Password_1234'
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag'
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key=''
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9J' --key='$Password_1234'
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_123'
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234'
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234' --is-file-output-enabled='false'
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234' --is-file-output-enabled='true'
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234' --is-file-output-enabled='true' --is-verbose-logging-enabled='false'
-qlogicae_cli argon2id verify --hash='$argon2id$v=19$m=65536,t=3,p=2$KfOoUD89/AQhRxbwcqxUGQ$+zS4EUYI7cxOTWhA6NfdOk4i0H+GeAH/M+Ce9Jt8eag' --key='$Password_1234' --is-file-output-enabled='true' --is-verbose-logging-enabled='true'
 
 qlogicae_cli windows-registry
 qlogicae_cli windows-registry --help

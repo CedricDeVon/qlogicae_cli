@@ -21,6 +21,8 @@ class QLogicaeKmand {
             QLogicaeConfigurationsPublicFilePath = "qlogicae/configurations/qlogicae.public.json"
             QLogicaePrivateFilePath = "qlogicae.private.json"
 
+            QLogicaeTemplatesVS2022ApplicationFolderPath = "../qlogicae_cli/qlogicae/templates/vs2022/application"
+            
             PesterConfigurations = @{
                 Run = @{
                     Path = ""
