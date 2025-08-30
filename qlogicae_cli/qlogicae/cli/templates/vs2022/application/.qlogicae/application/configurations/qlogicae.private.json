@@ -30,8 +30,8 @@
   "inno_setup": {
     "input_folder_path": "",
     "output_folder_path": "..\\..\\x64",
-    "run_executable_path": ".\\qlogicae\\application\\configurations\\qlogicae.inno_run.ps1",
-    "template_file_path": ".\\qlogicae\\application\\scripts\\qlogicae.inno_setup.target.iss",
+    "run_executable_path": ".\\.qlogicae\\application\\scripts\\qlogicae.inno_run.ps1",
+    "template_file_path": ".\\.qlogicae\\application\\scripts\\qlogicae.inno_setup.target.iss",
     "cli_executable_path": "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe",
     "privileges_required": "admin"
   },

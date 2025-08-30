@@ -124,10 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="qlogicae\applicatoin\configurations\qlogicae.public.json" />
-    <None Include="deepmerge.jq" />
-    <None Include="second.json" />
-    <None Include=".qlogicae\application\scripts\qlogicae.inno_run.ps1" />
-    <None Include=".qlogicae\application\scripts\qlogicae.inno_setup.iss" />
     <None Include="qlogicae\kmand\tests\setup.ps1" />
     <None Include="qlogicae\kmand\tests\argon2id.ps1" />
     <None Include="qlogicae\kmand\tests\deploy.ps1" />
@@ -149,7 +145,6 @@
     <Image Include="qlogicae\applicatoin\assets\qlogicae.application.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="first.json" />
     <Text Include="LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
