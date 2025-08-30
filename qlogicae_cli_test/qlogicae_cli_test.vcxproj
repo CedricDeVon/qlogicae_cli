@@ -124,6 +124,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="qlogicae\application\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\kmand\builds\cli\application.exe">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="qlogicae\kmand\tests\setup.ps1" />
     <None Include="qlogicae\kmand\tests\argon2id.ps1" />
     <None Include="qlogicae\kmand\tests\deploy.ps1" />
