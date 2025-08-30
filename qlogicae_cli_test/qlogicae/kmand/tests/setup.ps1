@@ -64,6 +64,18 @@ Describe "[qlogicae_cli setup] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
+        It "[qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='fals']: should not leave an empty folder" {
+            $TestResult = qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='tru']: should not leave an empty folder" {
+            $TestResult = qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='tru' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
         It "[qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='false']: should not leave an empty folder" {
             $TestResult = qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)

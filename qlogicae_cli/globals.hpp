@@ -86,11 +86,11 @@ namespace QLogicaeCLI
 
     static std::string public_qlogicae_cli_folder_path =
         public_qlogicae_folder_path +
-        qlogicae_cli_folder_path;
+        "\\" + qlogicae_cli_folder_path;
 
     static std::string private_qlogicae_cli_folder_path =
         private_qlogicae_folder_path +
-        qlogicae_cli_folder_path;
+        "\\" + qlogicae_cli_folder_path;
 
     static std::string public_qlogicae_configurations_folder_path =
         public_qlogicae_folder_path +
@@ -197,14 +197,11 @@ namespace QLogicaeCLI
     static std::string application_architecture =
         application_public_file.get_string({ "application", "architecture" });
 
-    static std::vector<std::string> utilities_environment_types
+    static std::vector<std::string> application_environment_types
         { "development", "debug", "test", "release" };
 
-    static std::vector<std::string> utilities_environment_types_options
+    static std::vector<std::string> application_environment_type_options
         { "development", "debug", "test", "release", "all"};
-
-    static std::vector<std::string> utilities_setup_template_types
-        { "default", "custom" };
 
     static std::string execute_inno_run_command =
         "powershell -ExecutionPolicy Bypass -File \".\\";

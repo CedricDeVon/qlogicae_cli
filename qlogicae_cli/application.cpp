@@ -180,7 +180,7 @@ namespace QLogicaeCLI
 							text_file_io.set_file_path(
 								_setup_result_output_file(
 									_generate_uuid4_input_2,
-									"uuid4-generate.txt"
+									"uuid4_generate.txt"
 								)
 							);
 							text_file_io.write_async(output_string);
@@ -294,7 +294,7 @@ namespace QLogicaeCLI
 							text_file_io.set_file_path(
 								_setup_result_output_file(
 									_generate_string_input_4,
-									"string-generate.txt"
+									"string_generate.txt"
 								)
 							);
 							text_file_io.write_async(output_string);
@@ -403,7 +403,7 @@ namespace QLogicaeCLI
 							text_file_io.set_file_path(
 								_setup_result_output_file(
 									_encrypt_xchacha20poly1305_input_4,
-									"xchacha20poly1305-encrypt.txt"
+									"xchacha20poly1305_encrypt.txt"
 								)
 							);
 							text_file_io.write_async(output_string);
@@ -492,7 +492,7 @@ namespace QLogicaeCLI
 							text_file_io.set_file_path(
 								_setup_result_output_file(
 									_decrypt_xchacha20poly1305_input_4,
-									"xchacha20poly1305-decrypt.txt"
+									"xchacha20poly1305_decrypt.txt"
 								)
 							);
 							text_file_io.write_async(output_string);
@@ -586,7 +586,7 @@ namespace QLogicaeCLI
 							text_file_io.set_file_path(
 								_setup_result_output_file(
 									_hash_argon2id_input_2,
-									"argon2id-hash.txt"
+									"argon2id_hash.txt"
 								)
 							);
 							text_file_io.write_async(output_string);
@@ -668,7 +668,7 @@ namespace QLogicaeCLI
 							text_file_io.set_file_path(
 								_setup_result_output_file(
 									_verify_argon2id_input_3,
-									"argon2id-verify.txt"
+									"argon2id_verify.txt"
 								)
 							);
 							text_file_io.write_async(output_string);
@@ -790,25 +790,59 @@ namespace QLogicaeCLI
 					"Environment commands: set"
 				);
 
+			CLI::App* environment_get_command =
+				environment_command->add_subcommand(
+					"get",
+					"Returns the current environment type"
+				);
+
+			environment_get_command
+				->add_option("--is-verbose-logging-enabled",
+					_get_environment_input_2,
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["environment-get"] = std::make_pair(
+				environment_get_command,
+				[this]() -> bool
+				{
+					try
+					{
+						_log_running_timestamp_async(_get_environment_input_2);
+
+						client_public_file.set_file_path(
+							public_qlogicae_configurations_public_file_path
+						);
+						std::string output_result = client_public_file.get_string(
+							{ "environment", "selected" }
+						);
+						QLogicaeCore::CLI_IO.print_async(output_result);
+
+						_log_complete_timestamp_async(_get_environment_input_2);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_environment_command(): ") + exception.what(), _get_environment_input_2);
+
+						return false;
+					}
+				}
+			);
+
 			CLI::App* environment_set_command =
 				environment_command->add_subcommand(
 					"set",
-					"Changing environment type"
+					"Updates the current environment type"
 				);
 
 			environment_set_command
 				->add_option("--type",
 					_set_environment_input_1,
 					"Selected environment type")
-				->check(CLI::IsMember(utilities_environment_types))
+				->check(CLI::IsMember(application_environment_types))
 				->default_val("development");
-			environment_set_command
-				->add_option("--public-file-path",
-					_set_environment_input_2,
-					"File path to the 'qlogicae.public.json' file")
-				->default_val(
-					public_qlogicae_configurations_public_file_path
-				);
 			environment_set_command
 				->add_option("--is-verbose-logging-enabled",
 					_set_environment_input_3,
@@ -934,20 +968,30 @@ namespace QLogicaeCLI
 			CLI::App* windows_registry_hkcu_set_command =
 				windows_registry_hkcu_command->add_subcommand(
 					"set",
-					"Creates or updates the key-value pairs of a selected Windows Registry path"
+					"Creates or updates a key-value pair of a selected Windows Registry path"
 				);
 
 			windows_registry_hkcu_set_command
-				->add_option(
-					"--environment-type",
-					_setup_windows_registry_input_1,
-					"HKCU Selected environment type")
-				->check(CLI::IsMember(utilities_environment_types_options))
-				->default_val("development")
+				->add_option("--sub-path",
+					_set_windows_registry_input_1,
+					"HKCU Windows Registry path")
+				->default_val("")
+				->required();
+			windows_registry_hkcu_set_command
+				->add_option("--key",
+					_set_windows_registry_input_2,
+					"HKCU Windows Registry key")
+				->default_val("")
+				->required();
+			windows_registry_hkcu_set_command
+				->add_option("--value",
+					_set_windows_registry_input_3,
+					"HKCU Windows Registry value")
+				->default_val("")
 				->required();
 			windows_registry_hkcu_set_command
 				->add_option("--is-verbose-logging-enabled",
-					_setup_windows_registry_input_5,
+					_set_windows_registry_input_4,
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -957,12 +1001,54 @@ namespace QLogicaeCLI
 				{
 					try
 					{
-						_log_running_timestamp_async(_setup_windows_registry_input_5);
+						_log_running_timestamp_async(_set_windows_registry_input_4);
 
-						if (_setup_windows_registry_input_1.empty())
-						{
-							return false;
-						}
+						bool result = QLogicaeCore::WINDOWS_REGISTRY_HKCU.set_value_via_utf8(
+							_set_windows_registry_input_1,
+							_set_windows_registry_input_2,
+							_set_windows_registry_input_3
+						);
+						
+						_log_complete_timestamp_async(_set_windows_registry_input_4);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_windows_registry_command(): ") + exception.what(), _set_windows_registry_input_4);
+
+						return false;
+					}
+				}
+			);
+
+			CLI::App* windows_registry_hkcu_setup_command =
+				windows_registry_hkcu_command->add_subcommand(
+					"setup",
+					"Creates or updates the key-value pairs of a selected QLogicae environment preset"
+				);
+
+			windows_registry_hkcu_setup_command
+				->add_option(
+					"--environment-type",
+					_setup_windows_registry_input_1,
+					"HKCU Selected environment type")
+				->check(CLI::IsMember(application_environment_type_options))
+				->default_val("development")
+				->required();
+			windows_registry_hkcu_setup_command
+				->add_option("--is-verbose-logging-enabled",
+					_setup_windows_registry_input_5,
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["windows-registry-hkcu-setup"] = std::make_pair(
+				windows_registry_hkcu_setup_command,
+				[this]() -> bool
+				{
+					try
+					{
+						_log_running_timestamp_async(_setup_windows_registry_input_5);
 
 						client_public_file.set_file_path(
 							public_qlogicae_configurations_public_file_path
@@ -977,7 +1063,7 @@ namespace QLogicaeCLI
 							);
 						if (_setup_windows_registry_input_1 == "all")
 						{
-							for (const std::string& environment_type : utilities_environment_types)
+							for (const std::string& environment_type : application_environment_types)
 							{
 								std::string environment_id =
 									client_public_file.get_string(
@@ -1005,8 +1091,7 @@ namespace QLogicaeCLI
 									{
 										QLogicaeCore::WINDOWS_REGISTRY_HKCU
 											.set_value_via_utf8(
-												absl::StrCat("Software",
-													"\\",
+												absl::StrCat("Software\\QLogicae\\Application\\",
 													client_id,
 													"\\",
 													environment_id
@@ -1052,8 +1137,9 @@ namespace QLogicaeCLI
 								{
 									QLogicaeCore::WINDOWS_REGISTRY_HKCU
 										.set_value_via_utf8(
-											fmt::format("Software\\{}\\{}",
+											absl::StrCat("Software\\QLogicae\\Application\\",
 												client_id,
+												"\\",
 												environment_id
 											),
 											key,
@@ -1131,9 +1217,6 @@ namespace QLogicaeCLI
 					{
 						_log_running_timestamp_async(_setup_installer_input_3);
 
-						std::string path_1 =
-							_setup_installer_input_1 +
-							public_qlogicae_configurations_public_file_path;
 						std::string path_2 = 
 							_setup_installer_input_1 +
 							qlogicae_private_file_path;
@@ -1151,7 +1234,6 @@ namespace QLogicaeCLI
 							public_qlogicae_scripts_folder_path;
 						std::string path_7;
 
-						client_public_file.set_file_path(path_1);
 						client_private_file.set_file_path(path_2);
 						client_inno_run_file.set_file_path(path_3);
 						client_inno_setup_file.set_file_path(path_4);
@@ -1160,11 +1242,6 @@ namespace QLogicaeCLI
 						_remove_file_or_folder_if_found(path_5);
 						_copy_file_or_folder(path_4, path_5);
 
-						client_public_file.update_string(
-							{ "environment", "selected" }, "release"
-						);
-
-						std::string client_inno_setup_target_file_output = "";
 						std::string client_input_folder_path =
 							std::filesystem::absolute(
 								client_private_file.get_string(
@@ -1172,11 +1249,19 @@ namespace QLogicaeCLI
 								)
 							).string();
 
-						_copy_file_or_folder(
-							path_1,
-							client_input_folder_path + "\\" +
-							public_qlogicae_configurations_public_file_path);
+						client_public_file.set_file_path(
+							client_input_folder_path +
+							"\\" + public_qlogicae_configurations_public_file_path
+						);
+						client_public_file.update_string(
+							{ "environment", "selected" }, "release"
+						);
+						client_public_file.set_file_path(
+							_setup_installer_input_1 +
+							"\\" + public_qlogicae_configurations_public_file_path
+						);
 
+						std::string client_inno_setup_target_file_output = "";					
 						std::unordered_map<std::string, std::any> client_languages =
 							client_private_file.get_object(
 								{ "languages" }
@@ -1231,7 +1316,7 @@ namespace QLogicaeCLI
 						for (const auto& [key, value] : client_hkcu_secrets)
 						{
 							client_inno_setup_target_file_output +=
-								"Root: HKCU; Subkey: \"Software\\" +
+								"Root: HKCU; Subkey: \"Software\\QLogicae\\" +
 								client_application_id +
 								"\\" + client_release_id +
 								"\"; ValueType: string; ValueName: \"" +

@@ -1,8 +1,6 @@
 
 Describe "[qlogicae_cli string] test suite" {
     BeforeAll {
-        . qlogicae/kmand/scripts/imports.ps1
-
         $QLogicaeKmandInstance.BeforeAllTestsSetup()
         
         qlogicae_cli setup vs2022 application
@@ -67,6 +65,18 @@ Describe "[qlogicae_cli string] test suite" {
     Context "[qlogicae_cli scripts run --names --is-verbose-logging-enabled] test cases" {
         It "[qlogicae_cli scripts run --names --is-verbose-logging-enabled='']: should terminate" {
             $TestResult = qlogicae_cli scripts run --names='sample' --is-verbose-logging-enabled='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli scripts run --names --is-verbose-logging-enabled='fals']: should terminate" {
+            $TestResult = qlogicae_cli scripts run --names='sample' --is-verbose-logging-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli scripts run --names --is-verbose-logging-enabled='tru']: should terminate" {
+            $TestResult = qlogicae_cli scripts run --names='sample' --is-verbose-logging-enabled='tru' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }

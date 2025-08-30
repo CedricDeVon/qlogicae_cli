@@ -30,15 +30,15 @@
   "inno_setup": {
     "input_folder_path": "C:\\Users\\User1\\source\\repos\\qlogicae_cli\\x64\\Release\\qlogicae_cli_sandbox",
     "output_folder_path": "C:\\Users\\User1\\source\\repos\\qlogicae_cli\\x64",
-    "run_executable_path": ".\\qlogicae\\configurations\\qlogicae.inno_run.ps1",
-    "template_file_path": ".\\qlogicae\\scripts\\qlogicae.inno_setup.target.iss",
+    "run_executable_path": ".\\.qlogicae\\application\\scripts\\qlogicae.inno_run.ps1",
+    "template_file_path": ".\\.qlogicae\\application\\scripts\\qlogicae.inno_setup.target.iss",
     "cli_executable_path": "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe",
     "privileges_required": "admin"
   },
   "application": {
     "executable_name": "qlogicae_cli_sandbox.exe",
     "license_file_path": ".\\LICENSE.txt",
-    "icon_file_path": ".\\qlogicae\\assets\\qlogicae.application.ico"
+    "icon_file_path": ".\\qlogicae\\application\\assets\\qlogicae.application.ico"
   },
   "languages": {
     "english": {

@@ -1,6 +1,6 @@
 {
     "application": {
-        "id": "7987d761-f28d-442a-b16d-a3906b4d9a18",
+        "id": "930a170a-52a1-4e59-8f28-72c80eb1253f",
         "name": "Project",
         "version": "1.0.0",
         "company": "Company",
@@ -12,10 +12,10 @@
     "environment": {
         "selected": "development",
         "selections": {
-            "development": "1762ef44-4865-4cc7-9713-078410f07489",
-            "debug": "635af0a1-74a5-497d-a226-062c68fbf767",
-            "test": "4d060379-0af0-439c-b67f-dae80a73e38c",
-            "release": "595dae24-6b8e-4f18-9820-c2041d0bfdc1"
+            "development": "2e54f380-a39e-4a1f-81e9-ce7924dab2ee",
+            "debug": "d59ccf4b-d433-4402-b436-ab9d74e4036b",
+            "test": "49f58e34-7206-4202-9c10-a9c51887c98b",
+            "release": "7aa658ef-09b4-46a0-a98a-f398e438e6fd"
         }
     },
     "logging": {
@@ -29,7 +29,7 @@
         },
         "file": {
             "is_enabled": false,
-            "output_directory_path": ".qlogicae/logs"
+            "output_directory_path": ".qlogicae/applicatoin/logs"
         }
     }
 }

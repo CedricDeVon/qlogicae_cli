@@ -1,14 +1,18 @@
 
 Describe "[qlogicae_cli windows-registry] test suite" {
     BeforeAll {
-        . qlogicae/kmand/scripts/imports.ps1
-
         $QLogicaeKmandInstance.BeforeAllTestsSetup()
         
         qlogicae_cli setup vs2022 application
+
+        New-Item -Path "HKCU:\\$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)"
+        Set-ItemProperty -Path "HKCU:\\$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" -Name "$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" -Value "$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)"
     }
 
     AfterAll {
+        Remove-Item -Path "HKCU:\\$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" -Recurse
+        Remove-Item -Path "HKCU:\\Software\\Qlogicae\\Application\\$(($(Get-Content "$($QLogicaeKmandInstance.Configurations.RelativeQLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).application.id))" -Recurse
+
         $QLogicaeKmandInstance.AfterAllTestsSetup()
     }
 
@@ -70,47 +74,51 @@ Describe "[qlogicae_cli windows-registry] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu get --sub-path='Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\607380d4-a604-4636-8dde-7643905955f2']: should return 'hkcu.name.development'" {
-            qlogicae_cli windows-registry hkcu set --environment-type='development'    
-
-            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path='Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\607380d4-a604-4636-8dde-7643905955f2' | Out-String
+        It "[qlogicae_cli windows-registry hkcu get --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)']: should return 'hkcu.name.development'" {
+            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty           
-            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "hkcu.name.development")) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)")) | Should -Be 1
         }
     }
 
     Context ("[qlogicae_cli windows-registry hkcu get --sub-path --is-verbose-logging-enabled] test cases") {
-        It "[qlogicae_cli windows-registry hkcu get --sub-path='Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\607380d4-a604-4636-8dde-7643905955f2' --is-verbose-logging-enabled='']: should terminate" {
-            qlogicae_cli windows-registry hkcu set --environment-type='development'
-        
-            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path='Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\607380d4-a604-4636-8dde-7643905955f2' --is-verbose-logging-enabled='' | Out-String
+        It "[qlogicae_cli windows-registry hkcu get --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --is-verbose-logging-enabled='']: should terminate" {           
+            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --is-verbose-logging-enabled='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu get --sub-path='Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\607380d4-a604-4636-8dde-7643905955f2' --is-verbose-logging-enabled='false']: should return 'hkcu.name.development'" {
-            qlogicae_cli windows-registry hkcu set --environment-type='development'
-        
-            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path='Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\607380d4-a604-4636-8dde-7643905955f2' --is-verbose-logging-enabled='false' | Out-String
-            $QLogicaeKmandInstance.ConsoleLog($TestResult)
-
-            $TestResult | Should -Not -BeNullOrEmpty
-            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "hkcu.name.development")) | Should -Be 1
+        It "[qlogicae_cli windows-registry hkcu get --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --is-verbose-logging-enabled='fals']: should terminate" {        
+            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --is-verbose-logging-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu get --sub-path='Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\607380d4-a604-4636-8dde-7643905955f2' --is-verbose-logging-enabled='true']: should return 'hkcu.name.development'" {
-            qlogicae_cli windows-registry hkcu set --environment-type='development'
+        It "[qlogicae_cli windows-registry hkcu get --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --is-verbose-logging-enabled='tru']: should terminate" {        
+            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --is-verbose-logging-enabled='tru' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
 
-            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path='Software\f0e1efe1-3d0d-492d-9290-ca975b6ca652\607380d4-a604-4636-8dde-7643905955f2' --is-verbose-logging-enabled='true' | Out-String
+        It "[qlogicae_cli windows-registry hkcu get --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --is-verbose-logging-enabled='false']: should return 'hkcu.name.development'" {        
+            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --is-verbose-logging-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "hkcu.name.development")) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)")) | Should -Be 1
+        }
+
+        It "[qlogicae_cli windows-registry hkcu get --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --is-verbose-logging-enabled='true']: should return 'hkcu.name.development'" {
+            $TestResult = qlogicae_cli windows-registry hkcu get --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --is-verbose-logging-enabled='true' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)")) | Should -Be 1
         }
     }
-
+    
     Context ("[qlogicae_cli windows-registry hkcu set] test cases") {
         It "[qlogicae_cli windows-registry hkcu set]: should terminate" {
             $TestResult = qlogicae_cli windows-registry hkcu set | Out-String
@@ -126,65 +134,146 @@ Describe "[qlogicae_cli windows-registry] test suite" {
         }
     }
 
-    Context ("[qlogicae_cli windows-registry hkcu set --environment-type] test cases") {
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='']: should terminate" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='' | Out-String
+    Context ("[qlogicae_cli windows-registry hkcu set --sub-path --key --value] test cases") {
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='' --key='' --value='']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path='' --key='' --value='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='a']: should terminate" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='a' | Out-String
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --key='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)' --value='']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --key="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" --value="" | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+        
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --value='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)' --key='']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --value="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)" --key='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+        
+        It "[qlogicae_cli windows-registry hkcu set --key='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)' --value='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)' --sub-path='']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --key="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" --value="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)" --sub-path="" | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='development']: should be null or empty" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='development' | Out-String
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --key='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)' --value='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)']: should set sub-path key to 'hkcu.name.development'" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --key="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" --value="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)" | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+    }
+   
+    Context ("[qlogicae_cli windows-registry hkcu set --sub-path --key --value --is-verbose-logging-enabled] test cases") {
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --key='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)' --value='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)' --is-verbose-logging-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --key="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" --value="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)" --is-verbose-logging-enabled='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --key='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)' --value='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)' --is-verbose-logging-enabled='fals']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --key="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" --value="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)" --is-verbose-logging-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --key='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)' --value='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)' --is-verbose-logging-enabled='tru']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --key="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" --value="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)" --is-verbose-logging-enabled='tru' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --key='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)' --value='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)' --is-verbose-logging-enabled='false']: should set sub-path key to 'hkcu.name.development'" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --key="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" --value="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)" --is-verbose-logging-enabled='false' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty           
+        }
+
+        It "[qlogicae_cli windows-registry hkcu set --sub-path='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)' --key='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)' --value='$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)' --is-verbose-logging-enabled='true']: should set sub-path key to 'hkcu.name.development'" {
+            $TestResult = qlogicae_cli windows-registry hkcu set --sub-path="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistrySubPath)" --key="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryKey)" --value="$($QLogicaeKmandInstance.Configurations.MockHKCUEnvironmentRegistryValue)" --is-verbose-logging-enabled='true' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty           
+        }
+    }
+
+    Context ("[qlogicae_cli windows-registry hkcu setup] test cases") {
+        It "[qlogicae_cli windows-registry hkcu setup]: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli windows-registry hkcu setup --help]: should not be null or empty" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --help | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context ("[qlogicae_cli windows-registry hkcu setup --environment-type] test cases") {
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='a']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='a' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='development']: should be null or empty" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='development' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='debug']: should be null or empty" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='debug' | Out-String
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='debug']: should be null or empty" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='debug' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
         
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='test']: should be null or empty" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='test' | Out-String
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='test']: should be null or empty" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='test' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='release']: should be null or empty" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='release' | Out-String
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='release']: should be null or empty" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='release' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='all']: should be null or empty" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='all' | Out-String
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='all']: should be null or empty" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='all' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
     }
     
-    Context ("[qlogicae_cli windows-registry hkcu set --environment-type --is-verbose-logging-enabled] test cases") {   
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='development' --is-verbose-logging-enabled='']: should terminate" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='development' --is-verbose-logging-enabled='' | Out-String
+    Context ("[qlogicae_cli windows-registry hkcu setup --environment-type --is-verbose-logging-enabled] test cases") {   
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='development' --is-verbose-logging-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='development' --is-verbose-logging-enabled='' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='development' --is-verbose-logging-enabled='false']: should be null or empty" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='development' --is-verbose-logging-enabled='false' | Out-String
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='development' --is-verbose-logging-enabled='false']: should be null or empty" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='development' --is-verbose-logging-enabled='false' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli windows-registry hkcu set --environment-type='development' --is-verbose-logging-enabled='true']: should not be null or empty" {
-            $TestResult = qlogicae_cli windows-registry hkcu set --environment-type='development' --is-verbose-logging-enabled='true' | Out-String
+        It "[qlogicae_cli windows-registry hkcu setup --environment-type='development' --is-verbose-logging-enabled='true']: should not be null or empty" {
+            $TestResult = qlogicae_cli windows-registry hkcu setup --environment-type='development' --is-verbose-logging-enabled='true' | Out-String
 
             $TestResult | Should -Not -BeNullOrEmpty
         }

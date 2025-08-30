@@ -1,8 +1,6 @@
 
 Describe "[qlogicae_cli uuid4] test suite" {
     BeforeAll {
-        . qlogicae/kmand/scripts/imports.ps1
-
         $QLogicaeKmandInstance.BeforeAllTestsSetup()
     }
 
@@ -50,6 +48,18 @@ Describe "[qlogicae_cli uuid4] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
+        It ("[qlogicae_cli uuid4 generate --count='a']: should terminate") {
+            $TestResult = qlogicae_cli uuid4 generate --count='a' | Out-String
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --count='#']: should terminate") {
+            $TestResult = qlogicae_cli uuid4 generate --count='#' | Out-String
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
         It ("[qlogicae_cli uuid4 generate --count='-10']: should terminate") {
             $TestResult = qlogicae_cli uuid4 generate --count='-10' | Out-String
 
@@ -64,6 +74,12 @@ Describe "[qlogicae_cli uuid4] test suite" {
 
         It ("[qlogicae_cli uuid4 generate --count='0']: should terminate") {
             $TestResult = qlogicae_cli uuid4 generate --count='0' | Out-String
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --count='0.9']: should terminate") {
+            $TestResult = qlogicae_cli uuid4 generate --count='0.9' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
@@ -94,6 +110,18 @@ Describe "[qlogicae_cli uuid4] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='fals']: should terminate") {
+            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='fals' | Out-String
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='tru']: should terminate") {
+            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='tru' | Out-String
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
         It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='false']: should generate 1 instance(s) on the console but not the file") {
             $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
@@ -120,6 +148,18 @@ Describe "[qlogicae_cli uuid4] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
+        It ("[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='fals']: should terminate") {
+            $TestResult = qlogicae_cli uuid4 generate --is-verbose-logging-enabled='fals' | Out-String
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It ("[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='tru']: should terminate") {
+            $TestResult = qlogicae_cli uuid4 generate --is-verbose-logging-enabled='tru' | Out-String
+
+            $TestResult | Should -BeNullOrEmpty
+        }
+
         It ("[qlogicae_cli uuid4 generate --is-verbose-logging-enabled='false']: should generate 1 instance(s) on the console") {
             $TestResult = qlogicae_cli uuid4 generate --is-verbose-logging-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
@@ -139,41 +179,41 @@ Describe "[qlogicae_cli uuid4] test suite" {
         }
     }
 
-    Context ("[qlogicae_cli uuid4 generate --output-file-path] test cases") {
+    Context ("[qlogicae_cli uuid4 generate --is-file-output-enabled --output-file-path] test cases") {
         It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='']: should terminate") {
             $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='' | Out-String
 
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file") {
-            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Out-String
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path='$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeCLICustomOutputFilePath)']: should generate 1 instance(s) on the console and custom file") {
+            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='false' --output-file-path="$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeCLICustomOutputFilePath)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetUUIDv4Count($TestResult)) | Should -Be 1
-            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Should -BeFalse
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeCLICustomOutputFilePath)" | Should -BeFalse
         }
 
         It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true']: should generate 1 instance(s) on the console and default file") {
             $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
-
+            
             $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetUUIDv4Count($TestResult)) | Should -Be 1
-            Test-Path ".qlogicae/cli/uuid4-generate.txt" | Should -BeTrue
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeUUID4GenerateFilePath)" | Should -BeTrue
         }
 
-        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='.qlogicae/cli/custom_output.txt']: should generate 1 instance(s) on the console and custom file") {
-            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path="$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Out-String
+        It ("[qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path='$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeCLICustomOutputFilePath)']: should generate 1 instance(s) on the console and custom file") {
+            $TestResult = qlogicae_cli uuid4 generate --is-file-output-enabled='true' --output-file-path="$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeCLICustomOutputFilePath)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
             
             $TestResult | Should -Not -BeNullOrEmpty
             ($QLogicaeKmandInstance.GetLineCount($TestResult)) | Should -Be 1
             ($QLogicaeKmandInstance.GetUUIDv4Count($TestResult)) | Should -Be 1
-            Test-Path "$($QLogicaeKmandInstance.Configurations.DotQLogicaeCLICustomOutputFilePath)" | Should -BeTrue
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeCLICustomOutputFilePath)" | Should -BeTrue
         }
     }
 }

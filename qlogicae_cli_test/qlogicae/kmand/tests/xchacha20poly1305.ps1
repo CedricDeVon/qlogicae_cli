@@ -1,8 +1,6 @@
 
 Describe "[qlogicae_cli xchacha20poly1305] test suite" {
     BeforeAll {
-        . qlogicae/kmand/scripts/imports.ps1
-
         $QLogicaeKmandInstance.BeforeAllTestsSetup()
     }
 
@@ -11,7 +9,7 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
     }
 
     Context "[qlogicae_cli xchacha20poly1305] test cases" {
-        It "[qlogicae_cli xchacha20poly1305]: should throw" {
+        It "[qlogicae_cli xchacha20poly1305]: should terminate" {
             $TestResult = qlogicae_cli xchacha20poly1305 | Out-String
             
             $TestResult | Should -BeNullOrEmpty
@@ -26,7 +24,7 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
     }
 
     Context "[qlogicae_cli xchacha20poly1305 encrypt] test cases" {
-        It "[qlogicae_cli xchacha20poly1305 encrypt]: should throw" {
+        It "[qlogicae_cli xchacha20poly1305 encrypt]: should terminate" {
             $TestResult = qlogicae_cli xchacha20poly1305 encrypt | Out-String
             
             $TestResult | Should -BeNullOrEmpty
@@ -47,33 +45,33 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --text='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --text='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --text='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --key="($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" -nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --text='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --key='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --key='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --key='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --key='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
         
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234']: should not be null or empty" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)']: should not be null or empty" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt']: should not be null or empty" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)']: should not be null or empty" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
@@ -81,46 +79,72 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
     }
 
     Context "[qlogicae_cli xchacha20poly1305 encrypt --text --key --nonce --is-file-output-enabled] test cases" {        
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
-            Test-Path ".qlogicae/cli/xchacha20poly1305-encrypt.txt" | Should -BeFalse
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305EncryptFilePath)" | Should -BeFalse
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false']: should not be null or empty" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='fals']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305EncryptFilePath)" | Should -BeFalse
+        }
+
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='tru']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='tru' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305EncryptFilePath)" | Should -BeFalse
+        }
+
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='false']: should not be null or empty" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            Test-Path ".qlogicae/cli/xchacha20poly1305-encrypt.txt" | Should -BeFalse
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305EncryptFilePath)" | Should -BeFalse
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true']: should not be null or empty" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='true']: should not be null or empty" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='true' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            Test-Path ".qlogicae/cli/xchacha20poly1305-encrypt.txt" | Should -BeTrue
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305EncryptFilePath)" | Should -BeTrue
         }
     }
 
     Context "[qlogicae_cli xchacha20poly1305 encrypt --text --key --nonce --is-verbose-logging-enabled] test cases" {        
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='false']: should not be null or empty" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='false' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='fals']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='tru']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='tru' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='false']: should not be null or empty" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='true']: should not be null or empty" {
-            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text='@_The Quick Brown Fox Jumps Over The Lazy Dog' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='true' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 encrypt --text='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='true']: should not be null or empty" {
+            $TestResult = qlogicae_cli xchacha20poly1305 encrypt --text="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='true' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
@@ -149,81 +173,107 @@ Describe "[qlogicae_cli xchacha20poly1305] test suite" {
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --cipher='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --cipher='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --cipher='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --cipher='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --key='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --key='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --key='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --key='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt']: should return '@_The Quick Brown Fox Jumps Over The Lazy Dog'" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)']: should return '$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)'" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "@_The Quick Brown Fox Jumps Over The Lazy Dog")) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)")) | Should -Be 1
         }
     }
 
     Context "[qlogicae_cli xchacha20poly1305 decrypt --cipher --key --nonce --is-file-output-enabled] test cases" {        
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
-            Test-Path ".qlogicae/cli/xchacha20poly1305-decrypt.txt" | Should -BeFalse
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305DecryptFilePath)" | Should -BeFalse
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false']: should return '@_The Quick Brown Fox Jumps Over The Lazy Dog' on the console but not the file" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='false' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='fals']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305DecryptFilePath)" | Should -BeFalse
+        }
+
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='tru']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='tru' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305DecryptFilePath)" | Should -BeFalse
+        }
+
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='false']: should return '$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' on the console but not the file" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            Test-Path ".qlogicae/cli/xchacha20poly1305-decrypt.txt" | Should -BeFalse
-            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "@_The Quick Brown Fox Jumps Over The Lazy Dog")) | Should -Be 1
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305DecryptFilePath)" | Should -BeFalse
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)")) | Should -Be 1
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true']: should return '@_The Quick Brown Fox Jumps Over The Lazy Dog' on the console and file" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-file-output-enabled='true' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-file-output-enabled='true']: should return '$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)' on the console and file" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-file-output-enabled='true' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            Test-Path ".qlogicae/cli/xchacha20poly1305-decrypt.txt" | Should -BeTrue
-            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "@_The Quick Brown Fox Jumps Over The Lazy Dog")) | Should -Be 1
+            Test-Path "$($QLogicaeKmandInstance.Configurations.RelativeDotQLogicaeXChaCha20Poly1305DecryptFilePath)" | Should -BeTrue
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)")) | Should -Be 1
         }
     }
 
     Context "[qlogicae_cli xchacha20poly1305 decrypt --cipher --key --nonce --is-verbose-logging-enabled] test cases" {        
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='']: should terminate" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+        
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='fals']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='fals' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='false']: should return '@_The Quick Brown Fox Jumps Over The Lazy Dog'" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='false' | Out-String
-            $QLogicaeKmandInstance.ConsoleLog($TestResult)
-
-            $TestResult | Should -Not -BeNullOrEmpty
-            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "@_The Quick Brown Fox Jumps Over The Lazy Dog")) | Should -Be 1
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='tru']: should terminate" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='tru' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
         }
 
-        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='true']: should return '@_The Quick Brown Fox Jumps Over The Lazy Dog'" {
-            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher='ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg==' --key='@Password_1234' --nonce='XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt' --is-verbose-logging-enabled='true' | Out-String
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='false']: should return '$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)'" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='false' | Out-String
             $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
-            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "@_The Quick Brown Fox Jumps Over The Lazy Dog")) | Should -Be 1
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)")) | Should -Be 1
+        }
+
+        It "[qlogicae_cli xchacha20poly1305 decrypt --cipher='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)' --key='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)' --nonce='$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)' --is-verbose-logging-enabled='true']: should return '$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)'" {
+            $TestResult = qlogicae_cli xchacha20poly1305 decrypt --cipher="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Cipher)" --key="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Key)" --nonce="$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Nonce)" --is-verbose-logging-enabled='true' | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+            ($QLogicaeKmandInstance.GetPatternMatchCount($TestResult, "$($QLogicaeKmandInstance.Configurations.MockXChaCha20Poly1305Text)")) | Should -Be 1
         }
     }
 }

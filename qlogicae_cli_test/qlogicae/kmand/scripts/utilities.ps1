@@ -23,8 +23,10 @@ class QLogicaeKmand {
             DotQLogicaeLogsFolderPath = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs"
             DotQLogicaeLogsPesterFolderPath = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs"
             DotQLogicaeKmandEnvironmentFolderPath = "$RootFolderPath\\.qlogicae\\kmand\\environment"
+            DotQLogicaeKmandBuildsCLIFolderPath = "$RootFolderPath\\qlogicae\\kmand\\builds\\cli"
             QLogicaeTemplatesVS2022ApplicationFolderPath = "$ParentFolderPath\\qlogicae_cli\\qlogicae\\cli\\templates\\vs2022\\application"
 
+            
             QLogicaePrivateFilePath = "$RootFolderPath\\.qlogicae\\application\\configurations\\qlogicae.private.json"
             DotQLogicaeCLICustomOutputFilePath = "$RootFolderPath\\.qlogicae\\cli\\custom_output.txt"
             DotQLogicaeCLIDefaultOutputFilePath = "$RootFolderPath\\.qlogicae\\cli\\default_output.txt"
@@ -32,9 +34,32 @@ class QLogicaeKmand {
             DotQLogicaeLogsPesterConsoleFile = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs\\console.txt"
             QLogicaeConfigurationsPublicFilePath = "$RootFolderPath\\qlogicae\\application\\configurations\\qlogicae.public.json"
             
+            RelativeDotQLogicaeCLICustomOutputFilePath = ".qlogicae\\cli\\custom_output.txt"
             RelativeQLogicaePrivateFilePath = ".qlogicae\\application\\configurations\\qlogicae.private.json"
             RelativeQLogicaeConfigurationsPublicFilePath = "qlogicae\\application\\configurations\\qlogicae.public.json"
+            RelativeDotQLogicaeUUID4GenerateFilePath = ".qlogicae\\cli\\uuid4_generate.txt"
+            RelativeDotQLogicaeStringGenerateFilePath = ".qlogicae\\cli\\string_generate.txt"
+            RelativeDotQLogicaeXChaCha20Poly1305EncryptFilePath = ".qlogicae\\cli\\xchacha20poly1305_encrypt.txt"
+            RelativeDotQLogicaeXChaCha20Poly1305DecryptFilePath = ".qlogicae\\cli\\xchacha20poly1305_decrypt.txt"
+            RelativeDotQLogicaeArgon2IDHashFilePath = ".qlogicae\\cli\\argon2id_hash.txt"
+            RelativeDotQLogicaeArgon2IDVerifyFilePath = ".qlogicae\\cli\\argon2id_verify.txt"
             
+            MockArgon2IDText = "@Password_1234"
+            MockArgon2IDHash = '$argon2id$v=19$m=65536,t=3,p=2$fMWT7AlyfqZ5BwsUcAU/+A$cJZ3S6DSFAt1AP2VRX64OTtWUu+WqUQ3wkAEifcGr7k'
+
+            MockXChaCha20Poly1305Text = "@_The Quick Brown Fox Jumps Over The Lazy Dog"
+            MockXChaCha20Poly1305Key = '@Password_1234'
+            MockXChaCha20Poly1305Nonce = 'XfK6iU2kWh441qqTSdC4DxO1oN2lnqdt'
+            MockXChaCha20Poly1305Cipher = "ADXFuBXMI+Hi5HMMh6Cc/xxMunV9RSDBMl2jxfvmmZnDi6pM1UFZ7Oda1avBvOLLdDsyDT+jSbzvibI2sg=="
+
+            MockHKCUEnvironmentRegistrySubPath = "Software\\QLogicae\\Kmand"
+            MockHKCUEnvironmentRegistryKey = "Mock"
+            MockHKCUEnvironmentRegistryValue = "hkcu.name.development"
+
+            MockDeployInnoSetupInputFolderPath = ".\\"
+            MockDeployInnoSetupOutputFolderPath = ".\\"
+            MockDeployExecutableName = "application.exe"
+
             PesterConfigurations = @{
                 Run = @{
                     Path = ""
@@ -82,6 +107,8 @@ class QLogicaeKmand {
     }
 
     [void] BeforeAllTestsSetup() {
+        . qlogicae/kmand/scripts/imports.ps1
+
         $this.ClearFolder($this.Configurations.DotQLogicaeCLIFolderPath)
         $this.ClearFolder($this.Configurations.DotQLogicaeKmandEnvironmentFolderPath)
 

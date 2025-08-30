@@ -1,5 +1,5 @@
-$private_configurations = Get-Content .qlogicae/configurations/qlogicae.private.json | ConvertFrom-Json
-$public_configurations = Get-Content qlogicae/configurations/qlogicae.public.json -Raw | ConvertFrom-Json
+$private_configurations = Get-Content .qlogicae/application/configurations/qlogicae.private.json | ConvertFrom-Json
+$public_configurations = Get-Content qlogicae/application/configurations/qlogicae.public.json -Raw | ConvertFrom-Json
 
 & $private_configurations.inno_setup.cli_executable_path`
     /DMyAppId="$($public_configurations.application.id)" `

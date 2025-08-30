@@ -62,12 +62,18 @@ namespace QLogicaeCLI
 		std::vector<std::string> _run_scripts_input_1;
 		bool _run_scripts_input_3;
 
+		bool _get_environment_input_2;
+
 		std::string _set_environment_input_1;
-		std::string _set_environment_input_2;
 		bool _set_environment_input_3;
 
 		std::string _view_windows_registry_input_1;
 		bool _view_windows_registry_input_2;
+
+		std::string _set_windows_registry_input_1;
+		std::string _set_windows_registry_input_2;
+		std::string _set_windows_registry_input_3;
+		bool _set_windows_registry_input_4;
 
 		std::string _setup_windows_registry_input_1;
 		bool _setup_windows_registry_input_5;

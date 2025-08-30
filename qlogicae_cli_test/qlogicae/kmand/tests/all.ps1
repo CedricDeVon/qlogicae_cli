@@ -10,3 +10,4 @@
 . qlogicae/kmand/tests/windows_registry.ps1
 . qlogicae/kmand/tests/setup.ps1
 . qlogicae/kmand/tests/deploy.ps1
+

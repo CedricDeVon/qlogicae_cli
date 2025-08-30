@@ -1,8 +1,6 @@
 
 Describe "[qlogicae_cli environment] test suite" {
     BeforeAll {
-        . qlogicae/kmand/scripts/imports.ps1
-
         $QLogicaeKmandInstance.BeforeAllTestsSetup()
 
         qlogicae_cli setup vs2022 application
@@ -26,6 +24,64 @@ Describe "[qlogicae_cli environment] test suite" {
             $TestResult | Should -Not -BeNullOrEmpty
         }
     }
+
+    Context "[qlogicae_cli environment get] test cases" {
+        It "[qlogicae_cli environment get]: should return 'development'" {
+            qlogicae_cli environment set --type='development' | Out-String  
+
+            $TestResult = qlogicae_cli environment get | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli environment get --help]: should not be null or empty" {
+            $TestResult = qlogicae_cli environment get --help | Out-String
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+        }
+    }
+    
+    Context "[qlogicae_cli environment get --is-verbose-logging-enabled] test cases" {
+        It "[qlogicae_cli environment get --is-verbose-logging-enabled='']: should terminate" {
+            $TestResult = qlogicae_cli environment get --is-verbose-logging-enabled='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli environment get --is-verbose-logging-enabled='fals']: should terminate" {
+            $TestResult = qlogicae_cli environment get --is-verbose-logging-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli environment get --is-verbose-logging-enabled='tru']: should terminate" {
+            $TestResult = qlogicae_cli environment get --is-verbose-logging-enabled='tru' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli environment get --is-verbose-logging-enabled='false']: should return 'development'" {
+            qlogicae_cli environment set --type='development' | Out-String  
+
+            $TestResult = qlogicae_cli environment get --is-verbose-logging-enabled='false' | Out-String           
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+            (Get-Content "$($QLogicaeKmandInstance.Configurations.RelativeQLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
+        }
+
+        It "[qlogicae_cli environment get --is-verbose-logging-enabled='true']: should return 'development'" {
+            qlogicae_cli environment set --type='development' | Out-String  
+
+            $TestResult = qlogicae_cli environment get --is-verbose-logging-enabled='true' | Out-String           
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
+
+            $TestResult | Should -Not -BeNullOrEmpty
+            (Get-Content "$($QLogicaeKmandInstance.Configurations.RelativeQLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
+        }
+    }    
 
     Context "[qlogicae_cli environment set] test cases" {
         It "[qlogicae_cli environment set]: should terminate" {
@@ -64,6 +120,7 @@ Describe "[qlogicae_cli environment] test suite" {
 
         It "[qlogicae_cli environment set --type='debug']: should set 'environment.selected' property to 'debug'" {
             $TestResult = qlogicae_cli environment set --type='debug' | Out-String           
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.RelativeQLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "debug"
@@ -71,6 +128,7 @@ Describe "[qlogicae_cli environment] test suite" {
 
         It "[qlogicae_cli environment set --type='test']: should set 'environment.selected' property to 'test'" {
             $TestResult = qlogicae_cli environment set --type='test' | Out-String           
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.RelativeQLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "test"
@@ -78,6 +136,7 @@ Describe "[qlogicae_cli environment] test suite" {
 
         It "[qlogicae_cli environment set --type='release']: should set 'environment.selected' property to 'release'" {
             $TestResult = qlogicae_cli environment set --type='release' | Out-String           
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.RelativeQLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "release"
@@ -86,13 +145,26 @@ Describe "[qlogicae_cli environment] test suite" {
     
     Context "[qlogicae_cli environment set --type --is-verbose-logging-enabled] test cases" {
         It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='']: should terminate" {
-            $TestResult = qlogicae_cli environment set --type='development' | Out-String
+            $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='fals']: should terminate" {
+            $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='fals' | Out-String
+            
+            $TestResult | Should -BeNullOrEmpty
+        }
+
+        It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='tru']: should terminate" {
+            $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='tru' | Out-String
             
             $TestResult | Should -BeNullOrEmpty
         }
 
         It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='false']: should set 'environment.selected' property to 'development'" {
             $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='false' | Out-String           
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.RelativeQLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
@@ -100,6 +172,7 @@ Describe "[qlogicae_cli environment] test suite" {
 
         It "[qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='true']: should set 'environment.selected' property to 'development'" {
             $TestResult = qlogicae_cli environment set --type='development' --is-verbose-logging-enabled='true' | Out-String           
+            $QLogicaeKmandInstance.ConsoleLog($TestResult)
 
             $TestResult | Should -Not -BeNullOrEmpty
             (Get-Content "$($QLogicaeKmandInstance.Configurations.RelativeQLogicaeConfigurationsPublicFilePath)" -Raw | ConvertFrom-Json).environment.selected | Should -Be "development"
