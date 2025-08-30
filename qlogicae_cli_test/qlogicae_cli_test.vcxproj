@@ -123,11 +123,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="argon2id_tests.ps1" />
-    <None Include="xchacha20poly1305_tests.ps1" />
     <None Include="qlogicae\configurations\qlogicae.public.json" />
     <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
     <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
+    <None Include="setup_tests.ps1" />
+    <None Include="argon2id_tests.ps1" />
+    <None Include="deploy_tests.ps1" />
+    <None Include="windows_registry_tests.ps1" />
+    <None Include="xchacha20poly1305_tests.ps1" />
     <None Include="environment_tests.ps1" />
     <None Include="scripts_tests.ps1" />
     <None Include="run.ps1" />
@@ -142,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="qlogicae\assets\qlogicae.application.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

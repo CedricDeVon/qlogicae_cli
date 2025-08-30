@@ -2,7 +2,7 @@ param(
     [string]$ScriptPath
 )
 
-. $PSScriptRoot/imports.ps1
+. $PSScriptRoot/qlogicae/kmand/scripts/imports.ps1
 
 $QLogicaeKmandInstance.Setup($ScriptPath)
 

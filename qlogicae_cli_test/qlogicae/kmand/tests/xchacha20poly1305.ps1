@@ -1,7 +1,7 @@
 
 Describe "[qlogicae_cli xchacha20poly1305] test suite" {
     BeforeAll {
-        . $PSScriptRoot/imports.ps1
+        . qlogicae/kmand/scripts/imports.ps1
 
         $QLogicaeKmandInstance.BeforeAllTestsSetup()
     }
