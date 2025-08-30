@@ -123,30 +123,33 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="qlogicae\configurations\qlogicae.public.json" />
-    <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
-    <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
-    <None Include="setup_tests.ps1" />
-    <None Include="argon2id_tests.ps1" />
-    <None Include="deploy_tests.ps1" />
-    <None Include="windows_registry_tests.ps1" />
-    <None Include="xchacha20poly1305_tests.ps1" />
-    <None Include="environment_tests.ps1" />
-    <None Include="scripts_tests.ps1" />
+    <None Include="qlogicae\applicatoin\configurations\qlogicae.public.json" />
+    <None Include="deepmerge.jq" />
+    <None Include="second.json" />
+    <None Include=".qlogicae\application\scripts\qlogicae.inno_run.ps1" />
+    <None Include=".qlogicae\application\scripts\qlogicae.inno_setup.iss" />
+    <None Include="qlogicae\kmand\tests\setup.ps1" />
+    <None Include="qlogicae\kmand\tests\argon2id.ps1" />
+    <None Include="qlogicae\kmand\tests\deploy.ps1" />
+    <None Include="qlogicae\kmand\tests\windows_registry.ps1" />
+    <None Include="qlogicae\kmand\tests\xchacha20poly1305.ps1" />
+    <None Include="qlogicae\kmand\tests\environment.ps1" />
+    <None Include="qlogicae\kmand\tests\scripts.ps1" />
     <None Include="run.ps1" />
-    <None Include="string_tests.ps1" />
-    <None Include="about_tests.ps1" />
-    <None Include="qlogicae_cli_tests.ps1" />
-    <None Include="all_tests.ps1" />
-    <None Include="utilities.ps1" />
+    <None Include="qlogicae\kmand\tests\string.ps1" />
+    <None Include="qlogicae\kmand\tests\about.ps1" />
+    <None Include="qlogicae\kmand\tests\qlogicae_cli.ps1" />
+    <None Include="qlogicae\kmand\tests\all.ps1" />
+    <None Include="qlogicae\kmand\scripts\utilities.ps1" />
     <None Include="packages.config" />
-    <None Include="imports.ps1" />
-    <None Include="uuid4_tests.ps1" />
+    <None Include="qlogicae\kmand\scripts\imports.ps1" />
+    <None Include="qlogicae\kmand\tests\uuid4.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="qlogicae\assets\qlogicae.application.ico" />
+    <Image Include="qlogicae\applicatoin\assets\qlogicae.application.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="first.json" />
     <Text Include="LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

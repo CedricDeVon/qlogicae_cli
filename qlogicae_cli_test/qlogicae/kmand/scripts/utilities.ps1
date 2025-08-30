@@ -18,22 +18,22 @@ class QLogicaeKmand {
             RootFolderPath = $RootFolderPath
             ParentFolderPath = $ParentFolderPath
 
-            DotQLogicaeFolderPath = "$RootFolderPath/.qlogicae"
-            DotQLogicaeCLIFolderPath = "$RootFolderPath/.qlogicae/cli"
-            DotQLogicaeLogsFolderPath = "$RootFolderPath/.qlogicae/kmand/pester/logs"
-            DotQLogicaeLogsPesterFolderPath = "$RootFolderPath/.qlogicae/kmand/pester/logs"
-            DotQLogicaeKmandEnvironmentFolderPath = "$RootFolderPath/.qlogicae/kmand/environment"
-            QLogicaeTemplatesVS2022ApplicationFolderPath = "$ParentFolderPath/qlogicae_cli/qlogicae/templates/vs2022/application"
+            DotQLogicaeFolderPath = "$RootFolderPath\\.qlogicae"
+            DotQLogicaeCLIFolderPath = "$RootFolderPath\\.qlogicae\\cli"
+            DotQLogicaeLogsFolderPath = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs"
+            DotQLogicaeLogsPesterFolderPath = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs"
+            DotQLogicaeKmandEnvironmentFolderPath = "$RootFolderPath\\.qlogicae\\kmand\\environment"
+            QLogicaeTemplatesVS2022ApplicationFolderPath = "$ParentFolderPath\\qlogicae_cli\\qlogicae\\cli\\templates\\vs2022\\application"
 
-            QLogicaePrivateFilePath = "$RootFolderPath/qlogicae.private.json"
-            DotQLogicaeCLICustomOutputFilePath = "$RootFolderPath/.qlogicae/cli/custom_output.txt"
-            DotQLogicaeCLIDefaultOutputFilePath = "$RootFolderPath/.qlogicae/cli/default_output.txt"
-            DotQLogicaeLogsPesterJUnitFile = "$RootFolderPath/.qlogicae/kmand/pester/logs/junit.xml"          
-            DotQLogicaeLogsPesterConsoleFile = "$RootFolderPath/.qlogicae/kmand/pester/logs/console.txt"
-            QLogicaeConfigurationsPublicFilePath = "$RootFolderPath/qlogicae/configurations/qlogicae.public.json"
+            QLogicaePrivateFilePath = "$RootFolderPath\\.qlogicae\\application\\configurations\\qlogicae.private.json"
+            DotQLogicaeCLICustomOutputFilePath = "$RootFolderPath\\.qlogicae\\cli\\custom_output.txt"
+            DotQLogicaeCLIDefaultOutputFilePath = "$RootFolderPath\\.qlogicae\\cli\\default_output.txt"
+            DotQLogicaeLogsPesterJUnitFile = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs\\junit.xml"          
+            DotQLogicaeLogsPesterConsoleFile = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs\\console.txt"
+            QLogicaeConfigurationsPublicFilePath = "$RootFolderPath\\qlogicae\\application\\configurations\\qlogicae.public.json"
             
-            RelativeQLogicaePrivateFilePath = "qlogicae.private.json"
-            RelativeQLogicaeConfigurationsPublicFilePath = "qlogicae/configurations/qlogicae.public.json"
+            RelativeQLogicaePrivateFilePath = ".qlogicae\\application\\configurations\\qlogicae.private.json"
+            RelativeQLogicaeConfigurationsPublicFilePath = "qlogicae\\application\\configurations\\qlogicae.public.json"
             
             PesterConfigurations = @{
                 Run = @{
@@ -48,7 +48,7 @@ class QLogicaeKmand {
                 CodeCoverage = @{
                     Enabled = $true
                     OutputFormat = "CoverageGutters"
-                    OutputPath = "$RootFolderPath/.qlogicae/kmand/pester/logs/coverage.xml"
+                    OutputPath = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs\\coverage.xml"
                 }
                 Debug = @{
                     ShowFullErrors = $true
@@ -56,7 +56,7 @@ class QLogicaeKmand {
                 }
                 TestResult = @{
                     Enabled = $true
-                    OutputPath = "$RootFolderPath/.qlogicae/kmand/pester/logs/nunit.xml"
+                    OutputPath = "$RootFolderPath\\.qlogicae\\kmand\\pester\\logs\\nunit.xml"
                     OutputFormat = "NUnitXml"
                 }
             }

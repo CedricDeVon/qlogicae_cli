@@ -93,28 +93,33 @@ namespace QLogicaeCLI
         qlogicae_cli_folder_path;
 
     static std::string public_qlogicae_configurations_folder_path =
-        public_qlogicae_cli_folder_path +
-        configurations_folder_name_string;
+        public_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
+        "\\" + configurations_folder_name_string;
 
     static std::string public_qlogicae_assets_folder_path =
         public_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
         "\\" + assets_folder_name_string;
 
     static std::string public_qlogicae_scripts_folder_path =
-        public_qlogicae_folder_path +
+        private_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
         "\\" + scripts_folder_name_string;
 
     static std::string public_qlogicae_templates_folder_path =
-        public_qlogicae_folder_path +
+        public_qlogicae_cli_folder_path +
         "\\" + templates_folder_name_string;
 
     static std::string public_qlogicae_configurations_public_file_path =
         public_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
         "\\" + configurations_folder_name_string +
         "\\" + public_file_name_string;
 
     static std::string qlogicae_private_file_path =
         private_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
         "\\" + configurations_folder_name_string +
         "\\" + private_file_name_string;
 
@@ -122,22 +127,26 @@ namespace QLogicaeCLI
         license_file_name_string;
 
     static std::string public_qlogicae_scripts_inno_run_file_path =
-        public_qlogicae_folder_path +
+        private_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
         "\\" + scripts_folder_name_string +
         "\\" + inno_run_file_name_string;
 
     static std::string public_qlogicae_scripts_inno_setup_file_path =
-        public_qlogicae_folder_path +
+        private_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
         "\\" + scripts_folder_name_string +
         "\\" + inno_setup_file_name_string;
 
     static std::string public_qlogicae_scripts_inno_target_file_path =
-        public_qlogicae_folder_path +
+        private_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
         "\\" + scripts_folder_name_string +
         "\\" + inno_setup_target_file_name_string;
 
     static std::string public_qlogicae_assets_icon_file_path =
         public_qlogicae_folder_path +
+        "\\" + application_folder_name_string +
         "\\" + assets_folder_name_string +
         "\\" + icon_file_name_string;
 
@@ -146,9 +155,6 @@ namespace QLogicaeCLI
 
     static std::string license_file_path =
         "\\" + license_file_name_string;
-
-    static std::string gitignore_file_path =
-        "\\" + gitignore_file_name_string;
 
     static QLogicaeCore::TextFileIO client_inno_run_file;
     
@@ -166,12 +172,7 @@ namespace QLogicaeCLI
         application_directory_name_string + "\\" +
         public_qlogicae_configurations_public_file_path
     );
-
-    static QLogicaeCore::JsonFileIO application_private_file(
-        application_directory_name_string + "\\" +
-        qlogicae_private_file_path
-    );
-
+    
     static std::string application_id =
         application_public_file.get_string({ "application", "id" });
 
@@ -195,9 +196,6 @@ namespace QLogicaeCLI
 
     static std::string application_architecture =
         application_public_file.get_string({ "application", "architecture" });
-
-    static std::string utilities_environment_selected =
-        application_private_file.get_string({ "environment", "selected" });
 
     static std::vector<std::string> utilities_environment_types
         { "development", "debug", "test", "release" };

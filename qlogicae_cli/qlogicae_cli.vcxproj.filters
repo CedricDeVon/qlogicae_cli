@@ -49,13 +49,11 @@
     <None Include="resource.aps" />
     <None Include="resources.aps" />
     <None Include="templates\generic_documentation\qlogicae.gitignore" />
-    <None Include="qlogicae\configurations\qlogicae.public.json" />
-    <None Include="qlogicae\scripts\qlogicae.inno_run.ps1" />
-    <None Include="qlogicae\scripts\qlogicae.inno_setup.iss" />
-    <None Include="qlogicae\templates\vs2022\application\qlogicae\scripts\qlogicae.inno_run.ps1" />
-    <None Include="qlogicae\templates\vs2022\application\qlogicae\scripts\qlogicae.inno_setup.iss" />
-    <None Include="qlogicae\templates\vs2022\application\.qlogicae\configurations\qlogicae.private.json" />
-    <None Include="qlogicae\templates\vs2022\application\qlogicae\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\application\configurations\qlogicae.public.json" />
+    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\scripts\qlogicae.inno_run.ps1" />
+    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\scripts\qlogicae.inno_setup.iss" />
+    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\configurations\qlogicae.private.json" />
+    <None Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\configurations\qlogicae.public.json" />
     <None Include="qlogicae\cli\tests\test.ps1" />
   </ItemGroup>
   <ItemGroup>
@@ -64,15 +62,15 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="qlogicae\assets\qlogicae.application.ico">
+    <Image Include="qlogicae\application\assets\qlogicae.application.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="qlogicae\templates\vs2022\application\qlogicae\assets\qlogicae.application.ico">
+    <Image Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\assets\qlogicae.application.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="qlogicae\templates\vs2022\application\LICENSE.txt" />
+    <Text Include="qlogicae\cli\templates\vs2022\application\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="LICENSE.txt" />

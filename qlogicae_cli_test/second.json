@@ -1,0 +1,41 @@
+{
+  "AppConfig": {
+    "Version": "1.1.0",
+    "Features": [
+      "Metrics",
+      "Monitoring"
+    ],
+    "Database": {
+      "Host": "db-server",
+      "Port": 3306,
+      "User": "root",
+      "Password": "supersecret"
+    }
+  },
+  "Users": [
+    {
+      "Id": 3,
+      "Name": "Charlie",
+      "Roles": [ "Manager" ],
+      "Active": true
+    },
+    {
+      "Id": 4,
+      "Name": "Diana",
+      "Roles": [ "Support", "Developer" ],
+      "Active": true
+    }
+  ],
+  "Logging": {
+    "IsConsoleEnabled": false,
+    "IsFileEnabled": true,
+    "FilePath": "./logs/newapp.log"
+  },
+  "NewModule": {
+    "Enabled": true,
+    "Settings": {
+      "RefreshInterval": 30,
+      "RetryAttempts": 5
+    }
+  }
+}

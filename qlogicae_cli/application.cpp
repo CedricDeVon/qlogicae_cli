@@ -1318,6 +1318,7 @@ namespace QLogicaeCLI
 						std::string output_path =
 							application_directory_name_string + "\\" +
 							public_qlogicae_folder_path + "\\" +
+							qlogicae_cli_folder_path + "\\" +
 							templates_folder_name_string + "\\" +
 							vs2022_folder_name_string + "\\" +
 							application_folder_name_string;
@@ -1413,6 +1414,8 @@ namespace QLogicaeCLI
 			to_path,
 			std::filesystem::copy_options::overwrite_existing
 		);
+
+		return true;
 	}
 
 	bool QLogicaeCLIApplication::_is_file_or_folder_path_found(
