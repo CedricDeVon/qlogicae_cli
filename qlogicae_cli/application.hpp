@@ -193,22 +193,22 @@ namespace QLogicaeCLI
 	};
 }
 
-/*
-qlogicae_cli deploy
-qlogicae_cli deploy --help
-qlogicae_cli deploy inno-setup
-qlogicae_cli deploy inno-setup --help
-qlogicae_cli deploy inno-setup --is-verbose-logging-enabled='false'
-qlogicae_cli deploy inno-setup --is-verbose-logging-enabled='true'
 
-qlogicae_cli setup
-qlogicae_cli setup --help
-qlogicae_cli setup vs2022
-qlogicae_cli setup vs2022 --help
-qlogicae_cli setup vs2022 application
-qlogicae_cli setup vs2022 application --help
-qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='false'
-qlogicae_cli setup vs2022 application --is-verbose-logging-enabled='true'
+
+/*
+
+jwt encrypt --issuer --data --public-key --private-key --lifetime-in-seconds --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+jwt decrypt --issuer --data --public-key --private-key --lifetime-in-seconds --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+sha hash --text --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+sha verify --hash --text --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+aes encrypt --text --key --nonce --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+aes decrypt --cipher --key --nonce --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+
+setup vs2022 cink --is-verbose-logging-enabled
+setup vs2022 plotica --is-verbose-logging-enabled
+
+
+mock dataset --is-verbose-logging-enabled
 
 
 
