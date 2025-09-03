@@ -179,6 +179,48 @@ xcopy "$(ProjectDir)qlogicae\cli" "$(OutDir)qlogicae\cli" /E /Y /I
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\api\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\collaboration\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\development\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\file-system\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\introduction\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\legalities\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\project-state\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\quality-assurance\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\references\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\release-notes\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\security\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\index.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\README.md">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
     <None Include="qlogicae\cli\tests\test.ps1" />
     <None Include="qlogicae\application\configurations\qlogicae.public.json" />
     <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\configurations\qlogicae.private.json" />
@@ -197,6 +239,9 @@ xcopy "$(ProjectDir)qlogicae\cli" "$(OutDir)qlogicae\cli" /E /Y /I
   </ItemGroup>
   <ItemGroup>
     <Image Include="qlogicae\application\assets\qlogicae.application.ico" />
+    <Image Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\assets\application-icon.ico">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Image>
     <Image Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\assets\qlogicae.application.ico" />
   </ItemGroup>
   <ItemGroup>
