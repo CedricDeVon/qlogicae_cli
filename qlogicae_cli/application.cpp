@@ -1369,6 +1369,62 @@ namespace QLogicaeCLI
 					"setup",
 					"Setup commands: vs2022 application"
 				);
+
+			CLI::App* setup_generic_command =
+				setup_command->add_subcommand(
+					"generic",
+					"Generic templates"
+				);
+			CLI::App* setup_generic_documentation_command =
+				setup_generic_command->add_subcommand(
+					"documentation",
+					"Creates a generic documentation template"
+				);
+
+			setup_generic_documentation_command
+				->add_option("--input-folder-path",
+					_setup_documentation_input_1,
+					"Selected input folder path")
+				->default_val("./");
+			setup_generic_documentation_command
+				->add_option("--is-verbose-logging-enabled",
+					_setup_documentation_input_2,
+					"Enables or disables verbose console logging")
+				->default_val(true);
+
+			_commands["setup-generic-documentation"] = std::make_pair(
+				setup_generic_documentation_command,
+				[this]() -> bool
+				{
+					try
+					{
+						_log_running_timestamp_async(_setup_documentation_input_2);
+
+						std::string output_path =
+							application_directory_name_string + "\\" +
+							public_qlogicae_folder_path + "\\" +
+							qlogicae_cli_folder_path + "\\" +
+							templates_folder_name_string + "\\" +
+							generic_folder_name_string + "\\" +
+							documentation_folder_name_string;
+
+						system(("xcopy \"" + output_path + "\" \"" + _setup_documentation_input_1 + "\" /E /Y /I").c_str());
+
+						_log_complete_timestamp_async(_setup_documentation_input_2);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_template_command(): ") + exception.what(), _setup_documentation_input_2);
+
+						return false;
+					}
+				}
+			);
+			
+
+
 			CLI::App* setup_vs2022_command =
 				setup_command->add_subcommand(
 					"vs2022",

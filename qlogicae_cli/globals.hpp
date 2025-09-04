@@ -78,11 +78,17 @@ namespace QLogicaeCLI
     static std::string application_folder_name_string =
         "application";
 
+    static std::string generic_folder_name_string =
+        "generic";
+
     static std::string scripts_folder_name_string =
         "scripts";
 
     static std::string configurations_folder_name_string =
         "configurations";
+
+    static std::string documentation_folder_name_string =
+        "documentation";
 
     static std::string public_qlogicae_cli_folder_path =
         public_qlogicae_folder_path +
