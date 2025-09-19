@@ -128,11 +128,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\qlogicae_cli\qlogicae_cli.vcxproj">
-      <Project>{f1e3599f-ee3d-4b74-811f-2f099df27a6a}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="qlogicae\application\configurations\qlogicae.public.json" />
     <None Include="qlogicae\kmand\builds\cli\application.exe">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

@@ -1,11 +1,11 @@
-#pragma once
+#include "pch.hpp"
 
 #include "qlogicae_cli.hpp"
 
 int main(int argc, char** argv)
 {
-    QLogicaeCLI::QLogicaeCLIApplication& cli_application =
-        QLogicaeCLI::QLogicaeCLIApplication::get_instance();
+    QLogicaeCLI::Application& cli_application =
+        QLogicaeCLI::Application::get_instance();
 
     const bool is_setup_successful = cli_application.setup(argc, argv);
     if (!is_setup_successful)

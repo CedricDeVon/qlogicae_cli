@@ -1,26 +1,26 @@
 #pragma once
 
-#include "pch.hpp"
+#include "utilities.hpp"
 
-#include "globals.hpp"
+#include "qlogicae_core.hpp"
 
 namespace QLogicaeCLI
 {
-	class QLogicaeCLIApplication
+	class Application
 	{
 	public:
 		bool parse();
 		bool setup(int, char**);
 	
-		static QLogicaeCLIApplication& get_instance();
+		static Application& get_instance();
 
 	protected:
-		QLogicaeCLIApplication();
-		~QLogicaeCLIApplication() = default;
-		QLogicaeCLIApplication(const QLogicaeCLIApplication&) = delete;
-		QLogicaeCLIApplication(QLogicaeCLIApplication&&) noexcept = delete;
-		QLogicaeCLIApplication& operator = (QLogicaeCLIApplication&&) = delete;
-		QLogicaeCLIApplication& operator = (const QLogicaeCLIApplication&) = delete;
+		Application();
+		~Application() = default;
+		Application(const Application&) = delete;
+		Application(Application&&) noexcept = delete;
+		Application& operator = (Application&&) = delete;
+		Application& operator = (const Application&) = delete;
 
 		size_t _generate_uuid4_input_1;
 		std::string _generate_uuid4_input_2;
@@ -106,90 +106,16 @@ namespace QLogicaeCLI
 
 		bool _setup_scripts_command();
 
+		bool _setup_build_command();
+
+		bool _setup_template_command();
+		
 		bool _setup_environment_command();
 
 		bool _setup_windows_registry_command();
 
 		bool _setup_deploy_command();
 
-		bool _setup_template_command();
-
-		bool _is_file_or_folder_path_found(const std::string& path);
-
-		bool _replace_file_if_found(
-			const std::string& folder_path,
-			const std::string& file_path
-		);
-
-		bool _copy_file_or_folder(
-			const std::string& from_path,
-			const std::string& to_path
-		);
-
-		bool _remove_file_or_folder_if_found(
-			const std::string& path
-		);
-
-		bool _create_folder_path(
-			const std::string& path,
-			const bool& is_enabled = true
-		);
-
-		std::string _setup_result_output_file(
-			const std::string& path,
-			const std::string& default_file_name,
-			const bool& is_enabled = true
-		);
-
-		void _log_running_timestamp(const bool& is_enabled = true);
-
-		void _log_complete_timestamp(const bool& is_enabled = true);
-
-		void _log_info_timestamp(
-			const std::string& text, const bool& is_enabled = true);
-
-		void _log_success_timestamp(
-			const std::string& text, const bool& is_enabled = true);
-
-		void _log_warning_timestamp(
-			const std::string& text, const bool& is_enabled = true);
-
-		void _log_exception_timestamp(
-			const std::string& text, const bool& is_enabled = true);
-
-		void _log_running_timestamp_async(const bool& is_enabled = true);
-
-		void _log_complete_timestamp_async(const bool& is_enabled = true);
-
-		void _log_info_timestamp_async(
-			const std::string& text, const bool& is_enabled = true);
-
-		void _log_success_timestamp_async(
-			const std::string& text, const bool& is_enabled = true);
-
-		void _log_warning_timestamp_async(
-			const std::string& text, const bool& is_enabled = true);
-
-		void _log_exception_timestamp_async(
-			const std::string& text, const bool& is_enabled = true);
-
-		std::string _transform_log_running_timestamp(
-			const bool& is_enabled = true);
-
-		std::string _transform_log_complete_timestamp(
-			const bool& is_enabled = true);
-
-		std::string _transform_log_info_timestamp(
-			const std::string& text = "", const bool& is_enabled = true);
-
-		std::string _transform_log_success_timestamp(
-			const std::string& text = "", const bool& is_enabled = true);
-
-		std::string _transform_log_warning_timestamp(
-			const std::string& text = "", const bool& is_enabled = true);
-
-		std::string _transform_log_exception_timestamp(
-			const std::string& text = "", const bool& is_enabled = true);
 	};
 }
 
@@ -214,7 +140,7 @@ mock dataset --is-verbose-logging-enabled
 
 
 
-bool QLogicaeCLIApplication::_setup_verify_vs2022_application_command()
+bool Application::_setup_verify_vs2022_application_command()
 {
 	try
 	{
@@ -297,7 +223,7 @@ bool QLogicaeCLIApplication::_setup_verify_vs2022_application_command()
 				}
 				catch (const std::exception& exception)
 				{
-					_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_vs2022_application_command(): ") + exception.what(), _verify_vs2022_application_input_2);
+					_log_exception_timestamp_async(std::string("Exception at Application::_setup_verify_vs2022_application_command(): ") + exception.what(), _verify_vs2022_application_input_2);
 
 					return false;
 				}
@@ -323,13 +249,13 @@ bool QLogicaeCLIApplication::_setup_verify_vs2022_application_command()
 	}
 	catch (const std::exception& exception)
 	{
-		_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_verify_vs2022_application_command(): ") + exception.what(), _verify_vs2022_application_input_2);
+		_log_exception_timestamp_async(std::string("Exception at Application::_setup_verify_vs2022_application_command(): ") + exception.what(), _verify_vs2022_application_input_2);
 
 		return false;
 	}
 }
 
-bool QLogicaeCLIApplication::_setup_setup_generic_documentation_command()
+bool Application::_setup_setup_generic_documentation_command()
 {
 	try
 	{
@@ -348,7 +274,7 @@ bool QLogicaeCLIApplication::_setup_setup_generic_documentation_command()
 						_setup_documentation_input_1)
 						)
 					{
-						_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_documentation_command(): Folder path '" + _setup_documentation_input_1  + "' is invalid"), _setup_documentation_input_2);
+						_log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_documentation_command(): Folder path '" + _setup_documentation_input_1  + "' is invalid"), _setup_documentation_input_2);
 
 						return false;
 					}
@@ -361,7 +287,7 @@ bool QLogicaeCLIApplication::_setup_setup_generic_documentation_command()
 				}
 				catch (const std::exception& exception)
 				{
-					_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_documentation_command(): ") + exception.what(), _setup_documentation_input_2);
+					_log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_documentation_command(): ") + exception.what(), _setup_documentation_input_2);
 
 					return false;
 				}
@@ -382,7 +308,7 @@ bool QLogicaeCLIApplication::_setup_setup_generic_documentation_command()
 	}
 	catch (const std::exception& exception)
 	{
-		_log_exception_timestamp_async(std::string("Exception at QLogicaeCLIApplication::_setup_setup_documentation_command(): ") + exception.what(), _setup_documentation_input_2);
+		_log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_documentation_command(): ") + exception.what(), _setup_documentation_input_2);
 
 		return false;
 	}

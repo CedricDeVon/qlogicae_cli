@@ -1,8 +1,6 @@
 #pragma once
 
-#include "pch.hpp"
-
-#include "globals.hpp"
+#include "utilities.hpp"
 #include "application.hpp"
 
 int main(int, char**);
