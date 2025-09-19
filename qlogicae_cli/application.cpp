@@ -16,36 +16,39 @@ namespace QLogicaeCLI
 	{
 		try
 		{
-			if (!_setup_about_command() ||
+			if (!UTILITIES.is_visual_studio_2022_qlogicae_project_found() ||
+				!_setup_about_command() ||
 				!_setup_uuid4_command() ||
 				!_setup_string_command() ||
 				!_setup_xchacha20poly1305_command() ||
 				!_setup_argon2id_command() ||
-				!_setup_scripts_command())
+				!_setup_scripts_command() ||
+				!_setup_build_command() ||
+				!_setup_windows_registry_command())
 			{
 				return false;
 			}
 
 			/*
-			if (
-				!_setup_environment_command() ||
-				!_setup_windows_registry_command() ||
-				!_setup_template_command() ||
+
+			if (				
 				!_setup_deploy_command())
+				!_setup_template_command())
 			{
 				return false;
 			}
+
 			*/
 
 			try
 			{
-				_application.parse(argc, argv);				   
+				_application.parse(argc, argv);
 			}
 			catch (const CLI::ParseError& exception)
 			{
 				_application.exit(exception);
 
-				return false;                     
+				return false;
 			}
 
 			return true;
@@ -576,14 +579,7 @@ namespace QLogicaeCLI
 					try
 					{
 						UTILITIES.log_running_timestamp_async(_hash_argon2id_input_3);
-
-						if (!_hash_argon2id_input_1.length())
-						{
-							UTILITIES.log_complete_timestamp_async(_hash_argon2id_input_3);
-
-							return false;
-						}
-
+						
 						std::string output_string =
 							UTILITIES.CRYPTOGRAPHER_3.transform(
 								_hash_argon2id_input_1
@@ -727,7 +723,7 @@ namespace QLogicaeCLI
 				);
 
 			scripts_run_command
-				->add_option("--names",
+				->add_option("--commands",
 					_run_scripts_input_1,
 					"Selected script commands")
 				->delimiter(',')
@@ -794,126 +790,105 @@ namespace QLogicaeCLI
 		}
 	}
 
-
-	/*
-
-
-
-
-	
-
-	bool Application::_setup_environment_command()
+	bool Application::_setup_build_command()
 	{
 		try
 		{
-			CLI::App* environment_command =
+			CLI::App* build_command =
 				_application.add_subcommand(
-					"environment",
-					"Environment commands: set"
+					"build",
+					"Build commands: vs2022"
 				);
 
-			CLI::App* environment_get_command =
-				environment_command->add_subcommand(
-					"get",
-					"Returns the current environment type"
+			CLI::App* build_vs2022_command =
+				build_command->add_subcommand(
+					"vs2022",
+					"Building project"
 				);
 
-			environment_get_command
-				->add_option("--is-verbose-logging-enabled",
-					_get_environment_input_2,
-					"Enables or disables verbose console logging")
-				->default_val(false);
+			build_vs2022_command
+				->add_option("--project",
+					_build_vs2022_input_1,
+					"An existing visual studio 2022 project"
+				)
+				->required();
 
-			_commands["environment-get"] = std::make_pair(
-				environment_get_command,
-				[this]() -> bool
-				{
-					try
-					{
-						UTILITIES.log_running_timestamp_async(_get_environment_input_2);
-
-						client_public_file.set_file_path(
-							public_qlogicae_configurations_public_file_path
-						);
-						std::string output_result = client_public_file.get_string(
-							{ "environment", "selected" }
-						);
-						QLogicaeCore::CLI_IO.print_async(output_result);
-
-						UTILITIES.log_complete_timestamp_async(_get_environment_input_2);
-
-						return true;
-					}
-					catch (const std::exception& exception)
-					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_environment_command(): ") + exception.what(), _get_environment_input_2);
-
-						return false;
-					}
-				}
-			);
-
-			CLI::App* environment_set_command =
-				environment_command->add_subcommand(
-					"set",
-					"Updates the current environment type"
-				);
-
-			environment_set_command
-				->add_option("--type",
-					_set_environment_input_1,
-					"Selected environment type")
-				->check(CLI::IsMember(application_environment_types))
+			build_vs2022_command
+				->add_option("--environment",
+					_build_vs2022_input_2,
+					"A QLogicae environment type"
+				)
 				->default_val("development");
-			environment_set_command
+
+			build_vs2022_command
+				->add_option("--architecture",
+					_build_vs2022_input_3,
+					"A visual studio 2022 project's instruction architecture"
+				)
+				->check(CLI::IsMember(
+					UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
+				))
+				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
+
+			build_vs2022_command
+				->add_option("--type",
+					_build_vs2022_input_4,
+					"A visual studio 2022 project's build type"
+				)
+				->check(CLI::IsMember(
+					UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
+				))
+				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
+
+			build_vs2022_command
 				->add_option("--is-verbose-logging-enabled",
-					_set_environment_input_3,
+					_build_vs2022_input_5,
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["environment-set"] = std::make_pair(
-				environment_set_command,
+			_commands["build-vs2022"] = std::make_pair(
+				build_vs2022_command,
 				[this]() -> bool
 				{
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_set_environment_input_3);
-
-						if (_set_environment_input_1.empty())
-						{
-							return false;
-						}
-
-						client_public_file.set_file_path(
-							public_qlogicae_configurations_public_file_path
+						UTILITIES.log_running_timestamp_async(_build_vs2022_input_5);
+						
+						std::string command = absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/visual_studio_2022/build.ps1\"",
+							" -VisualStudio2022InputProject ",
+							_build_vs2022_input_1,
+							" -EnvironmentType ",
+							_build_vs2022_input_2,
+							" -VisualStudio2022Architecture ",
+							_build_vs2022_input_3,
+							" -VisualStudio2022Build ",
+							_build_vs2022_input_4
 						);
-						client_public_file.update_string(
-							{ "environment", "selected" },
-							_set_environment_input_1
-						);
 
-						UTILITIES.log_complete_timestamp_async(_set_environment_input_3);
+						system(command.c_str());
+
+						UTILITIES.log_complete_timestamp_async(_build_vs2022_input_5);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_environment_command(): ") + exception.what(), _set_environment_input_3);
+						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_build_command(): ") + exception.what(), _build_vs2022_input_5);
 
 						return false;
 					}
-				}
-			);
-
+				});
+		
 			return true;
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_environment_command(): ") + exception.what(), _set_environment_input_3);
+			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_build_command(): ") + exception.what(), _build_vs2022_input_5);
 
 			return false;
 		}
-
 	}
 
 	bool Application::_setup_windows_registry_command()
@@ -925,11 +900,13 @@ namespace QLogicaeCLI
 					"windows-registry",
 					"Windows Registry commands: hkcu"
 				);
+			
 			CLI::App* windows_registry_hkcu_command =
 				windows_registry_command->add_subcommand(
 					"hkcu",
 					"HKCU-specific windows registry"
 				);
+
 			CLI::App* windows_registry_hkcu_get_command =
 				windows_registry_hkcu_command->add_subcommand(
 					"get",
@@ -1044,138 +1021,42 @@ namespace QLogicaeCLI
 				}
 			);
 
-			CLI::App* windows_registry_hkcu_setup_command =
-				windows_registry_hkcu_command->add_subcommand(
+			CLI::App* windows_registry_setup_command =
+				windows_registry_command->add_subcommand(
 					"setup",
 					"Creates or updates the key-value pairs of a selected QLogicae environment preset"
 				);
 
-			windows_registry_hkcu_setup_command
+			windows_registry_setup_command
 				->add_option(
-					"--environment-type",
+					"--environment",
 					_setup_windows_registry_input_1,
 					"HKCU Selected environment type")
-				->check(CLI::IsMember(application_environment_type_options))
 				->default_val("development")
 				->required();
-			windows_registry_hkcu_setup_command
+
+			windows_registry_setup_command
 				->add_option("--is-verbose-logging-enabled",
 					_setup_windows_registry_input_5,
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["windows-registry-hkcu-setup"] = std::make_pair(
-				windows_registry_hkcu_setup_command,
+			_commands["windows-registry-setup"] = std::make_pair(
+				windows_registry_setup_command,
 				[this]() -> bool
 				{
 					try
 					{
 						UTILITIES.log_running_timestamp_async(_setup_windows_registry_input_5);
 
-						client_public_file.set_file_path(
-							public_qlogicae_configurations_public_file_path
+						std::string command = absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/windows_registry/setup.ps1\"",
+							" -EnvironmentType ",
+							_setup_windows_registry_input_1
 						);
-						client_private_file.set_file_path(
-							qlogicae_private_file_path
-						);
 
-						std::string client_id =
-							client_public_file.get_string(
-								{ "application", "id" }
-							);
-						if (_setup_windows_registry_input_1 == "all")
-						{
-							for (const std::string& environment_type : application_environment_types)
-							{
-								std::string environment_id =
-									client_public_file.get_string(
-										{ "environment", "selections",
-										environment_type }
-									);
-								std::unordered_map<std::string, std::any>
-									hkcu_secrets =
-									client_private_file.get_object(
-										{
-											"windows_registry",
-											environment_type,
-											"hkcu"
-										}
-									);
-								std::unordered_map<std::string, std::any>
-									is_root_key_used =
-									client_private_file.get_object(
-										{ "windows_registry", "is_root_key_used" }
-									);
-
-								if (std::any_cast<bool>(is_root_key_used["hkcu"]))
-								{
-									for (const auto& [key, value] : hkcu_secrets)
-									{
-										QLogicaeCore::WINDOWS_REGISTRY_HKCU
-											.set_value_via_utf8(
-												absl::StrCat("Software\\QLogicae\\Application\\",
-													client_id,
-													"\\",
-													environment_id
-												),
-												key,
-												std::any_cast<std::string>(value)
-											);
-									}
-								}
-								else
-								{
-									_log_warning_timestamp_async(
-										"HKCU windows registry setup is disabled. Instruction skipped"
-									);
-								}
-							}
-						}
-						else
-						{
-							std::string environment_id =
-								client_public_file.get_string(
-									{ "environment", "selections",
-									_setup_windows_registry_input_1 }
-								);
-							std::unordered_map<std::string, std::any>
-								hkcu_secrets =
-								client_private_file.get_object(
-									{
-										"windows_registry",
-										_setup_windows_registry_input_1,
-										"hkcu"
-									}
-								);
-							std::unordered_map<std::string, std::any>
-								is_root_key_used =
-								client_private_file.get_object(
-									{ "windows_registry", "is_root_key_used" }
-								);
-
-							if (std::any_cast<bool>(is_root_key_used["hkcu"]))
-							{
-								for (const auto& [key, value] : hkcu_secrets)
-								{
-									QLogicaeCore::WINDOWS_REGISTRY_HKCU
-										.set_value_via_utf8(
-											absl::StrCat("Software\\QLogicae\\Application\\",
-												client_id,
-												"\\",
-												environment_id
-											),
-											key,
-											std::any_cast<std::string>(value)
-										);
-								}
-							}
-							else
-							{
-								_log_warning_timestamp_async(
-									"HKCU windows registry setup is disabled. Instruction skipped"
-								);
-							}
-						}
+						system(command.c_str());
 
 						UTILITIES.log_complete_timestamp_async(_setup_windows_registry_input_5);
 
@@ -1199,7 +1080,9 @@ namespace QLogicaeCLI
 			return false;
 		}
 	}
+}
 
+/*	
 	bool Application::_setup_deploy_command()
 	{
 		try
@@ -1482,4 +1365,3 @@ namespace QLogicaeCLI
 	}
 
 	*/
-}
