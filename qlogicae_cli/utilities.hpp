@@ -9,13 +9,13 @@ namespace QLogicaeCLI
     public:        
         const QLogicaeCore::Logger TIMESTAMP_LOGGER;
 
-        const QLogicaeCore::AES256CipherCryptographer CRYPTOGRAPHER_2;
-
+        const QLogicaeCore::XChaCha20Poly1305CipherCryptographer CRYPTOGRAPHER_1;
+        
         const QLogicaeCore::Argon2idHashCryptographer CRYPTOGRAPHER_3;
 
-        const QLogicaeCore::AES256SignatureCryptographer CRYPTOGRAPHER_4;
-
-        const QLogicaeCore::XChaCha20Poly1305CipherCryptographer CRYPTOGRAPHER_1;
+        const QLogicaeCore::AES256CipherCryptographer CRYPTOGRAPHER_2;
+        
+        const QLogicaeCore::SHA256HashCryptographer CRYPTOGRAPHER_4;
         
         QLogicaeCore::TextFileIO TEXT_FILE_IO;
 
@@ -29,7 +29,7 @@ namespace QLogicaeCLI
 
         QLogicaeCore::JsonFileIO CLIENT_QLOGICAE_FILE;
 
-        QLogicaeCore::JsonFileIO CLIENT_DOT_QLOGICAE_FILE;
+        QLogicaeCore::JsonFileIO CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE;
 
         const std::string QLOGICAE_APPLICATION_FOLDER_PATH =
             QLogicaeCore::SYSTEM_ACCESS.get_executable_dir();
