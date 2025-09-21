@@ -375,11 +375,11 @@ namespace QLogicaeCLI
 		return "";
 	}
 
-	bool Utilities::is_visual_studio_2022_qlogicae_project_found()
+	bool Utilities::is_qlogicae_project_found()
 	{
 		if (!std::filesystem::exists("qlogicae"))
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Run the command inside a visual studio 2022 solution folder with a 'qlogicae' project setup"));
+			UTILITIES.log_exception_timestamp_async(std::string("qlogicae_cli must be run ajacent to a 'qlogicae' project folder"));
 
 			return false;
 		}

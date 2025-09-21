@@ -16,9 +16,10 @@ namespace QLogicaeCLI
 	{
 		try
 		{
-			if (!UTILITIES.is_visual_studio_2022_qlogicae_project_found() ||
-				!_setup_about_command() ||
+			if (!UTILITIES.is_qlogicae_project_found() ||
+				!_setup_view_command() ||
 				!_setup_build_command() ||
+				!_setup_deploy_command() ||
 				!_setup_run_command() ||
 				!_setup_setup_command() ||
 				!_setup_get_command() ||
@@ -31,17 +32,6 @@ namespace QLogicaeCLI
 			{
 				return false;
 			}
-
-			/*
-
-			if (				
-				!_setup_deploy_command())
-				!_setup_template_command())
-			{
-				return false;
-			}
-
-			*/
 
 			try
 			{
@@ -93,18 +83,24 @@ namespace QLogicaeCLI
 		return singleton;
 	}
 
-	bool Application::_setup_about_command()
+	bool Application::_setup_view_command()
 	{
 		try
 		{
-			CLI::App* about_command =
+			CLI::App* view_command =
 				_application.add_subcommand(
+					"view",
+					"about"
+				);
+			
+			CLI::App* view_about_command =
+				view_command->add_subcommand(
 					"about",
 					"Project and application details"
 				);
 
-			_commands["about"] = std::make_pair(
-				about_command,
+			_commands["view-about"] = std::make_pair(
+				view_about_command,
 				[this]() -> bool
 				{
 					QLogicaeCore::CLI_IO.print(
@@ -129,28 +125,28 @@ namespace QLogicaeCLI
 	{
 		try
 		{
-			CLI::App* scripts_command =
+			CLI::App* run_command =
 				_application.add_subcommand(
 					"run",
-					"vs2022, scripts"
+					"vs2022, executable, script"
 				);
 
 			CLI::App* run_vs2022_command =
-				scripts_command->add_subcommand(
+				run_command->add_subcommand(
 					"vs2022",
-					"Runs an executable build via Visual Studio 2022"
+					"Runs a Visual Studio 2022 project executable"
 				);
 
 			run_vs2022_command
 				->add_option("--project",
-					_run_vs2022_input_1,
+					_string_inputs["run_vs2022__project"],
 					"A Visual Studio 2022 project"
 				)
 				->default_str("");
 
 			run_vs2022_command
 				->add_option("--architecture",
-					_run_vs2022_input_2,
+					_string_inputs["run_vs2022__architecture"],
 					"A Visual Studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
@@ -159,8 +155,8 @@ namespace QLogicaeCLI
 				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
 
 			run_vs2022_command
-				->add_option("--type",
-					_run_vs2022_input_3,
+				->add_option("--build-type",
+					_string_inputs["run_vs2022__build_type"],
 					"A Visual Studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
@@ -170,7 +166,7 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--is-verbose-logging-enabled",
-					_run_vs2022_input_4,
+					_boolean_inputs["run_vs2022__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -178,17 +174,28 @@ namespace QLogicaeCLI
 				run_vs2022_command,
 				[this]() -> bool
 				{
+					std::string run_vs2022__project =
+						_string_inputs["run_vs2022__project"];
+					std::string run_vs2022__architecture =
+						_string_inputs["run_vs2022__architecture"];
+					std::string run_vs2022__build_type =
+						_string_inputs["run_vs2022__build_type"];
+					bool run_vs2022__is_verbose_logging_enabled =
+						_boolean_inputs["run_vs2022__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_run_vs2022_input_4);
+						UTILITIES.log_running_timestamp_async(
+							run_vs2022__is_verbose_logging_enabled
+						);
 
-						if (_run_vs2022_input_1.empty())
+						if (run_vs2022__project.empty())
 						{
 							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
 								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 							);
 
-							_run_vs2022_input_1 =
+							run_vs2022__project =
 								UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.get_string(
 									{
 										"visual_studio_2022",
@@ -197,23 +204,27 @@ namespace QLogicaeCLI
 								);
 						}
 
-						std::string command = absl::StrCat(
-							".\\", _run_vs2022_input_2,
-							"\\", _run_vs2022_input_3,
-							"\\", _run_vs2022_input_1,
-							"\\", _run_vs2022_input_1,
+						system((absl::StrCat(
+							".\\", run_vs2022__architecture,
+							"\\", run_vs2022__build_type,
+							"\\", run_vs2022__project,
+							"\\", run_vs2022__project,
 							".exe"
+						)).c_str());
+
+						UTILITIES.log_complete_timestamp_async(
+							run_vs2022__is_verbose_logging_enabled
 						);
-
-						system(command.c_str());
-
-						UTILITIES.log_complete_timestamp_async(_run_vs2022_input_4);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_run_command(): ") + exception.what(), _run_vs2022_input_4);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_run_command(): ") +
+							exception.what(),
+							run_vs2022__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -221,21 +232,21 @@ namespace QLogicaeCLI
 			);
 
 			CLI::App* run_executable_command =
-				scripts_command->add_subcommand(
+				run_command->add_subcommand(
 					"executable",
 					"Runs an executable"
 				);
 
 			run_executable_command
 				->add_option("--path",
-					_run_executable_input_1,
+					_string_inputs["run_executable__path"],
 					"A selected path to an executable"
 				)
 				->required();
 
 			run_executable_command
 				->add_option("--is-verbose-logging-enabled",
-					_run_executable_input_2,
+					_boolean_inputs["run_executable__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -243,84 +254,111 @@ namespace QLogicaeCLI
 				run_executable_command,
 				[this]() -> bool
 				{
+					std::string run_executable__path =
+						_string_inputs["run_executable__path"];
+					bool run_executable__is_verbose_logging_enabled =
+						_boolean_inputs["run_executable__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_run_executable_input_2);
+						UTILITIES.log_running_timestamp_async(
+							run_executable__is_verbose_logging_enabled
+						);
 
-						system(_run_executable_input_1.c_str());
+						if (!std::filesystem::exists(run_executable__path))
+						{
+							UTILITIES.log_exception_timestamp_async("Exception at Application::_setup_run_command(): Executable does not exist");
 
-						UTILITIES.log_complete_timestamp_async(_run_executable_input_2);
+							return false;
+						}
+
+						system(run_executable__path.c_str());
+
+						UTILITIES.log_complete_timestamp_async(
+							run_executable__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_run_command(): ") + exception.what(), _run_executable_input_2);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_run_command(): ") +
+							exception.what(),
+							run_executable__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
 				}
 			);
 
-			CLI::App* scripts_run_command =
-				scripts_command->add_subcommand(
-					"scripts",
-					"Runs one or more QLogicae-defined scripts"
+			CLI::App* run_script_command =
+				run_command->add_subcommand(
+					"script",
+					"Runs one or more QLogicae-defined script"
 				);
 
-			scripts_run_command
-				->add_option("--commands",
-					_run_scripts_input_1,
-					"Selected script commands")
-				->delimiter(',')
+			run_script_command
+				->add_option("--command",
+					_string_inputs["run_script__command"],
+					"Selected script command")
 				->required();
 
-			scripts_run_command
+			run_script_command
 				->add_option("--is-verbose-logging-enabled",
-					_run_scripts_input_3,
+					_boolean_inputs["run_script__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["run-scripts"] = std::make_pair(
-				scripts_run_command,
+			_commands["run-script"] = std::make_pair(
+				run_script_command,
 				[this]() -> bool
 				{
+					std::string run_script__command =
+						_string_inputs["run_script__command"];
+					bool run_script__is_verbose_logging_enabled =
+						_boolean_inputs["run_script__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_run_scripts_input_3);
+						UTILITIES.log_running_timestamp_async(run_script__is_verbose_logging_enabled);
 
 						UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
 							UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 						);
 						std::unordered_map<std::string, std::any> scripts =
-							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.get_object({ "scripts" }
-							);
-						for (const std::string script_command :
-						_run_scripts_input_1)
-						{
-							if (scripts.contains(script_command))
-							{
-								system(std::any_cast<std::string>(
-									scripts[script_command]
-								).c_str());
-							}
-							else
-							{
-								UTILITIES.log_warning_timestamp_async(
-									"Script '" + script_command +
-									"' does not exist",
-									_run_scripts_input_3
-								);
-							}
-						}
+							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
+								.get_object({ "scripts" }
+						);
+						std::string script_command = std::any_cast<std::string>(
+							scripts[run_script__command]
+						);
 
-						UTILITIES.log_complete_timestamp_async(_run_scripts_input_3);
+						if (!scripts.contains(run_script__command))
+						{
+							UTILITIES.log_warning_timestamp_async(
+								"Script '" + run_script__command +
+								"' does not exist",
+								run_script__is_verbose_logging_enabled
+							);
+
+							return false;
+						}
+						
+						system(script_command.c_str());
+
+						UTILITIES.log_complete_timestamp_async(run_script__is_verbose_logging_enabled);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_run_command(): ") + exception.what(), _run_scripts_input_3);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_run_command(): ") +
+							exception.what(),
+							run_script__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -331,7 +369,10 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_run_command(): ") + exception.what());
+			UTILITIES.log_exception_timestamp_async(
+				std::string("Exception at Application::_setup_run_command(): ") +
+				exception.what()
+			);
 
 			return false;
 		}
@@ -355,21 +396,21 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--project",
-					_build_vs2022_input_1,
+					_string_inputs["build_vs2022__project"],
 					"An existing Visual Studio 2022 project"
 				)
 				->required();
 
 			build_vs2022_command
 				->add_option("--environment",
-					_build_vs2022_input_2,
+					_string_inputs["build_vs2022__environment"],
 					"A QLogicae environment type"
 				)
 				->default_val("development");
 
 			build_vs2022_command
 				->add_option("--architecture",
-					_build_vs2022_input_3,
+					_string_inputs["build_vs2022__architecture"],
 					"A Visual Studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
@@ -378,8 +419,8 @@ namespace QLogicaeCLI
 				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
 
 			build_vs2022_command
-				->add_option("--type",
-					_build_vs2022_input_4,
+				->add_option("--build-type",
+					_string_inputs["build_vs2022__build_type"],
 					"A Visual Studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
@@ -389,7 +430,7 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--is-verbose-logging-enabled",
-					_build_vs2022_input_5,
+					_boolean_inputs["build_vs2022__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -397,32 +438,49 @@ namespace QLogicaeCLI
 				build_vs2022_command,
 				[this]() -> bool
 				{
+					std::string build_vs2022__project =
+						_string_inputs["build_vs2022__project"];
+					std::string build_vs2022__environment =
+						_string_inputs["build_vs2022__environment"];
+					std::string build_vs2022__architecture =
+						_string_inputs["build_vs2022__architecture"];
+					std::string build_vs2022__build_type =
+						_string_inputs["build_vs2022__build_type"];
+					bool build_vs2022__is_verbose_logging_enabled =
+						_boolean_inputs["build_vs2022__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_build_vs2022_input_5);
+						UTILITIES.log_running_timestamp_async(
+							build_vs2022__is_verbose_logging_enabled
+						);
 
-						std::string command = absl::StrCat(
+						system((absl::StrCat(
 							"powershell -ExecutionPolicy Bypass -File",
 							" \"qlogicae/.qlogicae/application/visual_studio_2022/build.ps1\"",
 							" -VisualStudio2022InputProject ",
-							_build_vs2022_input_1,
+							build_vs2022__project,
 							" -EnvironmentType ",
-							_build_vs2022_input_2,
+							build_vs2022__environment,
 							" -VisualStudio2022Architecture ",
-							_build_vs2022_input_3,
+							build_vs2022__architecture,
 							" -VisualStudio2022Build ",
-							_build_vs2022_input_4
+							build_vs2022__build_type
+						)).c_str());
+
+						UTILITIES.log_complete_timestamp_async(
+							build_vs2022__is_verbose_logging_enabled
 						);
-
-						system(command.c_str());
-
-						UTILITIES.log_complete_timestamp_async(_build_vs2022_input_5);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_build_command(): ") + exception.what(), _build_vs2022_input_5);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_build_command(): ") +
+							exception.what(),
+							build_vs2022__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -432,7 +490,87 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_build_command(): ") + exception.what());
+			UTILITIES.log_exception_timestamp_async(
+				std::string("Exception at Application::_setup_build_command(): ") +
+				exception.what()
+			);
+
+			return false;
+		}
+	}
+
+	bool Application::_setup_deploy_command()
+	{
+		try
+		{
+			/*
+			CLI::App* deploy_command =
+				_application.add_subcommand(
+					"deploy",
+					"vs2022"
+				);
+
+			deploy_command
+				->add_option("--installer-type",
+					_deploy_vs2022_input_1,
+					"Selected input folder path")
+				->check(CLI::IsMember(
+					UTILITIES.INSTALLER_TYPES
+				))
+				->default_val(UTILITIES.INSTALLER_TYPES[0]);
+
+			deploy_command
+				->add_option("--input-folder-path",
+					_deploy_vs2022_input_2,
+					"Selected input folder path")
+				->default_val("");
+
+			deploy_command
+				->add_option("--output-folder-path",
+					_deploy_vs2022_input_3,
+					"Selected output folder path")
+				->default_val("");
+
+			deploy_command
+				->add_option("--is-verbose-logging-enabled",
+					_deploy_vs2022_input_4,
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["deploy"] = std::make_pair(
+				deploy_command,
+				[this]() -> bool
+				{
+					try
+					{
+						UTILITIES.log_running_timestamp_async(_deploy_vs2022_input_4);
+
+						if (_deploy_vs2022_input_1 == UTILITIES.IDE_TYPES[0] &&
+							_deploy_vs2022_input_2 == UTILITIES.INSTALLER_TYPES[0])
+						{
+
+						}
+
+
+						UTILITIES.log_complete_timestamp_async(_deploy_vs2022_input_4);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_deploy_command(): ") + exception.what(), _deploy_vs2022_input_4);
+
+						return false;
+					}
+				}
+			);
+			*/
+
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_deploy_command(): ") + exception.what());
 
 			return false;
 		}
@@ -517,25 +655,26 @@ namespace QLogicaeCLI
 			
 			generate_uuid4_command
 				->add_option("--count",
-					_generate_uuid4_input_1,
+					_size_t_inputs["generate_uuid4__count"],
 					"The number of generated uuid4s")
 				->check(CLI::PositiveNumber)
 				->default_val(1);
 
 			generate_uuid4_command
 				->add_option("--output-file-path",
-					_generate_uuid4_input_2,
+					_string_inputs["generate_uuid4__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 
 			generate_uuid4_command
 				->add_option("--is-file-output-enabled",
-					_generate_uuid4_input_4,
+					_boolean_inputs["generate_uuid4__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
+
 			generate_uuid4_command
 				->add_option("--is-verbose-logging-enabled",
-					_generate_uuid4_input_3,
+					_boolean_inputs["generate_uuid4__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -543,15 +682,26 @@ namespace QLogicaeCLI
 				generate_uuid4_command,
 				[this]() -> bool
 				{
+					size_t generate_uuid4__count =
+						_size_t_inputs["generate_uuid4__count"];
+					std::string generate_uuid4__output_file_path =
+						_string_inputs["generate_uuid4__output_file_path"];
+					bool generate_uuid4__is_file_output_enabled =
+						_boolean_inputs["generate_uuid4__is_file_output_enabled"];
+					bool generate_uuid4__is_verbose_logging_enabled =
+						_boolean_inputs["generate_uuid4__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_generate_uuid4_input_3);
+						UTILITIES.log_running_timestamp_async(
+							generate_uuid4__is_verbose_logging_enabled
+						);
 
 						std::string output_string = "";
-						size_t index_1, size_a = _generate_uuid4_input_1 - 1;
+						size_t index_1, size_a = generate_uuid4__count - 1;
 
 						for (index_1 = 0;
-							index_1 < _generate_uuid4_input_1;
+							index_1 < generate_uuid4__count;
 							++index_1)
 						{
 							output_string += QLogicaeCore::GENERATOR.random_uuid4();
@@ -565,25 +715,31 @@ namespace QLogicaeCLI
 							output_string
 						);
 
-						if (_generate_uuid4_input_4)
+						if (generate_uuid4__is_file_output_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_generate_uuid4_input_2,
-									"uuid4\\generate",
+									generate_uuid4__output_file_path,
+									"generate\\uuid4",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_generate_uuid4_input_3);
+						UTILITIES.log_complete_timestamp_async(
+							generate_uuid4__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
-					catch (const std::exception exception)
+					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_generate_command(): ") + exception.what(), _generate_uuid4_input_3);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_generate_command(): ") +
+							exception.what(),
+							generate_uuid4__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -597,34 +753,34 @@ namespace QLogicaeCLI
 				);
 			generate_string_command
 				->add_option("--length",
-					_generate_string_input_1,
+					_size_t_inputs["generate_string__length"],
 					"The character length of each individual string output")
 				->check(CLI::PositiveNumber)
 				->default_val(32);
 			generate_string_command
 				->add_option("--count",
-					_generate_string_input_2,
+					_size_t_inputs["generate_string__count"],
 					"The number of generated string outputs")
 				->check(CLI::PositiveNumber)
 				->default_val(1);
 			generate_string_command
 				->add_option("--character-set",
-					_generate_string_input_3,
+					_string_inputs["generate_string__character_set"],
 					"A string of characters where each individual character can possibly be found within each string output")
 				->default_val("");
 			generate_string_command
 				->add_option("--output-file-path",
-					_generate_string_input_4,
+					_string_inputs["generate_string__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			generate_string_command
 				->add_option("--is-file-output-enabled",
-					_generate_string_input_6,
+					_boolean_inputs["generate_string__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 			generate_string_command
 				->add_option("--is-verbose-logging-enabled",
-					_generate_string_input_5,
+					_boolean_inputs["generate_string__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -632,23 +788,38 @@ namespace QLogicaeCLI
 				generate_string_command,
 				[this]() -> bool
 				{
+					size_t generate_string__length =
+						_size_t_inputs["generate_string__length"];
+					size_t generate_string__count =
+						_size_t_inputs["generate_string__count"];
+					std::string generate_string__output_file_path =
+						_string_inputs["generate_string__character_set"];
+					std::string generate_string__character_set =
+						_string_inputs["generate_string__output_file_path"];
+					bool generate_string__is_file_output_enabled =
+						_boolean_inputs["generate_string__is_file_output_enabled"];
+					bool generate_string__is_verbose_logging_enabled =
+						_boolean_inputs["generate_string__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_generate_string_input_5);
+						UTILITIES.log_running_timestamp_async(
+							generate_string__is_verbose_logging_enabled
+						);
 
-						size_t index_1, size_a = _generate_string_input_2 - 1;
+						size_t index_1, size_a = generate_string__count - 1;
 						std::string output_string = "",
-							character_set = (_generate_string_input_3.empty()) ?
+							character_set = (generate_string__character_set.empty()) ?
 
 							QLogicaeCore::Constants::FULL_VISIBLE_ASCII_CHARACTERSET.data() :
-							_generate_string_input_3;
+							generate_string__character_set;
 
 						for (index_1 = 0;
-							index_1 < _generate_string_input_2;
+							index_1 < generate_string__count;
 							++index_1)
 						{
 							output_string += QLogicaeCore::GENERATOR.random_string(
-								_generate_string_input_1,
+								generate_string__length,
 								character_set
 							);
 							if (index_1 < size_a)
@@ -661,25 +832,31 @@ namespace QLogicaeCLI
 							output_string
 						);
 
-						if (_generate_string_input_6)
+						if (generate_string__is_file_output_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_generate_string_input_4,
-									"string\\generate",
+									generate_string__output_file_path,
+									"generate\\string",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_generate_string_input_5);
+						UTILITIES.log_complete_timestamp_async(
+							generate_string__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_generate_command(): ") + exception.what(), _generate_string_input_5);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_generate_command(): ") +
+							exception.what(),
+							generate_string__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -714,19 +891,19 @@ namespace QLogicaeCLI
 
 			encrypt_xchacha20poly1305_command
 				->add_option("--text",
-					_encrypt_xchacha20poly1305_input_1,
+					_string_inputs["encrypt_xchacha20poly1305__text"],
 					"The string input to be encrypted")
 				->required();
 			
 			encrypt_xchacha20poly1305_command
 				->add_option("--key",
-					_encrypt_xchacha20poly1305_input_2,
+					_string_inputs["encrypt_xchacha20poly1305__key"],
 					"Encryption key")
 				->required();
 			
 			encrypt_xchacha20poly1305_command
 				->add_option("--nonce",
-					_encrypt_xchacha20poly1305_input_3,
+					_string_inputs["encrypt_xchacha20poly1305__nonce"],
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
 					32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS)
@@ -734,19 +911,19 @@ namespace QLogicaeCLI
 			
 			encrypt_xchacha20poly1305_command
 				->add_option("--output-file-path",
-					_encrypt_xchacha20poly1305_input_4,
+					_string_inputs["encrypt_xchacha20poly1305__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			
 			encrypt_xchacha20poly1305_command
 				->add_option("--is-file-output-enabled",
-					_encrypt_xchacha20poly1305_input_6,
+					_boolean_inputs["encrypt_xchacha20poly1305__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 			
 			encrypt_xchacha20poly1305_command
 				->add_option("--is-verbose-logging-enabled",
-					_encrypt_xchacha20poly1305_input_5,
+					_boolean_inputs["encrypt_xchacha20poly1305__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -754,50 +931,73 @@ namespace QLogicaeCLI
 				encrypt_xchacha20poly1305_command,
 				[this]() -> bool
 				{
+					std::string encrypt_xchacha20poly1305__text =
+						_string_inputs["encrypt_xchacha20poly1305__text"];
+					std::string encrypt_xchacha20poly1305__key =
+						_string_inputs["encrypt_xchacha20poly1305__key"];
+					std::string encrypt_xchacha20poly1305__nonce =
+						_string_inputs["encrypt_xchacha20poly1305__nonce"];
+					std::string encrypt_xchacha20poly1305__output_file_path =
+						_string_inputs["encrypt_xchacha20poly1305__output_file_path"];
+					bool encrypt_xchacha20poly1305__is_file_output_enabled =
+						_boolean_inputs["encrypt_xchacha20poly1305__is_file_output_enabled"];
+					bool encrypt_xchacha20poly1305__is_verbose_logging_enabled =
+						_boolean_inputs["encrypt_xchacha20poly1305__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_encrypt_xchacha20poly1305_input_5);
+						UTILITIES.log_running_timestamp_async(
+							encrypt_xchacha20poly1305__is_file_output_enabled
+						);
 
-						if (!_encrypt_xchacha20poly1305_input_1.length() ||
-							!_encrypt_xchacha20poly1305_input_2.length() ||
-							!_encrypt_xchacha20poly1305_input_3.length())
+						if (!encrypt_xchacha20poly1305__text.length() ||
+							!encrypt_xchacha20poly1305__key.length() ||
+							!encrypt_xchacha20poly1305__nonce.length())
 						{
-							UTILITIES.log_complete_timestamp_async(_encrypt_xchacha20poly1305_input_5);
+							UTILITIES.log_complete_timestamp_async(
+								encrypt_xchacha20poly1305__is_file_output_enabled
+							);
 
 							return false;
 						}
 
 						std::string output_string =
 							UTILITIES.CRYPTOGRAPHER_1.transform(
-								_encrypt_xchacha20poly1305_input_1,
-								_encrypt_xchacha20poly1305_input_2,
-								_encrypt_xchacha20poly1305_input_3
+								encrypt_xchacha20poly1305__text,
+								encrypt_xchacha20poly1305__key,
+								encrypt_xchacha20poly1305__nonce
 							) + "\n" +
-							_encrypt_xchacha20poly1305_input_3;
+							encrypt_xchacha20poly1305__nonce;
 
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
-						if (_encrypt_xchacha20poly1305_input_6)
+						if (encrypt_xchacha20poly1305__is_verbose_logging_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_encrypt_xchacha20poly1305_input_4,
-									"xchacha20poly1305\\encrypt",
+									encrypt_xchacha20poly1305__output_file_path,
+									"encrypt\\xchacha20poly1305",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_encrypt_xchacha20poly1305_input_5);
+						UTILITIES.log_complete_timestamp_async(
+							encrypt_xchacha20poly1305__is_file_output_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_encrypt_command(): ") + exception.what(), _encrypt_xchacha20poly1305_input_5);
+						UTILITIES.log_exception_timestamp_async(std::string(
+							"Exception at Application::_setup_encrypt_command(): ") +
+							exception.what(),
+							encrypt_xchacha20poly1305__is_file_output_enabled
+						);
 
 						return false;
 					}
@@ -812,19 +1012,19 @@ namespace QLogicaeCLI
 
 			encrypt_aes256_command
 				->add_option("--text",
-					_encrypt_aes256_input_1,
+					_string_inputs["encrypt_aes256__text"],
 					"The string input to be encrypted")
 				->required();
 
 			encrypt_aes256_command
 				->add_option("--key",
-					_encrypt_aes256_input_2,
+					_string_inputs["encrypt_aes256__key"],
 					"Encryption key")
 				->required();
 
 			encrypt_aes256_command
 				->add_option("--nonce",
-					_encrypt_aes256_input_3,
+					_string_inputs["encrypt_aes256__nonce"],
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
 					32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS)
@@ -832,19 +1032,19 @@ namespace QLogicaeCLI
 
 			encrypt_aes256_command
 				->add_option("--output-file-path",
-					_encrypt_aes256_input_4,
+					_string_inputs["encrypt_aes256__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 
 			encrypt_aes256_command
 				->add_option("--is-file-output-enabled",
-					_encrypt_aes256_input_6,
+					_boolean_inputs["encrypt_aes256__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 
 			encrypt_aes256_command
 				->add_option("--is-verbose-logging-enabled",
-					_encrypt_aes256_input_5,
+					_boolean_inputs["encrypt_aes256__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -852,50 +1052,73 @@ namespace QLogicaeCLI
 				encrypt_aes256_command,
 				[this]() -> bool
 				{
+					std::string encrypt_aes256__text =
+						_string_inputs["encrypt_aes256__text"];
+					std::string encrypt_aes256__key =
+						_string_inputs["encrypt_aes256__key"];
+					std::string encrypt_aes256__nonce =
+						_string_inputs["encrypt_aes256__nonce"];
+					std::string encrypt_aes256__output_file_path =
+						_string_inputs["encrypt_aes256__output_file_path"];
+					bool encrypt_aes256__is_file_output_enabled =
+						_boolean_inputs["encrypt_aes256__is_file_output_enabled"];
+					bool encrypt_aes256__is_verbose_logging_enabled =
+						_boolean_inputs["encrypt_aes256__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_encrypt_aes256_input_5);
+						UTILITIES.log_running_timestamp_async(
+							encrypt_aes256__is_file_output_enabled
+						);
 
-						if (!_encrypt_aes256_input_1.length() ||
-							!_encrypt_aes256_input_2.length() ||
-							!_encrypt_aes256_input_3.length())
+						if (!encrypt_aes256__text.length() ||
+							!encrypt_aes256__key.length() ||
+							!encrypt_aes256__nonce.length())
 						{
-							UTILITIES.log_complete_timestamp_async(_encrypt_aes256_input_5);
+							UTILITIES.log_complete_timestamp_async(
+								encrypt_aes256__is_file_output_enabled
+							);
 
 							return false;
 						}
 
 						std::string output_string =
 							UTILITIES.CRYPTOGRAPHER_2.transform(
-								_encrypt_aes256_input_1,
-								_encrypt_aes256_input_2,
-								_encrypt_aes256_input_3
+								encrypt_aes256__text,
+								encrypt_aes256__key,
+								encrypt_aes256__nonce
 							) + "\n" +
-							_encrypt_aes256_input_3;
+							encrypt_aes256__nonce;
 
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
-						if (_encrypt_aes256_input_6)
+						if (encrypt_aes256__is_verbose_logging_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_encrypt_aes256_input_4,
-									"aes256\\encrypt",
+									encrypt_aes256__output_file_path,
+									"encrypt\\aes256",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_encrypt_aes256_input_5);
+						UTILITIES.log_complete_timestamp_async(
+							encrypt_aes256__is_file_output_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_encrypt_command(): ") + exception.what(), _encrypt_aes256_input_5);
+						UTILITIES.log_exception_timestamp_async(std::string(
+							"Exception at Application::_setup_encrypt_command(): ") +
+							exception.what(),
+							encrypt_aes256__is_file_output_enabled
+						);
 
 						return false;
 					}
@@ -929,38 +1152,40 @@ namespace QLogicaeCLI
 				);
 
 			decrypt_xchacha20poly1305_command
-				->add_option("--cipher",
-					_decrypt_xchacha20poly1305_input_1,
-					"The string cipher to be decrypted")
+				->add_option("--text",
+					_string_inputs["decrypt_xchacha20poly1305__text"],
+					"The string input to be encrypted")
 				->required();
 
 			decrypt_xchacha20poly1305_command
 				->add_option("--key",
-					_decrypt_xchacha20poly1305_input_2,
+					_string_inputs["decrypt_xchacha20poly1305__key"],
 					"Encryption key")
 				->required();
-			
+
 			decrypt_xchacha20poly1305_command
 				->add_option("--nonce",
-					_decrypt_xchacha20poly1305_input_3,
+					_string_inputs["decrypt_xchacha20poly1305__nonce"],
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
-				->required();
-			
+				->default_val(QLogicaeCore::GENERATOR.random_string(
+					32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS)
+				);
+
 			decrypt_xchacha20poly1305_command
 				->add_option("--output-file-path",
-					_decrypt_xchacha20poly1305_input_4,
+					_string_inputs["decrypt_xchacha20poly1305__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
-			
+
 			decrypt_xchacha20poly1305_command
 				->add_option("--is-file-output-enabled",
-					_decrypt_xchacha20poly1305_input_6,
+					_boolean_inputs["decrypt_xchacha20poly1305__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
-			
+
 			decrypt_xchacha20poly1305_command
 				->add_option("--is-verbose-logging-enabled",
-					_decrypt_xchacha20poly1305_input_5,
+					_boolean_inputs["decrypt_xchacha20poly1305__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -968,49 +1193,71 @@ namespace QLogicaeCLI
 				decrypt_xchacha20poly1305_command,
 				[this]() -> bool
 				{
+					std::string decrypt_xchacha20poly1305__text =
+						_string_inputs["decrypt_xchacha20poly1305__text"];
+					std::string decrypt_xchacha20poly1305__key =
+						_string_inputs["decrypt_xchacha20poly1305__key"];
+					std::string decrypt_xchacha20poly1305__nonce =
+						_string_inputs["decrypt_xchacha20poly1305__nonce"];
+					std::string decrypt_xchacha20poly1305__output_file_path =
+						_string_inputs["decrypt_xchacha20poly1305__output_file_path"];
+					bool decrypt_xchacha20poly1305__is_file_output_enabled =
+						_boolean_inputs["decrypt_xchacha20poly1305__is_file_output_enabled"];
+					bool decrypt_xchacha20poly1305__is_verbose_logging_enabled =
+						_boolean_inputs["decrypt_xchacha20poly1305__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_decrypt_xchacha20poly1305_input_5);
+						UTILITIES.log_running_timestamp_async(
+							decrypt_xchacha20poly1305__is_verbose_logging_enabled
+						);
 
-						if (!_decrypt_xchacha20poly1305_input_1.length() ||
-							!_decrypt_xchacha20poly1305_input_2.length() ||
-							!_decrypt_xchacha20poly1305_input_3.length())
+						if (!decrypt_xchacha20poly1305__text.length() ||
+							!decrypt_xchacha20poly1305__key.length() ||
+							!decrypt_xchacha20poly1305__nonce.length())
 						{
-							UTILITIES.log_complete_timestamp_async(_decrypt_xchacha20poly1305_input_5);
+							UTILITIES.log_complete_timestamp_async(
+								decrypt_xchacha20poly1305__is_verbose_logging_enabled
+							);
 
 							return false;
 						}
 
 						std::string output_string =
 							UTILITIES.CRYPTOGRAPHER_1.reverse(
-								_decrypt_xchacha20poly1305_input_1,
-								_decrypt_xchacha20poly1305_input_2,
-								_decrypt_xchacha20poly1305_input_3
+								decrypt_xchacha20poly1305__text,
+								decrypt_xchacha20poly1305__key,
+								decrypt_xchacha20poly1305__nonce
 							);
 
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
-						if (_decrypt_xchacha20poly1305_input_6)
+						if (decrypt_xchacha20poly1305__is_file_output_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_decrypt_xchacha20poly1305_input_4,
-									"xchacha20poly1305\\decrypt",
+									decrypt_xchacha20poly1305__output_file_path,
+									"decrypt\\xchacha20poly1305",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_decrypt_xchacha20poly1305_input_5);
+						UTILITIES.log_complete_timestamp_async(
+							decrypt_xchacha20poly1305__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what(), _decrypt_xchacha20poly1305_input_5);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_decrypt_command(): ") +
+							exception.what(),
+							decrypt_xchacha20poly1305__is_verbose_logging_enabled);
 
 						return false;
 					}
@@ -1024,38 +1271,40 @@ namespace QLogicaeCLI
 				);
 
 			decrypt_aes256_command
-				->add_option("--cipher",
-					_decrypt_aes256_input_1,
-					"The string cipher to be decrypted")
+				->add_option("--text",
+					_string_inputs["decrypt_aes256__text"],
+					"The string input to be encrypted")
 				->required();
 
 			decrypt_aes256_command
 				->add_option("--key",
-					_decrypt_aes256_input_2,
+					_string_inputs["decrypt_aes256__key"],
 					"Encryption key")
 				->required();
 
 			decrypt_aes256_command
 				->add_option("--nonce",
-					_decrypt_aes256_input_3,
+					_string_inputs["decrypt_aes256__nonce"],
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
-				->required();
+				->default_val(QLogicaeCore::GENERATOR.random_string(
+					32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS)
+				);
 
 			decrypt_aes256_command
 				->add_option("--output-file-path",
-					_decrypt_aes256_input_4,
+					_string_inputs["decrypt_aes256__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 
 			decrypt_aes256_command
 				->add_option("--is-file-output-enabled",
-					_decrypt_aes256_input_6,
+					_boolean_inputs["decrypt_aes256__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 
 			decrypt_aes256_command
 				->add_option("--is-verbose-logging-enabled",
-					_decrypt_aes256_input_5,
+					_boolean_inputs["decrypt_aes256__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -1063,54 +1312,68 @@ namespace QLogicaeCLI
 				decrypt_aes256_command,
 				[this]() -> bool
 				{
+					std::string decrypt_aes256__text =
+						_string_inputs["decrypt_aes256__text"];
+					std::string decrypt_aes256__key =
+						_string_inputs["decrypt_aes256__key"];
+					std::string decrypt_aes256__nonce =
+						_string_inputs["decrypt_aes256__nonce"];
+					std::string decrypt_aes256__output_file_path =
+						_string_inputs["decrypt_aes256__output_file_path"];
+					bool decrypt_aes256__is_file_output_enabled =
+						_boolean_inputs["decrypt_aes256__is_file_output_enabled"];
+					bool decrypt_aes256__is_verbose_logging_enabled =
+						_boolean_inputs["decrypt_aes256__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_decrypt_aes256_input_5);
+						UTILITIES.log_running_timestamp_async(decrypt_aes256__is_verbose_logging_enabled);
 
-						if (!_decrypt_aes256_input_1.length() ||
-							!_decrypt_aes256_input_2.length() ||
-							!_decrypt_aes256_input_3.length())
+						if (!decrypt_aes256__text.length() ||
+							!decrypt_aes256__key.length() ||
+							!decrypt_aes256__nonce.length())
 						{
-							UTILITIES.log_complete_timestamp_async(_decrypt_aes256_input_5);
+							UTILITIES.log_complete_timestamp_async(decrypt_aes256__is_verbose_logging_enabled);
 
 							return false;
 						}
 
 						std::string output_string =
 							UTILITIES.CRYPTOGRAPHER_2.reverse(
-								_decrypt_aes256_input_1,
-								_decrypt_aes256_input_2,
-								_decrypt_aes256_input_3
+								decrypt_aes256__text,
+								decrypt_aes256__key,
+								decrypt_aes256__nonce
 							);
 
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
-						if (_decrypt_aes256_input_6)
+						if (decrypt_aes256__is_file_output_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_decrypt_aes256_input_4,
-									"aes256\\decrypt",
+									decrypt_aes256__output_file_path,
+									"decrypt\\aes256",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_decrypt_aes256_input_5);
+						UTILITIES.log_complete_timestamp_async(decrypt_aes256__is_verbose_logging_enabled);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what(), _decrypt_aes256_input_5);
+						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what(), decrypt_aes256__is_verbose_logging_enabled);
 
 						return false;
 					}
 				}
 			);
+
 
 			return true;
 		}
@@ -1126,150 +1389,184 @@ namespace QLogicaeCLI
 	{
 		try
 		{
-			CLI::App* encrypt_command =
+			CLI::App* hash_command =
 				_application.add_subcommand(
 					"hash",
 					"argon2id, sha256"
 				);
 
-			CLI::App* encrypt_argon2id_command =
-				encrypt_command->add_subcommand(
+			CLI::App* hash_argon2id_command =
+				hash_command->add_subcommand(
 					"argon2id",
 					"Hash Argon2ID creation"
 				);
 
-			encrypt_argon2id_command
+			hash_argon2id_command
 				->add_option("--text",
-					_hash_argon2id_input_1,
+					_string_inputs["hash_argon2id__text"],
 					"The string text to be hashed")
 				->required();
 
-			encrypt_argon2id_command
+			hash_argon2id_command
 				->add_option("--output-file-path",
-					_hash_argon2id_input_2,
+					_string_inputs["hash_argon2id__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
-			
-			encrypt_argon2id_command
+
+			hash_argon2id_command
 				->add_option("--is-file-output-enabled",
-					_hash_argon2id_input_4,
+					_boolean_inputs["hash_argon2id__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
-			
-			encrypt_argon2id_command
+
+			hash_argon2id_command
 				->add_option("--is-verbose-logging-enabled",
-					_hash_argon2id_input_3,
+					_boolean_inputs["hash_argon2id__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
 			_commands["hash-argon2id"] = std::make_pair(
-				encrypt_argon2id_command,
+				hash_argon2id_command,
 				[this]() -> bool
 				{
+					std::string hash_argon2id__text =
+						_string_inputs["hash_argon2id__text"];
+					std::string hash_argon2id__output_file_path =
+						_string_inputs["hash_argon2id__output_file_path"];
+					bool hash_argon2id__is_file_output_enabled =
+						_boolean_inputs["hash_argon2id__is_file_output_enabled"];
+					bool hash_argon2id__is_verbose_logging_enabled =
+						_boolean_inputs["hash_argon2id__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_hash_argon2id_input_3);
+						UTILITIES.log_running_timestamp_async(
+							hash_argon2id__is_verbose_logging_enabled
+						);
 
 						std::string output_string =
 							UTILITIES.CRYPTOGRAPHER_3.transform(
-								_hash_argon2id_input_1
+								hash_argon2id__text
 							);
 
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
-						if (_hash_argon2id_input_4)
+						if (hash_argon2id__is_file_output_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_hash_argon2id_input_2,
-									"argon2id\\hash",
+									hash_argon2id__output_file_path,
+									"hash\\argon2id",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_hash_argon2id_input_3);
+						UTILITIES.log_complete_timestamp_async(
+							hash_argon2id__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_hash_command(): ") + exception.what(), _hash_argon2id_input_3);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_hash_command(): ") +
+							exception.what(),
+							hash_argon2id__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
 				}
 			);
 
-			CLI::App* encrypt_sha256_command =
-				encrypt_command->add_subcommand(
+			CLI::App* hash_sha256_command =
+				hash_command->add_subcommand(
 					"sha256",
 					"Hash SHA256 creation"
 				);
 
-			encrypt_sha256_command
+			hash_sha256_command
 				->add_option("--text",
-					_hash_sha256_input_1,
+					_string_inputs["hash_sha256__text"],
 					"The string text to be hashed")
 				->required();
 
-			encrypt_sha256_command
+			hash_sha256_command
 				->add_option("--output-file-path",
-					_hash_sha256_input_2,
+					_string_inputs["hash_sha256__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 
-			encrypt_sha256_command
+			hash_sha256_command
 				->add_option("--is-file-output-enabled",
-					_hash_sha256_input_4,
+					_boolean_inputs["hash_sha256__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 
-			encrypt_sha256_command
+			hash_sha256_command
 				->add_option("--is-verbose-logging-enabled",
-					_hash_sha256_input_3,
+					_boolean_inputs["hash_sha256__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
 			_commands["hash-sha256"] = std::make_pair(
-				encrypt_sha256_command,
+				hash_sha256_command,
 				[this]() -> bool
 				{
+					std::string hash_sha256__text =
+						_string_inputs["hash_sha256__text"];
+					std::string hash_sha256__output_file_path =
+						_string_inputs["hash_sha256__output_file_path"];
+					bool hash_sha256__is_file_output_enabled =
+						_boolean_inputs["hash_sha256__is_file_output_enabled"];
+					bool hash_sha256__is_verbose_logging_enabled =
+						_boolean_inputs["hash_sha256__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_hash_sha256_input_3);
+						UTILITIES.log_running_timestamp_async(
+							hash_sha256__is_verbose_logging_enabled
+						);
 
 						std::string output_string =
 							UTILITIES.CRYPTOGRAPHER_4.transform(
-								_hash_sha256_input_1
+								hash_sha256__text
 							);
 
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
-						if (_hash_sha256_input_4)
+						if (hash_sha256__is_file_output_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_hash_sha256_input_2,
-									"sha256\\hash",
+									hash_sha256__output_file_path,
+									"hash\\sha256",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_hash_sha256_input_3);
+						UTILITIES.log_complete_timestamp_async(
+							hash_sha256__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_hash_command(): ") + exception.what(), _hash_sha256_input_3);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_hash_command(): ") +
+							exception.what(),
+							hash_sha256__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -1280,7 +1577,10 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_hash_command(): ") + exception.what());
+			UTILITIES.log_exception_timestamp_async(
+				std::string("Exception at Application::_setup_hash_command(): ") +
+				exception.what()
+			);
 
 			return false;
 		}
@@ -1304,31 +1604,31 @@ namespace QLogicaeCLI
 
 			verify_argon2id_command
 				->add_option("--hash",
-					_verify_argon2id_input_1,
+					_string_inputs["verify_argon2id__hash"],
 					"The string hash to be verified")
 				->required();
 
 			verify_argon2id_command
 				->add_option("--key",
-					_verify_argon2id_input_2,
+					_string_inputs["verify_argon2id__key"],
 					"The original text to be compared with the hash")
 				->required();
 			
 			verify_argon2id_command
 				->add_option("--output-file-path",
-					_verify_argon2id_input_3,
+					_string_inputs["verify_argon2id__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 			
 			verify_argon2id_command
 				->add_option("--is-file-output-enabled",
-					_verify_argon2id_input_5,
+					_boolean_inputs["verify_argon2id__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 			
 			verify_argon2id_command
 				->add_option("--is-verbose-logging-enabled",
-					_verify_argon2id_input_4,
+					_boolean_inputs["verify_argon2id__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -1336,47 +1636,68 @@ namespace QLogicaeCLI
 				verify_argon2id_command,
 				[this]() -> bool
 				{
+					std::string verify_argon2id__hash =
+						_string_inputs["verify_argon2id__hash"];
+					std::string verify_argon2id__key =
+						_string_inputs["verify_argon2id__key"];
+					std::string verify_argon2id__output_file_path =
+						_string_inputs["verify_argon2id__output_file_path"];
+					bool verify_argon2id__is_file_output_enabled =
+						_boolean_inputs["verify_argon2id__is_file_output_enabled"];
+					bool verify_argon2id__is_verbose_logging_enabled =
+						_boolean_inputs["verify_argon2id__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_verify_argon2id_input_4);
+						UTILITIES.log_running_timestamp_async(
+							verify_argon2id__is_verbose_logging_enabled
+						);
 
-						if (!_verify_argon2id_input_1.length() ||
-							!_verify_argon2id_input_2.length())
+						if (!verify_argon2id__hash.length() ||
+							!verify_argon2id__key.length())
 						{
-							UTILITIES.log_complete_timestamp_async(_verify_argon2id_input_4);
+							UTILITIES.log_complete_timestamp_async(
+								verify_argon2id__is_verbose_logging_enabled
+							);
 
 							return false;
 						}
 
 						std::string output_string =
 							(UTILITIES.CRYPTOGRAPHER_3.reverse(
-								_verify_argon2id_input_1,
-								_verify_argon2id_input_2
+								verify_argon2id__hash,
+								verify_argon2id__key
 							)) ? "true" : "false";
 
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
-						if (_verify_argon2id_input_5)
+						if (verify_argon2id__is_file_output_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_verify_argon2id_input_3,
-									"argon2id\\verify",
+									verify_argon2id__output_file_path,
+									"verify\\argon2id",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_verify_argon2id_input_4);
+						UTILITIES.log_complete_timestamp_async(
+							verify_argon2id__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_verify_command(): ") + exception.what(), _verify_argon2id_input_4);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_verify_command(): ") +
+							exception.what(),
+							verify_argon2id__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -1391,31 +1712,31 @@ namespace QLogicaeCLI
 
 			verify_sha256_command
 				->add_option("--hash",
-					_verify_sha256_input_1,
+					_string_inputs["verify_sha256__hash"],
 					"The string hash to be verified")
 				->required();
 
 			verify_sha256_command
 				->add_option("--key",
-					_verify_sha256_input_2,
+					_string_inputs["verify_sha256__key"],
 					"The original text to be compared with the hash")
 				->required();
 
 			verify_sha256_command
 				->add_option("--output-file-path",
-					_verify_sha256_input_3,
+					_string_inputs["verify_sha256__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
 
 			verify_sha256_command
 				->add_option("--is-file-output-enabled",
-					_verify_sha256_input_5,
+					_boolean_inputs["verify_sha256__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 
 			verify_sha256_command
 				->add_option("--is-verbose-logging-enabled",
-					_verify_sha256_input_4,
+					_boolean_inputs["verify_sha256__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -1423,47 +1744,68 @@ namespace QLogicaeCLI
 				verify_sha256_command,
 				[this]() -> bool
 				{
+					std::string verify_sha256__hash =
+						_string_inputs["verify_sha256__hash"];
+					std::string verify_sha256__key =
+						_string_inputs["verify_sha256__key"];
+					std::string verify_sha256__output_file_path =
+						_string_inputs["verify_sha256__output_file_path"];
+					bool verify_sha256__is_file_output_enabled =
+						_boolean_inputs["verify_sha256__is_file_output_enabled"];
+					bool verify_sha256__is_verbose_logging_enabled =
+						_boolean_inputs["verify_sha256__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_verify_sha256_input_4);
+						UTILITIES.log_running_timestamp_async(
+							verify_sha256__is_verbose_logging_enabled
+						);
 
-						if (!_verify_sha256_input_1.length() ||
-							!_verify_sha256_input_2.length())
+						if (!verify_sha256__hash.length() ||
+							!verify_sha256__key.length())
 						{
-							UTILITIES.log_complete_timestamp_async(_verify_sha256_input_4);
+							UTILITIES.log_complete_timestamp_async(
+								verify_sha256__is_verbose_logging_enabled
+							);
 
 							return false;
 						}
 
 						std::string output_string =
 							(UTILITIES.CRYPTOGRAPHER_4.reverse(
-								_verify_sha256_input_1,
-								_verify_sha256_input_2
+								verify_sha256__hash,
+								verify_sha256__key
 							)) ? "true" : "false";
 
 						QLogicaeCore::CLI_IO.print_with_new_line_async(
 							output_string
 						);
 
-						if (_verify_sha256_input_5)
+						if (verify_sha256__is_file_output_enabled)
 						{
 							UTILITIES.TEXT_FILE_IO.set_file_path(
 								UTILITIES.setup_result_output_file(
-									_verify_sha256_input_3,
-									"sha256\\verify",
+									verify_sha256__output_file_path,
+									"verify\\argon2id",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(_verify_sha256_input_4);
+						UTILITIES.log_complete_timestamp_async(
+							verify_sha256__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_verify_command(): ") + exception.what(), _verify_sha256_input_4);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_verify_command(): ") +
+							exception.what(),
+							verify_sha256__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -1487,36 +1829,50 @@ namespace QLogicaeCLI
 			CLI::App* get_command =
 				_application.add_subcommand(
 					"get",
-					"hkcu"
+					"windows-registry"
 				);
 			
-			CLI::App* get_hkcu_command =
+			CLI::App* get_windows_registry_command =
 				get_command->add_subcommand(
-					"hkcu",
-					"Reading key-value pairs of a selected HKCU-specific windows registry path"
+					"windows-registry",
+					"hkcu"
 				);
 
-			get_hkcu_command
+			CLI::App* get_windows_registry_hkcu_command =
+				get_windows_registry_command->add_subcommand(
+					"hkcu",
+					"Creates or updates a key-value pair of a selected HKCU-specific windows registry path"
+				);
+
+			get_windows_registry_hkcu_command
 				->add_option("--sub-path",
-					_view_windows_registry_input_1,
+					_string_inputs["get_windows_registry_hkcu__sub_path"],
 					"HKCU Windows Registry path")
 				->default_val("")
 				->required();
-			get_hkcu_command
+
+			get_windows_registry_hkcu_command
 				->add_option("--is-verbose-logging-enabled",
-					_view_windows_registry_input_2,
+					_boolean_inputs["get_windows_registry_hkcu__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["get-hkcu"] = std::make_pair(
-				get_hkcu_command,
+			_commands["get-windows-registry-hkcu"] = std::make_pair(
+				get_windows_registry_hkcu_command,
 				[this]() -> bool
 				{
+					std::string get_windows_registry_hkcu__sub_path =
+						_string_inputs["get_windows_registry_hkcu__sub_path"];
+					bool get_windows_registry_hkcu__is_verbose_logging_enabled =
+						_boolean_inputs["get_windows_registry_hkcu__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_view_windows_registry_input_2);
+						UTILITIES.log_running_timestamp_async(
+							get_windows_registry_hkcu__is_verbose_logging_enabled
+						);
 
-						if (_view_windows_registry_input_1.empty())
+						if (get_windows_registry_hkcu__sub_path.empty())
 						{
 							return false;
 						}
@@ -1524,7 +1880,7 @@ namespace QLogicaeCLI
 						std::string output_string = "";
 						std::unordered_map<std::string, std::string> items =
 							QLogicaeCore::WINDOWS_REGISTRY_HKCU.get_values_via_utf8(
-								_view_windows_registry_input_1
+								get_windows_registry_hkcu__sub_path
 							);
 						size_t index_a = 0, size_a = items.size() - 1;
 
@@ -1534,13 +1890,19 @@ namespace QLogicaeCLI
 						}
 						QLogicaeCore::CLI_IO.print_async(output_string);
 
-						UTILITIES.log_complete_timestamp_async(_view_windows_registry_input_2);
+						UTILITIES.log_complete_timestamp_async(
+							get_windows_registry_hkcu__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_get_command(): ") + exception.what(), _view_windows_registry_input_2);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_get_command(): ") +
+							exception.what(),
+							get_windows_registry_hkcu__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -1564,63 +1926,86 @@ namespace QLogicaeCLI
 			CLI::App* set_command =
 				_application.add_subcommand(
 					"set",
+					"windows-registry"
+				);
+
+			CLI::App* set_windows_registry_command =
+				set_command->add_subcommand(
+					"windows-registry",
 					"hkcu"
 				);
 
-			CLI::App* set_hkcu_command =
-				set_command->add_subcommand(
+			CLI::App* set_windows_registry_hkcu_command =
+				set_windows_registry_command->add_subcommand(
 					"hkcu",
 					"Creates or updates a key-value pair of a selected HKCU-specific windows registry path"
 				);
 
-			set_hkcu_command
+			set_windows_registry_hkcu_command
 				->add_option("--sub-path",
-					_set_windows_registry_input_1,
+					_string_inputs["set_windows_registry_hkcu__sub_path"],
 					"HKCU Windows Registry path")
 				->default_val("")
 				->required();
 
-			set_hkcu_command
+			set_windows_registry_hkcu_command
 				->add_option("--key",
-					_set_windows_registry_input_2,
+					_string_inputs["set_windows_registry_hkcu__key"],
 					"HKCU Windows Registry key")
 				->default_val("")
 				->required();
 			
-			set_hkcu_command
+			set_windows_registry_hkcu_command
 				->add_option("--value",
-					_set_windows_registry_input_3,
+					_string_inputs["set_windows_registry_hkcu__value"],
 					"HKCU Windows Registry value")
 				->default_val("")
 				->required();
 			
-			set_hkcu_command
+			set_windows_registry_hkcu_command
 				->add_option("--is-verbose-logging-enabled",
-					_set_windows_registry_input_4,
+					_boolean_inputs["set_windows_registry_hkcu__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["set-hkcu"] = std::make_pair(
-				set_hkcu_command,
+			_commands["set-windows-registry-hkcu"] = std::make_pair(
+				set_windows_registry_hkcu_command,
 				[this]() -> bool
 				{
+					std::string set_windows_registry_hkcu__sub_path =
+						_string_inputs["set_windows_registry_hkcu__sub_path"];
+					std::string set_windows_registry_hkcu__key =
+						_string_inputs["set_windows_registry_hkcu__key"];
+					std::string set_windows_registry_hkcu__value =
+						_string_inputs["set_windows_registry_hkcu__value"];
+					bool set_windows_registry_hkcu__is_verbose_logging_enabled =
+						_boolean_inputs["set_windows_registry_hkcu__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_set_windows_registry_input_4);
-
-						bool result = QLogicaeCore::WINDOWS_REGISTRY_HKCU.set_value_via_utf8(
-							_set_windows_registry_input_1,
-							_set_windows_registry_input_2,
-							_set_windows_registry_input_3
+						UTILITIES.log_running_timestamp_async(
+							set_windows_registry_hkcu__is_verbose_logging_enabled
 						);
 
-						UTILITIES.log_complete_timestamp_async(_set_windows_registry_input_4);
+						bool result = QLogicaeCore::WINDOWS_REGISTRY_HKCU.set_value_via_utf8(
+							set_windows_registry_hkcu__sub_path,
+							set_windows_registry_hkcu__key,
+							set_windows_registry_hkcu__value
+						);
+
+						UTILITIES.log_complete_timestamp_async(
+							set_windows_registry_hkcu__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_set_command(): ") + exception.what(), _set_windows_registry_input_4);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_set_command(): ") +
+							exception.what(),
+							set_windows_registry_hkcu__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
@@ -1631,7 +2016,10 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_set_command(): ") + exception.what());
+			UTILITIES.log_exception_timestamp_async(
+				std::string("Exception at Application::_setup_set_command(): ") +
+				exception.what()
+			);
 
 			return false;
 		}

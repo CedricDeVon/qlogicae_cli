@@ -6,6 +6,8 @@
 
 namespace QLogicaeCLI
 {
+
+
 	class Application
 	{
 	public:
@@ -22,110 +24,21 @@ namespace QLogicaeCLI
 		Application& operator = (Application&&) = delete;
 		Application& operator = (const Application&) = delete;
 
-		size_t _generate_uuid4_input_1;
-		std::string _generate_uuid4_input_2;
-		bool _generate_uuid4_input_3;
-		bool _generate_uuid4_input_4;
-
-		size_t _generate_string_input_1;
-		size_t _generate_string_input_2;
-		std::string _generate_string_input_3;
-		std::string _generate_string_input_4;
-		bool _generate_string_input_5;
-		bool _generate_string_input_6;
-
-		std::string _encrypt_xchacha20poly1305_input_1;
-		std::string _encrypt_xchacha20poly1305_input_2;
-		std::string _encrypt_xchacha20poly1305_input_3;
-		std::string _encrypt_xchacha20poly1305_input_4;
-		bool _encrypt_xchacha20poly1305_input_5;
-		bool _encrypt_xchacha20poly1305_input_6;
-
-		std::string _decrypt_xchacha20poly1305_input_1;
-		std::string _decrypt_xchacha20poly1305_input_2;
-		std::string _decrypt_xchacha20poly1305_input_3;
-		std::string _decrypt_xchacha20poly1305_input_4;
-		bool _decrypt_xchacha20poly1305_input_5;
-		bool _decrypt_xchacha20poly1305_input_6;
-
-		std::string _encrypt_aes256_input_1;
-		std::string _encrypt_aes256_input_2;
-		std::string _encrypt_aes256_input_3;
-		std::string _encrypt_aes256_input_4;
-		bool _encrypt_aes256_input_5;
-		bool _encrypt_aes256_input_6;
-
-		std::string _decrypt_aes256_input_1;
-		std::string _decrypt_aes256_input_2;
-		std::string _decrypt_aes256_input_3;
-		std::string _decrypt_aes256_input_4;
-		bool _decrypt_aes256_input_5;
-		bool _decrypt_aes256_input_6;
-
-		std::string _hash_argon2id_input_1;
-		std::string _hash_argon2id_input_2;
-		bool _hash_argon2id_input_3;
-		bool _hash_argon2id_input_4;
-
-		std::string _verify_argon2id_input_1;
-		std::string _verify_argon2id_input_2;
-		std::string _verify_argon2id_input_3;
-		bool _verify_argon2id_input_4;
-		bool _verify_argon2id_input_5;
-
-		std::string _hash_sha256_input_1;
-		std::string _hash_sha256_input_2;
-		bool _hash_sha256_input_3;
-		bool _hash_sha256_input_4;
-
-		std::string _verify_sha256_input_1;
-		std::string _verify_sha256_input_2;
-		std::string _verify_sha256_input_3;
-		bool _verify_sha256_input_4;
-		bool _verify_sha256_input_5;
-
-		std::string _run_vs2022_input_1;
-		std::string _run_vs2022_input_2;
-		std::string _run_vs2022_input_3;
-		bool _run_vs2022_input_4;
-		
-		std::string _run_executable_input_1;
-		bool _run_executable_input_2;
-
-		std::vector<std::string> _run_scripts_input_1;
-		bool _run_scripts_input_3;
-
-		std::string _build_vs2022_input_1;
-		std::string _build_vs2022_input_2;
-		std::string _build_vs2022_input_3;
-		std::string _build_vs2022_input_4;
-		bool _build_vs2022_input_5;
-
-		bool _get_environment_input_2;
-
-		std::string _set_environment_input_1;
-		bool _set_environment_input_3;
-
-		std::string _view_windows_registry_input_1;
-		bool _view_windows_registry_input_2;
-
-		std::string _set_windows_registry_input_1;
-		std::string _set_windows_registry_input_2;
-		std::string _set_windows_registry_input_3;
-		bool _set_windows_registry_input_4;
+		std::unordered_map<std::string_view, bool> _boolean_inputs;
+		std::unordered_map<std::string_view, size_t> _size_t_inputs;
+		std::unordered_map<std::string_view, double> _double_inputs;
+		std::unordered_map<std::string_view, std::string> _string_inputs;
 
 		std::string _setup_windows_registry_input_1;
 		bool _setup_windows_registry_input_5;
 
+		std::string _deploy_vs2022_inno_setup_input_1;
+		std::string _deploy_vs2022_inno_setup_input_2;
+		std::string _deploy_vs2022_inno_setup_input_3;
+		bool _deploy_vs2022_inno_setup_input_4;
+
 		std::string _setup_vs2022_application_input_1;
 		bool _setup_vs2022_application_input_2;
-
-		std::string _verify_vs2022_application_input_1;
-		bool _verify_vs2022_application_input_2;
-
-		std::string _setup_installer_input_1;
-		std::string _setup_installer_input_2;
-		bool _setup_installer_input_3;
 
 		std::string _setup_documentation_input_1;
 		bool _setup_documentation_input_2;
@@ -133,7 +46,7 @@ namespace QLogicaeCLI
 		CLI::App _application;
 		std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> _commands;
 
-		bool _setup_about_command();
+		bool _setup_view_command();
 		
 		bool _setup_generate_command();
 
@@ -162,75 +75,6 @@ namespace QLogicaeCLI
 }
 
 /*
-
-static std::string hklm_registry_path_setup_command =
-	"\n[Registry]\nRoot: HKLM; Subkey: \"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\"; ValueType: expandsz; ValueName: \"Path\"; ValueData: \"{olddata};{app}\"\n";
-
-		bool _setup_sha256_command();
-
-		bool _setup_aes256_command();
-
-*/
-
-/*
-
-
-
-jwt encrypt --issuer --data --public-key --private-key --lifetime-in-seconds --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-jwt decrypt --issuer --data --public-key --private-key --lifetime-in-seconds --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-
-sha hash --text --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-sha verify --hash --text --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-
-aes encrypt --text --key --nonce --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-aes decrypt --cipher --key --nonce --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-
-setup vs2022 cink --is-verbose-logging-enabled
-setup vs2022 plotica --is-verbose-logging-enabled
-
-*/
-
-
-/*
-	bool Application::_setup_deploy_command()
-	{
-		try
-		{
-			CLI::App* deploy_command =
-				_application.add_subcommand(
-					"deploy",
-					"Deploy commands: inno_setup"
-				);
-			CLI::App* deploy_inno_setup_command =
-				deploy_command->add_subcommand(
-					"inno-setup",
-					"Creates an application installation executable via Inno Setup"
-				);
-
-			deploy_inno_setup_command
-				->add_option("--input-folder-path",
-					_setup_installer_input_1,
-					"Selected input folder path")
-				->default_val(".\\");
-			deploy_inno_setup_command
-				->add_option("--output-folder-path",
-					_setup_installer_input_2,
-					"Selected output folder path")
-				->default_val(".\\");
-			deploy_inno_setup_command
-				->add_option("--is-verbose-logging-enabled",
-					_setup_installer_input_3,
-					"Enables or disables verbose console logging")
-				->default_val(false);
-
-			_commands["deploy-inno-setup"] = std::make_pair(
-				deploy_inno_setup_command,
-				[this]() -> bool
-				{
-					try
-					{
-						UTILITIES.log_running_timestamp_async(_setup_installer_input_3);
-
 						std::string path_2 =
 							_setup_installer_input_1 +
 							qlogicae_private_file_path;
@@ -350,29 +194,41 @@ setup vs2022 plotica --is-verbose-logging-enabled
 						client_public_file.update_string(
 							{ "environment", "selected" }, "development"
 						);
+						*/
 
-						UTILITIES.log_complete_timestamp_async(_setup_installer_input_3);
 
-						return true;
-					}
-					catch (const std::exception& exception)
-					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_deploy_command(): ") + exception.what(), _setup_installer_input_3);
+/*
 
-						return false;
-					}
-				}
-				);
+static std::string hklm_registry_path_setup_command =
+	"\n[Registry]\nRoot: HKLM; Subkey: \"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\"; ValueType: expandsz; ValueName: \"Path\"; ValueData: \"{olddata};{app}\"\n";
 
-				return true;
-		}
-		catch (const std::exception& exception)
-		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_deploy_command(): ") + exception.what(), _setup_installer_input_3);
+		bool _setup_sha256_command();
 
-			return false;
-		}
-	}
+		bool _setup_aes256_command();
+
+*/
+
+/*
+
+
+
+jwt encrypt --issuer --data --public-key --private-key --lifetime-in-seconds --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+jwt decrypt --issuer --data --public-key --private-key --lifetime-in-seconds --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+
+sha hash --text --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+sha verify --hash --text --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+
+aes encrypt --text --key --nonce --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+aes decrypt --cipher --key --nonce --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
+
+setup vs2022 cink --is-verbose-logging-enabled
+setup vs2022 plotica --is-verbose-logging-enabled
+
+*/
+
+
+/*
+	
 
 	bool Application::_setup_template_command()
 	{

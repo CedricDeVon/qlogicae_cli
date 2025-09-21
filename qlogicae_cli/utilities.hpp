@@ -252,6 +252,16 @@ namespace QLogicaeCLI
             "Release", "Debug"
         };
 
+        const std::vector<std::string> IDE_TYPES =
+        {
+            "vs2022"
+        };
+
+        const std::vector<std::string> INSTALLER_TYPES =
+        {
+            "inno-setup"
+        };
+
         std::string get_application_full_name();
 
         std::string get_application_about_details();
@@ -334,7 +344,7 @@ namespace QLogicaeCLI
         std::string transform_log_exception_timestamp(
             const std::string& text = "", const bool& is_enabled = true);
 
-        bool is_visual_studio_2022_qlogicae_project_found();
+        bool is_qlogicae_project_found();
 
         static Utilities& get_instance();
 
