@@ -399,7 +399,7 @@ namespace QLogicaeCLI
 					_string_inputs["build_vs2022__project"],
 					"An existing Visual Studio 2022 project"
 				)
-				->required();
+				->default_val("");
 
 			build_vs2022_command
 				->add_option("--environment",
@@ -455,9 +455,29 @@ namespace QLogicaeCLI
 							build_vs2022__is_verbose_logging_enabled
 						);
 
+						if (build_vs2022__project.empty())
+						{
+							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
+								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
+							);
+							build_vs2022__project = UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
+								.get_string(
+									{ "visual_studio_2022", "startup_project_name" }
+							);
+						}
+
+						if (!std::filesystem::exists(build_vs2022__project))
+						{
+							UTILITIES.log_exception_timestamp_async(
+								std::string("Selected Visual Studio 2022 project does not exist")
+							);
+
+							return false;
+						}
+
 						system((absl::StrCat(
 							"powershell -ExecutionPolicy Bypass -File",
-							" \"qlogicae/.qlogicae/application/visual_studio_2022/build.ps1\"",
+							" \"qlogicae/.qlogicae/application/scripts/visual_studio_2022/build.ps1\"",
 							" -VisualStudio2022InputProject ",
 							build_vs2022__project,
 							" -EnvironmentType ",
@@ -499,72 +519,140 @@ namespace QLogicaeCLI
 		}
 	}
 
-	bool Application::_setup_deploy_command()
+	bool Application::_setup_deploy_command() 
 	{
 		try
 		{
-			/*
 			CLI::App* deploy_command =
 				_application.add_subcommand(
 					"deploy",
 					"vs2022"
 				);
 
-			deploy_command
+			CLI::App* deploy_vs2022_command =
+				deploy_command->add_subcommand(
+					"vs2022",
+					"Building a project via Visual Studio 2022"
+				);			
+
+			deploy_vs2022_command
+				->add_option("--project",
+					_string_inputs["deploy_vs2022__project"],
+					"An existing Visual Studio 2022 project"
+				)
+				->default_val("");
+
+			deploy_vs2022_command
+				->add_option("--environment",
+					_string_inputs["deploy_vs2022__environment"],
+					"A QLogicae-defined environment type"
+				)
+				->default_val("release");
+
+			deploy_vs2022_command
+				->add_option("--architecture",
+					_string_inputs["deploy_vs2022__architecture"],
+					"A Visual Studio 2022 project's instruction architecture"
+				)
+				->check(CLI::IsMember(
+					UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
+				))
+				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
+
+			deploy_vs2022_command
+				->add_option("--build-type",
+					_string_inputs["deploy_vs2022__build_type"],
+					"A Visual Studio 2022 project's build type"
+				)
+				->check(CLI::IsMember(
+					UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
+				))
+				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
+
+			deploy_vs2022_command
 				->add_option("--installer-type",
-					_deploy_vs2022_input_1,
+					_string_inputs["deploy_vs2022__installer_type"],
 					"Selected input folder path")
 				->check(CLI::IsMember(
 					UTILITIES.INSTALLER_TYPES
 				))
 				->default_val(UTILITIES.INSTALLER_TYPES[0]);
 
-			deploy_command
-				->add_option("--input-folder-path",
-					_deploy_vs2022_input_2,
-					"Selected input folder path")
-				->default_val("");
-
-			deploy_command
-				->add_option("--output-folder-path",
-					_deploy_vs2022_input_3,
-					"Selected output folder path")
-				->default_val("");
-
-			deploy_command
+			deploy_vs2022_command
 				->add_option("--is-verbose-logging-enabled",
-					_deploy_vs2022_input_4,
+					_boolean_inputs["deploy_vs2022__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["deploy"] = std::make_pair(
-				deploy_command,
+			_commands["deploy-vs2022"] = std::make_pair(
+				deploy_vs2022_command,
 				[this]() -> bool
 				{
+					std::string deploy_vs2022__project =
+						_string_inputs["deploy_vs2022__project"];
+					std::string deploy_vs2022__environment =
+						_string_inputs["deploy_vs2022__environment"];
+					std::string deploy_vs2022__architecture =
+						_string_inputs["deploy_vs2022__architecture"];
+					std::string deploy_vs2022__build_type =
+						_string_inputs["deploy_vs2022__build_type"];
+					std::string deploy_vs2022__installer_type =
+						_string_inputs["deploy_vs2022__installer_type"];
+					bool deploy_vs2022__is_verbose_logging_enabled =
+						_boolean_inputs["deploy_vs2022__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_deploy_vs2022_input_4);
+						UTILITIES.log_running_timestamp_async(
+							deploy_vs2022__is_verbose_logging_enabled
+						);
 
-						if (_deploy_vs2022_input_1 == UTILITIES.IDE_TYPES[0] &&
-							_deploy_vs2022_input_2 == UTILITIES.INSTALLER_TYPES[0])
+						if (deploy_vs2022__project.empty())
 						{
-
+							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
+								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
+							);
+							deploy_vs2022__project = UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
+								.get_string(
+									{ "visual_studio_2022", "startup_project_name" }
+								);
 						}
 
+						if (!std::filesystem::exists(deploy_vs2022__project))
+						{
+							UTILITIES.log_exception_timestamp_async(
+								std::string("Selected Visual Studio 2022 project does not exist")
+							);
 
-						UTILITIES.log_complete_timestamp_async(_deploy_vs2022_input_4);
+							return false;
+						}
 
+						if (deploy_vs2022__installer_type == UTILITIES.INSTALLER_TYPES[0])
+						{
+							system((absl::StrCat(
+								"powershell -ExecutionPolicy Bypass -File",
+								" \"qlogicae/.qlogicae/application/scripts/inno_setup/deploy.ps1\""								
+							)).c_str());
+						}
+						
+						UTILITIES.log_complete_timestamp_async(
+							deploy_vs2022__is_verbose_logging_enabled						
+						);
+						
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_deploy_command(): ") + exception.what(), _deploy_vs2022_input_4);
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_deploy_command(): ") +
+							exception.what(),
+							deploy_vs2022__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
 				}
 			);
-			*/
 
 			return true;
 		}
