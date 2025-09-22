@@ -16,8 +16,7 @@ namespace QLogicaeCLI
 	{
 		try
 		{
-			if (!UTILITIES.is_qlogicae_project_found() ||
-				!_setup_view_command() ||
+			if (!_setup_view_command() ||
 				!_setup_build_command() ||
 				!_setup_deploy_command() ||
 				!_setup_run_command() ||
@@ -90,7 +89,7 @@ namespace QLogicaeCLI
 			CLI::App* view_command =
 				_application.add_subcommand(
 					"view",
-					"about"
+					"about, windows-registry, environment-variables"
 				);
 			
 			CLI::App* view_about_command =
@@ -99,15 +98,182 @@ namespace QLogicaeCLI
 					"Project and application details"
 				);
 
-			_commands["view-about"] = std::make_pair(
+			view_about_command
+				->add_option("--is-verbose-logging-enabled",
+					_boolean_inputs["view_about_command__is_verbose_logging_enabled"],
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["view_about_command"] = std::make_pair(
 				view_about_command,
 				[this]() -> bool
 				{
-					QLogicaeCore::CLI_IO.print(
-						UTILITIES.get_application_about_details()
-					);
+					bool view_about_command__is_verbose_logging_enabled =
+						_boolean_inputs["view_about_command__is_verbose_logging_enabled"];
 
-					return true;
+					try
+					{
+						UTILITIES.log_running_timestamp_async(
+							view_about_command__is_verbose_logging_enabled
+						);						
+
+						QLogicaeCore::CLI_IO.print(
+							UTILITIES.get_application_about_details()
+						);
+
+						UTILITIES.log_complete_timestamp_async(
+							view_about_command__is_verbose_logging_enabled
+						);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_view_command(): ") +
+							exception.what(),
+							view_about_command__is_verbose_logging_enabled
+						);
+
+						return false;
+					}
+				}
+			);
+
+			CLI::App* view_windows_registy_command =
+				view_command->add_subcommand(
+					"windows-registry",
+					"Windows registry key-value pairs used by the application"
+				);
+
+			view_windows_registy_command
+				->add_option("--environment",
+					_string_inputs["view_windows_registy_command__environment"],
+					"An existing environment type"
+				)
+				->default_val("development");
+
+			view_windows_registy_command
+				->add_option("--root-path",
+					_string_inputs["view_windows_registy_command__root_path"],
+					"The windows registry root path"
+				)
+				->check(CLI::IsMember(
+					UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
+				))
+				->default_val(UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
+
+			view_windows_registy_command
+				->add_option("--is-verbose-logging-enabled",
+					_boolean_inputs["view_windows_registy_command__is_verbose_logging_enabled"],
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["view_windows_registy_command"] = std::make_pair(
+				view_windows_registy_command,
+				[this]() -> bool
+				{
+					std::string view_windows_registy_command__environment =
+						_string_inputs["view_windows_registy_command__environment"];
+					std::string view_windows_registy_command__root_path =
+						_string_inputs["view_windows_registy_command__root_path"];
+					bool view_windows_registy_command__is_verbose_logging_enabled =
+						_boolean_inputs["view_windows_registy_command__is_verbose_logging_enabled"];
+
+					try
+					{
+						UTILITIES.log_running_timestamp_async(
+							view_windows_registy_command__is_verbose_logging_enabled
+						);
+
+						system((absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/scripts/windows_registry/view.ps1\"",
+							" -EnvironmentType ",
+							view_windows_registy_command__environment,
+							" -RootPath ",
+							view_windows_registy_command__root_path
+						)).c_str());
+
+						UTILITIES.log_complete_timestamp_async(
+							view_windows_registy_command__is_verbose_logging_enabled
+						);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_view_command(): ") +
+							exception.what(),
+							view_windows_registy_command__is_verbose_logging_enabled
+						);
+
+						return false;
+					}
+				}
+			);
+
+			CLI::App* view_environment_variables_command =
+				view_command->add_subcommand(
+					"environment-variables",
+					"#nvironment variable key-value pairs"
+				);
+
+			view_environment_variables_command
+				->add_option("--root-path",
+					_string_inputs["view_environment_variables_command__root_path"],
+					"An environment variable root path"
+				)
+				->check(CLI::IsMember(
+					UTILITIES.ENVIRONMENT_VARIABLE_TYPES
+				))
+				->default_val(UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
+
+			view_environment_variables_command
+				->add_option("--is-verbose-logging-enabled",
+					_boolean_inputs["view_environment_variables_command__is_verbose_logging_enabled"],
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["view_environment_variables_command"] = std::make_pair(
+				view_environment_variables_command,
+				[this]() -> bool
+				{
+					std::string view_environment_variables_command__root_path =
+						_string_inputs["view_environment_variables_command__root_path"];
+					bool view_environment_variables_command__is_verbose_logging_enabled =
+						_boolean_inputs["view_environment_variables_command__is_verbose_logging_enabled"];
+
+					try
+					{
+						UTILITIES.log_running_timestamp_async(
+							view_environment_variables_command__is_verbose_logging_enabled
+						);
+
+						system((absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/scripts/environment_variables/view.ps1\"",
+							" -RootPath ",
+							view_environment_variables_command__root_path
+						)).c_str());
+
+						UTILITIES.log_complete_timestamp_async(
+							view_environment_variables_command__is_verbose_logging_enabled
+						);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_view_command(): ") +
+							exception.what(),
+							view_environment_variables_command__is_verbose_logging_enabled
+						);
+
+						return false;
+					}
 				}
 			);
 
@@ -115,7 +281,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_about_command(): ") + exception.what());
+			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_view_command(): ") + exception.what());
 
 			return false;
 		}
@@ -134,20 +300,20 @@ namespace QLogicaeCLI
 			CLI::App* run_vs2022_command =
 				run_command->add_subcommand(
 					"vs2022",
-					"Runs a Visual Studio 2022 project executable"
+					"Runs a visual studio 2022 project executable"
 				);
 
 			run_vs2022_command
 				->add_option("--project",
-					_string_inputs["run_vs2022__project"],
-					"A Visual Studio 2022 project"
+					_string_inputs["run_vs2022_command__project"],
+					"The selected visual studio 2022 project"
 				)
 				->default_str("");
 
 			run_vs2022_command
 				->add_option("--architecture",
-					_string_inputs["run_vs2022__architecture"],
-					"A Visual Studio 2022 project's instruction architecture"
+					_string_inputs["run_vs2022_command__architecture"],
+					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
 					UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
@@ -156,8 +322,8 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--build-type",
-					_string_inputs["run_vs2022__build_type"],
-					"A Visual Studio 2022 project's build type"
+					_string_inputs["run_vs2022_command__build_type"],
+					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
 					UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
@@ -166,54 +332,54 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--is-verbose-logging-enabled",
-					_boolean_inputs["run_vs2022__is_verbose_logging_enabled"],
+					_boolean_inputs["run_vs2022_command__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["run-vs2022"] = std::make_pair(
+			_commands["run_vs2022_command"] = std::make_pair(
 				run_vs2022_command,
 				[this]() -> bool
 				{
-					std::string run_vs2022__project =
-						_string_inputs["run_vs2022__project"];
-					std::string run_vs2022__architecture =
-						_string_inputs["run_vs2022__architecture"];
-					std::string run_vs2022__build_type =
-						_string_inputs["run_vs2022__build_type"];
-					bool run_vs2022__is_verbose_logging_enabled =
-						_boolean_inputs["run_vs2022__is_verbose_logging_enabled"];
+					std::string run_vs2022_command__project =
+						_string_inputs["run_vs2022_command__project"];
+					std::string run_vs2022_command__architecture =
+						_string_inputs["run_vs2022_command__architecture"];
+					std::string run_vs2022_command__build_type =
+						_string_inputs["run_vs2022_command__build_type"];
+					bool run_vs2022_command__is_verbose_logging_enabled =
+						_boolean_inputs["run_vs2022_command__is_verbose_logging_enabled"];
 
 					try
 					{
 						UTILITIES.log_running_timestamp_async(
-							run_vs2022__is_verbose_logging_enabled
+							run_vs2022_command__is_verbose_logging_enabled
 						);
 
-						if (run_vs2022__project.empty())
+						if (run_vs2022_command__project.empty())
 						{
 							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
 								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 							);
 
-							run_vs2022__project =
+							run_vs2022_command__project =
 								UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.get_string(
 									{
-										"visual_studio_2022",
+										"application",
 										"startup_project_name"
 									}
 								);
 						}
 
 						system((absl::StrCat(
-							".\\", run_vs2022__architecture,
-							"\\", run_vs2022__build_type,
-							"\\", run_vs2022__project,
-							"\\", run_vs2022__project,
+							".\\", run_vs2022_command__architecture,
+							"\\", run_vs2022_command__build_type,
+							"\\", run_vs2022_command__project,
+							"\\", run_vs2022_command__project,
 							".exe"
 						)).c_str());
 
 						UTILITIES.log_complete_timestamp_async(
-							run_vs2022__is_verbose_logging_enabled
+							run_vs2022_command__is_verbose_logging_enabled
 						);
 
 						return true;
@@ -223,7 +389,7 @@ namespace QLogicaeCLI
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_run_command(): ") +
 							exception.what(),
-							run_vs2022__is_verbose_logging_enabled
+							run_vs2022_command__is_verbose_logging_enabled
 						);
 
 						return false;
@@ -239,43 +405,43 @@ namespace QLogicaeCLI
 
 			run_executable_command
 				->add_option("--path",
-					_string_inputs["run_executable__path"],
-					"A selected path to an executable"
+					_string_inputs["run_executable_command__path"],
+					"The selected path to the executable"
 				)
 				->required();
 
 			run_executable_command
 				->add_option("--is-verbose-logging-enabled",
-					_boolean_inputs["run_executable__is_verbose_logging_enabled"],
+					_boolean_inputs["run_executable_command__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["run-executable"] = std::make_pair(
+			_commands["run_executable_command"] = std::make_pair(
 				run_executable_command,
 				[this]() -> bool
 				{
-					std::string run_executable__path =
-						_string_inputs["run_executable__path"];
-					bool run_executable__is_verbose_logging_enabled =
-						_boolean_inputs["run_executable__is_verbose_logging_enabled"];
+					std::string run_executable_command__path =
+						_string_inputs["run_executable_command__path"];
+					bool run_executable_command__is_verbose_logging_enabled =
+						_boolean_inputs["run_executable_command__is_verbose_logging_enabled"];
 
 					try
 					{
 						UTILITIES.log_running_timestamp_async(
-							run_executable__is_verbose_logging_enabled
+							run_executable_command__is_verbose_logging_enabled
 						);
 
-						if (!std::filesystem::exists(run_executable__path))
+						if (!std::filesystem::exists(run_executable_command__path))
 						{
 							UTILITIES.log_exception_timestamp_async("Exception at Application::_setup_run_command(): Executable does not exist");
 
 							return false;
 						}
 
-						system(run_executable__path.c_str());
+						system(run_executable_command__path.c_str());
 
 						UTILITIES.log_complete_timestamp_async(
-							run_executable__is_verbose_logging_enabled
+							run_executable_command__is_verbose_logging_enabled
 						);
 
 						return true;
@@ -285,7 +451,7 @@ namespace QLogicaeCLI
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_run_command(): ") +
 							exception.what(),
-							run_executable__is_verbose_logging_enabled
+							run_executable_command__is_verbose_logging_enabled
 						);
 
 						return false;
@@ -301,8 +467,8 @@ namespace QLogicaeCLI
 
 			run_script_command
 				->add_option("--command",
-					_string_inputs["run_script__command"],
-					"Selected script command")
+					_string_inputs["run_script_command__command"],
+					"Selected qlogicae script command")
 				->required();
 
 			run_script_command
@@ -311,12 +477,12 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["run-script"] = std::make_pair(
+			_commands["run_script_command"] = std::make_pair(
 				run_script_command,
 				[this]() -> bool
 				{
-					std::string run_script__command =
-						_string_inputs["run_script__command"];
+					std::string run_script_command__command =
+						_string_inputs["run_script_command__command"];
 					bool run_script__is_verbose_logging_enabled =
 						_boolean_inputs["run_script__is_verbose_logging_enabled"];
 
@@ -332,13 +498,13 @@ namespace QLogicaeCLI
 								.get_object({ "scripts" }
 						);
 						std::string script_command = std::any_cast<std::string>(
-							scripts[run_script__command]
+							scripts[run_script_command__command]
 						);
 
-						if (!scripts.contains(run_script__command))
+						if (!scripts.contains(run_script_command__command))
 						{
 							UTILITIES.log_warning_timestamp_async(
-								"Script '" + run_script__command +
+								"Script '" + run_script_command__command +
 								"' does not exist",
 								run_script__is_verbose_logging_enabled
 							);
@@ -391,27 +557,27 @@ namespace QLogicaeCLI
 			CLI::App* build_vs2022_command =
 				build_command->add_subcommand(
 					"vs2022",
-					"Building a project via Visual Studio 2022"
+					"Builds a project via visual studio 2022"
 				);
 
 			build_vs2022_command
 				->add_option("--project",
-					_string_inputs["build_vs2022__project"],
-					"An existing Visual Studio 2022 project"
+					_string_inputs["build_vs2022_command__project"],
+					"The selected visual studio 2022 project. Defaults to the starting project"
 				)
 				->default_val("");
 
 			build_vs2022_command
 				->add_option("--environment",
-					_string_inputs["build_vs2022__environment"],
-					"A QLogicae environment type"
+					_string_inputs["build_vs2022_command__environment"],
+					"The selected qlogicae environment type"
 				)
 				->default_val("development");
 
 			build_vs2022_command
 				->add_option("--architecture",
-					_string_inputs["build_vs2022__architecture"],
-					"A Visual Studio 2022 project's instruction architecture"
+					_string_inputs["build_vs2022_command__architecture"],
+					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
 					UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
@@ -420,8 +586,8 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--build-type",
-					_string_inputs["build_vs2022__build_type"],
-					"A Visual Studio 2022 project's build type"
+					_string_inputs["build_vs2022_command__build_type"],
+					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
 					UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
@@ -430,46 +596,48 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--is-verbose-logging-enabled",
-					_boolean_inputs["build_vs2022__is_verbose_logging_enabled"],
+					_boolean_inputs["build_vs2022_command__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["build-vs2022"] = std::make_pair(
+			_commands["build_vs2022_command"] = std::make_pair(
 				build_vs2022_command,
 				[this]() -> bool
 				{
-					std::string build_vs2022__project =
-						_string_inputs["build_vs2022__project"];
-					std::string build_vs2022__environment =
-						_string_inputs["build_vs2022__environment"];
-					std::string build_vs2022__architecture =
-						_string_inputs["build_vs2022__architecture"];
-					std::string build_vs2022__build_type =
-						_string_inputs["build_vs2022__build_type"];
-					bool build_vs2022__is_verbose_logging_enabled =
-						_boolean_inputs["build_vs2022__is_verbose_logging_enabled"];
+					std::string build_vs2022_command__project =
+						_string_inputs["build_vs2022_command__project"];
+					std::string build_vs2022_command__environment =
+						_string_inputs["build_vs2022_command__environment"];
+					std::string build_vs2022_command__architecture =
+						_string_inputs["build_vs2022_command__architecture"];
+					std::string build_vs2022_command__build_type =
+						_string_inputs["build_vs2022_command__build_type"];
+					bool build_vs2022_command__is_verbose_logging_enabled =
+						_boolean_inputs["build_vs2022_command__is_verbose_logging_enabled"];
 
 					try
 					{
 						UTILITIES.log_running_timestamp_async(
-							build_vs2022__is_verbose_logging_enabled
+							build_vs2022_command__is_verbose_logging_enabled
 						);
 
-						if (build_vs2022__project.empty())
+						if (build_vs2022_command__project.empty())
 						{
 							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
-								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
+								UTILITIES.
+									RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 							);
-							build_vs2022__project = UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
-								.get_string(
-									{ "visual_studio_2022", "startup_project_name" }
+							build_vs2022_command__project =
+								UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
+									.get_string(
+										{ "application", "startup_project_name" }
 							);
 						}
 
-						if (!std::filesystem::exists(build_vs2022__project))
+						if (!std::filesystem::exists(build_vs2022_command__project))
 						{
 							UTILITIES.log_exception_timestamp_async(
-								std::string("Selected Visual Studio 2022 project does not exist")
+								std::string("Selected visual studio 2022 project does not exist")
 							);
 
 							return false;
@@ -479,17 +647,17 @@ namespace QLogicaeCLI
 							"powershell -ExecutionPolicy Bypass -File",
 							" \"qlogicae/.qlogicae/application/scripts/visual_studio_2022/build.ps1\"",
 							" -VisualStudio2022InputProject ",
-							build_vs2022__project,
+							build_vs2022_command__project,
 							" -EnvironmentType ",
-							build_vs2022__environment,
+							build_vs2022_command__environment,
 							" -VisualStudio2022Architecture ",
-							build_vs2022__architecture,
+							build_vs2022_command__architecture,
 							" -VisualStudio2022Build ",
-							build_vs2022__build_type
+							build_vs2022_command__build_type
 						)).c_str());
 
 						UTILITIES.log_complete_timestamp_async(
-							build_vs2022__is_verbose_logging_enabled
+							build_vs2022_command__is_verbose_logging_enabled
 						);
 
 						return true;
@@ -499,7 +667,7 @@ namespace QLogicaeCLI
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_build_command(): ") +
 							exception.what(),
-							build_vs2022__is_verbose_logging_enabled
+							build_vs2022_command__is_verbose_logging_enabled
 						);
 
 						return false;
@@ -532,27 +700,27 @@ namespace QLogicaeCLI
 			CLI::App* deploy_vs2022_command =
 				deploy_command->add_subcommand(
 					"vs2022",
-					"Building a project via Visual Studio 2022"
+					"Deploys the visual studio 2022 project"
 				);			
 
 			deploy_vs2022_command
 				->add_option("--project",
 					_string_inputs["deploy_vs2022__project"],
-					"An existing Visual Studio 2022 project"
+					"The selected visual studio 2022 project. Defaults to the startup project"
 				)
 				->default_val("");
 
 			deploy_vs2022_command
 				->add_option("--environment",
 					_string_inputs["deploy_vs2022__environment"],
-					"A QLogicae-defined environment type"
+					"The selected qlogicae environment type"
 				)
 				->default_val("release");
 
 			deploy_vs2022_command
 				->add_option("--architecture",
 					_string_inputs["deploy_vs2022__architecture"],
-					"A Visual Studio 2022 project's instruction architecture"
+					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
 					UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
@@ -562,7 +730,7 @@ namespace QLogicaeCLI
 			deploy_vs2022_command
 				->add_option("--build-type",
 					_string_inputs["deploy_vs2022__build_type"],
-					"A Visual Studio 2022 project's build type"
+					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
 					UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
@@ -572,11 +740,24 @@ namespace QLogicaeCLI
 			deploy_vs2022_command
 				->add_option("--installer-type",
 					_string_inputs["deploy_vs2022__installer_type"],
-					"Selected input folder path")
+					"The selected input folder path")
 				->check(CLI::IsMember(
 					UTILITIES.INSTALLER_TYPES
 				))
 				->default_val(UTILITIES.INSTALLER_TYPES[0]);
+
+			deploy_vs2022_command
+				->add_option("--output-folder-path",
+					_string_inputs["deploy_vs2022__output_folder_path"],
+					"The selected output folder path of the installer"
+				)
+				->default_val("");
+
+			deploy_vs2022_command
+				->add_option("--is-build-enabled",
+					_boolean_inputs["deploy_vs2022__is_build_enabled"],
+					"Enables or disables build")
+				->default_val(true);
 
 			deploy_vs2022_command
 				->add_option("--is-verbose-logging-enabled",
@@ -584,7 +765,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["deploy-vs2022"] = std::make_pair(
+			_commands["deploy_vs2022_command"] = std::make_pair(
 				deploy_vs2022_command,
 				[this]() -> bool
 				{
@@ -598,6 +779,10 @@ namespace QLogicaeCLI
 						_string_inputs["deploy_vs2022__build_type"];
 					std::string deploy_vs2022__installer_type =
 						_string_inputs["deploy_vs2022__installer_type"];
+					std::string deploy_vs2022__output_folder_path =
+						_string_inputs["deploy_vs2022__output_folder_path"];
+					bool deploy_vs2022__is_build_enabled =
+						_boolean_inputs["deploy_vs2022__is_build_enabled"];
 					bool deploy_vs2022__is_verbose_logging_enabled =
 						_boolean_inputs["deploy_vs2022__is_verbose_logging_enabled"];
 
@@ -614,24 +799,58 @@ namespace QLogicaeCLI
 							);
 							deploy_vs2022__project = UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
 								.get_string(
-									{ "visual_studio_2022", "startup_project_name" }
+									{ "application", "startup_project_name" }
+								);
+						}
+
+						if (deploy_vs2022__output_folder_path.empty())
+						{
+							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
+								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
+							);
+							deploy_vs2022__output_folder_path =
+								UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
+								.get_string(
+									{ "application", "release_folder_path" }
 								);
 						}
 
 						if (!std::filesystem::exists(deploy_vs2022__project))
 						{
 							UTILITIES.log_exception_timestamp_async(
-								std::string("Selected Visual Studio 2022 project does not exist")
+								std::string("Selected visual studio 2022 project does not exist")
 							);
 
 							return false;
+						}
+
+						std::string input_folder_path = absl::StrCat(
+							deploy_vs2022__architecture,
+							"\\", deploy_vs2022__build_type,
+							"\\", deploy_vs2022__project
+						);
+						
+						if (deploy_vs2022__is_build_enabled)
+						{
+							system((absl::StrCat(
+								"powershell -ExecutionPolicy Bypass -File",
+								" \"qlogicae/.qlogicae/application/scripts/visual_studio_2022/build.ps1\"",
+								" -VisualStudio2022InputProject ", deploy_vs2022__project,
+								" -EnvironmentType ", deploy_vs2022__environment,
+								" -VisualStudio2022Architecture ", deploy_vs2022__architecture,
+								" -VisualStudio2022Build ", deploy_vs2022__build_type
+							)).c_str());
 						}
 
 						if (deploy_vs2022__installer_type == UTILITIES.INSTALLER_TYPES[0])
 						{
 							system((absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/inno_setup/deploy.ps1\""								
+								" \"qlogicae/.qlogicae/application/scripts/inno_setup/deploy.ps1\"",
+								" -EnvironmentType ", deploy_vs2022__environment,
+								" -ProjectName ", deploy_vs2022__project,
+								" -InputFolderPath ", input_folder_path,
+								" -OutputFolderPath ", deploy_vs2022__output_folder_path
 							)).c_str());
 						}
 						
@@ -671,7 +890,7 @@ namespace QLogicaeCLI
 			CLI::App* setup_command =
 				_application.add_subcommand(
 					"setup",
-					"windows-registry"
+					"vs2022, windows-registry"
 				);
 
 			CLI::App* setup_windows_registry_command =
@@ -683,38 +902,153 @@ namespace QLogicaeCLI
 			setup_windows_registry_command
 				->add_option(
 					"--environment",
-					_setup_windows_registry_input_1,
+					_string_inputs["setup_windows_registry__environment"],
 					"HKCU Selected environment type")
-				->default_val("development")
-				->required();
+				->default_val("development");
 
 			setup_windows_registry_command
 				->add_option("--is-verbose-logging-enabled",
-					_setup_windows_registry_input_5,
+					_boolean_inputs["setup_windows_registry__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["setup-windows-registry"] = std::make_pair(
+			_commands["setup_windows_registry_command"] = std::make_pair(
 				setup_windows_registry_command,
 				[this]() -> bool
 				{
+					std::string setup_windows_registry__environment =
+						_string_inputs["setup_windows_registry__environment"];
+					bool setup_windows_registry__is_verbose_logging_enabled =
+						_boolean_inputs["setup_windows_registry__is_verbose_logging_enabled"];
+
 					try
 					{
-						UTILITIES.log_running_timestamp_async(_setup_windows_registry_input_5);
+						UTILITIES.log_running_timestamp_async(
+							setup_windows_registry__is_verbose_logging_enabled
+						);
 
-						UTILITIES.log_complete_timestamp_async(_setup_windows_registry_input_5);
+						system((absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/scripts/windows_registry/setup.ps1\"",
+							" -EnvironmentType ",
+							setup_windows_registry__environment
+						)).c_str());
+
+						UTILITIES.log_complete_timestamp_async(
+							setup_windows_registry__is_verbose_logging_enabled
+						);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_command(): ") + exception.what(), _setup_windows_registry_input_5);
+						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_command(): ") +
+							exception.what(),
+							setup_windows_registry__is_verbose_logging_enabled
+						);
 
 						return false;
 					}
 				}
 			);
 
+			CLI::App* setup_vs2022_command =
+				setup_command->add_subcommand(
+					"vs2022",
+					"application, plotica"
+				);
+
+			CLI::App* setup_vs2022_application_command =
+				setup_vs2022_command->add_subcommand(
+					"application",
+					"Setup QLogicae Application"
+				);
+
+			setup_vs2022_application_command
+				->add_option("--is-verbose-logging-enabled",
+					_boolean_inputs["setup_vs2022_application__is_verbose_logging_enabled"],
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["setup_vs2022_application_command"] = std::make_pair(
+				setup_vs2022_application_command,
+				[this]() -> bool
+				{
+					bool setup_vs2022_application__is_verbose_logging_enabled =
+						_boolean_inputs["setup_vs2022_application__is_verbose_logging_enabled"];
+
+					try
+					{
+						UTILITIES.log_running_timestamp_async(
+							setup_vs2022_application__is_verbose_logging_enabled
+						);
+
+
+						UTILITIES.log_complete_timestamp_async(
+							setup_vs2022_application__is_verbose_logging_enabled
+						);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_command(): ") +
+							exception.what(),
+							setup_vs2022_application__is_verbose_logging_enabled
+						);
+
+						return false;
+					}
+				}
+			);
+
+			CLI::App* setup_vs2022_plotica_command =
+				setup_vs2022_command->add_subcommand(
+					"plotica",
+					"Setup QLogicae Plotica"
+				);
+
+			setup_vs2022_plotica_command
+				->add_option("--is-verbose-logging-enabled",
+					_boolean_inputs["setup_vs2022_plotica__is_verbose_logging_enabled"],
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["setup_vs2022_plotica_command"] = std::make_pair(
+				setup_vs2022_plotica_command,
+				[this]() -> bool
+				{
+					bool setup_vs2022_plotica__is_verbose_logging_enabled =
+						_boolean_inputs["setup_vs2022_plotica__is_verbose_logging_enabled"];
+
+					try
+					{
+						UTILITIES.log_running_timestamp_async(
+							setup_vs2022_plotica__is_verbose_logging_enabled
+						);
+
+						if (!UTILITIES.is_qlogicae_project_found())
+						{
+							return false;
+						}
+
+						UTILITIES.log_complete_timestamp_async(
+							setup_vs2022_plotica__is_verbose_logging_enabled
+						);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_command(): ") +
+							exception.what(),
+							setup_vs2022_plotica__is_verbose_logging_enabled
+						);
+
+						return false;
+					}
+				}
+			);
 			return true;
 		}
 		catch (const std::exception& exception)
@@ -766,7 +1100,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["generate-uuid4"] = std::make_pair(
+			_commands["generate_uuid4_command"] = std::make_pair(
 				generate_uuid4_command,
 				[this]() -> bool
 				{
@@ -854,7 +1188,7 @@ namespace QLogicaeCLI
 			generate_string_command
 				->add_option("--character-set",
 					_string_inputs["generate_string__character_set"],
-					"A string of characters where each individual character can possibly be found within each string output")
+					"The string of characters where each individual character can possibly be found within each string output")
 				->default_val("");
 			generate_string_command
 				->add_option("--output-file-path",
@@ -872,7 +1206,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["generate-string"] = std::make_pair(
+			_commands["generate_string_command"] = std::make_pair(
 				generate_string_command,
 				[this]() -> bool
 				{
@@ -1015,7 +1349,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["xchacha20poly1305-encrypt"] = std::make_pair(
+			_commands["encrypt_xchacha20poly1305_command"] = std::make_pair(
 				encrypt_xchacha20poly1305_command,
 				[this]() -> bool
 				{
@@ -1136,7 +1470,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["aes256-encrypt"] = std::make_pair(
+			_commands["encrypt_aes256_command"] = std::make_pair(
 				encrypt_aes256_command,
 				[this]() -> bool
 				{
@@ -1277,7 +1611,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["decrypt-xchacha20poly1305"] = std::make_pair(
+			_commands["decrypt_xchacha20poly1305_command"] = std::make_pair(
 				decrypt_xchacha20poly1305_command,
 				[this]() -> bool
 				{
@@ -1396,7 +1730,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["decrypt-aes256"] = std::make_pair(
+			_commands["decrypt_aes256_command"] = std::make_pair(
 				decrypt_aes256_command,
 				[this]() -> bool
 				{
@@ -1513,7 +1847,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["hash-argon2id"] = std::make_pair(
+			_commands["hash_argon2id_command"] = std::make_pair(
 				hash_argon2id_command,
 				[this]() -> bool
 				{
@@ -1602,7 +1936,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["hash-sha256"] = std::make_pair(
+			_commands["hash_sha256_command"] = std::make_pair(
 				hash_sha256_command,
 				[this]() -> bool
 				{
@@ -1720,7 +2054,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["verify-argon2id"] = std::make_pair(
+			_commands["verify_argon2id_command"] = std::make_pair(
 				verify_argon2id_command,
 				[this]() -> bool
 				{
@@ -1828,7 +2162,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["verify-sha256"] = std::make_pair(
+			_commands["verify_sha256_command"] = std::make_pair(
 				verify_sha256_command,
 				[this]() -> bool
 				{
@@ -1917,69 +2251,74 @@ namespace QLogicaeCLI
 			CLI::App* get_command =
 				_application.add_subcommand(
 					"get",
-					"windows-registry"
+					"windows-registry, environment-variables"
 				);
 			
 			CLI::App* get_windows_registry_command =
 				get_command->add_subcommand(
 					"windows-registry",
-					"hkcu"
+					"Gets a key-value pair of a selected windows registry path"
 				);
 
-			CLI::App* get_windows_registry_hkcu_command =
-				get_windows_registry_command->add_subcommand(
-					"hkcu",
-					"Creates or updates a key-value pair of a selected HKCU-specific windows registry path"
-				);
+			get_windows_registry_command
+				->add_option("--root-path",
+					_string_inputs["get_windows_registry_command__root_path"],
+					"Windows registry root path")
+				->check(CLI::IsMember(
+					UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
+				))
+				->default_val(UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
 
-			get_windows_registry_hkcu_command
+			get_windows_registry_command
 				->add_option("--sub-path",
-					_string_inputs["get_windows_registry_hkcu__sub_path"],
-					"HKCU Windows Registry path")
-				->default_val("")
+					_string_inputs["get_windows_registry_command__sub_path"],
+					"Windows registry sub path")
 				->required();
 
-			get_windows_registry_hkcu_command
+			get_windows_registry_command
+				->add_option("--key",
+					_string_inputs["get_windows_registry_command__key"],
+					"Windows registry key")
+				->required();
+
+			get_windows_registry_command
 				->add_option("--is-verbose-logging-enabled",
-					_boolean_inputs["get_windows_registry_hkcu__is_verbose_logging_enabled"],
+					_boolean_inputs["get_windows_registry_command__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["get-windows-registry-hkcu"] = std::make_pair(
-				get_windows_registry_hkcu_command,
+			_commands["get_windows_registry_command"] = std::make_pair(
+				get_windows_registry_command,
 				[this]() -> bool
 				{
-					std::string get_windows_registry_hkcu__sub_path =
-						_string_inputs["get_windows_registry_hkcu__sub_path"];
-					bool get_windows_registry_hkcu__is_verbose_logging_enabled =
-						_boolean_inputs["get_windows_registry_hkcu__is_verbose_logging_enabled"];
+					std::string get_windows_registry_command__root_path =
+						_string_inputs["get_windows_registry_command__root_path"];
+					std::string get_windows_registry_command__sub_path =
+						_string_inputs["get_windows_registry_command__sub_path"];
+					std::string get_windows_registry_command__key =
+						_string_inputs["get_windows_registry_command__key"];
+					bool get_windows_registry_command__is_verbose_logging_enabled =
+						_boolean_inputs["get_windows_registry_command__is_verbose_logging_enabled"];
 
 					try
 					{
 						UTILITIES.log_running_timestamp_async(
-							get_windows_registry_hkcu__is_verbose_logging_enabled
+							get_windows_registry_command__is_verbose_logging_enabled
 						);
 
-						if (get_windows_registry_hkcu__sub_path.empty())
-						{
-							return false;
-						}
-
-						std::string output_string = "";
-						std::unordered_map<std::string, std::string> items =
-							QLogicaeCore::WINDOWS_REGISTRY_HKCU.get_values_via_utf8(
-								get_windows_registry_hkcu__sub_path
-							);
-						size_t index_a = 0, size_a = items.size() - 1;
-
-						for (const auto& [key, value] : items)
-						{
-							output_string += key + " -> " + value + "\n";
-						}
-						QLogicaeCore::CLI_IO.print_async(output_string);
+						system((absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/scripts/windows_registry/get.ps1\"",
+							" -RootPath ",
+							get_windows_registry_command__root_path,
+							" -SubPath ",
+							get_windows_registry_command__sub_path,
+							" -Key ",
+							get_windows_registry_command__key
+						)).c_str());
 
 						UTILITIES.log_complete_timestamp_async(
-							get_windows_registry_hkcu__is_verbose_logging_enabled
+							get_windows_registry_command__is_verbose_logging_enabled
 						);
 
 						return true;
@@ -1989,7 +2328,80 @@ namespace QLogicaeCLI
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_get_command(): ") +
 							exception.what(),
-							get_windows_registry_hkcu__is_verbose_logging_enabled
+							get_windows_registry_command__is_verbose_logging_enabled
+						);
+
+						return false;
+					}
+				}
+			);
+
+
+			CLI::App* get_environment_variables_command =
+				get_command->add_subcommand(
+					"environment-variables",
+					"Gets a key-value pair of a selected environment variable"
+				);
+
+			get_environment_variables_command
+				->add_option("--root-path",
+					_string_inputs["get_environment_variables_command__root_path"],
+					"Environment variable root path")
+				->check(CLI::IsMember(
+					UTILITIES.ENVIRONMENT_VARIABLE_TYPES
+				))
+				->default_val(UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
+			
+			get_environment_variables_command
+				->add_option("--key",
+					_string_inputs["get_environment_variables_command__key"],
+					"Environment variable key")
+				->required();
+
+			get_environment_variables_command
+				->add_option("--is-verbose-logging-enabled",
+					_boolean_inputs["get_environment_variables_command__is_verbose_logging_enabled"],
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["get_environment_variables_command"] = std::make_pair(
+				get_environment_variables_command,
+				[this]() -> bool
+				{
+					std::string get_environment_variables_command__root_path =
+						_string_inputs["get_environment_variables_command__root_path"];
+					std::string get_environment_variables_command__key =
+						_string_inputs["get_environment_variables_command__key"];
+					bool get_environment_variables_command__is_verbose_logging_enabled =
+						_boolean_inputs["get_environment_variables_command__is_verbose_logging_enabled"];
+
+					try
+					{
+						UTILITIES.log_running_timestamp_async(
+							get_environment_variables_command__is_verbose_logging_enabled
+						);
+
+						system((absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/scripts/environment_variables/get.ps1\"",
+							" -RootPath ",
+							get_environment_variables_command__root_path,
+							" -Key ",
+							get_environment_variables_command__key
+						)).c_str());
+
+						UTILITIES.log_complete_timestamp_async(
+							get_environment_variables_command__is_verbose_logging_enabled
+						);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_get_command(): ") +
+							exception.what(),
+							get_environment_variables_command__is_verbose_logging_enabled
 						);
 
 						return false;
@@ -2014,75 +2426,84 @@ namespace QLogicaeCLI
 			CLI::App* set_command =
 				_application.add_subcommand(
 					"set",
-					"windows-registry"
+					"windows-registry, environment-variables"
 				);
 
 			CLI::App* set_windows_registry_command =
 				set_command->add_subcommand(
 					"windows-registry",
-					"hkcu"
+					"Creates or updates a key-value pair of a windows registry path"
 				);
 
-			CLI::App* set_windows_registry_hkcu_command =
-				set_windows_registry_command->add_subcommand(
-					"hkcu",
-					"Creates or updates a key-value pair of a selected HKCU-specific windows registry path"
-				);
+			set_windows_registry_command
+				->add_option("--root-path",
+					_string_inputs["set_windows_registry_command__root_path"],
+					"Windows registry root path")
+				->check(CLI::IsMember(
+					UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
+				))
+				->default_val(UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
 
-			set_windows_registry_hkcu_command
+			set_windows_registry_command
 				->add_option("--sub-path",
-					_string_inputs["set_windows_registry_hkcu__sub_path"],
-					"HKCU Windows Registry path")
-				->default_val("")
+					_string_inputs["set_windows_registry_command__sub_path"],
+					"Windows registry sub path")
 				->required();
 
-			set_windows_registry_hkcu_command
+			set_windows_registry_command
 				->add_option("--key",
-					_string_inputs["set_windows_registry_hkcu__key"],
-					"HKCU Windows Registry key")
-				->default_val("")
+					_string_inputs["set_windows_registry_command__key"],
+					"Windows registry key")
 				->required();
-			
-			set_windows_registry_hkcu_command
+
+			set_windows_registry_command
 				->add_option("--value",
-					_string_inputs["set_windows_registry_hkcu__value"],
-					"HKCU Windows Registry value")
-				->default_val("")
+					_string_inputs["set_windows_registry_command__value"],
+					"Windows registry value")
 				->required();
-			
-			set_windows_registry_hkcu_command
+
+			set_windows_registry_command
 				->add_option("--is-verbose-logging-enabled",
-					_boolean_inputs["set_windows_registry_hkcu__is_verbose_logging_enabled"],
+					_boolean_inputs["set_windows_registry_command__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["set-windows-registry-hkcu"] = std::make_pair(
-				set_windows_registry_hkcu_command,
+			_commands["set_windows_registry_command"] = std::make_pair(
+				set_windows_registry_command,
 				[this]() -> bool
 				{
-					std::string set_windows_registry_hkcu__sub_path =
-						_string_inputs["set_windows_registry_hkcu__sub_path"];
-					std::string set_windows_registry_hkcu__key =
-						_string_inputs["set_windows_registry_hkcu__key"];
-					std::string set_windows_registry_hkcu__value =
-						_string_inputs["set_windows_registry_hkcu__value"];
-					bool set_windows_registry_hkcu__is_verbose_logging_enabled =
-						_boolean_inputs["set_windows_registry_hkcu__is_verbose_logging_enabled"];
+					std::string set_windows_registry_command__root_path =
+						_string_inputs["set_windows_registry_command__root_path"];
+					std::string set_windows_registry_command__sub_path =
+						_string_inputs["set_windows_registry_command__sub_path"];
+					std::string set_windows_registry_command__key =
+						_string_inputs["set_windows_registry_command__key"];
+					std::string set_windows_registry_command__value =
+						_string_inputs["set_windows_registry_command__value"];
+					bool set_windows_registry_command__is_verbose_logging_enabled =
+						_boolean_inputs["set_windows_registry_command__is_verbose_logging_enabled"];
 
 					try
 					{
 						UTILITIES.log_running_timestamp_async(
-							set_windows_registry_hkcu__is_verbose_logging_enabled
+							set_windows_registry_command__is_verbose_logging_enabled
 						);
 
-						bool result = QLogicaeCore::WINDOWS_REGISTRY_HKCU.set_value_via_utf8(
-							set_windows_registry_hkcu__sub_path,
-							set_windows_registry_hkcu__key,
-							set_windows_registry_hkcu__value
-						);
+						system((absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/scripts/windows_registry/set.ps1\"",
+							" -RootPath ",
+							set_windows_registry_command__root_path,
+							" -SubPath ",
+							set_windows_registry_command__sub_path,
+							" -Key ",
+							set_windows_registry_command__key,
+							" -Value ",
+							set_windows_registry_command__value
+						)).c_str());
 
 						UTILITIES.log_complete_timestamp_async(
-							set_windows_registry_hkcu__is_verbose_logging_enabled
+							set_windows_registry_command__is_verbose_logging_enabled
 						);
 
 						return true;
@@ -2092,7 +2513,89 @@ namespace QLogicaeCLI
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_set_command(): ") +
 							exception.what(),
-							set_windows_registry_hkcu__is_verbose_logging_enabled
+							set_windows_registry_command__is_verbose_logging_enabled
+						);
+
+						return false;
+					}
+				}
+			);
+
+			CLI::App* set_environment_variables_command =
+				set_command->add_subcommand(
+					"environment-variables",
+					"Creates or updates a key-value pair of an environment variable"
+				);
+
+			set_environment_variables_command
+				->add_option("--root-path",
+					_string_inputs["set_environment_variables_command__root_path"],
+					"Windows registry root path")
+				->check(CLI::IsMember(
+					UTILITIES.ENVIRONMENT_VARIABLE_TYPES
+				))
+				->default_val(UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
+
+			set_environment_variables_command
+				->add_option("--key",
+					_string_inputs["set_environment_variables_command__key"],
+					"Windows registry key")
+				->required();
+
+			set_environment_variables_command
+				->add_option("--value",
+					_string_inputs["set_environment_variables_command__value"],
+					"Windows registry value")
+				->required();
+
+			set_environment_variables_command
+				->add_option("--is-verbose-logging-enabled",
+					_boolean_inputs["set_environment_variables_command__is_verbose_logging_enabled"],
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["set_environment_variables_command"] = std::make_pair(
+				set_environment_variables_command,
+				[this]() -> bool
+				{
+					std::string set_environment_variables_command__root_path =
+						_string_inputs["set_environment_variables_command__root_path"];
+					std::string set_environment_variables_command__key =
+						_string_inputs["set_environment_variables_command__key"];
+					std::string set_environment_variables_command__value =
+						_string_inputs["set_environment_variables_command__value"];
+					bool set_environment_variables_command__is_verbose_logging_enabled =
+						_boolean_inputs["set_environment_variables_command__is_verbose_logging_enabled"];
+
+					try
+					{
+						UTILITIES.log_running_timestamp_async(
+							set_environment_variables_command__is_verbose_logging_enabled
+						);
+
+						system((absl::StrCat(
+							"powershell -ExecutionPolicy Bypass -File",
+							" \"qlogicae/.qlogicae/application/scripts/environment_variables/set.ps1\"",
+							" -RootPath ",
+							set_environment_variables_command__root_path,
+							" -Key ",
+							set_environment_variables_command__key,
+							" -Value ",
+							set_environment_variables_command__value
+						)).c_str());
+
+						UTILITIES.log_complete_timestamp_async(
+							set_environment_variables_command__is_verbose_logging_enabled
+						);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(
+							std::string("Exception at Application::_setup_set_command(): ") +
+							exception.what(),
+							set_environment_variables_command__is_verbose_logging_enabled
 						);
 
 						return false;

@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="qlogicae\application\assets\qlogicae.application.ico">
       <Filter>Resource Files</Filter>
     </Image>

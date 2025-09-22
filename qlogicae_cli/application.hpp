@@ -6,8 +6,6 @@
 
 namespace QLogicaeCLI
 {
-
-
 	class Application
 	{
 	public:
@@ -28,20 +26,6 @@ namespace QLogicaeCLI
 		std::unordered_map<std::string_view, size_t> _size_t_inputs;
 		std::unordered_map<std::string_view, double> _double_inputs;
 		std::unordered_map<std::string_view, std::string> _string_inputs;
-
-		std::string _setup_windows_registry_input_1;
-		bool _setup_windows_registry_input_5;
-
-		std::string _deploy_vs2022_inno_setup_input_1;
-		std::string _deploy_vs2022_inno_setup_input_2;
-		std::string _deploy_vs2022_inno_setup_input_3;
-		bool _deploy_vs2022_inno_setup_input_4;
-
-		std::string _setup_vs2022_application_input_1;
-		bool _setup_vs2022_application_input_2;
-
-		std::string _setup_documentation_input_1;
-		bool _setup_documentation_input_2;
 
 		CLI::App _application;
 		std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> _commands;
@@ -73,36 +57,6 @@ namespace QLogicaeCLI
 		bool _setup_template_command();		
 	};
 }
-
-/*
-
-static std::string hklm_registry_path_setup_command =
-	"\n[Registry]\nRoot: HKLM; Subkey: \"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\"; ValueType: expandsz; ValueName: \"Path\"; ValueData: \"{olddata};{app}\"\n";
-
-		bool _setup_sha256_command();
-
-		bool _setup_aes256_command();
-
-*/
-
-/*
-
-
-
-jwt encrypt --issuer --data --public-key --private-key --lifetime-in-seconds --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-jwt decrypt --issuer --data --public-key --private-key --lifetime-in-seconds --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-
-sha hash --text --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-sha verify --hash --text --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-
-aes encrypt --text --key --nonce --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-aes decrypt --cipher --key --nonce --is-file-output-enabled --output-file-path --is-verbose-logging-enabled
-
-setup vs2022 cink --is-verbose-logging-enabled
-setup vs2022 plotica --is-verbose-logging-enabled
-
-*/
-
 
 /*
 	
