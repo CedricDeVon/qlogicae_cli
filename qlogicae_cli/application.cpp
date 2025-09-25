@@ -853,6 +853,52 @@ namespace QLogicaeCLI
 								" -OutputFolderPath ", deploy_vs2022__output_folder_path
 							)).c_str());
 						}
+
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\default\\build\\qlogicae\\application\\configurations\\qlogicae.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+						
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\debug\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\development\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\release\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\test\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
 						
 						UTILITIES.log_complete_timestamp_async(
 							deploy_vs2022__is_verbose_logging_enabled						
@@ -965,6 +1011,12 @@ namespace QLogicaeCLI
 				);
 
 			setup_vs2022_application_command
+				->add_option("--is-complete",
+					_boolean_inputs["setup_vs2022_application__is_complete"],
+					"Enables or disables complete setup")
+				->default_val(false);
+
+			setup_vs2022_application_command
 				->add_option("--is-verbose-logging-enabled",
 					_boolean_inputs["setup_vs2022_application__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
@@ -976,13 +1028,203 @@ namespace QLogicaeCLI
 				{
 					bool setup_vs2022_application__is_verbose_logging_enabled =
 						_boolean_inputs["setup_vs2022_application__is_verbose_logging_enabled"];
+					bool setup_vs2022_application__is_complete =
+						_boolean_inputs["setup_vs2022_application__is_complete"];
 
 					try
 					{
 						UTILITIES.log_running_timestamp_async(
 							setup_vs2022_application__is_verbose_logging_enabled
 						);
+						
+						bool is_running = true;
+						std::string startup;
+						std::string name;
+						std::string version;
+						std::string company;
+						std::string authors;
+						std::string description;
+						std::string url;
+						std::string architecture;
+						std::string confirmation;
 
+						while (is_running)
+						{
+							startup = "qlogicae_application";
+							name = "QLogicae Application";
+							version = "1.0.0";
+							company = "";
+							authors = "";
+							description = "";
+							url = "";
+							architecture = "x64";
+
+							QLogicaeCore::CLI_IO.print(
+								"> Startup: "
+							);
+							startup = QLogicaeCore::CLI_IO.scan();
+
+							if (setup_vs2022_application__is_complete)
+							{
+								QLogicaeCore::CLI_IO.print(
+									"> Name: "
+								);
+								name = QLogicaeCore::CLI_IO.scan();
+
+								QLogicaeCore::CLI_IO.print(
+									"> Version: "
+								);
+								version = QLogicaeCore::CLI_IO.scan();
+
+								QLogicaeCore::CLI_IO.print(
+									"> Company: "
+								);
+								company = QLogicaeCore::CLI_IO.scan();
+
+								QLogicaeCore::CLI_IO.print(
+									"> Authors: "
+								);
+								authors = QLogicaeCore::CLI_IO.scan();
+
+								QLogicaeCore::CLI_IO.print(
+									"> Description: "
+								);
+								description = QLogicaeCore::CLI_IO.scan();
+
+								QLogicaeCore::CLI_IO.print(
+									"> URL: "
+								);
+								url = QLogicaeCore::CLI_IO.scan();
+
+								QLogicaeCore::CLI_IO.print(
+									"> Architecture [x64|x86]: "
+								);
+								while (true)
+								{
+									architecture = QLogicaeCore::CLI_IO.scan();
+									if (QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_STRINGS.contains(architecture))
+									{
+										break;
+									}
+								}
+							}
+
+							QLogicaeCore::CLI_IO.print_with_new_line(
+								std::string("\n") +
+								"- Startup: " + startup + "\n" +
+								"- Name: " + name + "\n" +
+								"- Version: " + version + "\n" +
+								"- Company: " + company + "\n" +
+								"- Authors: " + authors + "\n" +
+								"- Description: " + description + "\n" +
+								"- URL: " + url + "\n" +
+								"- Architecture: " + architecture + "\n\n" +
+								"> Confirm? [y/n] "
+							);
+
+							while (true)
+							{
+								confirmation = QLogicaeCore::CLI_IO.scan();
+								if (confirmation == "y")
+								{
+									is_running = false;
+									break;
+								}
+								else if (confirmation == "n")
+								{
+									break;
+								}
+							}
+						}
+
+						UTILITIES.log_info_timestamp_async(
+							"Setup QLogicae Filesystem Begins",
+							setup_vs2022_application__is_verbose_logging_enabled
+						);
+						std::string root_input_folder =
+							QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH +
+							".\\qlogicae\\cli\\setup\\vs2022\\application";
+
+						std::system((
+							"powershell -Command \"Copy-Item -Path '" +
+							root_input_folder + ".\\qlogicae' -Destination '" +
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							"' -Recurse -Force\""
+						).c_str());
+
+						std::system((
+							"powershell -Command \"Copy-Item -Path '" +
+							root_input_folder + "\\startup\\*' -Destination '" +
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH + "\\" +
+							startup + "' -Recurse -Force\""
+						).c_str());
+
+						std::system((
+							"powershell -Command \"Copy-Item -Path '" +
+							root_input_folder + "\\root\\*' -Destination '" +
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							"' -Recurse -Force\""
+						).c_str());
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\configurations\\qlogicae.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string({ "application", "startup_project_name" }, startup);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\default\\build\\qlogicae\\application\\configurations\\qlogicae.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string({ "id" }, QLogicaeCore::GENERATOR.random_uuid4());
+						UTILITIES.CLIENT_JSON_IO.update_string({ "name" }, name);
+						UTILITIES.CLIENT_JSON_IO.update_string({ "version" }, version);
+						UTILITIES.CLIENT_JSON_IO.update_string({ "company" }, company);
+						UTILITIES.CLIENT_JSON_IO.update_string({ "authors" }, authors);
+						UTILITIES.CLIENT_JSON_IO.update_string({ "description" }, description);
+						UTILITIES.CLIENT_JSON_IO.update_string({ "url" }, url);
+						UTILITIES.CLIENT_JSON_IO.update_string({ "architecture" }, architecture);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\debug\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\development\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\release\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\test\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+						
+						UTILITIES.log_info_timestamp_async(
+							"Setup QLogicae Filesystem Ends",
+							setup_vs2022_application__is_verbose_logging_enabled
+						);
 
 						UTILITIES.log_complete_timestamp_async(
 							setup_vs2022_application__is_verbose_logging_enabled

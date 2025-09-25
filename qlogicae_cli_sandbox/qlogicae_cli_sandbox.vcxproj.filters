@@ -19,12 +19,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="qlogicae\application\assets\qlogicae.application.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="qlogicae\application\configurations\qlogicae.public.json" />
-  </ItemGroup>
 </Project>

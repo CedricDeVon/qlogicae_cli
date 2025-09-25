@@ -27,7 +27,7 @@ namespace QLogicaeCLI
 
         QLogicaeCore::TextFileIO CLIENT_INNO_SETUP_TARGET_FILE;
 
-        QLogicaeCore::JsonFileIO CLIENT_QLOGICAE_FILE;
+        QLogicaeCore::JsonFileIO CLIENT_JSON_IO;
 
         QLogicaeCore::JsonFileIO CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE;
 

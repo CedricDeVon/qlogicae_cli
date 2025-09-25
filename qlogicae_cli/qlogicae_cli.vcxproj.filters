@@ -49,10 +49,6 @@
     <None Include="resource.aps" />
     <None Include="resources.aps" />
     <None Include="templates\generic_documentation\qlogicae.gitignore" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\scripts\qlogicae.inno_run.ps1" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\scripts\qlogicae.inno_setup.iss" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\configurations\qlogicae.private.json" />
-    <None Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\configurations\qlogicae.public.json" />
     <None Include="qlogicae\cli\tests\test.ps1" />
   </ItemGroup>
   <ItemGroup>
@@ -64,11 +60,5 @@
     <Image Include="qlogicae\application\assets\application.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\assets\qlogicae.application.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="qlogicae\cli\templates\vs2022\application\LICENSE.txt" />
   </ItemGroup>
 </Project>
