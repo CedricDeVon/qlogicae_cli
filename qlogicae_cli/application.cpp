@@ -1233,7 +1233,7 @@ namespace QLogicaeCLI
 						std::string output_string = "",
 							character_set = (generate_string__character_set.empty()) ?
 
-							QLogicaeCore::Constants::FULL_VISIBLE_ASCII_CHARACTERSET.data() :
+							QLogicaeCore::UTILITIES.FULL_VISIBLE_ASCII_CHARACTERSET :
 							generate_string__character_set;
 
 						for (index_1 = 0;
@@ -1328,7 +1328,7 @@ namespace QLogicaeCLI
 					_string_inputs["encrypt_xchacha20poly1305__nonce"],
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
-					32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS)
+					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
 			
 			encrypt_xchacha20poly1305_command
@@ -1449,7 +1449,7 @@ namespace QLogicaeCLI
 					_string_inputs["encrypt_aes256__nonce"],
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
-					32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS)
+					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
 
 			encrypt_aes256_command
@@ -1590,7 +1590,7 @@ namespace QLogicaeCLI
 					_string_inputs["decrypt_xchacha20poly1305__nonce"],
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
-					32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS)
+					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
 
 			decrypt_xchacha20poly1305_command
@@ -1709,7 +1709,7 @@ namespace QLogicaeCLI
 					_string_inputs["decrypt_aes256__nonce"],
 					"Encryption nonce. WARNING: Nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
-					32, QLogicaeCore::Constants::ALPHA_NUMERIC_CHARACTERS)
+					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
 
 			decrypt_aes256_command

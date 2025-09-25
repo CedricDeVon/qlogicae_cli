@@ -20,7 +20,7 @@ namespace QLogicaeCLI
 		{
 			log_exception_timestamp_async(std::string("Exception at Utilities::get_application_full_name(): ") + exception.what());
 
-			return QLogicaeCore::Constants::STRING_NONE_1.data();
+			return QLogicaeCore::UTILITIES.STRING_NONE_1;
 		}
 	}
 
@@ -39,7 +39,7 @@ namespace QLogicaeCLI
 		{
 			log_exception_timestamp_async(std::string("Exception at Utilities::get_application_about_details(): ") + exception.what());
 
-			return QLogicaeCore::Constants::STRING_NONE_1.data();
+			return QLogicaeCore::UTILITIES.STRING_NONE_1;
 		}
 	}
 
