@@ -1001,7 +1001,7 @@ namespace QLogicaeCLI
 			CLI::App* setup_vs2022_command =
 				setup_command->add_subcommand(
 					"vs2022",
-					"application, documentation"
+					"application, documentation, ids"
 				);
 
 			CLI::App* setup_vs2022_application_command =
@@ -1305,6 +1305,97 @@ namespace QLogicaeCLI
 					}
 				}
 			);
+
+
+
+			CLI::App* setup_vs2022_ids_command =
+				setup_vs2022_command->add_subcommand(
+					"ids",
+					"Setup QLogicae Template Environment IDs"
+				);
+
+			setup_vs2022_ids_command
+				->add_option("--is-verbose-logging-enabled",
+					_boolean_inputs["setup_vs2022_ids__is_verbose_logging_enabled"],
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["setup_vs2022_ids_command"] = std::make_pair(
+				setup_vs2022_ids_command,
+				[this]() -> bool
+				{
+					bool setup_vs2022_ids__is_verbose_logging_enabled =
+						_boolean_inputs["setup_vs2022_ids__is_verbose_logging_enabled"];
+
+					try
+					{
+						UTILITIES.log_running_timestamp_async(
+							setup_vs2022_ids__is_verbose_logging_enabled
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\default\\build\\qlogicae\\application\\configurations\\qlogicae.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+						
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\debug\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\development\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\release\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.CLIENT_JSON_IO.set_file_path(
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							".\\qlogicae\\.qlogicae\\application\\templates\\test\\build\\qlogicae\\application\\configurations\\environment.json"
+						);
+						UTILITIES.CLIENT_JSON_IO.update_string(
+							{ "id" },
+							QLogicaeCore::GENERATOR.random_uuid4()
+						);
+
+						UTILITIES.log_complete_timestamp_async(
+							setup_vs2022_ids__is_verbose_logging_enabled
+						);
+
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_command(): ") +
+							exception.what(),
+							setup_vs2022_ids__is_verbose_logging_enabled
+						);
+
+						return false;
+					}
+				}
+			);
+
 			return true;
 		}
 		catch (const std::exception& exception)
