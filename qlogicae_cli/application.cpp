@@ -1001,7 +1001,7 @@ namespace QLogicaeCLI
 			CLI::App* setup_vs2022_command =
 				setup_command->add_subcommand(
 					"vs2022",
-					"application, plotica"
+					"application, documentation"
 				);
 
 			CLI::App* setup_vs2022_application_command =
@@ -1141,6 +1141,7 @@ namespace QLogicaeCLI
 							"Setup QLogicae Filesystem Begins",
 							setup_vs2022_application__is_verbose_logging_enabled
 						);
+
 						std::string root_input_folder =
 							QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH +
 							".\\qlogicae\\cli\\setup\\vs2022\\application";
@@ -1244,38 +1245,51 @@ namespace QLogicaeCLI
 				}
 			);
 
-			CLI::App* setup_vs2022_plotica_command =
+			CLI::App* setup_vs2022_documentation_command =
 				setup_vs2022_command->add_subcommand(
-					"plotica",
-					"Setup QLogicae Plotica"
+					"documentation",
+					"Setup QLogicae Documentation"
 				);
 
-			setup_vs2022_plotica_command
+			setup_vs2022_documentation_command
 				->add_option("--is-verbose-logging-enabled",
-					_boolean_inputs["setup_vs2022_plotica__is_verbose_logging_enabled"],
+					_boolean_inputs["setup_vs2022_documentation__is_verbose_logging_enabled"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["setup_vs2022_plotica_command"] = std::make_pair(
-				setup_vs2022_plotica_command,
+			_commands["setup_vs2022_documentation_command"] = std::make_pair(
+				setup_vs2022_documentation_command,
 				[this]() -> bool
 				{
-					bool setup_vs2022_plotica__is_verbose_logging_enabled =
-						_boolean_inputs["setup_vs2022_plotica__is_verbose_logging_enabled"];
+					bool setup_vs2022_documentation__is_verbose_logging_enabled =
+						_boolean_inputs["setup_vs2022_documentation__is_verbose_logging_enabled"];
 
 					try
 					{
 						UTILITIES.log_running_timestamp_async(
-							setup_vs2022_plotica__is_verbose_logging_enabled
+							setup_vs2022_documentation__is_verbose_logging_enabled
 						);
 
-						if (!UTILITIES.is_qlogicae_project_found())
-						{
-							return false;
-						}
+						std::string root_input_folder =
+							QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH +
+							".\\qlogicae\\cli\\setup\\vs2022\\documentation";
+
+						std::system((
+							"powershell -Command \"Copy-Item -Path '" +
+							root_input_folder + ".\\qlogicae' -Destination '" +
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							"' -Recurse -Force\""
+							).c_str());
+
+						std::system((
+							"powershell -Command \"Copy-Item -Path '" +
+							root_input_folder + "\\root\\*' -Destination '" +
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+							"' -Recurse -Force\""
+							).c_str());
 
 						UTILITIES.log_complete_timestamp_async(
-							setup_vs2022_plotica__is_verbose_logging_enabled
+							setup_vs2022_documentation__is_verbose_logging_enabled
 						);
 
 						return true;
@@ -1284,7 +1298,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_command(): ") +
 							exception.what(),
-							setup_vs2022_plotica__is_verbose_logging_enabled
+							setup_vs2022_documentation__is_verbose_logging_enabled
 						);
 
 						return false;
