@@ -33,13 +33,21 @@ namespace QLogicaeCLI
 
 		~CLITransformer();
 
-		CLITransformer(const CLITransformer&) = delete;
+		CLITransformer(
+			const CLITransformer&
+		) = delete;
 
-		CLITransformer(CLITransformer&&) noexcept = delete;
+		CLITransformer(
+			CLITransformer&&
+		) noexcept = delete;
 
-		CLITransformer& operator = (CLITransformer&&) = delete;
+		CLITransformer& operator = (
+			CLITransformer&&
+		) = delete;
 
-		CLITransformer& operator = (const CLITransformer&) = delete;
+		CLITransformer& operator = (
+			const CLITransformer&
+		) = delete;
 	};
 
 	static inline CLITransformer& CLI_TRANSFORMER =

@@ -12,13 +12,21 @@ namespace QLogicaeCLI
 
 		~CLIInputCache();
 
-		CLIInputCache(const CLIInputCache&) = delete;
+		CLIInputCache(
+			const CLIInputCache&
+		) = delete;
 
-		CLIInputCache(CLIInputCache&&) noexcept = delete;
+		CLIInputCache(
+			CLIInputCache&&
+		) noexcept = delete;
 
-		CLIInputCache& operator = (CLIInputCache&&) = delete;
+		CLIInputCache& operator = (
+			CLIInputCache&&
+		) = delete;
 
-		CLIInputCache& operator = (const CLIInputCache&) = delete;
+		CLIInputCache& operator = (
+			const CLIInputCache&
+		) = delete;
 
 		bool setup();
 
@@ -124,7 +132,8 @@ namespace QLogicaeCLI
 		const std::string command_key
 	)
 	{
-		QLogicaeCore::Result<std::string> input_command_path_result;
+		QLogicaeCore::Result<std::string>
+			input_command_path_result;
 
 		CLI_TRANSFORMER.to_input_command_path(
 			input_command_path_result,
@@ -163,7 +172,8 @@ namespace QLogicaeCLI
 		const Type& value
 	)
 	{
-		QLogicaeCore::Result<std::string> input_command_path_result;
+		QLogicaeCore::Result<std::string>
+			input_command_path_result;
 
 		CLI_TRANSFORMER.to_input_command_path(
 			input_command_path_result,
