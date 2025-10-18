@@ -16,7 +16,8 @@ namespace QLogicaeCLI
 	{
 		try
 		{
-			if (!_setup_view_command() ||
+			/*
+				||
 				!_setup_build_command() ||
 				!_setup_deploy_command() ||
 				!_setup_run_command() ||
@@ -27,7 +28,9 @@ namespace QLogicaeCLI
 				!_setup_encrypt_command() ||
 				!_setup_decrypt_command() ||
 				!_setup_hash_command() ||
-				!_setup_verify_command())
+				!_setup_verify_command()
+			*/
+			if (!_setup_view_command())
 			{
 				return false;
 			}
@@ -100,16 +103,16 @@ namespace QLogicaeCLI
 
 			view_about_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("view_about_command", "is_verbose"),
+					CLI_BOOLEAN_INPUTS.get("view_about", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["view_about_command"] = std::make_pair(
+			_commands["view_about"] = std::make_pair(
 				view_about_command,
 				[this]() -> bool
 				{
 					bool view_about_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get("view_about_command", "is_verbose");
+						CLI_BOOLEAN_INPUTS.get("view_about", "is_verbose");
 
 					try
 					{
@@ -131,8 +134,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_view_command(): ") +
-							exception.what(),
-							view_about_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -148,14 +150,14 @@ namespace QLogicaeCLI
 
 			view_windows_registy_command
 				->add_option("--environment",
-					_string_inputs["view_windows_registy_command__environment"],
+					CLI_STRING_INPUTS.get("view_windows_registy", "environment"),
 					"An existing environment type"
 				)
 				->default_val("development");
 
 			view_windows_registy_command
 				->add_option("--root-path",
-					_string_inputs["view_windows_registy_command__root_path"],
+					CLI_STRING_INPUTS.get("view_windows_registy", "root_path"),
 					"The windows registry root path"
 				)
 				->check(CLI::IsMember(
@@ -165,20 +167,20 @@ namespace QLogicaeCLI
 
 			view_windows_registy_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("view_windows_registry_command", "is_verbose"),
+					CLI_BOOLEAN_INPUTS.get("view_windows_registry", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["view_windows_registy_command"] = std::make_pair(
+			_commands["view_windows_registy"] = std::make_pair(
 				view_windows_registy_command,
 				[this]() -> bool
 				{
 					std::string view_windows_registy_command__environment =
-						_string_inputs["view_windows_registy_command__environment"];
+						CLI_STRING_INPUTS.get("view_windows_registy", "environment");
 					std::string view_windows_registy_command__root_path =
-						_string_inputs["view_windows_registy_command__root_path"];
+						CLI_STRING_INPUTS.get("view_windows_registy", "root_path");
 					bool view_windows_registy_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get("view_windows_registry_command", "is_verbose");
+						CLI_BOOLEAN_INPUTS.get("view_windows_registry", "is_verbose");
 
 					try
 					{
@@ -205,8 +207,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_view_command(): ") +
-							exception.what(),
-							view_windows_registy_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -222,7 +223,7 @@ namespace QLogicaeCLI
 
 			view_environment_variables_command
 				->add_option("--root-path",
-					_string_inputs["view_environment_variables_command__root_path"],
+					CLI_STRING_INPUTS.get("view_windows_registy", "root_path"),
 					"An environment variable root path"
 				)
 				->check(CLI::IsMember(
@@ -232,18 +233,18 @@ namespace QLogicaeCLI
 
 			view_environment_variables_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("view_environment_variables_command", "is_verbose"),
+					CLI_BOOLEAN_INPUTS.get("view_environment_variables", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["view_environment_variables_command"] = std::make_pair(
+			_commands["view_environment_variables"] = std::make_pair(
 				view_environment_variables_command,
 				[this]() -> bool
 				{
 					std::string view_environment_variables_command__root_path =
-						_string_inputs["view_environment_variables_command__root_path"];
+						CLI_STRING_INPUTS.get("view_windows_registy", "root_path");
 					bool view_environment_variables_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get("view_environment_variables_command", "is_verbose");
+						CLI_BOOLEAN_INPUTS.get("view_environment_variables", "is_verbose");
 
 					try
 					{
@@ -268,8 +269,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_view_command(): ") +
-							exception.what(),
-							view_environment_variables_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -287,6 +287,9 @@ namespace QLogicaeCLI
 		}
 	}
 
+}
+
+/*
 	bool Application::_setup_run_command()
 	{
 		try
@@ -336,7 +339,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["run_vs2022_command"] = std::make_pair(
+			_commands["run_vs2022"] = std::make_pair(
 				run_vs2022_command,
 				[this]() -> bool
 				{
@@ -388,8 +391,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_run_command(): ") +
-							exception.what(),
-							run_vs2022_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -416,7 +418,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["run_executable_command"] = std::make_pair(
+			_commands["run_executable"] = std::make_pair(
 				run_executable_command,
 				[this]() -> bool
 				{
@@ -450,8 +452,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_run_command(): ") +
-							exception.what(),
-							run_executable_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -467,7 +468,7 @@ namespace QLogicaeCLI
 
 			run_script_command
 				->add_option("--command",
-					_string_inputs["run_script_command__command"],
+					_string_inputs["run_script_command_"],
 					"Selected qlogicae script command")
 				->required();
 
@@ -477,12 +478,12 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["run_script_command"] = std::make_pair(
+			_commands["run_script"] = std::make_pair(
 				run_script_command,
 				[this]() -> bool
 				{
 					std::string run_script_command__command =
-						_string_inputs["run_script_command__command"];
+						_string_inputs["run_script_command_"];
 					bool run_script__is_verbose =
 						_boolean_inputs["run_script__is_verbose"];
 
@@ -511,7 +512,7 @@ namespace QLogicaeCLI
 
 							return false;
 						}
-						
+
 						system(script_command.c_str());
 
 						UTILITIES.log_complete_timestamp_async(run_script__is_verbose);
@@ -522,8 +523,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_run_command(): ") +
-							exception.what(),
-							run_script__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -600,7 +600,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["build_vs2022_command"] = std::make_pair(
+			_commands["build_vs2022"] = std::make_pair(
 				build_vs2022_command,
 				[this]() -> bool
 				{
@@ -666,8 +666,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_build_command(): ") +
-							exception.what(),
-							build_vs2022_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -687,7 +686,7 @@ namespace QLogicaeCLI
 		}
 	}
 
-	bool Application::_setup_deploy_command() 
+	bool Application::_setup_deploy_command()
 	{
 		try
 		{
@@ -701,7 +700,7 @@ namespace QLogicaeCLI
 				deploy_command->add_subcommand(
 					"vs2022",
 					"Deploys the visual studio 2022 project"
-				);			
+				);
 
 			deploy_vs2022_command
 				->add_option("--project",
@@ -765,7 +764,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["deploy_vs2022_command"] = std::make_pair(
+			_commands["deploy_vs2022"] = std::make_pair(
 				deploy_vs2022_command,
 				[this]() -> bool
 				{
@@ -829,7 +828,7 @@ namespace QLogicaeCLI
 							"\\", deploy_vs2022__build_type,
 							"\\", deploy_vs2022__project
 						);
-						
+
 						if (deploy_vs2022__is_build_enabled)
 						{
 							system((absl::StrCat(
@@ -863,7 +862,7 @@ namespace QLogicaeCLI
 							{ "id" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
-						
+
 						UTILITIES.CLIENT_JSON_IO.set_file_path(
 							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
 							".\\qlogicae\\.qlogicae\\application\\templates\\debug\\build\\qlogicae\\application\\configurations\\environment.json"
@@ -899,19 +898,18 @@ namespace QLogicaeCLI
 							{ "id" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
-						
+
 						UTILITIES.log_complete_timestamp_async(
-							deploy_vs2022__is_verbose						
+							deploy_vs2022__is_verbose
 						);
-						
+
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_deploy_command(): ") +
-							exception.what(),
-							deploy_vs2022__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -958,7 +956,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["setup_windows_registry_command"] = std::make_pair(
+			_commands["setup_windows_registry"] = std::make_pair(
 				setup_windows_registry_command,
 				[this]() -> bool
 				{
@@ -989,8 +987,7 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_command(): ") +
-							exception.what(),
-							setup_windows_registry__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -1040,7 +1037,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["setup_vs2022_application_command"] = std::make_pair(
+			_commands["setup_vs2022_application"] = std::make_pair(
 				setup_vs2022_application_command,
 				[this]() -> bool
 				{
@@ -1060,7 +1057,7 @@ namespace QLogicaeCLI
 						UTILITIES.log_running_timestamp_async(
 							setup_vs2022_application__is_verbose
 						);
-						
+
 						bool is_running = true;
 						std::string startup;
 						std::string name;
@@ -1300,8 +1297,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_setup_command(): ") +
-							exception.what(),
-							setup_vs2022_application__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -1321,7 +1317,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["setup_vs2022_ids_command"] = std::make_pair(
+			_commands["setup_vs2022_ids"] = std::make_pair(
 				setup_vs2022_ids_command,
 				[this]() -> bool
 				{
@@ -1399,8 +1395,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_setup_command(): ") +
-							exception.what(),
-							setup_vs2022_ids__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -1436,7 +1431,7 @@ namespace QLogicaeCLI
 					"uuid4",
 					"Random UUID4 generation"
 				);
-			
+
 			generate_uuid4_command
 				->add_option("--count",
 					_size_t_inputs["generate_uuid4__count"],
@@ -1462,7 +1457,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["generate_uuid4_command"] = std::make_pair(
+			_commands["generate_uuid4"] = std::make_pair(
 				generate_uuid4_command,
 				[this]() -> bool
 				{
@@ -1521,8 +1516,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_generate_command(): ") +
-							exception.what(),
-							generate_uuid4__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -1568,7 +1562,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["generate_string_command"] = std::make_pair(
+			_commands["generate_string"] = std::make_pair(
 				generate_string_command,
 				[this]() -> bool
 				{
@@ -1638,8 +1632,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_generate_command(): ") +
-							exception.what(),
-							generate_string__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -1678,13 +1671,13 @@ namespace QLogicaeCLI
 					_string_inputs["encrypt_xchacha20poly1305__text"],
 					"The string input to be encrypted")
 				->required();
-			
+
 			encrypt_xchacha20poly1305_command
 				->add_option("--key",
 					_string_inputs["encrypt_xchacha20poly1305__key"],
 					"Encryption key")
 				->required();
-			
+
 			encrypt_xchacha20poly1305_command
 				->add_option("--nonce",
 					_string_inputs["encrypt_xchacha20poly1305__nonce"],
@@ -1692,26 +1685,26 @@ namespace QLogicaeCLI
 				->default_val(QLogicaeCore::GENERATOR.random_string(
 					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
-			
+
 			encrypt_xchacha20poly1305_command
 				->add_option("--output-file-path",
 					_string_inputs["encrypt_xchacha20poly1305__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
-			
+
 			encrypt_xchacha20poly1305_command
 				->add_option("--is-file-output-enabled",
 					_boolean_inputs["encrypt_xchacha20poly1305__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
-			
+
 			encrypt_xchacha20poly1305_command
 				->add_option("--is-verbose",
 					_boolean_inputs["encrypt_xchacha20poly1305__is_verbose"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["encrypt_xchacha20poly1305_command"] = std::make_pair(
+			_commands["encrypt_xchacha20poly1305"] = std::make_pair(
 				encrypt_xchacha20poly1305_command,
 				[this]() -> bool
 				{
@@ -1779,8 +1772,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(std::string(
 							"Exception at Application::_setup_encrypt_command(): ") +
-							exception.what(),
-							encrypt_xchacha20poly1305__is_file_output_enabled
+							exception.what()
 						);
 
 						return false;
@@ -1832,7 +1824,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["encrypt_aes256_command"] = std::make_pair(
+			_commands["encrypt_aes256"] = std::make_pair(
 				encrypt_aes256_command,
 				[this]() -> bool
 				{
@@ -1900,8 +1892,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(std::string(
 							"Exception at Application::_setup_encrypt_command(): ") +
-							exception.what(),
-							encrypt_aes256__is_file_output_enabled
+							exception.what()
 						);
 
 						return false;
@@ -1973,7 +1964,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["decrypt_xchacha20poly1305_command"] = std::make_pair(
+			_commands["decrypt_xchacha20poly1305"] = std::make_pair(
 				decrypt_xchacha20poly1305_command,
 				[this]() -> bool
 				{
@@ -2040,8 +2031,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_decrypt_command(): ") +
-							exception.what(),
-							decrypt_xchacha20poly1305__is_verbose);
+							exception.what()
 
 						return false;
 					}
@@ -2092,7 +2082,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["decrypt_aes256_command"] = std::make_pair(
+			_commands["decrypt_aes256"] = std::make_pair(
 				decrypt_aes256_command,
 				[this]() -> bool
 				{
@@ -2151,8 +2141,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what(), decrypt_aes256__is_verbose);
-
+						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what() decrypt_aes256__is_verbose)
 						return false;
 					}
 				}
@@ -2209,7 +2198,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["hash_argon2id_command"] = std::make_pair(
+			_commands["hash_argon2id"] = std::make_pair(
 				hash_argon2id_command,
 				[this]() -> bool
 				{
@@ -2259,8 +2248,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_hash_command(): ") +
-							exception.what(),
-							hash_argon2id__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -2298,7 +2286,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["hash_sha256_command"] = std::make_pair(
+			_commands["hash_sha256"] = std::make_pair(
 				hash_sha256_command,
 				[this]() -> bool
 				{
@@ -2348,8 +2336,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_hash_command(): ") +
-							exception.what(),
-							hash_sha256__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -2379,7 +2366,7 @@ namespace QLogicaeCLI
 					"verify",
 					"argon2id, sha256"
 				);
-			
+
 			CLI::App* verify_argon2id_command =
 				verify_command->add_subcommand(
 					"argon2id",
@@ -2397,26 +2384,26 @@ namespace QLogicaeCLI
 					_string_inputs["verify_argon2id__key"],
 					"The original text to be compared with the hash")
 				->required();
-			
+
 			verify_argon2id_command
 				->add_option("--output-file-path",
 					_string_inputs["verify_argon2id__output_file_path"],
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
-			
+
 			verify_argon2id_command
 				->add_option("--is-file-output-enabled",
 					_boolean_inputs["verify_argon2id__is_file_output_enabled"],
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
-			
+
 			verify_argon2id_command
 				->add_option("--is-verbose",
 					_boolean_inputs["verify_argon2id__is_verbose"],
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["verify_argon2id_command"] = std::make_pair(
+			_commands["verify_argon2id"] = std::make_pair(
 				verify_argon2id_command,
 				[this]() -> bool
 				{
@@ -2479,8 +2466,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_verify_command(): ") +
-							exception.what(),
-							verify_argon2id__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -2524,7 +2510,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["verify_sha256_command"] = std::make_pair(
+			_commands["verify_sha256"] = std::make_pair(
 				verify_sha256_command,
 				[this]() -> bool
 				{
@@ -2587,8 +2573,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_verify_command(): ") +
-							exception.what(),
-							verify_sha256__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -2615,7 +2600,7 @@ namespace QLogicaeCLI
 					"get",
 					"windows-registry, environment-variables"
 				);
-			
+
 			CLI::App* get_windows_registry_command =
 				get_command->add_subcommand(
 					"windows-registry",
@@ -2649,7 +2634,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["get_windows_registry_command"] = std::make_pair(
+			_commands["get_windows_registry"] = std::make_pair(
 				get_windows_registry_command,
 				[this]() -> bool
 				{
@@ -2689,8 +2674,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_get_command(): ") +
-							exception.what(),
-							get_windows_registry_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -2713,7 +2697,7 @@ namespace QLogicaeCLI
 					UTILITIES.ENVIRONMENT_VARIABLE_TYPES
 				))
 				->default_val(UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
-			
+
 			get_environment_variables_command
 				->add_option("--key",
 					_string_inputs["get_environment_variables_command__key"],
@@ -2726,7 +2710,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["get_environment_variables_command"] = std::make_pair(
+			_commands["get_environment_variables"] = std::make_pair(
 				get_environment_variables_command,
 				[this]() -> bool
 				{
@@ -2762,8 +2746,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_get_command(): ") +
-							exception.what(),
-							get_environment_variables_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -2830,7 +2813,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["set_windows_registry_command"] = std::make_pair(
+			_commands["set_windows_registry"] = std::make_pair(
 				set_windows_registry_command,
 				[this]() -> bool
 				{
@@ -2874,8 +2857,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_set_command(): ") +
-							exception.what(),
-							set_windows_registry_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -2916,7 +2898,7 @@ namespace QLogicaeCLI
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["set_environment_variables_command"] = std::make_pair(
+			_commands["set_environment_variables"] = std::make_pair(
 				set_environment_variables_command,
 				[this]() -> bool
 				{
@@ -2956,8 +2938,7 @@ namespace QLogicaeCLI
 					{
 						UTILITIES.log_exception_timestamp_async(
 							std::string("Exception at Application::_setup_set_command(): ") +
-							exception.what(),
-							set_environment_variables_command__is_verbose
+							exception.what()
 						);
 
 						return false;
@@ -2977,4 +2958,4 @@ namespace QLogicaeCLI
 			return false;
 		}
 	}
-}
+*/

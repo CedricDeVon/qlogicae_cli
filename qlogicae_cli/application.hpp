@@ -27,19 +27,16 @@ namespace QLogicaeCLI
 		
 		Application& operator = (const Application&) = delete;
 
-		std::unordered_map<std::string_view, bool> _boolean_inputs;
-		
-		std::unordered_map<std::string_view, size_t> _size_t_inputs;
-		
-		std::unordered_map<std::string_view, double> _double_inputs;
-		
-		std::unordered_map<std::string_view, std::string> _string_inputs;
-
 		CLI::App _application;
 		
 		std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> _commands;
 
 		bool _setup_view_command();
+	};
+}
+
+/*
+* 
 		
 		bool _setup_generate_command();
 
@@ -62,5 +59,13 @@ namespace QLogicaeCLI
 		bool _setup_setup_command();
 
 		bool _setup_deploy_command();
-	};
-}
+
+std::unordered_map<std::string_view, bool> _boolean_inputs;
+
+std::unordered_map<std::string_view, size_t> _size_t_inputs;
+
+std::unordered_map<std::string_view, double> _double_inputs;
+
+std::unordered_map<std::string_view, std::string> _string_inputs;
+
+*/

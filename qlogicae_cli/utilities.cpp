@@ -33,7 +33,7 @@ namespace QLogicaeCLI
 				"Description:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "description" }) + "\n\n" +
 				"Architecture:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "architecture" }) + "\n\n" +
 				"Authors:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "authors" }) + "\n\n" +
-				"Repository:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "url" });
+				"Repository:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "url" }) + "\n";
 		}
 		catch (const std::exception& exception)
 		{
