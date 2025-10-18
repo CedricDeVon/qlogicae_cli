@@ -1,6 +1,7 @@
 #pragma once
 
 #include "utilities.hpp"
+#include "cli_input_cache.hpp"
 
 namespace QLogicaeCLI
 {
@@ -9,7 +10,7 @@ namespace QLogicaeCLI
 	public:
 		bool parse();
 
-		bool setup(int, char**);
+		bool setup(int charc, char** argv);
 	
 		static Application& get_instance();
 

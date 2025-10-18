@@ -100,7 +100,7 @@ namespace QLogicaeCLI
 
 			view_about_command
 				->add_option("--is-verbose",
-					_boolean_inputs["view_about_command__is_verbose"],
+					CLI_BOOLEAN_INPUTS.get("view_about_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -109,7 +109,7 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					bool view_about_command__is_verbose =
-						_boolean_inputs["view_about_command__is_verbose"];
+						CLI_BOOLEAN_INPUTS.get("view_about_command", "is_verbose");
 
 					try
 					{
@@ -165,7 +165,7 @@ namespace QLogicaeCLI
 
 			view_windows_registy_command
 				->add_option("--is-verbose",
-					_boolean_inputs["view_windows_registy_command__is_verbose"],
+					CLI_BOOLEAN_INPUTS.get("view_windows_registry_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -178,7 +178,7 @@ namespace QLogicaeCLI
 					std::string view_windows_registy_command__root_path =
 						_string_inputs["view_windows_registy_command__root_path"];
 					bool view_windows_registy_command__is_verbose =
-						_boolean_inputs["view_windows_registy_command__is_verbose"];
+						CLI_BOOLEAN_INPUTS.get("view_windows_registry_command", "is_verbose");
 
 					try
 					{
@@ -232,7 +232,7 @@ namespace QLogicaeCLI
 
 			view_environment_variables_command
 				->add_option("--is-verbose",
-					_boolean_inputs["view_environment_variables_command__is_verbose"],
+					CLI_BOOLEAN_INPUTS.get("view_environment_variables_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -243,7 +243,7 @@ namespace QLogicaeCLI
 					std::string view_environment_variables_command__root_path =
 						_string_inputs["view_environment_variables_command__root_path"];
 					bool view_environment_variables_command__is_verbose =
-						_boolean_inputs["view_environment_variables_command__is_verbose"];
+						CLI_BOOLEAN_INPUTS.get("view_environment_variables_command", "is_verbose");
 
 					try
 					{

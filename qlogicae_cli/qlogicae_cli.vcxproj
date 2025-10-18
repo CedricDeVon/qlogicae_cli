@@ -170,13 +170,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="abstract_cli_command.cpp" />
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="cli_input_cache.cpp" />
+    <ClCompile Include="cli_transformer.cpp" />
     <ClCompile Include="utilities.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="abstract_cli_command.hpp" />
     <ClInclude Include="application.hpp" />
+    <ClInclude Include="cli_input_cache.hpp" />
+    <ClInclude Include="cli_transformer.hpp" />
     <ClInclude Include="main.hpp" />
     <ClInclude Include="utilities.hpp" />
     <ClInclude Include="pch.hpp" />
