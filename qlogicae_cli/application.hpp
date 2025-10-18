@@ -2,32 +2,40 @@
 
 #include "utilities.hpp"
 
-#include "qlogicae_core.hpp"
-
 namespace QLogicaeCLI
 {
 	class Application
 	{
 	public:
 		bool parse();
+
 		bool setup(int, char**);
 	
 		static Application& get_instance();
 
 	protected:
 		Application();
+
 		~Application() = default;
+		
 		Application(const Application&) = delete;
+		
 		Application(Application&&) noexcept = delete;
+		
 		Application& operator = (Application&&) = delete;
+		
 		Application& operator = (const Application&) = delete;
 
 		std::unordered_map<std::string_view, bool> _boolean_inputs;
+		
 		std::unordered_map<std::string_view, size_t> _size_t_inputs;
+		
 		std::unordered_map<std::string_view, double> _double_inputs;
+		
 		std::unordered_map<std::string_view, std::string> _string_inputs;
 
 		CLI::App _application;
+		
 		std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> _commands;
 
 		bool _setup_view_command();

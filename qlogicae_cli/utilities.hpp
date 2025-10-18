@@ -1,7 +1,5 @@
 #pragma once
 
-#include "qlogicae_core.hpp"
-
 namespace QLogicaeCLI
 {
     class Utilities
@@ -289,7 +287,9 @@ namespace QLogicaeCLI
 
         std::string get_application_about_details();
 
-        bool is_file_or_folder_path_found(const std::string& path);
+        bool is_file_or_folder_path_found(
+            const std::string& path
+        );
 
         bool replace_file_if_found(
             const std::string& folder_path,
@@ -317,55 +317,89 @@ namespace QLogicaeCLI
             const bool& is_enabled = true
         );
 
-        void log_running_timestamp(const bool& is_enabled = true);
+        void log_running_timestamp(
+            const bool& is_enabled = true
+        );
 
-        void log_complete_timestamp(const bool& is_enabled = true);
+        void log_complete_timestamp(
+            const bool& is_enabled = true
+        );
 
         void log_info_timestamp(
-            const std::string& text, const bool& is_enabled = true);
+            const std::string& text,
+            const bool& is_enabled = true
+        );
 
         void log_success_timestamp(
-            const std::string& text, const bool& is_enabled = true);
+            const std::string& text,
+            const bool& is_enabled = true
+        );
 
         void log_warning_timestamp(
-            const std::string& text, const bool& is_enabled = true);
+            const std::string& text,
+            const bool& is_enabled = true
+        );
 
         void log_exception_timestamp(
-            const std::string& text, const bool& is_enabled = true);
+            const std::string& text,
+            const bool& is_enabled = true
+        );
 
-        void log_running_timestamp_async(const bool& is_enabled = true);
+        void log_running_timestamp_async(
+            const bool& is_enabled = true
+        );
 
-        void log_complete_timestamp_async(const bool& is_enabled = true);
+        void log_complete_timestamp_async(
+            const bool& is_enabled = true
+        );
 
         void log_info_timestamp_async(
-            const std::string& text, const bool& is_enabled = true);
+            const std::string& text,
+            const bool& is_enabled = true
+        );
 
         void log_success_timestamp_async(
-            const std::string& text, const bool& is_enabled = true);
+            const std::string& text,
+            const bool& is_enabled = true
+        );
 
         void log_warning_timestamp_async(
-            const std::string& text, const bool& is_enabled = true);
+            const std::string& text,
+            const bool& is_enabled = true
+        );
 
         void log_exception_timestamp_async(
-            const std::string& text, const bool& is_enabled = true);
+            const std::string& text,
+            const bool& is_enabled = true
+        );
 
         std::string transform_log_running_timestamp(
-            const bool& is_enabled = true);
+            const bool& is_enabled = true
+        );
 
         std::string transform_log_complete_timestamp(
-            const bool& is_enabled = true);
+            const bool& is_enabled = true
+        );
 
         std::string transform_log_info_timestamp(
-            const std::string& text = "", const bool& is_enabled = true);
+            const std::string& text = "",
+            const bool& is_enabled = true
+        );
 
         std::string transform_log_success_timestamp(
-            const std::string& text = "", const bool& is_enabled = true);
+            const std::string& text = "",
+            const bool& is_enabled = true
+        );
 
         std::string transform_log_warning_timestamp(
-            const std::string& text = "", const bool& is_enabled = true);
+            const std::string& text = "",
+            const bool& is_enabled = true
+        );
 
         std::string transform_log_exception_timestamp(
-            const std::string& text = "", const bool& is_enabled = true);
+            const std::string& text = "",
+            const bool& is_enabled = true
+        );
 
         bool is_qlogicae_project_found();
 
@@ -373,10 +407,15 @@ namespace QLogicaeCLI
 
     protected:
         Utilities();
+
         ~Utilities() = default;
+
         Utilities(const Utilities&) = default;
+
         Utilities(Utilities&&) noexcept = delete;
+
         Utilities& operator = (Utilities&&) = delete;
+
         Utilities& operator = (const Utilities&) = delete;
 
         std::mutex _mutex;
