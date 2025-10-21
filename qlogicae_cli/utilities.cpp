@@ -166,7 +166,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log(
 				"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 			);
 		}
@@ -176,7 +176,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log(
 				"Complete!", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 			);
 		}
@@ -188,7 +188,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log(
 				text, QLogicaeCore::LogLevel::INFO
 			);
 		}
@@ -200,7 +200,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log(
 				text, QLogicaeCore::LogLevel::SUCCESS
 			);
 		}
@@ -212,7 +212,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log(
 				text, QLogicaeCore::LogLevel::WARNING
 			);
 		}
@@ -224,7 +224,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log(
 				text, QLogicaeCore::LogLevel::EXCEPTION
 			);
 		}
@@ -235,7 +235,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log_async(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log_async(
 				"Running...", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 			);
 		}
@@ -246,7 +246,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log_async(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log_async(
 				"Complete!", QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
 			);
 		}
@@ -258,7 +258,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log_async(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log_async(
 				text, QLogicaeCore::LogLevel::INFO
 			);
 		}
@@ -270,7 +270,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log_async(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log_async(
 				text, QLogicaeCore::LogLevel::SUCCESS
 			);
 		}
@@ -282,7 +282,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log_async(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log_async(
 				text, QLogicaeCore::LogLevel::WARNING
 			);
 		}
@@ -294,7 +294,7 @@ namespace QLogicaeCLI
 	{
 		if (is_enabled)
 		{
-			TIMESTAMP_LOGGER.log_async(
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.LOGGER.log_async(
 				text, QLogicaeCore::LogLevel::EXCEPTION
 			);
 		}

@@ -13,7 +13,7 @@ namespace QLogicaeCLI
         
         QLogicaeCore::SHA256HashCryptographer CRYPTOGRAPHER_4;
         
-        QLogicaeCore::Logger TIMESTAMP_LOGGER;
+        // QLogicaeCore::Logger TIMESTAMP_LOGGER;
         
         QLogicaeCore::TextFileIO TEXT_FILE_IO;
 
