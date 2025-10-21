@@ -4,6 +4,7 @@
 
 int main(int argc, char** argv)
 {
+    QLogicaeCLI::UTILITIES.setup();
     QLogicaeCLI::Application& cli_application =
         QLogicaeCLI::Application::get_instance();
 

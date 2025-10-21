@@ -9,16 +9,30 @@ namespace QLogicaeCLI
 		
 	}
 
+	void Utilities::setup()
+	{
+		try
+		{
+			QLogicaeCore::QLOGICAE_APPLICATION.setup();
+
+		}
+		catch (const std::exception& exception)
+		{
+			log_exception_timestamp_async(std::string("Exception at Utilities::setup() - ") + exception.what());
+
+		}
+	}
+
 	std::string Utilities::get_application_full_name()
 	{
 		try
 		{
-			return APPLICATION_QLOGICAE_FILE.get_string({ "name" }) + " " +
-				"(" + APPLICATION_QLOGICAE_FILE.get_string({ "version" }) + ")";
+			return QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_NAME + " " +
+				"(" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_VERSION + ")";
 		}
 		catch (const std::exception& exception)
 		{
-			log_exception_timestamp_async(std::string("Exception at Utilities::get_application_full_name(): ") + exception.what());
+			log_exception_timestamp_async(std::string("Exception at Utilities::get_application_full_name() - ") + exception.what());
 
 			return QLogicaeCore::UTILITIES.STRING_NONE_1;
 		}
@@ -29,15 +43,15 @@ namespace QLogicaeCLI
 		try
 		{
 			return get_application_full_name() + "\n\n" +
-				"ID:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "id" }) + "\n\n" +
-				"Description:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "description" }) + "\n\n" +
-				"Architecture:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "architecture" }) + "\n\n" +
-				"Authors:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "authors" }) + "\n\n" +
-				"Repository:\n" + APPLICATION_QLOGICAE_FILE.get_string({ "url" }) + "\n";
+				"ID:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_ID + "\n\n" +
+				"Description:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_DESCRIPTION + "\n\n" +
+				"Architecture:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_ARCHITECTURE + "\n\n" +
+				"Authors:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_AUTHORS + "\n\n" +
+				"Repository:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_URL + "\n";
 		}
 		catch (const std::exception& exception)
 		{
-			log_exception_timestamp_async(std::string("Exception at Utilities::get_application_about_details(): ") + exception.what());
+			log_exception_timestamp_async(std::string("Exception at Utilities::get_application_about_details() - ") + exception.what());
 
 			return QLogicaeCore::UTILITIES.STRING_NONE_1;
 		}

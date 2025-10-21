@@ -5,15 +5,15 @@ namespace QLogicaeCLI
     class Utilities
     {
     public:        
-        const QLogicaeCore::Logger TIMESTAMP_LOGGER;
-
-        const QLogicaeCore::XChaCha20Poly1305CipherCryptographer CRYPTOGRAPHER_1;
+        QLogicaeCore::XChaCha20Poly1305CipherCryptographer CRYPTOGRAPHER_1;
         
-        const QLogicaeCore::Argon2idHashCryptographer CRYPTOGRAPHER_3;
+        QLogicaeCore::Argon2idHashCryptographer CRYPTOGRAPHER_3;
 
-        const QLogicaeCore::AES256CipherCryptographer CRYPTOGRAPHER_2;
+        QLogicaeCore::AES256CipherCryptographer CRYPTOGRAPHER_2;
         
-        const QLogicaeCore::SHA256HashCryptographer CRYPTOGRAPHER_4;
+        QLogicaeCore::SHA256HashCryptographer CRYPTOGRAPHER_4;
+        
+        QLogicaeCore::Logger TIMESTAMP_LOGGER;
         
         QLogicaeCore::TextFileIO TEXT_FILE_IO;
 
@@ -402,6 +402,8 @@ namespace QLogicaeCLI
         );
 
         bool is_qlogicae_project_found();
+
+        void setup();
 
         static Utilities& get_instance();
 
