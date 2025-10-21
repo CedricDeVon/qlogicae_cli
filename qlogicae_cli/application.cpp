@@ -29,7 +29,7 @@ namespace QLogicaeCLI
 				!_setup_decrypt_command() ||
 				!_setup_hash_command() ||
 				!_setup_verify_command()
-			*/
+			*/			
 			if (!_setup_view_command())
 			{
 				return false;
@@ -114,16 +114,14 @@ namespace QLogicaeCLI
 					bool view_about_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_about", "is_verbose");
 
-					try
+					try						
 					{
 						UTILITIES.log_running_timestamp_async(
 							view_about_command__is_verbose
 						);						
-
 						QLogicaeCore::CLI_IO.print(
 							UTILITIES.get_application_about_details()
 						);
-
 						UTILITIES.log_complete_timestamp_async(
 							view_about_command__is_verbose
 						);

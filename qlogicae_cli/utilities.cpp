@@ -14,7 +14,6 @@ namespace QLogicaeCLI
 		try
 		{
 			QLogicaeCore::QLOGICAE_APPLICATION.setup();
-
 		}
 		catch (const std::exception& exception)
 		{
