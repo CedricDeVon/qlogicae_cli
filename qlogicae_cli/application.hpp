@@ -1,6 +1,9 @@
 #pragma once
 
 #include "utilities.hpp"
+#include "cli_logger.hpp"
+#include "cli_file_system.hpp"
+#include "cli_transformer.hpp"
 #include "cli_input_cache.hpp"
 
 namespace QLogicaeCLI
@@ -38,27 +41,27 @@ namespace QLogicaeCLI
 /*
 * 
 		
-		bool _setup_generate_command();
+bool _setup_generate_command();
 
-		bool _setup_encrypt_command();
+bool _setup_encrypt_command();
 
-		bool _setup_decrypt_command();
+bool _setup_decrypt_command();
 		
-		bool _setup_hash_command();
+bool _setup_hash_command();
 
-		bool _setup_verify_command();
+bool _setup_verify_command();
 
-		bool _setup_run_command();
+bool _setup_run_command();
 
-		bool _setup_build_command();
+bool _setup_build_command();
 
-		bool _setup_get_command();
+bool _setup_get_command();
 
-		bool _setup_set_command();
+bool _setup_set_command();
 
-		bool _setup_setup_command();
+bool _setup_setup_command();
 
-		bool _setup_deploy_command();
+bool _setup_deploy_command();
 
 std::unordered_map<std::string_view, bool> _boolean_inputs;
 

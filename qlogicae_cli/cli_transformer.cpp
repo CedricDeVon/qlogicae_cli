@@ -26,6 +26,99 @@ namespace QLogicaeCLI
 		result.set_to_good_status_without_value();
 	}
 
+	std::string CLITransformer::to_log_running_timestamp(
+		const bool& is_enabled
+	)
+	{
+		if (is_enabled)
+		{
+			return QLogicaeCore::TRANSFORMER.to_log_format(
+				"Running...",
+				QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
+			);
+		}
+
+		return "";
+	}
+
+	std::string CLITransformer::to_log_complete_timestamp(
+		const bool& is_enabled
+	)
+	{
+		if (is_enabled)
+		{
+			return QLogicaeCore::TRANSFORMER.to_log_format(
+				"Complete!",
+				QLogicaeCore::LogLevel::HIGHLIGHTED_INFO
+			);
+		}
+
+		return "";
+	}
+
+	std::string CLITransformer::to_log_info_timestamp(
+		const std::string& text,
+		const bool& is_enabled
+	)
+	{
+		if (is_enabled)
+		{
+			return QLogicaeCore::TRANSFORMER.to_log_format(
+				text,
+				QLogicaeCore::LogLevel::INFO
+			);
+		}
+
+		return "";
+	}
+
+	std::string CLITransformer::to_log_success_timestamp(
+		const std::string& text,
+		const bool& is_enabled
+	)
+	{
+		if (is_enabled)
+		{
+			return QLogicaeCore::TRANSFORMER.to_log_format(
+				text,
+				QLogicaeCore::LogLevel::SUCCESS
+			);
+		}
+
+		return "";
+	}
+
+	std::string CLITransformer::to_log_warning_timestamp(
+		const std::string& text,
+		const bool& is_enabled
+	)
+	{
+		if (is_enabled)
+		{
+			return QLogicaeCore::TRANSFORMER.to_log_format(
+				text,
+				QLogicaeCore::LogLevel::WARNING
+			);
+		}
+
+		return "";
+	}
+
+	std::string CLITransformer::to_log_exception_timestamp(
+		const std::string& text, const bool& is_enabled
+	)
+	{
+		if (is_enabled)
+		{
+			return QLogicaeCore::TRANSFORMER.to_log_format(
+				text,
+				QLogicaeCore::LogLevel::EXCEPTION
+			);
+		}
+
+		return "";
+	}
+
 	std::string CLITransformer::to_input_command_path(
 		const std::string command_path,
 		const std::string command_key

@@ -34,6 +34,12 @@ namespace QLogicaeCLI
 			QLogicaeCore::Result<void>& result
 		);
 
+		std::future<bool> setup_async();
+
+		void setup_async(
+			QLogicaeCore::Result<std::future<void>>& result
+		);
+
 		bool clear();
 
 		void clear(
@@ -93,6 +99,37 @@ namespace QLogicaeCLI
 	{
 		result.set_to_good_status_without_value();
 	}
+
+
+	template <typename Type>
+	std::future<bool> CLIInputCache<Type>::setup_async()
+	{
+		return std::async(
+			std::launch::async, [this]() -> bool
+			{
+				return setup();
+			}
+		);
+	}
+
+	template <typename Type>
+	void CLIInputCache<Type>::setup_async(
+		QLogicaeCore::Result<std::future<void>>& result
+	)
+	{
+		result.set_to_good_status_with_value(
+			std::async(
+				std::launch::async, [this]() -> void
+			{
+				QLogicaeCore::Result<void> void_result;
+
+				setup(void_result);
+
+				void_result.set_to_good_status_without_value();
+			}
+		));
+	}
+
 
 	template <typename Type>
 	bool CLIInputCache<Type>::clear()

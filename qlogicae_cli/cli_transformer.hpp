@@ -22,6 +22,34 @@ namespace QLogicaeCLI
 			const std::string command_key
 		);
 
+		std::string to_log_running_timestamp(
+			const bool& is_enabled = true
+		);
+
+		std::string to_log_complete_timestamp(
+			const bool& is_enabled = true
+		);
+
+		std::string to_log_info_timestamp(
+			const std::string& text = "",
+			const bool& is_enabled = true
+		);
+
+		std::string to_log_success_timestamp(
+			const std::string& text = "",
+			const bool& is_enabled = true
+		);
+
+		std::string to_log_warning_timestamp(
+			const std::string& text = "",
+			const bool& is_enabled = true
+		);
+
+		std::string to_log_exception_timestamp(
+			const std::string& text = "",
+			const bool& is_enabled = true
+		);
+
 		static CLITransformer& get_instance();
 
 		static void get_instance(

@@ -21,6 +21,7 @@ namespace QLogicaeCLI
 				!_setup_build_command() ||
 				!_setup_deploy_command() ||
 				!_setup_run_command() ||
+
 				!_setup_setup_command() ||
 				!_setup_get_command() ||
 				!_setup_set_command() ||
@@ -50,7 +51,10 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::setup(): ") + exception.what());
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
+				"Application::setup()",
+				exception
+			);
 
 			return false;
 		}
@@ -72,7 +76,10 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::parse(): ") + exception.what());
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
+				"Application::parse()",
+				exception
+			);
 
 			return false;
 		}
@@ -116,13 +123,13 @@ namespace QLogicaeCLI
 
 					try						
 					{
-						UTILITIES.log_running_timestamp_async(
+						CLI_LOGGER.log_running_async(
 							view_about_command__is_verbose
 						);						
 						QLogicaeCore::CLI_IO.print(
 							UTILITIES.get_application_about_details()
 						);
-						UTILITIES.log_complete_timestamp_async(
+						CLI_LOGGER.log_complete_async(
 							view_about_command__is_verbose
 						);
 
@@ -130,9 +137,9 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
-							std::string("Exception at Application::_setup_view_command(): ") +
-							exception.what()
+						QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
+							"Application::_setup_view_command()",
+							exception
 						);
 
 						return false;
@@ -182,7 +189,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						CLI_LOGGER.log_running_async(
 							view_windows_registy_command__is_verbose
 						);
 
@@ -195,7 +202,7 @@ namespace QLogicaeCLI
 							view_windows_registy_command__root_path
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						CLI_LOGGER.log_complete_async(
 							view_windows_registy_command__is_verbose
 						);
 
@@ -203,9 +210,9 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
-							std::string("Exception at Application::_setup_view_command(): ") +
-							exception.what()
+						QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
+							"Application::_setup_view_command()",
+							exception
 						);
 
 						return false;
@@ -246,7 +253,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						CLI_LOGGER.log_running_async(
 							view_environment_variables_command__is_verbose
 						);
 
@@ -257,7 +264,7 @@ namespace QLogicaeCLI
 							view_environment_variables_command__root_path
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						CLI_LOGGER.log_complete_async(
 							view_environment_variables_command__is_verbose
 						);
 
@@ -265,9 +272,9 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
-							std::string("Exception at Application::_setup_view_command(): ") +
-							exception.what()
+						QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
+							"Application::_setup_view_command()",
+							exception
 						);
 
 						return false;
@@ -279,7 +286,10 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_view_command(): ") + exception.what());
+			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
+				"Application::_setup_view_command()",
+				exception
+			);
 
 			return false;
 		}
@@ -352,7 +362,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							run_vs2022_command__is_verbose
 						);
 
@@ -379,7 +389,7 @@ namespace QLogicaeCLI
 							".exe"
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							run_vs2022_command__is_verbose
 						);
 
@@ -387,7 +397,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_run_command(): ") +
 							exception.what()
 						);
@@ -427,20 +437,20 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							run_executable_command__is_verbose
 						);
 
 						if (!std::filesystem::exists(run_executable_command__path))
 						{
-							UTILITIES.log_exception_timestamp_async("Exception at Application::_setup_run_command(): Executable does not exist");
+							UTILITIES.log_exception_async("Exception at Application::_setup_run_command(): Executable does not exist");
 
 							return false;
 						}
 
 						system(run_executable_command__path.c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							run_executable_command__is_verbose
 						);
 
@@ -448,7 +458,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_run_command(): ") +
 							exception.what()
 						);
@@ -487,7 +497,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(run_script__is_verbose);
+						UTILITIES.log_running_async(run_script__is_verbose);
 
 						UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
 							UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
@@ -502,7 +512,7 @@ namespace QLogicaeCLI
 
 						if (!scripts.contains(run_script_command__command))
 						{
-							UTILITIES.log_warning_timestamp_async(
+							UTILITIES.log_warning_async(
 								"Script '" + run_script_command__command +
 								"' does not exist",
 								run_script__is_verbose
@@ -513,13 +523,13 @@ namespace QLogicaeCLI
 
 						system(script_command.c_str());
 
-						UTILITIES.log_complete_timestamp_async(run_script__is_verbose);
+						UTILITIES.log_complete_async(run_script__is_verbose);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_run_command(): ") +
 							exception.what()
 						);
@@ -533,7 +543,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(
+			UTILITIES.log_exception_async(
 				std::string("Exception at Application::_setup_run_command(): ") +
 				exception.what()
 			);
@@ -615,7 +625,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							build_vs2022_command__is_verbose
 						);
 
@@ -634,7 +644,7 @@ namespace QLogicaeCLI
 
 						if (!std::filesystem::exists(build_vs2022_command__project))
 						{
-							UTILITIES.log_exception_timestamp_async(
+							UTILITIES.log_exception_async(
 								std::string("Selected visual studio 2022 project does not exist")
 							);
 
@@ -654,7 +664,7 @@ namespace QLogicaeCLI
 							build_vs2022_command__build_type
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							build_vs2022_command__is_verbose
 						);
 
@@ -662,7 +672,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_build_command(): ") +
 							exception.what()
 						);
@@ -675,7 +685,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(
+			UTILITIES.log_exception_async(
 				std::string("Exception at Application::_setup_build_command(): ") +
 				exception.what()
 			);
@@ -785,7 +795,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							deploy_vs2022__is_verbose
 						);
 
@@ -814,7 +824,7 @@ namespace QLogicaeCLI
 
 						if (!std::filesystem::exists(deploy_vs2022__project))
 						{
-							UTILITIES.log_exception_timestamp_async(
+							UTILITIES.log_exception_async(
 								std::string("Selected visual studio 2022 project does not exist")
 							);
 
@@ -897,7 +907,7 @@ namespace QLogicaeCLI
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							deploy_vs2022__is_verbose
 						);
 
@@ -905,7 +915,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_deploy_command(): ") +
 							exception.what()
 						);
@@ -919,7 +929,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_deploy_command(): ") + exception.what());
+			UTILITIES.log_exception_async(std::string("Exception at Application::_setup_deploy_command(): ") + exception.what());
 
 			return false;
 		}
@@ -965,7 +975,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							setup_windows_registry__is_verbose
 						);
 
@@ -976,7 +986,7 @@ namespace QLogicaeCLI
 							setup_windows_registry__environment
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							setup_windows_registry__is_verbose
 						);
 
@@ -984,7 +994,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_setup_command(): ") +
+						UTILITIES.log_exception_async(std::string("Exception at Application::_setup_setup_command(): ") +
 							exception.what()
 						);
 
@@ -1052,7 +1062,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							setup_vs2022_application__is_verbose
 						);
 
@@ -1285,7 +1295,7 @@ namespace QLogicaeCLI
 							);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							setup_vs2022_application__is_verbose
 						);
 
@@ -1293,7 +1303,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_setup_command(): ") +
 							exception.what()
 						);
@@ -1324,7 +1334,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							setup_vs2022_ids__is_verbose
 						);
 
@@ -1383,7 +1393,7 @@ namespace QLogicaeCLI
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							setup_vs2022_ids__is_verbose
 						);
 
@@ -1391,7 +1401,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_setup_command(): ") +
 							exception.what()
 						);
@@ -1405,7 +1415,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(
+			UTILITIES.log_exception_async(
 				std::string("Exception at Application::_setup_setup_command(): ") +
 				exception.what()
 			);
@@ -1470,7 +1480,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							generate_uuid4__is_verbose
 						);
 
@@ -1504,7 +1514,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							generate_uuid4__is_verbose
 						);
 
@@ -1512,7 +1522,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_generate_command(): ") +
 							exception.what()
 						);
@@ -1579,7 +1589,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							generate_string__is_verbose
 						);
 
@@ -1620,7 +1630,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							generate_string__is_verbose
 						);
 
@@ -1628,7 +1638,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_generate_command(): ") +
 							exception.what()
 						);
@@ -1642,7 +1652,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_generate_command(): ") + exception.what());
+			UTILITIES.log_exception_async(std::string("Exception at Application::_setup_generate_command(): ") + exception.what());
 
 			return false;
 		}
@@ -1721,7 +1731,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							encrypt_xchacha20poly1305__is_file_output_enabled
 						);
 
@@ -1729,7 +1739,7 @@ namespace QLogicaeCLI
 							!encrypt_xchacha20poly1305__key.length() ||
 							!encrypt_xchacha20poly1305__nonce.length())
 						{
-							UTILITIES.log_complete_timestamp_async(
+							UTILITIES.log_complete_async(
 								encrypt_xchacha20poly1305__is_file_output_enabled
 							);
 
@@ -1760,7 +1770,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							encrypt_xchacha20poly1305__is_file_output_enabled
 						);
 
@@ -1768,7 +1778,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string(
+						UTILITIES.log_exception_async(std::string(
 							"Exception at Application::_setup_encrypt_command(): ") +
 							exception.what()
 						);
@@ -1841,7 +1851,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							encrypt_aes256__is_file_output_enabled
 						);
 
@@ -1849,7 +1859,7 @@ namespace QLogicaeCLI
 							!encrypt_aes256__key.length() ||
 							!encrypt_aes256__nonce.length())
 						{
-							UTILITIES.log_complete_timestamp_async(
+							UTILITIES.log_complete_async(
 								encrypt_aes256__is_file_output_enabled
 							);
 
@@ -1880,7 +1890,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							encrypt_aes256__is_file_output_enabled
 						);
 
@@ -1888,7 +1898,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string(
+						UTILITIES.log_exception_async(std::string(
 							"Exception at Application::_setup_encrypt_command(): ") +
 							exception.what()
 						);
@@ -1902,7 +1912,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_encrypt_command(): ") + exception.what());
+			UTILITIES.log_exception_async(std::string("Exception at Application::_setup_encrypt_command(): ") + exception.what());
 
 			return false;
 		}
@@ -1981,7 +1991,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							decrypt_xchacha20poly1305__is_verbose
 						);
 
@@ -1989,7 +1999,7 @@ namespace QLogicaeCLI
 							!decrypt_xchacha20poly1305__key.length() ||
 							!decrypt_xchacha20poly1305__nonce.length())
 						{
-							UTILITIES.log_complete_timestamp_async(
+							UTILITIES.log_complete_async(
 								decrypt_xchacha20poly1305__is_verbose
 							);
 
@@ -2019,7 +2029,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							decrypt_xchacha20poly1305__is_verbose
 						);
 
@@ -2027,7 +2037,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_decrypt_command(): ") +
 							exception.what()
 
@@ -2099,13 +2109,13 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(decrypt_aes256__is_verbose);
+						UTILITIES.log_running_async(decrypt_aes256__is_verbose);
 
 						if (!decrypt_aes256__text.length() ||
 							!decrypt_aes256__key.length() ||
 							!decrypt_aes256__nonce.length())
 						{
-							UTILITIES.log_complete_timestamp_async(decrypt_aes256__is_verbose);
+							UTILITIES.log_complete_async(decrypt_aes256__is_verbose);
 
 							return false;
 						}
@@ -2133,13 +2143,13 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(decrypt_aes256__is_verbose);
+						UTILITIES.log_complete_async(decrypt_aes256__is_verbose);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what() decrypt_aes256__is_verbose)
+						UTILITIES.log_exception_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what() decrypt_aes256__is_verbose)
 						return false;
 					}
 				}
@@ -2150,7 +2160,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what());
+			UTILITIES.log_exception_async(std::string("Exception at Application::_setup_decrypt_command(): ") + exception.what());
 
 			return false;
 		}
@@ -2211,7 +2221,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							hash_argon2id__is_verbose
 						);
 
@@ -2236,7 +2246,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							hash_argon2id__is_verbose
 						);
 
@@ -2244,7 +2254,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_hash_command(): ") +
 							exception.what()
 						);
@@ -2299,7 +2309,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							hash_sha256__is_verbose
 						);
 
@@ -2324,7 +2334,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							hash_sha256__is_verbose
 						);
 
@@ -2332,7 +2342,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_hash_command(): ") +
 							exception.what()
 						);
@@ -2346,7 +2356,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(
+			UTILITIES.log_exception_async(
 				std::string("Exception at Application::_setup_hash_command(): ") +
 				exception.what()
 			);
@@ -2418,14 +2428,14 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							verify_argon2id__is_verbose
 						);
 
 						if (!verify_argon2id__hash.length() ||
 							!verify_argon2id__key.length())
 						{
-							UTILITIES.log_complete_timestamp_async(
+							UTILITIES.log_complete_async(
 								verify_argon2id__is_verbose
 							);
 
@@ -2454,7 +2464,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							verify_argon2id__is_verbose
 						);
 
@@ -2462,7 +2472,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_verify_command(): ") +
 							exception.what()
 						);
@@ -2525,14 +2535,14 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							verify_sha256__is_verbose
 						);
 
 						if (!verify_sha256__hash.length() ||
 							!verify_sha256__key.length())
 						{
-							UTILITIES.log_complete_timestamp_async(
+							UTILITIES.log_complete_async(
 								verify_sha256__is_verbose
 							);
 
@@ -2561,7 +2571,7 @@ namespace QLogicaeCLI
 							UTILITIES.TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							verify_sha256__is_verbose
 						);
 
@@ -2569,7 +2579,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_verify_command(): ") +
 							exception.what()
 						);
@@ -2583,7 +2593,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_verify_command(): ") + exception.what());
+			UTILITIES.log_exception_async(std::string("Exception at Application::_setup_verify_command(): ") + exception.what());
 
 			return false;
 		}
@@ -2647,7 +2657,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							get_windows_registry_command__is_verbose
 						);
 
@@ -2662,7 +2672,7 @@ namespace QLogicaeCLI
 							get_windows_registry_command__key
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							get_windows_registry_command__is_verbose
 						);
 
@@ -2670,7 +2680,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_get_command(): ") +
 							exception.what()
 						);
@@ -2721,7 +2731,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							get_environment_variables_command__is_verbose
 						);
 
@@ -2734,7 +2744,7 @@ namespace QLogicaeCLI
 							get_environment_variables_command__key
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							get_environment_variables_command__is_verbose
 						);
 
@@ -2742,7 +2752,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_get_command(): ") +
 							exception.what()
 						);
@@ -2756,7 +2766,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(std::string("Exception at Application::_setup_get_command(): ") + exception.what());
+			UTILITIES.log_exception_async(std::string("Exception at Application::_setup_get_command(): ") + exception.what());
 
 			return false;
 		}
@@ -2828,7 +2838,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							set_windows_registry_command__is_verbose
 						);
 
@@ -2845,7 +2855,7 @@ namespace QLogicaeCLI
 							set_windows_registry_command__value
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							set_windows_registry_command__is_verbose
 						);
 
@@ -2853,7 +2863,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_set_command(): ") +
 							exception.what()
 						);
@@ -2911,7 +2921,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						UTILITIES.log_running_timestamp_async(
+						UTILITIES.log_running_async(
 							set_environment_variables_command__is_verbose
 						);
 
@@ -2926,7 +2936,7 @@ namespace QLogicaeCLI
 							set_environment_variables_command__value
 						)).c_str());
 
-						UTILITIES.log_complete_timestamp_async(
+						UTILITIES.log_complete_async(
 							set_environment_variables_command__is_verbose
 						);
 
@@ -2934,7 +2944,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_timestamp_async(
+						UTILITIES.log_exception_async(
 							std::string("Exception at Application::_setup_set_command(): ") +
 							exception.what()
 						);
@@ -2948,7 +2958,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_timestamp_async(
+			UTILITIES.log_exception_async(
 				std::string("Exception at Application::_setup_set_command(): ") +
 				exception.what()
 			);

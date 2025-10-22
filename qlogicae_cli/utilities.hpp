@@ -13,8 +13,6 @@ namespace QLogicaeCLI
         
         QLogicaeCore::SHA256HashCryptographer CRYPTOGRAPHER_4;
         
-        // QLogicaeCore::Logger TIMESTAMP_LOGGER;
-        
         QLogicaeCore::TextFileIO TEXT_FILE_IO;
 
         QLogicaeCore::TextFileIO CLIENT_INNO_SETUP_RUN_FILE;
@@ -287,122 +285,6 @@ namespace QLogicaeCLI
 
         std::string get_application_about_details();
 
-        bool is_file_or_folder_path_found(
-            const std::string& path
-        );
-
-        bool replace_file_if_found(
-            const std::string& folder_path,
-            const std::string& file_path
-        );
-
-        bool copy_file_or_folder(
-            const std::string& from_path,
-            const std::string& to_path
-        );
-
-        bool remove_file_or_folder_if_found(
-            const std::string& path
-        );
-
-        bool create_folder_path(
-            const std::string& path,
-            const bool& is_enabled = true
-        );
-
-        std::string setup_result_output_file(
-            const std::string& path,
-            const std::string& extended_folder_path,
-            const std::string& default_file_name,
-            const bool& is_enabled = true
-        );
-
-        void log_running_timestamp(
-            const bool& is_enabled = true
-        );
-
-        void log_complete_timestamp(
-            const bool& is_enabled = true
-        );
-
-        void log_info_timestamp(
-            const std::string& text,
-            const bool& is_enabled = true
-        );
-
-        void log_success_timestamp(
-            const std::string& text,
-            const bool& is_enabled = true
-        );
-
-        void log_warning_timestamp(
-            const std::string& text,
-            const bool& is_enabled = true
-        );
-
-        void log_exception_timestamp(
-            const std::string& text,
-            const bool& is_enabled = true
-        );
-
-        void log_running_timestamp_async(
-            const bool& is_enabled = true
-        );
-
-        void log_complete_timestamp_async(
-            const bool& is_enabled = true
-        );
-
-        void log_info_timestamp_async(
-            const std::string& text,
-            const bool& is_enabled = true
-        );
-
-        void log_success_timestamp_async(
-            const std::string& text,
-            const bool& is_enabled = true
-        );
-
-        void log_warning_timestamp_async(
-            const std::string& text,
-            const bool& is_enabled = true
-        );
-
-        void log_exception_timestamp_async(
-            const std::string& text,
-            const bool& is_enabled = true
-        );
-
-        std::string transform_log_running_timestamp(
-            const bool& is_enabled = true
-        );
-
-        std::string transform_log_complete_timestamp(
-            const bool& is_enabled = true
-        );
-
-        std::string transform_log_info_timestamp(
-            const std::string& text = "",
-            const bool& is_enabled = true
-        );
-
-        std::string transform_log_success_timestamp(
-            const std::string& text = "",
-            const bool& is_enabled = true
-        );
-
-        std::string transform_log_warning_timestamp(
-            const std::string& text = "",
-            const bool& is_enabled = true
-        );
-
-        std::string transform_log_exception_timestamp(
-            const std::string& text = "",
-            const bool& is_enabled = true
-        );
-
-        bool is_qlogicae_project_found();
-
         void setup();
 
         static Utilities& get_instance();
@@ -426,3 +308,9 @@ namespace QLogicaeCLI
     inline static Utilities& UTILITIES =
         Utilities::get_instance();
 }
+
+/*
+
+
+
+*/
