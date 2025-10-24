@@ -123,15 +123,33 @@ namespace QLogicaeCLI
 
 					try						
 					{
-						CLI_LOGGER.log_running_async(
+						CLI_LOGGER.log_complete(
 							view_about_command__is_verbose
-						);						
+						);
+						for (size_t i = 0; i < 100; ++i)
+						{
+							CLI_LOGGER.log_running(
+								view_about_command__is_verbose
+							);						
+						}
+						CLI_LOGGER.log_complete(
+							view_about_command__is_verbose
+						);
+						/*
+						CLI_LOGGER.log_running(
+							view_about_command__is_verbose
+						);
+						
+						
 						QLogicaeCore::CLI_IO.print(
 							UTILITIES.get_application_about_details()
 						);
-						CLI_LOGGER.log_complete_async(
+						
+						CLI_LOGGER.log_complete(
 							view_about_command__is_verbose
 						);
+						*/
+						QLogicaeCore::UTILITIES.BOOST_ASIO_POOL.join();
 
 						return true;
 					}
@@ -294,7 +312,6 @@ namespace QLogicaeCLI
 			return false;
 		}
 	}
-
 }
 
 /*

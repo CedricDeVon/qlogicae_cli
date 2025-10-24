@@ -18,7 +18,10 @@ namespace QLogicaeCLI
 		const bool& is_enabled
 	)
 	{
-		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log_async(
+		QLogicaeCore::Result<void> void_result;
+
+		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log(
+			void_result,
 			"Running...",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
 			is_enabled
@@ -29,7 +32,10 @@ namespace QLogicaeCLI
 		const bool& is_enabled
 	)
 	{
-		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log_async(
+		QLogicaeCore::Result<void> void_result;
+
+		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log(
+			void_result,
 			"Complete!",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
 			is_enabled
@@ -40,7 +46,10 @@ namespace QLogicaeCLI
 		const bool& is_enabled
 	)
 	{
+		QLogicaeCore::Result<std::future<void>> void_result;
+
 		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log_async(
+			void_result,
 			"Running...",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
 			is_enabled
@@ -51,7 +60,10 @@ namespace QLogicaeCLI
 		const bool& is_enabled
 	)
 	{
+		QLogicaeCore::Result<std::future<void>> void_result;
+
 		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log_async(
+			void_result,
 			"Complete!",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
 			is_enabled

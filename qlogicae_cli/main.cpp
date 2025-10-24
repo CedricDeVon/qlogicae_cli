@@ -20,7 +20,10 @@ int main(int argc, char** argv)
             return EXIT_FAILURE;
         }
 
-        return (cli_application.parse()) ? EXIT_SUCCESS : EXIT_FAILURE;
+        const bool a = (cli_application.parse()) ? EXIT_SUCCESS : EXIT_FAILURE;        
+        QLogicaeCore::UTILITIES.BOOST_ASIO_POOL.join();
+
+        return a;
     }
     catch (const std::exception& exception)
     {
