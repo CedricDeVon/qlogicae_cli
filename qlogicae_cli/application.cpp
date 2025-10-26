@@ -51,9 +51,9 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-				"Application::setup()",
-				exception
+			QLogicaeCore::LOGGER.handle_exception_async(
+				"QLogicaeCLI::Application::setup()",
+				exception.what()
 			);
 
 			return false;
@@ -76,9 +76,9 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-				"Application::parse()",
-				exception
+			QLogicaeCore::LOGGER.handle_exception_async(
+				"QLogicaeCLI::Application::parse()",
+				exception.what()
 			);
 
 			return false;
@@ -101,7 +101,7 @@ namespace QLogicaeCLI
 					"view",
 					"about, windows-registry, environment-variables"
 				);
-			
+
 			CLI::App* view_about_command =
 				view_command->add_subcommand(
 					"about",
@@ -121,43 +121,30 @@ namespace QLogicaeCLI
 					bool view_about_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_about", "is_verbose");
 
-					try						
+					try
 					{
+						QLogicaeCore::Result<void> res;
 						CLI_LOGGER.log_complete(
 							view_about_command__is_verbose
 						);
 						for (size_t i = 0; i < 100; ++i)
-						{
-							CLI_LOGGER.log_running(
-								view_about_command__is_verbose
-							);						
+						{							
+							QLogicaeCore::LOGGER.log_timestamp(
+								res,
+								"Ping"
+							);
 						}
 						CLI_LOGGER.log_complete(
 							view_about_command__is_verbose
 						);
-						/*
-						CLI_LOGGER.log_running(
-							view_about_command__is_verbose
-						);
-						
-						
-						QLogicaeCore::CLI_IO.print(
-							UTILITIES.get_application_about_details()
-						);
-						
-						CLI_LOGGER.log_complete(
-							view_about_command__is_verbose
-						);
-						*/
-						QLogicaeCore::UTILITIES.BOOST_ASIO_POOL.join();
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-							"Application::_setup_view_command()",
-							exception
+						QLogicaeCore::LOGGER.handle_exception_async(
+							"QLogicaeCLI::Application::_setup_view_command()",
+							exception.what()
 						);
 
 						return false;
@@ -228,9 +215,9 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-							"Application::_setup_view_command()",
-							exception
+						QLogicaeCore::LOGGER.handle_exception_async(
+							"QLogicaeCLI::Application::_setup_view_command()",
+							exception.what()
 						);
 
 						return false;
@@ -290,9 +277,9 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-							"Application::_setup_view_command()",
-							exception
+						QLogicaeCore::LOGGER.handle_exception_async(
+							"QLogicaeCLI::Application::_setup_view_command()",
+							exception.what()
 						);
 
 						return false;
@@ -304,9 +291,9 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-				"Application::_setup_view_command()",
-				exception
+			QLogicaeCore::LOGGER.handle_exception_async(
+				"QLogicaeCLI::Application::_setup_view_command()",
+				exception.what()
 			);
 
 			return false;

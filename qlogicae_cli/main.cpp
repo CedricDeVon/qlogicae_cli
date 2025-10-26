@@ -17,6 +17,11 @@ int main(int argc, char** argv)
             );
         if (!is_setup_successful)
         {
+            QLogicaeCore::LOGGER.handle_exception_async(
+                "main()",
+                "Setup failed"
+            );
+
             return EXIT_FAILURE;
         }
 
@@ -27,6 +32,11 @@ int main(int argc, char** argv)
     }
     catch (const std::exception& exception)
     {
-        std::cout << exception.what() << "\n";
+        QLogicaeCore::LOGGER.handle_exception_async(
+            "main()",
+            exception.what()
+        );
+
+        return -1;
     }
 }

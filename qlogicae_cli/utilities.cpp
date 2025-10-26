@@ -17,9 +17,9 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-				"Utilities::setup()",
-				exception
+			QLogicaeCore::LOGGER.handle_exception_async(
+				"QLogicaeCLI::Utilities::setup()",
+				exception.what()
 			);
 		}
 	}
@@ -33,9 +33,9 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-				"Utilities::get_application_full_name()",
-				exception
+			QLogicaeCore::LOGGER.handle_exception_async(
+				"QLogicaeCLI::Utilities::setup()",
+				exception.what()
 			);
 
 			return QLogicaeCore::UTILITIES.STRING_NONE_1;
@@ -55,9 +55,9 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.force_log_to_console_and_file_async(
-				"Utilities::get_application_about_details()",
-				exception
+			QLogicaeCore::LOGGER.handle_exception_async(
+				"QLogicaeCLI::Utilities::setup()",
+				exception.what()
 			);
 
 			return QLogicaeCore::UTILITIES.STRING_NONE_1;

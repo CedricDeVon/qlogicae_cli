@@ -20,7 +20,7 @@ namespace QLogicaeCLI
 	{
 		QLogicaeCore::Result<void> void_result;
 
-		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log(
+		QLogicaeCore::LOGGER.log_timestamp(
 			void_result,
 			"Running...",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
@@ -34,7 +34,7 @@ namespace QLogicaeCLI
 	{
 		QLogicaeCore::Result<void> void_result;
 
-		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log(
+		QLogicaeCore::LOGGER.log_timestamp(
 			void_result,
 			"Complete!",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
@@ -48,7 +48,7 @@ namespace QLogicaeCLI
 	{
 		QLogicaeCore::Result<std::future<void>> void_result;
 
-		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log_async(
+		QLogicaeCore::LOGGER.log_timestamp_async(
 			void_result,
 			"Running...",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
@@ -62,7 +62,7 @@ namespace QLogicaeCLI
 	{
 		QLogicaeCore::Result<std::future<void>> void_result;
 
-		QLogicaeCore::QLOGICAE_APPLICATION_LOGGER.MAIN_LOGGER.log_async(
+		QLogicaeCore::LOGGER.log_timestamp_async(
 			void_result,
 			"Complete!",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
