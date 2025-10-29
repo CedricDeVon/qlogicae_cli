@@ -311,11 +311,6 @@ namespace QLogicaeCLI
 
 					try
 					{
-						/*
-						for (size_t i = 0; i < 10; ++i)
-						{
-						}
-						*/
 						CLI_LOGGER.log_running(
 							result,
 							view_about_command__is_verbose
@@ -388,7 +383,7 @@ namespace QLogicaeCLI
 					bool view_windows_registy_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_windows_registry", "is_verbose");
 
-					std::string command =
+					std::string command =  
 						(absl::StrCat(
 							"powershell -ExecutionPolicy Bypass -File",
 							" \"qlogicae/.qlogicae/application/scripts/windows_registry/view.ps1\"",
@@ -440,7 +435,7 @@ namespace QLogicaeCLI
 
 			view_environment_variables_command
 				->add_option("--root-path",
-					CLI_STRING_INPUTS.get("view_windows_registy", "root_path"),
+					CLI_STRING_INPUTS.get("view_environment_variables", "root_path"),
 					"An environment variable root path"
 				)
 				->check(CLI::IsMember(
@@ -459,8 +454,9 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> result;
+
 					std::string view_environment_variables_command__root_path =
-						CLI_STRING_INPUTS.get("view_windows_registy", "root_path");
+						CLI_STRING_INPUTS.get("view_environment_variables", "root_path");
 					bool view_environment_variables_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_environment_variables", "is_verbose");
 
