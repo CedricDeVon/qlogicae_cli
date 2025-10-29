@@ -9,6 +9,11 @@ namespace QLogicaeCLI
 		
 	}
 
+	Utilities::~Utilities()
+	{
+
+	}
+
 	bool Utilities::setup()
 	{
 		try

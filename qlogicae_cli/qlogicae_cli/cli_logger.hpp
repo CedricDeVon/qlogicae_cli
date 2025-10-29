@@ -140,11 +140,11 @@ namespace QLogicaeCLI
 
 		CLILogger& operator = (
 			CLILogger&& instance
-			) = delete;
+		) = delete;
 
 		CLILogger& operator = (
 			const CLILogger& instance
-			) = delete;
+		) = delete;
 	};
 
 	static inline CLILogger& CLI_LOGGER =

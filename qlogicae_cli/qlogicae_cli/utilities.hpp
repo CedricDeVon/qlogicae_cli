@@ -325,7 +325,7 @@ namespace QLogicaeCLI
     protected:
         Utilities();
 
-        ~Utilities() = default;
+        ~Utilities();
 
         Utilities(
             const Utilities& instance

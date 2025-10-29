@@ -9,6 +9,11 @@ namespace QLogicaeCLI
 
 	}
 
+	Application::~Application()
+	{
+
+	}
+
 	bool Application::setup(
 		int argc,
 		char** argv
@@ -241,6 +246,7 @@ namespace QLogicaeCLI
 					return value.second();
 				}
 			}			
+
 			return true;
 		}
 		catch (const std::exception& exception)
@@ -249,7 +255,7 @@ namespace QLogicaeCLI
 				"QLogicaeCLI::Application::parse()",
 				exception.what()
 			);
-
+			
 			return false;
 		}
 	}
@@ -305,6 +311,11 @@ namespace QLogicaeCLI
 
 					try
 					{
+						/*
+						for (size_t i = 0; i < 10; ++i)
+						{
+						}
+						*/
 						CLI_LOGGER.log_running(
 							result,
 							view_about_command__is_verbose
@@ -394,7 +405,7 @@ namespace QLogicaeCLI
 							view_windows_registy_command__is_verbose
 						);
 						
-						QLogicaeCore::LOGGER.log_to_files(
+						QLogicaeCore::LOGGER.log_timestamp_to_files(
 							result,
 							command
 						);
@@ -468,7 +479,7 @@ namespace QLogicaeCLI
 							view_environment_variables_command__is_verbose
 						);
 
-						QLogicaeCore::LOGGER.log_to_files(
+						QLogicaeCore::LOGGER.log_timestamp_to_files(
 							result,
 							command
 						);

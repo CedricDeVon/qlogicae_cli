@@ -63,7 +63,7 @@ namespace QLogicaeCLI
 	protected:
 		Application();
 
-		~Application() = default;
+		~Application();
 		
 		Application(
 			const Application& instance

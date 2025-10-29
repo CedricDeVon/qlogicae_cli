@@ -24,11 +24,12 @@ int main(int argc, char** argv)
             return EXIT_FAILURE;
         }
 
-        const bool cli_application_parse_result = (cli_application.parse()) ?
-            EXIT_SUCCESS :
-            EXIT_FAILURE;        
-        QLogicaeCore::UTILITIES.BOOST_ASIO_POOL.join();
+        const bool cli_application_parse_result =
+            (cli_application.parse()) ?
+                EXIT_SUCCESS :
+                EXIT_FAILURE;        
 
+        QLogicaeCore::UTILITIES.BOOST_ASIO_POOL.join();
         return cli_application_parse_result;
     }
     catch (const std::exception& exception)
