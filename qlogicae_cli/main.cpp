@@ -5,8 +5,7 @@
 int main(int argc, char** argv)
 {
     try
-    {
-        QLogicaeCLI::UTILITIES.setup();
+    {        
         QLogicaeCLI::Application& cli_application =
             QLogicaeCLI::Application::get_instance();
 
@@ -25,10 +24,12 @@ int main(int argc, char** argv)
             return EXIT_FAILURE;
         }
 
-        const bool a = (cli_application.parse()) ? EXIT_SUCCESS : EXIT_FAILURE;        
+        const bool cli_application_parse_result = (cli_application.parse()) ?
+            EXIT_SUCCESS :
+            EXIT_FAILURE;        
         QLogicaeCore::UTILITIES.BOOST_ASIO_POOL.join();
 
-        return a;
+        return cli_application_parse_result;
     }
     catch (const std::exception& exception)
     {
@@ -37,6 +38,6 @@ int main(int argc, char** argv)
             exception.what()
         );
 
-        return -1;
+        return EXIT_FAILURE;
     }
 }

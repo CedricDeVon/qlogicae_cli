@@ -2,6 +2,8 @@
 
 #include "cli_transformer.hpp"
 
+#include "qlogicae_core/result.hpp"
+
 namespace QLogicaeCLI
 {
 	template <typename Type>
@@ -13,31 +15,39 @@ namespace QLogicaeCLI
 		~CLIInputCache();
 
 		CLIInputCache(
-			const CLIInputCache&
+			const CLIInputCache& instance
 		) = delete;
 
 		CLIInputCache(
-			CLIInputCache&&
+			CLIInputCache&& instance
 		) noexcept = delete;
 
 		CLIInputCache& operator = (
-			CLIInputCache&&
+			CLIInputCache&& instance
 		) = delete;
 
 		CLIInputCache& operator = (
-			const CLIInputCache&
+			const CLIInputCache& instance
 		) = delete;
 
 		bool setup();
-
-		void setup(
-			QLogicaeCore::Result<void>& result
-		);
 
 		std::future<bool> setup_async();
 
 		void setup_async(
 			QLogicaeCore::Result<std::future<void>>& result
+		);
+
+		void setup(
+			QLogicaeCore::Result<void>& result
+		);
+
+		std::future<bool> setup_async(
+			const std::function<void(const bool& result)>& callback
+		);
+
+		void setup_async(
+			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 		);
 
 		bool clear();
@@ -89,7 +99,23 @@ namespace QLogicaeCLI
 	template <typename Type>
 	bool CLIInputCache<Type>::setup()
 	{
-		return true;
+		try
+		{
+			QLogicaeCore::Result<void> result;
+
+			setup(result);
+
+			return result.is_status_safe();
+		}
+		catch (const std::exception& exception)
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"CLIInputCache<Type>::setup()",
+				exception.what()
+			);
+
+			return false;
+		}
 	}
 
 	template <typename Type>
@@ -129,7 +155,6 @@ namespace QLogicaeCLI
 			}
 		));
 	}
-
 
 	template <typename Type>
 	bool CLIInputCache<Type>::clear()

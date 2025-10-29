@@ -1,5 +1,9 @@
 #pragma once
 
+#include "qlogicae_core/result.hpp"
+#include "qlogicae_core/logger.hpp"
+#include "qlogicae_core/transformer.hpp"
+
 namespace QLogicaeCLI
 {
 	class CLITransformer
@@ -7,8 +11,22 @@ namespace QLogicaeCLI
 	public:
 		bool setup();
 
+		std::future<bool> setup_async();
+
+		void setup_async(
+			QLogicaeCore::Result<std::future<void>>& result
+		);
+
 		void setup(
 			QLogicaeCore::Result<void>& result
+		);
+
+		std::future<bool> setup_async(
+			const std::function<void(const bool& result)>& callback
+		);
+
+		void setup_async(
+			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 		);
 
 		std::string to_input_command_path(
@@ -62,19 +80,19 @@ namespace QLogicaeCLI
 		~CLITransformer();
 
 		CLITransformer(
-			const CLITransformer&
+			const CLITransformer& instance
 		) = delete;
 
 		CLITransformer(
-			CLITransformer&&
+			CLITransformer&& instance
 		) noexcept = delete;
 
 		CLITransformer& operator = (
-			CLITransformer&&
+			CLITransformer&& instance
 		) = delete;
 
 		CLITransformer& operator = (
-			const CLITransformer&
+			const CLITransformer& instance
 		) = delete;
 	};
 

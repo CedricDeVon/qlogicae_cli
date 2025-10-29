@@ -4,60 +4,230 @@
 
 namespace QLogicaeCLI
 {
-	Application::Application() :
-		_application(
-			UTILITIES.get_application_full_name()
-		)
+	Application::Application()		
 	{
 
 	}
 
-	bool Application::setup(int argc, char** argv)
+	bool Application::setup(
+		int argc,
+		char** argv
+	)
 	{
 		try
 		{
-			/*
-				||
-				!_setup_build_command() ||
-				!_setup_deploy_command() ||
-				!_setup_run_command() ||
+			QLogicaeCore::Result<void> result;
 
-				!_setup_setup_command() ||
-				!_setup_get_command() ||
-				!_setup_set_command() ||
-				!_setup_generate_command() ||
-				!_setup_encrypt_command() ||
-				!_setup_decrypt_command() ||
-				!_setup_hash_command() ||
-				!_setup_verify_command()
-			*/			
-			if (!_setup_view_command())
-			{
-				return false;
-			}
+			setup(
+				result,
+				argc,
+				argv
+			);
 
-			try
-			{
-				_application.parse(argc, argv);
-			}
-			catch (const CLI::ParseError& exception)
-			{
-				_application.exit(exception);
-
-				return false;
-			}
-
-			return true;
+			return result.is_status_safe();
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception_async(
+			QLogicaeCore::LOGGER.handle_exception(
 				"QLogicaeCLI::Application::setup()",
 				exception.what()
 			);
 
 			return false;
 		}
+	}
+
+	std::future<bool> Application::setup_async(
+		int argc,
+		char** argv
+	)
+	{
+		std::promise<bool> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, argc, argv,
+			promise = std::move(promise)]() mutable
+			{
+				promise.set_value(
+					setup(
+						argc,
+						argv
+					)
+				);
+			}
+		);
+
+		return future;
+	}
+
+	void Application::setup_async(
+		QLogicaeCore::Result<std::future<void>>& result,
+		int argc,
+		char** argv
+	)
+	{
+		std::promise<void> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, argc, argv,
+			promise = std::move(promise)]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				setup(
+					result,
+					argc,
+					argv
+				);
+
+				promise.set_value();
+			}
+		);
+
+		result.set_to_good_status_with_value(
+			std::move(future)
+		);
+	}
+
+	void Application::setup(
+		QLogicaeCore::Result<void>& result,
+		int argc,
+		char** argv
+	)
+	{
+		QLogicaeCore::QLOGICAE_APPLICATION.setup(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCore::QLOGICAE_APPLICATION.setup() Failed"
+			);
+
+			return;
+		}
+
+		QLogicaeCLI::UTILITIES.setup(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCLI::UTILITIES.setup() Failed"
+			);
+
+			return;
+		}
+
+		QLogicaeCLI::CLI_LOGGER.setup(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCLI::CLI_LOGGER.setup() Failed"
+			);
+
+			return;
+		}
+
+		QLogicaeCLI::CLI_TRANSFORMER.setup(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCLI::CLI_TRANSFORMER.setup() Failed"
+			);
+
+			return;
+		}
+
+		_application.name(UTILITIES.get_application_full_name());
+
+		/*
+			!_setup_build_command() ||
+			!_setup_deploy_command() ||
+			!_setup_run_command() ||
+
+			!_setup_setup_command() ||
+			!_setup_get_command() ||
+			!_setup_set_command() ||
+			!_setup_generate_command() ||
+			!_setup_encrypt_command() ||
+			!_setup_decrypt_command() ||
+			!_setup_hash_command() ||
+			!_setup_verify_command()
+		*/
+		if (!_setup_view_command())
+		{
+			return result.set_to_bad_status_without_value();
+		}
+
+		try
+		{
+			_application.parse(argc, argv);
+		}
+		catch (const CLI::ParseError& exception)
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				result,
+				"QLogicaeCLI::Application::parse()",
+				exception.what()
+			);
+			
+			_application.exit(exception);
+
+			return result.set_to_bad_status_without_value();
+		}
+		
+		result.set_to_good_status_without_value();
+	}
+
+	std::future<bool> Application::setup_async(
+		const std::function<void(const bool& result)>& callback,
+		int argc,
+		char** argv
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, argc, argv, callback]() mutable
+			{
+				callback(
+					setup(
+						argc,
+						argv
+					)
+				);
+			}
+		);
+	}
+
+	void Application::setup_async(
+		const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
+		int argc,
+		char** argv
+
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, argc, argv, callback]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				setup(
+					result,
+					argc,
+					argv
+				);
+
+				callback(
+					result
+				);
+			}
+		);
 	}
 
 	bool Application::parse()
@@ -70,13 +240,12 @@ namespace QLogicaeCLI
 				{
 					return value.second();
 				}
-			}
-
+			}			
 			return true;
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception_async(
+			QLogicaeCore::LOGGER.handle_exception(
 				"QLogicaeCLI::Application::parse()",
 				exception.what()
 			);
@@ -90,6 +259,17 @@ namespace QLogicaeCLI
 		static Application singleton;
 
 		return singleton;
+	}
+
+	void Application::get_instance(
+		QLogicaeCore::Result<Application*>& result
+	)
+	{
+		static Application instance;
+
+		result.set_to_good_status_with_value(
+			&instance
+		);
 	}
 
 	bool Application::_setup_view_command()
@@ -118,23 +298,26 @@ namespace QLogicaeCLI
 				view_about_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+
 					bool view_about_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_about", "is_verbose");
 
 					try
 					{
-						QLogicaeCore::Result<void> res;
-						CLI_LOGGER.log_complete(
+						CLI_LOGGER.log_running(
+							result,
 							view_about_command__is_verbose
+						);						
+						
+						CLI_LOGGER.log(
+							result,
+							view_about_command__is_verbose,
+							QLogicaeCLI::UTILITIES.get_application_about_details()
 						);
-						for (size_t i = 0; i < 100; ++i)
-						{							
-							QLogicaeCore::LOGGER.log_timestamp(
-								res,
-								"Ping"
-							);
-						}
+
 						CLI_LOGGER.log_complete(
+							result,
 							view_about_command__is_verbose
 						);
 
@@ -142,7 +325,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						QLogicaeCore::LOGGER.handle_exception_async(
+						QLogicaeCore::LOGGER.handle_exception(
 							"QLogicaeCLI::Application::_setup_view_command()",
 							exception.what()
 						);
@@ -185,6 +368,8 @@ namespace QLogicaeCLI
 				view_windows_registy_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+
 					std::string view_windows_registy_command__environment =
 						CLI_STRING_INPUTS.get("view_windows_registy", "environment");
 					std::string view_windows_registy_command__root_path =
@@ -192,22 +377,33 @@ namespace QLogicaeCLI
 					bool view_windows_registy_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_windows_registry", "is_verbose");
 
-					try
-					{
-						CLI_LOGGER.log_running_async(
-							view_windows_registy_command__is_verbose
-						);
-
-						system((absl::StrCat(
+					std::string command =
+						(absl::StrCat(
 							"powershell -ExecutionPolicy Bypass -File",
 							" \"qlogicae/.qlogicae/application/scripts/windows_registry/view.ps1\"",
 							" -EnvironmentType ",
 							view_windows_registy_command__environment,
 							" -RootPath ",
 							view_windows_registy_command__root_path
-						)).c_str());
+						));
 
-						CLI_LOGGER.log_complete_async(
+					try
+					{
+						CLI_LOGGER.log_running(
+							result,
+							view_windows_registy_command__is_verbose
+						);
+						
+						QLogicaeCore::LOGGER.log_to_files(
+							result,
+							command
+						);
+						system(
+							command.c_str()
+						);
+
+						CLI_LOGGER.log_complete(
+							result,
 							view_windows_registy_command__is_verbose
 						);
 
@@ -215,7 +411,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						QLogicaeCore::LOGGER.handle_exception_async(
+						QLogicaeCore::LOGGER.handle_exception(
 							"QLogicaeCLI::Application::_setup_view_command()",
 							exception.what()
 						);
@@ -251,25 +447,37 @@ namespace QLogicaeCLI
 				view_environment_variables_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
 					std::string view_environment_variables_command__root_path =
 						CLI_STRING_INPUTS.get("view_windows_registy", "root_path");
 					bool view_environment_variables_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_environment_variables", "is_verbose");
 
-					try
-					{
-						CLI_LOGGER.log_running_async(
-							view_environment_variables_command__is_verbose
-						);
-
-						system((absl::StrCat(
+					std::string command =
+						(absl::StrCat(
 							"powershell -ExecutionPolicy Bypass -File",
 							" \"qlogicae/.qlogicae/application/scripts/environment_variables/view.ps1\"",
 							" -RootPath ",
 							view_environment_variables_command__root_path
-						)).c_str());
+						));
 
-						CLI_LOGGER.log_complete_async(
+					try
+					{
+						CLI_LOGGER.log_running(
+							result,
+							view_environment_variables_command__is_verbose
+						);
+
+						QLogicaeCore::LOGGER.log_to_files(
+							result,
+							command
+						);
+						system(
+							command.c_str()
+						);
+
+						CLI_LOGGER.log_complete(
+							result,
 							view_environment_variables_command__is_verbose
 						);
 
@@ -277,7 +485,7 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						QLogicaeCore::LOGGER.handle_exception_async(
+						QLogicaeCore::LOGGER.handle_exception(
 							"QLogicaeCLI::Application::_setup_view_command()",
 							exception.what()
 						);
@@ -291,7 +499,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception_async(
+			QLogicaeCore::LOGGER.handle_exception(
 				"QLogicaeCLI::Application::_setup_view_command()",
 				exception.what()
 			);

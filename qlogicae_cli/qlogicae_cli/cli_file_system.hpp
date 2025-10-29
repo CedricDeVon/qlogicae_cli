@@ -2,6 +2,8 @@
 
 #include "utilities.hpp"
 
+#include "qlogicae_core/result.hpp"
+
 namespace QLogicaeCLI
 {
 	class CLIFileSystem
@@ -9,14 +11,22 @@ namespace QLogicaeCLI
 	public:
 		bool setup();
 
-		void setup(
-			QLogicaeCore::Result<void>& result
-		);
-
 		std::future<bool> setup_async();
 
 		void setup_async(
 			QLogicaeCore::Result<std::future<void>>& result
+		);
+
+		void setup(
+			QLogicaeCore::Result<void>& result
+		);
+
+		std::future<bool> setup_async(
+			const std::function<void(const bool& result)>& callback
+		);
+
+		void setup_async(			
+			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 		);
 
 		bool is_file_or_folder_path_found(
@@ -61,19 +71,19 @@ namespace QLogicaeCLI
 		~CLIFileSystem();
 
 		CLIFileSystem(
-			const CLIFileSystem&
+			const CLIFileSystem& instance
 		) = delete;
 
 		CLIFileSystem(
-			CLIFileSystem&&
+			CLIFileSystem&& instance
 		) noexcept = delete;
 
 		CLIFileSystem& operator = (
-			CLIFileSystem&&
+			CLIFileSystem&& instance
 		) = delete;
 
 		CLIFileSystem& operator = (
-			const CLIFileSystem&
+			const CLIFileSystem& instance
 		) = delete;
 	};
 

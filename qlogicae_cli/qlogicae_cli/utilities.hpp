@@ -1,5 +1,16 @@
 #pragma once
 
+#include "qlogicae_core/result.hpp"
+#include "qlogicae_core/logger.hpp"
+#include "qlogicae_core/transformer.hpp"
+#include "qlogicae_core/text_file_io.hpp"
+#include "qlogicae_core/json_file_io.hpp"
+#include "qlogicae_core/application_utilities.hpp"
+#include "qlogicae_core/sha256_hash_cryptographer.hpp"
+#include "qlogicae_core/aes256_cipher_cryptographer.hpp"
+#include "qlogicae_core/argon2id_hash_cryptographer.hpp"
+#include "qlogicae_core/xchacha20_poly1305_cipher_cryptographer.hpp"
+
 namespace QLogicaeCLI
 {
     class Utilities
@@ -285,22 +296,52 @@ namespace QLogicaeCLI
 
         std::string get_application_about_details();
 
-        void setup();
+        bool setup();
+
+        std::future<bool> setup_async();
+
+        void setup_async(
+            QLogicaeCore::Result<std::future<void>>& result
+        );
+
+        void setup(
+            QLogicaeCore::Result<void>& result
+        );
+
+        std::future<bool> setup_async(
+            const std::function<void(const bool& result)>& callback
+        );
+
+        void setup_async(
+            const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+        );
 
         static Utilities& get_instance();
+
+        static void get_instance(
+            QLogicaeCore::Result<Utilities*>& result
+        );
 
     protected:
         Utilities();
 
         ~Utilities() = default;
 
-        Utilities(const Utilities&) = default;
+        Utilities(
+            const Utilities& instance
+        ) = default;
 
-        Utilities(Utilities&&) noexcept = delete;
+        Utilities(
+            Utilities&& instance
+        ) noexcept = delete;
 
-        Utilities& operator = (Utilities&&) = delete;
+        Utilities& operator = (
+            Utilities&& instance
+        ) = delete;
 
-        Utilities& operator = (const Utilities&) = delete;
+        Utilities& operator = (
+            const Utilities& instance
+        ) = delete;
 
         std::mutex _mutex;
     };
@@ -308,9 +349,3 @@ namespace QLogicaeCLI
     inline static Utilities& UTILITIES =
         Utilities::get_instance();
 }
-
-/*
-
-
-
-*/

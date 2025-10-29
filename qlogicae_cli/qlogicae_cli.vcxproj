@@ -170,25 +170,25 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="abstract_cli_command.cpp" />
-    <ClCompile Include="application.cpp" />
-    <ClCompile Include="cli_file_system.cpp" />
-    <ClCompile Include="cli_input_cache.cpp" />
-    <ClCompile Include="cli_logger.cpp" />
-    <ClCompile Include="cli_transformer.cpp" />
-    <ClCompile Include="utilities.cpp" />
+    <ClCompile Include="qlogicae_cli\abstract_cli_command.cpp" />
+    <ClCompile Include="qlogicae_cli\application.cpp" />
+    <ClCompile Include="qlogicae_cli\cli_file_system.cpp" />
+    <ClCompile Include="qlogicae_cli\cli_input_cache.cpp" />
+    <ClCompile Include="qlogicae_cli\cli_logger.cpp" />
+    <ClCompile Include="qlogicae_cli\cli_transformer.cpp" />
+    <ClCompile Include="qlogicae_cli\utilities.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="abstract_cli_command.hpp" />
-    <ClInclude Include="application.hpp" />
-    <ClInclude Include="cli_file_system.hpp" />
-    <ClInclude Include="cli_input_cache.hpp" />
-    <ClInclude Include="cli_logger.hpp" />
-    <ClInclude Include="cli_transformer.hpp" />
+    <ClInclude Include="qlogicae_cli\abstract_cli_command.hpp" />
+    <ClInclude Include="qlogicae_cli\application.hpp" />
+    <ClInclude Include="qlogicae_cli\cli_file_system.hpp" />
+    <ClInclude Include="qlogicae_cli\cli_input_cache.hpp" />
+    <ClInclude Include="qlogicae_cli\cli_logger.hpp" />
+    <ClInclude Include="qlogicae_cli\cli_transformer.hpp" />
     <ClInclude Include="main.hpp" />
-    <ClInclude Include="utilities.hpp" />
+    <ClInclude Include="qlogicae_cli\utilities.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

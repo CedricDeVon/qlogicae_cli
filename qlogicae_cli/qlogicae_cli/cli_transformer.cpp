@@ -16,7 +16,69 @@ namespace QLogicaeCLI
 
 	bool CLITransformer::setup()
 	{
-		return true;
+		try
+		{
+			QLogicaeCore::Result<void> result;
+
+			setup(result);
+
+			return result.is_status_safe();
+		}
+		catch (const std::exception& exception)
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::CLITransformer::setup()",
+				exception.what()
+			);
+
+			return false;
+		}
+	}
+
+	std::future<bool> CLITransformer::setup_async()
+	{
+		std::promise<bool> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				promise.set_value(
+					setup()
+				);
+			}
+		);
+
+		return future;
+	}
+
+	void CLITransformer::setup_async(
+		QLogicaeCore::Result<std::future<void>>& result
+	)
+	{
+		std::promise<void> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				setup(
+					result
+				);
+
+				promise.set_value();
+			}
+		);
+
+		result.set_to_good_status_with_value(
+			std::move(future)
+		);
 	}
 
 	void CLITransformer::setup(
@@ -24,6 +86,40 @@ namespace QLogicaeCLI
 	)
 	{
 		result.set_to_good_status_without_value();
+	}
+
+	std::future<bool> CLITransformer::setup_async(
+		const std::function<void(const bool& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				callback(
+					setup()
+				);
+			}
+		);
+	}
+
+	void CLITransformer::setup_async(
+		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				setup(result);
+
+				callback(
+					result
+				);
+			}
+		);
 	}
 
 	std::string CLITransformer::to_log_running_timestamp(
