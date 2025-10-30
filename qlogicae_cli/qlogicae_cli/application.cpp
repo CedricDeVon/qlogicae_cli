@@ -153,7 +153,6 @@ namespace QLogicaeCLI
 		);
 
 		/*
-			!_setup_build_command() ||
 			!_setup_deploy_command() ||
 			!_setup_setup_command() ||
 
@@ -165,8 +164,11 @@ namespace QLogicaeCLI
 			!_setup_hash_command() ||
 			!_setup_verify_command()
 		*/
-		if (!_setup_view_command() ||
-			!_setup_run_command())
+		if (
+			!_setup_view_command() ||
+			!_setup_build_command() ||
+			!_setup_run_command()
+		)
 		{
 			return result.set_to_bad_status_without_value();
 		}
@@ -817,12 +819,6 @@ namespace QLogicaeCLI
 		}
 	}
 
-
-}
-
-
-
-/*	
 	bool Application::_setup_build_command()
 	{
 		try
@@ -841,21 +837,21 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--project",
-					_string_inputs["build_vs2022_command__project"],
+					CLI_STRING_INPUTS.get("build_vs2022_command", "project"),
 					"The selected visual studio 2022 project. Defaults to the starting project"
 				)
 				->default_val("");
 
 			build_vs2022_command
 				->add_option("--environment",
-					_string_inputs["build_vs2022_command__environment"],
+					CLI_STRING_INPUTS.get("build_vs2022_command", "environment"),
 					"The selected qlogicae environment type"
 				)
 				->default_val("development");
 
 			build_vs2022_command
 				->add_option("--architecture",
-					_string_inputs["build_vs2022_command__architecture"],
+					CLI_STRING_INPUTS.get("build_vs2022_command", "architecture"),
 					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
@@ -865,7 +861,7 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--build-type",
-					_string_inputs["build_vs2022_command__build_type"],
+					CLI_STRING_INPUTS.get("build_vs2022_command", "build_type"),
 					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
@@ -875,7 +871,7 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--is-verbose",
-					_boolean_inputs["build_vs2022_command__is_verbose"],
+					CLI_BOOLEAN_INPUTS.get("build_vs2022_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -883,59 +879,75 @@ namespace QLogicaeCLI
 				build_vs2022_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+
 					std::string build_vs2022_command__project =
-						_string_inputs["build_vs2022_command__project"];
+						CLI_STRING_INPUTS.get("build_vs2022_command", "project");
+					
 					std::string build_vs2022_command__environment =
-						_string_inputs["build_vs2022_command__environment"];
+						CLI_STRING_INPUTS.get("build_vs2022_command", "environment");
+					
 					std::string build_vs2022_command__architecture =
-						_string_inputs["build_vs2022_command__architecture"];
+						CLI_STRING_INPUTS.get("build_vs2022_command", "architecture");
+					
 					std::string build_vs2022_command__build_type =
-						_string_inputs["build_vs2022_command__build_type"];
+						CLI_STRING_INPUTS.get("build_vs2022_command", "build_type");
+					
 					bool build_vs2022_command__is_verbose =
-						_boolean_inputs["build_vs2022_command__is_verbose"];
+						CLI_BOOLEAN_INPUTS.get("build_vs2022_command", "is_verbose");
 
 					try
 					{
-						UTILITIES.log_running_async(
+						CLI_LOGGER.log_running(
+							result,
 							build_vs2022_command__is_verbose
 						);
 
 						if (build_vs2022_command__project.empty())
 						{
-							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
-								UTILITIES.
-									RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
+							QLogicaeCore::JSON_FILE_IO.set_file_path(
+								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 							);
 							build_vs2022_command__project =
-								UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
+								QLogicaeCore::JSON_FILE_IO
 									.get_string(
 										{ "application", "startup_project_name" }
-							);
+									);
 						}
 
 						if (!std::filesystem::exists(build_vs2022_command__project))
 						{
-							UTILITIES.log_exception_async(
-								std::string("Selected visual studio 2022 project does not exist")
+							CLI_LOGGER.log(
+								result,
+								build_vs2022_command__is_verbose,
+								"Selected visual studio 2022 project does not exist"
 							);
 
 							return false;
 						}
 
-						system((absl::StrCat(
-							"powershell -ExecutionPolicy Bypass -File",
-							" \"qlogicae/.qlogicae/application/scripts/visual_studio_2022/build.ps1\"",
-							" -VisualStudio2022InputProject ",
-							build_vs2022_command__project,
-							" -EnvironmentType ",
-							build_vs2022_command__environment,
-							" -VisualStudio2022Architecture ",
-							build_vs2022_command__architecture,
-							" -VisualStudio2022Build ",
-							build_vs2022_command__build_type
-						)).c_str());
+						std::string command =
+							absl::StrCat(
+								"powershell -ExecutionPolicy Bypass -File",
+								" \"qlogicae/.qlogicae/application/scripts/visual_studio_2022/build.ps1\"",
+								" -VisualStudio2022InputProject ",
+								build_vs2022_command__project,
+								" -EnvironmentType ",
+								build_vs2022_command__environment,
+								" -VisualStudio2022Architecture ",
+								build_vs2022_command__architecture,
+								" -VisualStudio2022Build ",
+								build_vs2022_command__build_type
+							);
 
-						UTILITIES.log_complete_async(
+						QLogicaeCore::LOGGER.log_timestamp_to_files(
+							result,
+							command
+						);
+						system(command.c_str());
+
+						CLI_LOGGER.log_complete(
+							result,
 							build_vs2022_command__is_verbose
 						);
 
@@ -943,8 +955,8 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_async(
-							std::string("Exception at Application::_setup_build_command(): ") +
+						QLogicaeCore::LOGGER.handle_exception(
+							"QLogicaeCLI::Application::_setup_build_command()",
 							exception.what()
 						);
 
@@ -956,14 +968,20 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_async(
-				std::string("Exception at Application::_setup_build_command(): ") +
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Application::_setup_build_command()",
 				exception.what()
 			);
 
 			return false;
 		}
 	}
+}
+
+
+
+/*	
+	
 
 	bool Application::_setup_deploy_command()
 	{
