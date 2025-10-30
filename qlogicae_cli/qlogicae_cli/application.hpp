@@ -86,6 +86,14 @@ namespace QLogicaeCLI
 		std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> _commands;
 
 		bool _setup_view_command();
+
+		bool _setup_run_command();
+
+		bool _setup_build_command();
+
+		bool _setup_setup_command();
+
+		bool _setup_deploy_command();
 	};
 }
 
@@ -102,17 +110,10 @@ bool _setup_hash_command();
 
 bool _setup_verify_command();
 
-bool _setup_run_command();
-
-bool _setup_build_command();
-
 bool _setup_get_command();
 
 bool _setup_set_command();
 
-bool _setup_setup_command();
-
-bool _setup_deploy_command();
 
 std::unordered_map<std::string_view, bool> _boolean_inputs;
 

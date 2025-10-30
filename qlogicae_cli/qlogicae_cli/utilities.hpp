@@ -16,6 +16,7 @@ namespace QLogicaeCLI
     class Utilities
     {
     public:        
+        /*
         QLogicaeCore::XChaCha20Poly1305CipherCryptographer CRYPTOGRAPHER_1;
         
         QLogicaeCore::Argon2idHashCryptographer CRYPTOGRAPHER_3;
@@ -37,6 +38,7 @@ namespace QLogicaeCLI
         QLogicaeCore::JsonFileIO CLIENT_JSON_IO;
 
         QLogicaeCore::JsonFileIO CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE;
+        */
 
         const std::string QLOGICAE_APPLICATION_FOLDER_PATH =
             QLogicaeCore::SYSTEM_ACCESS.get_executable_dir();

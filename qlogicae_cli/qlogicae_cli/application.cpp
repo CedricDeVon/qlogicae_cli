@@ -148,14 +148,15 @@ namespace QLogicaeCLI
 			return;
 		}
 
-		_application.name(UTILITIES.get_application_full_name());
+		_application.name(
+			UTILITIES.get_application_full_name()
+		);
 
 		/*
 			!_setup_build_command() ||
 			!_setup_deploy_command() ||
-			!_setup_run_command() ||
-
 			!_setup_setup_command() ||
+
 			!_setup_get_command() ||
 			!_setup_set_command() ||
 			!_setup_generate_command() ||
@@ -164,7 +165,8 @@ namespace QLogicaeCLI
 			!_setup_hash_command() ||
 			!_setup_verify_command()
 		*/
-		if (!_setup_view_command())
+		if (!_setup_view_command() ||
+			!_setup_run_command())
 		{
 			return result.set_to_bad_status_without_value();
 		}
@@ -378,8 +380,10 @@ namespace QLogicaeCLI
 
 					std::string view_windows_registy_command__environment =
 						CLI_STRING_INPUTS.get("view_windows_registy", "environment");
+					
 					std::string view_windows_registy_command__root_path =
 						CLI_STRING_INPUTS.get("view_windows_registy", "root_path");
+					
 					bool view_windows_registy_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_windows_registry", "is_verbose");
 
@@ -457,16 +461,17 @@ namespace QLogicaeCLI
 
 					std::string view_environment_variables_command__root_path =
 						CLI_STRING_INPUTS.get("view_environment_variables", "root_path");
+					
 					bool view_environment_variables_command__is_verbose =
 						CLI_BOOLEAN_INPUTS.get("view_environment_variables", "is_verbose");
 
 					std::string command =
-						(absl::StrCat(
+						absl::StrCat(
 							"powershell -ExecutionPolicy Bypass -File",
 							" \"qlogicae/.qlogicae/application/scripts/environment_variables/view.ps1\"",
 							" -RootPath ",
 							view_environment_variables_command__root_path
-						));
+						);
 
 					try
 					{
@@ -514,9 +519,7 @@ namespace QLogicaeCLI
 			return false;
 		}
 	}
-}
 
-/*
 	bool Application::_setup_run_command()
 	{
 		try
@@ -535,14 +538,14 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--project",
-					_string_inputs["run_vs2022_command__project"],
+					CLI_STRING_INPUTS.get("run_vs2022_command", "project"),
 					"The selected visual studio 2022 project"
 				)
 				->default_str("");
 
 			run_vs2022_command
 				->add_option("--architecture",
-					_string_inputs["run_vs2022_command__architecture"],
+					CLI_STRING_INPUTS.get("run_vs2022_command", "architecture"),
 					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
@@ -552,7 +555,7 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--build-type",
-					_string_inputs["run_vs2022_command__build_type"],
+					CLI_STRING_INPUTS.get("run_vs2022_command", "build_type"),
 					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
@@ -562,7 +565,7 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--is-verbose",
-					_boolean_inputs["run_vs2022_command__is_verbose"],
+					CLI_BOOLEAN_INPUTS.get("run_vs2022_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -570,29 +573,35 @@ namespace QLogicaeCLI
 				run_vs2022_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+
 					std::string run_vs2022_command__project =
-						_string_inputs["run_vs2022_command__project"];
+						CLI_STRING_INPUTS.get("run_vs2022_command", "project");
+
 					std::string run_vs2022_command__architecture =
-						_string_inputs["run_vs2022_command__architecture"];
+						CLI_STRING_INPUTS.get("run_vs2022_command", "architecture");
+					
 					std::string run_vs2022_command__build_type =
-						_string_inputs["run_vs2022_command__build_type"];
+						CLI_STRING_INPUTS.get("run_vs2022_command", "build_type");
+					
 					bool run_vs2022_command__is_verbose =
-						_boolean_inputs["run_vs2022_command__is_verbose"];
+						CLI_BOOLEAN_INPUTS.get("run_vs2022_command", "is_verbose");
 
 					try
 					{
-						UTILITIES.log_running_async(
+						CLI_LOGGER.log_running(
+							result,
 							run_vs2022_command__is_verbose
 						);
 
 						if (run_vs2022_command__project.empty())
 						{
-							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
+							QLogicaeCore::JSON_FILE_IO.set_file_path(
 								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 							);
 
 							run_vs2022_command__project =
-								UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.get_string(
+								QLogicaeCore::JSON_FILE_IO.get_string(
 									{
 										"application",
 										"startup_project_name"
@@ -600,15 +609,25 @@ namespace QLogicaeCLI
 								);
 						}
 
-						system((absl::StrCat(
-							".\\", run_vs2022_command__architecture,
-							"\\", run_vs2022_command__build_type,
-							"\\", run_vs2022_command__project,
-							"\\", run_vs2022_command__project,
-							".exe"
-						)).c_str());
+						std::string command =
+							absl::StrCat(
+								".\\", run_vs2022_command__architecture,
+								"\\", run_vs2022_command__build_type,
+								"\\", run_vs2022_command__project,
+								"\\", run_vs2022_command__project,
+								".exe"
+							);
 
-						UTILITIES.log_complete_async(
+						QLogicaeCore::LOGGER.log_timestamp_to_files(
+							result,
+							command
+						);
+						system(
+							command.c_str()
+						);
+
+						CLI_LOGGER.log_complete(
+							result,
 							run_vs2022_command__is_verbose
 						);
 
@@ -616,8 +635,8 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_async(
-							std::string("Exception at Application::_setup_run_command(): ") +
+						QLogicaeCore::LOGGER.handle_exception(
+							"QLogicaeCLI::Application::_setup_run_command()",
 							exception.what()
 						);
 
@@ -634,14 +653,14 @@ namespace QLogicaeCLI
 
 			run_executable_command
 				->add_option("--path",
-					_string_inputs["run_executable_command__path"],
+					CLI_STRING_INPUTS.get("run_executable_command", "path"),
 					"The selected path to the executable"
 				)
 				->required();
 
 			run_executable_command
 				->add_option("--is-verbose",
-					_boolean_inputs["run_executable_command__is_verbose"],
+					CLI_BOOLEAN_INPUTS.get("run_executable_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -649,27 +668,42 @@ namespace QLogicaeCLI
 				run_executable_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+					
 					std::string run_executable_command__path =
-						_string_inputs["run_executable_command__path"];
+						CLI_STRING_INPUTS.get("run_executable_command", "path");
+					
 					bool run_executable_command__is_verbose =
-						_boolean_inputs["run_executable_command__is_verbose"];
+						CLI_BOOLEAN_INPUTS.get("run_executable_command", "is_verbose");
 
 					try
 					{
-						UTILITIES.log_running_async(
+						CLI_LOGGER.log_running(
+							result,
 							run_executable_command__is_verbose
 						);
 
 						if (!std::filesystem::exists(run_executable_command__path))
-						{
-							UTILITIES.log_exception_async("Exception at Application::_setup_run_command(): Executable does not exist");
+						{							
+							CLI_LOGGER.log(
+								result,
+								run_executable_command__is_verbose,
+								"Executable does not exist"
+							);
 
 							return false;
 						}
 
-						system(run_executable_command__path.c_str());
+						QLogicaeCore::LOGGER.log_timestamp_to_files(
+							result,
+							run_executable_command__path
+						);
+						system(
+							run_executable_command__path.c_str()
+						);
 
-						UTILITIES.log_complete_async(
+						CLI_LOGGER.log_complete(
+							result,
 							run_executable_command__is_verbose
 						);
 
@@ -677,8 +711,8 @@ namespace QLogicaeCLI
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_async(
-							std::string("Exception at Application::_setup_run_command(): ") +
+						QLogicaeCore::LOGGER.handle_exception(
+							"QLogicaeCLI::Application::_setup_run_command()",
 							exception.what()
 						);
 
@@ -695,13 +729,13 @@ namespace QLogicaeCLI
 
 			run_script_command
 				->add_option("--command",
-					_string_inputs["run_script_command_"],
+					CLI_STRING_INPUTS.get("run_script_command", "command"),
 					"Selected qlogicae script command")
 				->required();
 
 			run_script_command
 				->add_option("--is-verbose",
-					_boolean_inputs["run_script__is_verbose"],
+					CLI_BOOLEAN_INPUTS.get("run_script_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -709,47 +743,59 @@ namespace QLogicaeCLI
 				run_script_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+					
 					std::string run_script_command__command =
-						_string_inputs["run_script_command_"];
-					bool run_script__is_verbose =
-						_boolean_inputs["run_script__is_verbose"];
+						CLI_STRING_INPUTS.get("run_script_command", "command");
+
+					bool run_script_command__is_verbose =
+						CLI_BOOLEAN_INPUTS.get("run_script_command", "is_verbose");
 
 					try
 					{
-						UTILITIES.log_running_async(run_script__is_verbose);
+						CLI_LOGGER.log_running(
+							result,
+							run_script_command__is_verbose
+						);
 
-						UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
+						QLogicaeCore::JSON_FILE_IO.set_file_path(
 							UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 						);
 						std::unordered_map<std::string, std::any> scripts =
-							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
-								.get_object({ "scripts" }
-						);
+							QLogicaeCore::JSON_FILE_IO.get_object(
+								{ "scripts" }
+							);
 						std::string script_command = std::any_cast<std::string>(
 							scripts[run_script_command__command]
 						);
-
+						
 						if (!scripts.contains(run_script_command__command))
 						{
-							UTILITIES.log_warning_async(
+							CLI_LOGGER.log(
+								result,
+								run_script_command__is_verbose,
 								"Script '" + run_script_command__command +
-								"' does not exist",
-								run_script__is_verbose
+								"' does not exist"
 							);
 
 							return false;
 						}
 
-						system(script_command.c_str());
+						system(
+							script_command.c_str()
+						);
 
-						UTILITIES.log_complete_async(run_script__is_verbose);
+						CLI_LOGGER.log_complete(
+							result,
+							run_script_command__is_verbose
+						);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_async(
-							std::string("Exception at Application::_setup_run_command(): ") +
+						QLogicaeCore::LOGGER.handle_exception(
+							"QLogicaeCLI::Application::_setup_run_command()",
 							exception.what()
 						);
 
@@ -762,8 +808,8 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_async(
-				std::string("Exception at Application::_setup_run_command(): ") +
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Application::_setup_run_command()",
 				exception.what()
 			);
 
@@ -771,6 +817,12 @@ namespace QLogicaeCLI
 		}
 	}
 
+
+}
+
+
+
+/*	
 	bool Application::_setup_build_command()
 	{
 		try

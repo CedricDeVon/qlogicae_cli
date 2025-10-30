@@ -192,7 +192,7 @@ namespace QLogicaeCLI
 	{
 		QLogicaeCore::LOGGER.log_timestamp(
 			result,
-			"Running!",
+			"Running...",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
 			is_enabled
 		);
@@ -460,7 +460,7 @@ namespace QLogicaeCLI
 	{
 		QLogicaeCore::LOGGER.log_timestamp(
 			result,
-			"Complete...",
+			"Complete!",
 			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
 			is_enabled
 		);
