@@ -154,8 +154,7 @@ namespace QLogicaeCLI
 			UTILITIES.get_application_full_name()
 		);
 
-		/*
-			!_setup_deploy_command() ||
+		/*		
 			!_setup_setup_command() ||
 
 			!_setup_get_command() ||
@@ -169,7 +168,8 @@ namespace QLogicaeCLI
 		if (
 			!_setup_view_command() ||
 			!_setup_build_command() ||
-			!_setup_run_command()
+			!_setup_run_command() ||
+			!_setup_deploy_command()
 		)
 		{
 			return result.set_to_bad_status_without_value();
@@ -179,16 +179,22 @@ namespace QLogicaeCLI
 		{
 			_application.parse(argc, argv);
 		}
+		catch (const CLI::CallForHelp& exception)
+		{
+			_application.exit(exception);
+
+			std::exit(EXIT_SUCCESS);
+		}
 		catch (const CLI::ParseError& exception)
 		{
+			_application.exit(exception);
+			
 			QLogicaeCore::LOGGER.handle_exception(
 				result,
-				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCLI::Application::setup()",
 				exception.what()
 			);
 			
-			_application.exit(exception);
-
 			return result.set_to_bad_status_without_value();
 		}
 		
@@ -1151,15 +1157,11 @@ namespace QLogicaeCLI
 			return false;
 		}
 	}
-}
-
-
-
-/*	
-	
 
 	bool Application::_setup_deploy_command()
 	{
+		QLogicaeCore::Result<void> result;
+		
 		try
 		{
 			CLI::App* deploy_command =
@@ -1176,99 +1178,128 @@ namespace QLogicaeCLI
 
 			deploy_vs2022_command
 				->add_option("--project",
-					_string_inputs["deploy_vs2022__project"],
+					CLI_STRING_INPUTS.get("deploy_vs2022", "project"),
 					"The selected visual studio 2022 project. Defaults to the startup project"
-				)
-				->default_val("");
+					)
+					->default_val("");
 
 			deploy_vs2022_command
 				->add_option("--environment",
-					_string_inputs["deploy_vs2022__environment"],
+					CLI_STRING_INPUTS.get("deploy_vs2022", "environment"),
 					"The selected qlogicae environment type"
-				)
-				->default_val("release");
+					)
+					->default_val("release");
 
 			deploy_vs2022_command
 				->add_option("--architecture",
-					_string_inputs["deploy_vs2022__architecture"],
+					CLI_STRING_INPUTS.get("deploy_vs2022", "architecture"),
 					"The visual studio 2022 project's instruction architecture"
-				)
-				->check(CLI::IsMember(
-					UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
-				))
-				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
+					)
+					->check(CLI::IsMember(
+						UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
+					))
+					->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
 
 			deploy_vs2022_command
 				->add_option("--build-type",
-					_string_inputs["deploy_vs2022__build_type"],
+					CLI_STRING_INPUTS.get("deploy_vs2022", "build_type"),
 					"The visual studio 2022 project's build type"
-				)
-				->check(CLI::IsMember(
-					UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
-				))
-				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
+					)
+					->check(CLI::IsMember(
+						UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
+					))
+					->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
 
 			deploy_vs2022_command
 				->add_option("--installer-type",
-					_string_inputs["deploy_vs2022__installer_type"],
+					CLI_STRING_INPUTS.get("deploy_vs2022", "installer_type"),
 					"The selected input folder path")
-				->check(CLI::IsMember(
-					UTILITIES.INSTALLER_TYPES
-				))
-				->default_val(UTILITIES.INSTALLER_TYPES[0]);
+					->check(CLI::IsMember(
+						UTILITIES.INSTALLER_TYPES
+					))
+					->default_val(UTILITIES.INSTALLER_TYPES[0]);
 
 			deploy_vs2022_command
 				->add_option("--output-folder-path",
-					_string_inputs["deploy_vs2022__output_folder_path"],
+					CLI_STRING_INPUTS.get("deploy_vs2022", "output_folder_path"),
 					"The selected output folder path of the installer"
-				)
-				->default_val("");
+					)
+					->default_val("");
 
 			deploy_vs2022_command
 				->add_option("--is-build-enabled",
-					_boolean_inputs["deploy_vs2022__is_build_enabled"],
-					"Enables or disables build")
+					CLI_BOOLEAN_INPUTS.get("deploy_vs2022", "is_build_enabled"),
+				"Enables or disables build")
 				->default_val(true);
 
 			deploy_vs2022_command
 				->add_option("--is-verbose",
-					_boolean_inputs["deploy_vs2022__is_verbose"],
-					"Enables or disables verbose console logging")
+					CLI_BOOLEAN_INPUTS.get("deploy_vs2022", "is_verbose"),
+				"Enables or disables verbose console logging")
 				->default_val(false);
 
 			_commands["deploy_vs2022"] = std::make_pair(
 				deploy_vs2022_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+
 					std::string deploy_vs2022__project =
-						_string_inputs["deploy_vs2022__project"];
+						CLI_STRING_INPUTS.get("deploy_vs2022", "project");
+
 					std::string deploy_vs2022__environment =
-						_string_inputs["deploy_vs2022__environment"];
+						CLI_STRING_INPUTS.get("deploy_vs2022", "environment");
+
 					std::string deploy_vs2022__architecture =
-						_string_inputs["deploy_vs2022__architecture"];
+						CLI_STRING_INPUTS.get("deploy_vs2022", "architecture");
+
 					std::string deploy_vs2022__build_type =
-						_string_inputs["deploy_vs2022__build_type"];
+						CLI_STRING_INPUTS.get("deploy_vs2022", "build_type");
+
 					std::string deploy_vs2022__installer_type =
-						_string_inputs["deploy_vs2022__installer_type"];
+						CLI_STRING_INPUTS.get("deploy_vs2022", "installer_type");
+
 					std::string deploy_vs2022__output_folder_path =
-						_string_inputs["deploy_vs2022__output_folder_path"];
+						CLI_STRING_INPUTS.get("deploy_vs2022", "output_folder_path");
+
 					bool deploy_vs2022__is_build_enabled =
-						_boolean_inputs["deploy_vs2022__is_build_enabled"];
+						CLI_BOOLEAN_INPUTS.get("deploy_vs2022", "is_build_enabled");
+
 					bool deploy_vs2022__is_verbose =
-						_boolean_inputs["deploy_vs2022__is_verbose"];
+						CLI_BOOLEAN_INPUTS.get("deploy_vs2022", "is_verbose");
+
+					QLogicaeCore::LogConfigurations console_log_configurations_1 =
+					{
+						.is_console_enabled = deploy_vs2022__is_verbose,
+						.is_console_format_enabled = deploy_vs2022__is_verbose
+					};
+
+					QLogicaeCore::LogConfigurations console_log_configurations_2 =
+					{
+						.is_console_enabled = deploy_vs2022__is_verbose,
+						.is_console_format_enabled = deploy_vs2022__is_verbose
+					};
 
 					try
 					{
-						UTILITIES.log_running_async(
-							deploy_vs2022__is_verbose
+						CLI_LOGGER.log_running(
+							result,
+							"qlogicae_cli deploy vs2022",
+							console_log_configurations_1
 						);
 
 						if (deploy_vs2022__project.empty())
 						{
-							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
+							CLI_LOGGER.log(
+								result,
+								"Using startup project",
+								console_log_configurations_2
+							);
+
+							QLogicaeCore::JSON_FILE_IO.set_file_path(
 								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 							);
-							deploy_vs2022__project = UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
+							deploy_vs2022__project = QLogicaeCore::JSON_FILE_IO
 								.get_string(
 									{ "application", "startup_project_name" }
 								);
@@ -1276,11 +1307,17 @@ namespace QLogicaeCLI
 
 						if (deploy_vs2022__output_folder_path.empty())
 						{
-							UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE.set_file_path(
+							CLI_LOGGER.log(
+								result,
+								"Using default release folder path",
+								console_log_configurations_2
+							);
+
+							QLogicaeCore::JSON_FILE_IO.set_file_path(
 								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
 							);
 							deploy_vs2022__output_folder_path =
-								UTILITIES.CLIENT_DOT_QLOGICAE_APPLICATION_CONFIGURATION_FILE
+								QLogicaeCore::JSON_FILE_IO
 								.get_string(
 									{ "application", "release_folder_path" }
 								);
@@ -1288,10 +1325,12 @@ namespace QLogicaeCLI
 
 						if (!std::filesystem::exists(deploy_vs2022__project))
 						{
-							UTILITIES.log_exception_async(
-								std::string("Selected visual studio 2022 project does not exist")
+							CLI_LOGGER.log(
+								result,
+								"Selected visual studio 2022 project does not exist",
+								console_log_configurations_2
 							);
-
+							
 							return false;
 						}
 
@@ -1303,6 +1342,12 @@ namespace QLogicaeCLI
 
 						if (deploy_vs2022__is_build_enabled)
 						{
+							CLI_LOGGER.log(
+								result,
+								"Building project",
+								console_log_configurations_2
+							);
+
 							system((absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
 								" \"qlogicae/.qlogicae/application/scripts/visual_studio_2022/build.ps1\"",
@@ -1315,6 +1360,12 @@ namespace QLogicaeCLI
 
 						if (deploy_vs2022__installer_type == UTILITIES.INSTALLER_TYPES[0])
 						{
+							CLI_LOGGER.log(
+								result,
+								"Deploying project",
+								console_log_configurations_2
+							);
+
 							system((absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
 								" \"qlogicae/.qlogicae/application/scripts/inno_setup/deploy.ps1\"",
@@ -1325,79 +1376,96 @@ namespace QLogicaeCLI
 							)).c_str());
 						}
 
+						CLI_LOGGER.log(
+							result,
+							"Updating ids",
+							console_log_configurations_2
+						);
 
-						UTILITIES.CLIENT_JSON_IO.set_file_path(
+						QLogicaeCore::JSON_FILE_IO.set_file_path(
 							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
 							".\\qlogicae\\.qlogicae\\application\\templates\\default\\build\\qlogicae\\application\\configurations\\qlogicae.json"
 						);
-						UTILITIES.CLIENT_JSON_IO.update_string(
+						QLogicaeCore::JSON_FILE_IO.update_string(
 							{ "id" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						UTILITIES.CLIENT_JSON_IO.set_file_path(
+						QLogicaeCore::JSON_FILE_IO.set_file_path(
 							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
 							".\\qlogicae\\.qlogicae\\application\\templates\\debug\\build\\qlogicae\\application\\configurations\\environment.json"
 						);
-						UTILITIES.CLIENT_JSON_IO.update_string(
+						QLogicaeCore::JSON_FILE_IO.update_string(
 							{ "id" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						UTILITIES.CLIENT_JSON_IO.set_file_path(
+						QLogicaeCore::JSON_FILE_IO.set_file_path(
 							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
 							".\\qlogicae\\.qlogicae\\application\\templates\\development\\build\\qlogicae\\application\\configurations\\environment.json"
 						);
-						UTILITIES.CLIENT_JSON_IO.update_string(
+						QLogicaeCore::JSON_FILE_IO.update_string(
 							{ "id" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						UTILITIES.CLIENT_JSON_IO.set_file_path(
+						QLogicaeCore::JSON_FILE_IO.set_file_path(
 							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
 							".\\qlogicae\\.qlogicae\\application\\templates\\release\\build\\qlogicae\\application\\configurations\\environment.json"
 						);
-						UTILITIES.CLIENT_JSON_IO.update_string(
+						QLogicaeCore::JSON_FILE_IO.update_string(
 							{ "id" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						UTILITIES.CLIENT_JSON_IO.set_file_path(
+						QLogicaeCore::JSON_FILE_IO.set_file_path(
 							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
 							".\\qlogicae\\.qlogicae\\application\\templates\\test\\build\\qlogicae\\application\\configurations\\environment.json"
 						);
-						UTILITIES.CLIENT_JSON_IO.update_string(
+						QLogicaeCore::JSON_FILE_IO.update_string(
 							{ "id" },
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						UTILITIES.log_complete_async(
-							deploy_vs2022__is_verbose
+						CLI_LOGGER.log_complete(
+							result,
+							"qlogicae_cli deploy vs2022",
+							console_log_configurations_1
 						);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_async(
-							std::string("Exception at Application::_setup_deploy_command(): ") +
+						QLogicaeCore::LOGGER.handle_exception(
+							result,
+							"QLogicaeCLI::Application::_setup_deploy_command()",
 							exception.what()
 						);
 
 						return false;
 					}
-				}
-			);
+						}
+					);
 
-			return true;
+				return true;
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_async(std::string("Exception at Application::_setup_deploy_command(): ") + exception.what());
+			QLogicaeCore::LOGGER.handle_exception(
+				result,
+				"QLogicaeCLI::Application::_setup_deploy_command()",
+				exception.what()
+			);
 
 			return false;
 		}
 	}
+}
+
+
+
+/*
 
 	bool Application::_setup_setup_command()
 	{
@@ -1418,13 +1486,13 @@ namespace QLogicaeCLI
 			setup_windows_registry_command
 				->add_option(
 					"--environment",
-					_string_inputs["setup_windows_registry__environment"],
+					CLI_STRING_INPUTS.get("setup_windows_registry__environment"),
 					"HKCU Selected environment type")
 				->default_val("development");
 
 			setup_windows_registry_command
 				->add_option("--is-verbose",
-					_boolean_inputs["setup_windows_registry__is_verbose"],
+					_boolean_inputs["setup_windows_registry__is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
