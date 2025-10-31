@@ -72,16 +72,12 @@ namespace QLogicaeCLI
 		void log(
 			const std::string& text,
 			QLogicaeCore::LogConfigurations& log_configurations =
-				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
-			QLogicaeCore::LogConfigurations& file_log_configurations =
 				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
 		std::future<void> log_async(
 			const std::string& text,
 			QLogicaeCore::LogConfigurations& log_configurations =
-				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
-			QLogicaeCore::LogConfigurations& file_log_configurations =
 				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
@@ -89,8 +85,6 @@ namespace QLogicaeCLI
 			const std::function<void()>& callback,
 			const std::string& text,
 			QLogicaeCore::LogConfigurations& log_configurations =
-				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
-			QLogicaeCore::LogConfigurations& file_log_configurations =
 				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
@@ -98,8 +92,6 @@ namespace QLogicaeCLI
 			QLogicaeCore::Result<void>& result,
 			const std::string& text,
 			QLogicaeCore::LogConfigurations& log_configurations =
-				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
-			QLogicaeCore::LogConfigurations& file_log_configurations =
 				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
@@ -107,8 +99,6 @@ namespace QLogicaeCLI
 			QLogicaeCore::Result<std::future<void>>& result,
 			const std::string& text,
 			QLogicaeCore::LogConfigurations& log_configurations =
-				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
-			QLogicaeCore::LogConfigurations& file_log_configurations =
 				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
@@ -116,8 +106,6 @@ namespace QLogicaeCLI
 			const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
 			const std::string& text,
 			QLogicaeCore::LogConfigurations& log_configurations =
-				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
-			QLogicaeCore::LogConfigurations& file_log_configurations =
 				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
