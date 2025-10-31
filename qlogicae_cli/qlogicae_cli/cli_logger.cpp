@@ -123,7 +123,8 @@ namespace QLogicaeCLI
 	}
 
 	void CLILogger::log_running(
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		try
@@ -132,7 +133,8 @@ namespace QLogicaeCLI
 
 			log_running(
 				result,
-				is_enabled
+				command_name,
+				log_configurations
 			);
 		}
 		catch (const std::exception& exception)
@@ -145,7 +147,8 @@ namespace QLogicaeCLI
 	}
 
 	std::future<void> CLILogger::log_running_async(
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		std::promise<void> promise;
@@ -153,11 +156,12 @@ namespace QLogicaeCLI
 
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, is_enabled,
+			[this, command_name, log_configurations,
 			promise = std::move(promise)]() mutable
 			{
 				log_running(
-					is_enabled
+					command_name,
+					log_configurations
 				);
 
 				promise.set_value();
@@ -169,15 +173,17 @@ namespace QLogicaeCLI
 
 	void CLILogger::log_running_async(
 		const std::function<void()>& callback,
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, is_enabled, callback]() mutable
+			[this, command_name, log_configurations, callback]() mutable
 			{
 				log_running(
-					is_enabled
+					command_name,
+					log_configurations
 				);
 
 				callback();
@@ -187,20 +193,27 @@ namespace QLogicaeCLI
 
 	void CLILogger::log_running(
 		QLogicaeCore::Result<void>& result,
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
-		QLogicaeCore::LOGGER.log_timestamp(
+		std::string text = "Command '" + command_name + "' running";
+
+		QLogicaeCore::LOGGER.log_with_timestamp_to_console(
 			result,
-			"Running...",
-			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
-			is_enabled
+			text,
+			log_configurations
+		);
+		QLogicaeCore::LOGGER.log_with_timestamp_to_files(
+			result,
+			text
 		);
 	}
 
 	void CLILogger::log_running_async(
 		QLogicaeCore::Result<std::future<void>>& result,
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		std::promise<void> promise;
@@ -208,14 +221,15 @@ namespace QLogicaeCLI
 
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, is_enabled,
+			[this, command_name, log_configurations,
 			promise = std::move(promise)]() mutable
 			{
 				QLogicaeCore::Result<void> result;
 
 				log_running(
 					result,
-					is_enabled
+					command_name,
+					log_configurations
 				);
 
 				promise.set_value();
@@ -229,18 +243,20 @@ namespace QLogicaeCLI
 
 	void CLILogger::log_running_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, is_enabled, callback]() mutable
+			[this, command_name, log_configurations, callback]() mutable
 			{
 				QLogicaeCore::Result<void> result;
 
 				log_running(
 					result,
-					is_enabled
+					command_name,
+					log_configurations
 				);
 
 				callback(
@@ -251,8 +267,9 @@ namespace QLogicaeCLI
 	}
 
 	void CLILogger::log(
-		const bool& is_enabled,
-		const std::string& text
+		const std::string& text,
+		QLogicaeCore::LogConfigurations& console_log_configurations,
+		QLogicaeCore::LogConfigurations& file_log_configurations
 	)
 	{
 		try
@@ -261,8 +278,9 @@ namespace QLogicaeCLI
 
 			log(
 				result,
-				is_enabled,
-				text
+				text,
+				console_log_configurations,
+				file_log_configurations
 			);
 		}
 		catch (const std::exception& exception)
@@ -275,8 +293,9 @@ namespace QLogicaeCLI
 	}
 
 	std::future<void> CLILogger::log_async(
-		const bool& is_enabled,
-		const std::string& text
+		const std::string& text,
+		QLogicaeCore::LogConfigurations& console_log_configurations,
+		QLogicaeCore::LogConfigurations& file_log_configurations
 	)
 	{
 		std::promise<void> promise;
@@ -284,12 +303,13 @@ namespace QLogicaeCLI
 
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, text, is_enabled,
+			[this, text, console_log_configurations, file_log_configurations,
 			promise = std::move(promise)]() mutable
 			{
 				log(
-					is_enabled,
-					text
+					text,
+					console_log_configurations,
+					file_log_configurations
 				);
 
 				promise.set_value();
@@ -301,17 +321,19 @@ namespace QLogicaeCLI
 
 	void CLILogger::log_async(
 		const std::function<void()>& callback,
-		const bool& is_enabled,
-		const std::string& text
+		const std::string& text,
+		QLogicaeCore::LogConfigurations& console_log_configurations,
+		QLogicaeCore::LogConfigurations& file_log_configurations
 	)
 	{
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, text, is_enabled, callback]() mutable
+			[this, callback, text, console_log_configurations, file_log_configurations]() mutable
 			{
 				log(
-					is_enabled,
-					text
+					text,
+					console_log_configurations,
+					file_log_configurations
 				);
 
 				callback();
@@ -321,23 +343,30 @@ namespace QLogicaeCLI
 
 	void CLILogger::log(
 		QLogicaeCore::Result<void>& result,
-		const bool& is_enabled,
-		const std::string& text
+		const std::string& text,
+		QLogicaeCore::LogConfigurations& console_log_configurations,
+		QLogicaeCore::LogConfigurations& file_log_configurations
 	)
 	{
-		QLogicaeCore::LOGGER.log_timestamp(
+		QLogicaeCore::LOGGER.log_with_timestamp_to_console(
 			result,
 			text,
-			QLogicaeCore::LogLevel::INFO,
-			is_enabled,
-			true
+			console_log_configurations
 		);
+		QLogicaeCore::LOGGER.log_with_timestamp_to_files(
+			result,
+			text,
+			file_log_configurations
+		);
+
+		result.set_to_good_status_without_value();
 	}
 
 	void CLILogger::log_async(
 		QLogicaeCore::Result<std::future<void>>& result,
-		const bool& is_enabled,
-		const std::string& text
+		const std::string& text,
+		QLogicaeCore::LogConfigurations& console_log_configurations,
+		QLogicaeCore::LogConfigurations& file_log_configurations
 	)
 	{
 		std::promise<void> promise;
@@ -345,15 +374,16 @@ namespace QLogicaeCLI
 
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, text, is_enabled,
+			[this, text, console_log_configurations, file_log_configurations,
 			promise = std::move(promise)]() mutable
 			{
 				QLogicaeCore::Result<void> result;
 
 				log(
 					result,
-					is_enabled,
-					text
+					text,
+					console_log_configurations,
+					file_log_configurations
 				);
 
 				promise.set_value();
@@ -367,20 +397,22 @@ namespace QLogicaeCLI
 
 	void CLILogger::log_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
-		const bool& is_enabled,
-		const std::string& text
+		const std::string& text,
+		QLogicaeCore::LogConfigurations& console_log_configurations,
+		QLogicaeCore::LogConfigurations& file_log_configurations
 	)
 	{
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, text, is_enabled, callback]() mutable
+			[this, text, console_log_configurations, file_log_configurations, callback]() mutable
 			{
 				QLogicaeCore::Result<void> result;
 
 				log(
 					result,
-					is_enabled,
-					text
+					text,
+					console_log_configurations,
+					file_log_configurations
 				);
 
 				callback(
@@ -391,7 +423,8 @@ namespace QLogicaeCLI
 	}
 
 	void CLILogger::log_complete(
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		try
@@ -400,7 +433,8 @@ namespace QLogicaeCLI
 
 			log_complete(
 				result,
-				is_enabled
+				command_name,
+				log_configurations
 			);
 		}
 		catch (const std::exception& exception)
@@ -413,7 +447,8 @@ namespace QLogicaeCLI
 	}
 
 	std::future<void> CLILogger::log_complete_async(
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		std::promise<void> promise;
@@ -421,11 +456,12 @@ namespace QLogicaeCLI
 
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, is_enabled,
+			[this, command_name, log_configurations,
 			promise = std::move(promise)]() mutable
 			{
 				log_complete(
-					is_enabled
+					command_name,
+					log_configurations
 				);
 
 				promise.set_value();
@@ -437,15 +473,17 @@ namespace QLogicaeCLI
 
 	void CLILogger::log_complete_async(
 		const std::function<void()>& callback,
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, is_enabled, callback]() mutable
+			[this, command_name, log_configurations, callback]() mutable
 			{
 				log_complete(
-					is_enabled
+					command_name,
+					log_configurations
 				);
 
 				callback();
@@ -455,20 +493,27 @@ namespace QLogicaeCLI
 
 	void CLILogger::log_complete(
 		QLogicaeCore::Result<void>& result,
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
-		QLogicaeCore::LOGGER.log_timestamp(
+		std::string text = "Command '" + command_name + "' completed";
+
+		QLogicaeCore::LOGGER.log_with_timestamp_to_console(
 			result,
-			"Complete!",
-			QLogicaeCore::LogLevel::HIGHLIGHTED_INFO,
-			is_enabled
+			text,
+			log_configurations
+		);
+		QLogicaeCore::LOGGER.log_with_timestamp_to_files(
+			result,
+			text
 		);
 	}
 
 	void CLILogger::log_complete_async(
 		QLogicaeCore::Result<std::future<void>>& result,
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		std::promise<void> promise;
@@ -476,14 +521,15 @@ namespace QLogicaeCLI
 
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, is_enabled,
+			[this, command_name, log_configurations,
 			promise = std::move(promise)]() mutable
 			{
 				QLogicaeCore::Result<void> result;
 
 				log_complete(
 					result,
-					is_enabled
+					command_name,
+					log_configurations
 				);
 
 				promise.set_value();
@@ -497,18 +543,20 @@ namespace QLogicaeCLI
 
 	void CLILogger::log_complete_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
-		const bool& is_enabled
+		const std::string& command_name,
+		QLogicaeCore::LogConfigurations& log_configurations
 	)
 	{
 		boost::asio::post(
 			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
-			[this, is_enabled, callback]() mutable
+			[this, command_name, log_configurations, callback]() mutable
 			{
 				QLogicaeCore::Result<void> result;
 
 				log_complete(
 					result,
-					is_enabled
+					command_name,
+					log_configurations
 				);
 
 				callback(

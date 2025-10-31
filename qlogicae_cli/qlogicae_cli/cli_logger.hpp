@@ -5,7 +5,7 @@
 #include "qlogicae_core/transformer.hpp"
 
 namespace QLogicaeCLI
-{
+{	
 	class CLILogger
 	{
 	public:
@@ -30,93 +30,135 @@ namespace QLogicaeCLI
 		);
 
         void log_running(
-            const bool& is_enabled
-        );
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
-        std::future<void> log_running_async(
-            const bool& is_enabled
-        );
-		
+		std::future<void> log_running_async(
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
+
 		void log_running_async(
 			const std::function<void()>& callback,
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		void log_running(
 			QLogicaeCore::Result<void>& result,
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		void log_running_async(
 			QLogicaeCore::Result<std::future<void>>& result,
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		void log_running_async(
 			const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		void log(
-			const bool& is_enabled,
-			const std::string& text
+			const std::string& text,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
+			QLogicaeCore::LogConfigurations& file_log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
 		std::future<void> log_async(
-			const bool& is_enabled,
-			const std::string& text
+			const std::string& text,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
+			QLogicaeCore::LogConfigurations& file_log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
 		void log_async(
 			const std::function<void()>& callback,
-			const bool& is_enabled,
-			const std::string& text
+			const std::string& text,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
+			QLogicaeCore::LogConfigurations& file_log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
 		void log(
 			QLogicaeCore::Result<void>& result,
-			const bool& is_enabled,
-			const std::string& text
+			const std::string& text,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
+			QLogicaeCore::LogConfigurations& file_log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
 		void log_async(
 			QLogicaeCore::Result<std::future<void>>& result,
-			const bool& is_enabled,
-			const std::string& text
+			const std::string& text,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
+			QLogicaeCore::LogConfigurations& file_log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
 		void log_async(
 			const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
-			const bool& is_enabled,
-			const std::string& text
+			const std::string& text,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS,
+			QLogicaeCore::LogConfigurations& file_log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
 		void log_complete(
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		std::future<void> log_complete_async(
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		void log_complete_async(
 			const std::function<void()>& callback,
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		void log_complete(
 			QLogicaeCore::Result<void>& result,
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		void log_complete_async(
 			QLogicaeCore::Result<std::future<void>>& result,
-			const bool& is_enabled
-		);
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
+			);
 
 		void log_complete_async(
 			const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
-			const bool& is_enabled
+			const std::string& command_name,
+			QLogicaeCore::LogConfigurations& log_configurations =
+				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
 		static CLILogger& get_instance();
