@@ -6,7 +6,7 @@
 
 namespace QLogicaeCLI
 {
-	class CLIFileSystem
+	class FileSystem
 	{
 	public:
 		bool setup();
@@ -26,6 +26,26 @@ namespace QLogicaeCLI
 		);
 
 		void setup_async(			
+			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+		);
+
+		bool terminate();
+
+		std::future<bool> terminate_async();
+
+		void terminate_async(
+			QLogicaeCore::Result<std::future<void>>& result
+		);
+
+		void terminate(
+			QLogicaeCore::Result<void>& result
+		);
+
+		std::future<bool> terminate_async(
+			const std::function<void(const bool& result)>& callback
+		);
+
+		void terminate_async(
 			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 		);
 
@@ -59,34 +79,34 @@ namespace QLogicaeCLI
 			const bool& is_enabled = true
 		);
 
-		static CLIFileSystem& get_instance();
+		static FileSystem& get_instance();
 
 		static void get_instance(
-			QLogicaeCore::Result<CLIFileSystem*>& result
+			QLogicaeCore::Result<FileSystem*>& result
 		);
 
 	protected:
-		CLIFileSystem();
+		FileSystem();
 
-		~CLIFileSystem();
+		~FileSystem();
 
-		CLIFileSystem(
-			const CLIFileSystem& instance
+		FileSystem(
+			const FileSystem& instance
 		) = delete;
 
-		CLIFileSystem(
-			CLIFileSystem&& instance
+		FileSystem(
+			FileSystem&& instance
 		) noexcept = delete;
 
-		CLIFileSystem& operator = (
-			CLIFileSystem&& instance
+		FileSystem& operator = (
+			FileSystem&& instance
 		) = delete;
 
-		CLIFileSystem& operator = (
-			const CLIFileSystem& instance
+		FileSystem& operator = (
+			const FileSystem& instance
 		) = delete;
 	};
 
-	static inline CLIFileSystem& CLI_FILE_SYSTEM =
-		CLIFileSystem::get_instance();
+	static inline FileSystem& FILE_SYSTEM =
+		FileSystem::get_instance();
 }

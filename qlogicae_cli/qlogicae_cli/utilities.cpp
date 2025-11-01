@@ -122,6 +122,114 @@ namespace QLogicaeCLI
 		);
 	}
 
+	bool Utilities::terminate()
+	{
+		try
+		{
+			QLogicaeCore::Result<void> result;
+
+			terminate(result);
+
+			return result.is_status_safe();
+		}
+		catch (const std::exception& exception)
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Utilities::terminate()",
+				exception.what()
+			);
+
+			return false;
+		}
+	}
+
+	std::future<bool> Utilities::terminate_async()
+	{
+		std::promise<bool> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				promise.set_value(
+					terminate()
+				);
+			}
+		);
+
+		return future;
+	}
+
+	void Utilities::terminate_async(
+		QLogicaeCore::Result<std::future<void>>& result
+	)
+	{
+		std::promise<void> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				terminate(
+					result
+				);
+
+				promise.set_value();
+			}
+		);
+
+		result.set_to_good_status_with_value(
+			std::move(future)
+		);
+	}
+
+	void Utilities::terminate(
+		QLogicaeCore::Result<void>& result
+	)
+	{
+		result.set_to_good_status_without_value();
+	}
+
+	std::future<bool> Utilities::terminate_async(
+		const std::function<void(const bool& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				callback(
+					terminate()
+				);
+			}
+		);
+	}
+
+	void Utilities::terminate_async(
+		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				terminate(result);
+
+				callback(
+					result
+				);
+			}
+		);
+	}
+
 	std::string Utilities::get_application_full_name()
 	{
 		try

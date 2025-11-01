@@ -1,20 +1,20 @@
 #include "pch.hpp"
 
-#include "cli_logger.hpp"
+#include "logger.hpp"
 
 namespace QLogicaeCLI
 {
-	CLILogger::CLILogger()
+	Logger::Logger()
 	{
 
 	}
 
-	CLILogger::~CLILogger()
+	Logger::~Logger()
 	{
 
 	}
 
-	bool CLILogger::setup()
+	bool Logger::setup()
 	{
 		try
 		{
@@ -27,7 +27,7 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception(
-				"QLogicaeCLI::CLILogger::setup()",
+				"QLogicaeCLI::Logger::setup()",
 				exception.what()
 			);
 
@@ -35,7 +35,7 @@ namespace QLogicaeCLI
 		}
 	}
 
-	std::future<bool> CLILogger::setup_async()
+	std::future<bool> Logger::setup_async()
 	{
 		std::promise<bool> promise;
 		auto future = promise.get_future();
@@ -54,7 +54,7 @@ namespace QLogicaeCLI
 		return future;
 	}
 
-	void CLILogger::setup_async(
+	void Logger::setup_async(
 		QLogicaeCore::Result<std::future<void>>& result
 	)
 	{
@@ -81,14 +81,14 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::setup(
+	void Logger::setup(
 		QLogicaeCore::Result<void>& result
 	)
 	{
 		result.set_to_good_status_without_value();
 	}
 
-	void CLILogger::setup_async(
+	void Logger::setup_async(
 		const std::function<void(const bool& result)>& callback
 	)
 	{
@@ -103,7 +103,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::setup_async(
+	void Logger::setup_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 	)
 	{
@@ -122,7 +122,115 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_running(
+	bool Logger::terminate()
+	{
+		try
+		{
+			QLogicaeCore::Result<void> result;
+
+			terminate(result);
+
+			return result.is_status_safe();
+		}
+		catch (const std::exception& exception)
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Logger::terminate()",
+				exception.what()
+			);
+
+			return false;
+		}
+	}
+
+	std::future<bool> Logger::terminate_async()
+	{
+		std::promise<bool> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				promise.set_value(
+					terminate()
+				);
+			}
+		);
+
+		return future;
+	}
+
+	void Logger::terminate_async(
+		QLogicaeCore::Result<std::future<void>>& result
+	)
+	{
+		std::promise<void> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				terminate(
+					result
+				);
+
+				promise.set_value();
+			}
+		);
+
+		result.set_to_good_status_with_value(
+			std::move(future)
+		);
+	}
+
+	void Logger::terminate(
+		QLogicaeCore::Result<void>& result
+	)
+	{
+		result.set_to_good_status_without_value();
+	}
+
+	std::future<bool> Logger::terminate_async(
+		const std::function<void(const bool& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				callback(
+					terminate()
+				);
+			}
+		);
+	}
+
+	void Logger::terminate_async(
+		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				terminate(result);
+
+				callback(
+					result
+				);
+			}
+		);
+	}
+
+	void Logger::log_running(
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
 	)
@@ -140,13 +248,13 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception(
-				"QLogicaeCLI::CLILogger::log_running()",
+				"QLogicaeCLI::Logger::log_running()",
 				exception.what()
 			);
 		}
 	}
 
-	std::future<void> CLILogger::log_running_async(
+	std::future<void> Logger::log_running_async(
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
 	)
@@ -171,7 +279,7 @@ namespace QLogicaeCLI
 		return future;
 	}
 
-	void CLILogger::log_running_async(
+	void Logger::log_running_async(
 		const std::function<void()>& callback,
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -191,7 +299,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_running(
+	void Logger::log_running(
 		QLogicaeCore::Result<void>& result,
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -206,7 +314,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_running_async(
+	void Logger::log_running_async(
 		QLogicaeCore::Result<std::future<void>>& result,
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -237,7 +345,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_running_async(
+	void Logger::log_running_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -262,7 +370,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log(
+	void Logger::log(
 		const std::string& text,
 		QLogicaeCore::LogConfigurations& log_configurations
 	)
@@ -280,13 +388,13 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception(
-				"QLogicaeCLI::CLILogger::log()",
+				"QLogicaeCLI::Logger::log()",
 				exception.what()
 			);
 		}
 	}
 
-	std::future<void> CLILogger::log_async(
+	std::future<void> Logger::log_async(
 		const std::string& text,
 		QLogicaeCore::LogConfigurations& log_configurations
 	)
@@ -311,7 +419,7 @@ namespace QLogicaeCLI
 		return future;
 	}
 
-	void CLILogger::log_async(
+	void Logger::log_async(
 		const std::function<void()>& callback,
 		const std::string& text,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -331,7 +439,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log(
+	void Logger::log(
 		QLogicaeCore::Result<void>& result,
 		const std::string& text,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -346,7 +454,7 @@ namespace QLogicaeCLI
 		result.set_to_good_status_without_value();
 	}
 
-	void CLILogger::log_async(
+	void Logger::log_async(
 		QLogicaeCore::Result<std::future<void>>& result,
 		const std::string& text,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -377,7 +485,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_async(
+	void Logger::log_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
 		const std::string& text,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -402,7 +510,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_complete(
+	void Logger::log_complete(
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
 	)
@@ -420,13 +528,13 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception(
-				"QLogicaeCLI::CLILogger::log_complete()",
+				"QLogicaeCLI::Logger::log_complete()",
 				exception.what()
 			);
 		}
 	}
 
-	std::future<void> CLILogger::log_complete_async(
+	std::future<void> Logger::log_complete_async(
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
 	)
@@ -451,7 +559,7 @@ namespace QLogicaeCLI
 		return future;
 	}
 
-	void CLILogger::log_complete_async(
+	void Logger::log_complete_async(
 		const std::function<void()>& callback,
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -471,7 +579,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_complete(
+	void Logger::log_complete(
 		QLogicaeCore::Result<void>& result,
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -486,7 +594,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_complete_async(
+	void Logger::log_complete_async(
 		QLogicaeCore::Result<std::future<void>>& result,
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -517,7 +625,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLILogger::log_complete_async(
+	void Logger::log_complete_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback,
 		const std::string& command_name,
 		QLogicaeCore::LogConfigurations& log_configurations
@@ -542,18 +650,18 @@ namespace QLogicaeCLI
 		);
 	}
 
-	CLILogger& CLILogger::get_instance()
+	Logger& Logger::get_instance()
 	{
-		static CLILogger instance;
+		static Logger instance;
 
 		return instance;
 	}
 
-	void CLILogger::get_instance(
-		QLogicaeCore::Result<CLILogger*>& result
+	void Logger::get_instance(
+		QLogicaeCore::Result<Logger*>& result
 	)
 	{
-		static CLILogger instance;
+		static Logger instance;
 
 		result.set_to_good_status_with_value(&instance);
 	}

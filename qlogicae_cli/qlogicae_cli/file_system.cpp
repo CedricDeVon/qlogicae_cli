@@ -1,20 +1,20 @@
 #include "pch.hpp"
 
-#include "cli_file_system.hpp"
+#include "file_system.hpp"
 
 namespace QLogicaeCLI
 {
-	CLIFileSystem::CLIFileSystem()
+	FileSystem::FileSystem()
 	{
 
 	}
 
-	CLIFileSystem::~CLIFileSystem()
+	FileSystem::~FileSystem()
 	{
 
 	}
 
-	bool CLIFileSystem::setup()
+	bool FileSystem::setup()
 	{
 		try
 		{
@@ -27,7 +27,7 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception(
-				"QLogicaeCLI::CLIFileSystem::setup()",
+				"QLogicaeCLI::FileSystem::setup()",
 				exception.what()
 			);
 
@@ -35,7 +35,7 @@ namespace QLogicaeCLI
 		}
 	}
 
-	std::future<bool> CLIFileSystem::setup_async()
+	std::future<bool> FileSystem::setup_async()
 	{
 		std::promise<bool> promise;
 		auto future = promise.get_future();
@@ -54,7 +54,7 @@ namespace QLogicaeCLI
 		return future;
 	}
 
-	void CLIFileSystem::setup_async(
+	void FileSystem::setup_async(
 		QLogicaeCore::Result<std::future<void>>& result
 	)
 	{
@@ -81,14 +81,14 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLIFileSystem::setup(
+	void FileSystem::setup(
 		QLogicaeCore::Result<void>& result
 	)
 	{
 		result.set_to_good_status_without_value();
 	}
 
-	std::future<bool> CLIFileSystem::setup_async(
+	std::future<bool> FileSystem::setup_async(
 		const std::function<void(const bool& result)>& callback
 	)
 	{
@@ -103,7 +103,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void CLIFileSystem::setup_async(
+	void FileSystem::setup_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 	)
 	{
@@ -122,7 +122,115 @@ namespace QLogicaeCLI
 		);
 	}
 
-	bool CLIFileSystem::replace_file_if_found(
+	bool FileSystem::terminate()
+	{
+		try
+		{
+			QLogicaeCore::Result<void> result;
+
+			terminate(result);
+
+			return result.is_status_safe();
+		}
+		catch (const std::exception& exception)
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::FileSystem::terminate()",
+				exception.what()
+			);
+
+			return false;
+		}
+	}
+
+	std::future<bool> FileSystem::terminate_async()
+	{
+		std::promise<bool> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				promise.set_value(
+					terminate()
+				);
+			}
+		);
+
+		return future;
+	}
+
+	void FileSystem::terminate_async(
+		QLogicaeCore::Result<std::future<void>>& result
+	)
+	{
+		std::promise<void> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				terminate(
+					result
+				);
+
+				promise.set_value();
+			}
+		);
+
+		result.set_to_good_status_with_value(
+			std::move(future)
+		);
+	}
+
+	void FileSystem::terminate(
+		QLogicaeCore::Result<void>& result
+	)
+	{
+		result.set_to_good_status_without_value();
+	}
+
+	std::future<bool> FileSystem::terminate_async(
+		const std::function<void(const bool& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				callback(
+					terminate()
+				);
+			}
+		);
+	}
+
+	void FileSystem::terminate_async(
+		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				terminate(result);
+
+				callback(
+					result
+				);
+			}
+		);
+	}
+
+	bool FileSystem::replace_file_if_found(
 		const std::string& folder_path,
 		const std::string& file_path
 	)
@@ -140,7 +248,7 @@ namespace QLogicaeCLI
 		return true;
 	}
 
-	bool CLIFileSystem::remove_file_or_folder_if_found(
+	bool FileSystem::remove_file_or_folder_if_found(
 		const std::string& path
 	)
 	{
@@ -152,7 +260,7 @@ namespace QLogicaeCLI
 		return true;
 	}
 
-	bool CLIFileSystem::copy_file_or_folder(
+	bool FileSystem::copy_file_or_folder(
 		const std::string& from_path,
 		const std::string& to_path
 	)
@@ -166,7 +274,7 @@ namespace QLogicaeCLI
 		return true;
 	}
 
-	bool CLIFileSystem::is_file_or_folder_path_found(
+	bool FileSystem::is_file_or_folder_path_found(
 		const std::string& path
 	)
 	{
@@ -183,7 +291,7 @@ namespace QLogicaeCLI
 		return true;
 	}
 
-	bool CLIFileSystem::create_folder_path(
+	bool FileSystem::create_folder_path(
 		const std::string& path,
 		const bool& is_enabled
 	)
@@ -203,7 +311,7 @@ namespace QLogicaeCLI
 		return false;
 	}
 
-	std::string CLIFileSystem::setup_result_output_file(
+	std::string FileSystem::setup_result_output_file(
 		const std::string& path,
 		const std::string& extended_folder_path,
 		const std::string& default_file_name,
@@ -229,18 +337,18 @@ namespace QLogicaeCLI
 		return path;
 	}
 
-	CLIFileSystem& CLIFileSystem::get_instance()
+	FileSystem& FileSystem::get_instance()
 	{
-		static CLIFileSystem instance;
+		static FileSystem instance;
 
 		return instance;
 	}
 
-	void CLIFileSystem::get_instance(
-		QLogicaeCore::Result<CLIFileSystem*>& result
+	void FileSystem::get_instance(
+		QLogicaeCore::Result<FileSystem*>& result
 	)
 	{
-		static CLIFileSystem instance;
+		static FileSystem instance;
 
 		result.set_to_good_status_with_value(&instance);
 	}

@@ -111,7 +111,7 @@ namespace QLogicaeCLI
 			QLogicaeCore::LOGGER.handle_exception(
 				result,
 				"QLogicaeCLI::Application::parse()",
-				"QLogicaeCore::QLOGICAE_APPLICATION.setup() Failed"
+				"Setup failed"
 			);
 
 			return;
@@ -122,29 +122,29 @@ namespace QLogicaeCLI
 		{
 			QLogicaeCore::LOGGER.handle_exception(
 				"QLogicaeCLI::Application::parse()",
-				"QLogicaeCLI::UTILITIES.setup() Failed"
+				"Setup failed"
 			);
 
 			return;
 		}
 
-		QLogicaeCLI::CLI_LOGGER.setup(result);
+		QLogicaeCLI::LOGGER.setup(result);
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception(
 				"QLogicaeCLI::Application::parse()",
-				"QLogicaeCLI::CLI_LOGGER.setup() Failed"
+				"Setup failed"
 			);
 
 			return;
 		}
 
-		QLogicaeCLI::CLI_TRANSFORMER.setup(result);
+		QLogicaeCLI::TRANSFORMER.setup(result);
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception(
 				"QLogicaeCLI::Application::parse()",
-				"QLogicaeCLI::CLI_TRANSFORMER.setup() Failed"
+				"Setup failed"
 			);
 
 			return;
@@ -247,6 +247,174 @@ namespace QLogicaeCLI
 		);
 	}
 
+	bool Application::terminate()
+	{
+		try
+		{
+			QLogicaeCore::Result<void> result;
+
+			terminate(result);
+
+			return result.is_status_safe();
+		}
+		catch (const std::exception& exception)
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				"QLogicaeCLI::Application::terminate()",
+				exception.what()
+			);
+
+			return false;
+		}
+	}
+
+	std::future<bool> Application::terminate_async()
+	{
+		std::promise<bool> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				promise.set_value(
+					terminate()
+				);
+			}
+		);
+
+		return future;
+	}
+
+	void Application::terminate_async(
+		QLogicaeCore::Result<std::future<void>>& result
+	)
+	{
+		std::promise<void> promise;
+		auto future = promise.get_future();
+
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this,
+			promise = std::move(promise)]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				terminate(
+					result
+				);
+
+				promise.set_value();
+			}
+		);
+
+		result.set_to_good_status_with_value(
+			std::move(future)
+		);
+	}
+
+	void Application::terminate(
+		QLogicaeCore::Result<void>& result
+	)
+	{		
+		QLogicaeCore::QLOGICAE_APPLICATION.terminate(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				result,
+				"QLogicaeCore::Application::terminate()",
+				"Termination failed"
+			);
+
+			return;
+		}
+
+		FILE_SYSTEM.terminate(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				result,
+				"QLogicaeCLI::FileSystem::terminate()",
+				"Termination failed"
+			);
+
+			return;
+		}
+
+		LOGGER.terminate(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				result,
+				"QLogicaeCLI::Logger::terminate()",
+				"Termination failed"
+			);
+
+			return;
+		}
+
+		TRANSFORMER.terminate(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				result,
+				"QLogicaeCLI::Transform::terminate()",
+				"Termination failed"
+			);
+
+			return;
+		}
+
+		UTILITIES.terminate(result);
+		if (result.is_status_unsafe())
+		{
+			QLogicaeCore::LOGGER.handle_exception(
+				result,
+				"QLogicaeCLI::Utilities::terminate()",
+				"Termination failed"
+			);
+
+			return;
+		}
+
+		result.set_to_good_status_without_value();
+	}
+
+	std::future<bool> Application::terminate_async(
+		const std::function<void(const bool& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				callback(
+					terminate()
+				);
+			}
+		);
+	}
+
+	void Application::terminate_async(
+		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+	)
+	{
+		boost::asio::post(
+			QLogicaeCore::UTILITIES.BOOST_ASIO_POOL,
+			[this, callback]() mutable
+			{
+				QLogicaeCore::Result<void> result;
+
+				terminate(result);
+
+				callback(
+					result
+				);
+			}
+		);
+	}
+
 	bool Application::parse()
 	{
 		QLogicaeCore::Result<void> result;
@@ -313,7 +481,7 @@ namespace QLogicaeCLI
 
 			view_about_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("view_about", "is_verbose"),
+					BOOLEAN_INPUTS.get("view_about", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -324,7 +492,7 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> result;
 
 					bool view_about_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get(
+						BOOLEAN_INPUTS.get(
 							"view_about", "is_verbose"
 						);
 
@@ -342,19 +510,19 @@ namespace QLogicaeCLI
 
 					try
 					{
-						CLI_LOGGER.log_running(
+						LOGGER.log_running(
 							result,
 							"qlogicae_cli view about",
 							console_log_configurations_1
 						);
 
-						CLI_LOGGER.log(
+						LOGGER.log(
 							result,
 							QLogicaeCLI::UTILITIES.get_application_about_details(),
 							console_log_configurations_2
 						);
 						
-						CLI_LOGGER.log_complete(
+						LOGGER.log_complete(
 							result,
 							"qlogicae_cli view about",
 							console_log_configurations_1
@@ -383,14 +551,14 @@ namespace QLogicaeCLI
 
 			view_windows_registy_command
 				->add_option("--environment",
-					CLI_STRING_INPUTS.get("view_windows_registy", "environment"),
+					STRING_INPUTS.get("view_windows_registy", "environment"),
 					"An existing environment type"
 				)
 				->default_val("development");
 
 			view_windows_registy_command
 				->add_option("--root-path",
-					CLI_STRING_INPUTS.get("view_windows_registy", "root_path"),
+					STRING_INPUTS.get("view_windows_registy", "root_path"),
 					"The windows registry root path"
 				)
 				->check(CLI::IsMember(
@@ -400,7 +568,7 @@ namespace QLogicaeCLI
 
 			view_windows_registy_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("view_windows_registry", "is_verbose"),
+					BOOLEAN_INPUTS.get("view_windows_registry", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -411,17 +579,17 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> result;
 
 					std::string view_windows_registy_command__environment =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"view_windows_registy", "environment"
 						);
 					
 					std::string view_windows_registy_command__root_path =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"view_windows_registy", "root_path"
 						);
 					
 					bool view_windows_registy_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get(
+						BOOLEAN_INPUTS.get(
 							"view_windows_registry", "is_verbose"
 						);
 
@@ -449,13 +617,13 @@ namespace QLogicaeCLI
 
 					try
 					{
-						CLI_LOGGER.log_running(
+						LOGGER.log_running(
 							result,
 							"qlogicae_cli view windows-registy",
 							console_log_configurations_1
 						);
 
-						CLI_LOGGER.log(
+						LOGGER.log(
 							result,
 							"Executing '" + command + "'",
 							console_log_configurations_2
@@ -464,7 +632,7 @@ namespace QLogicaeCLI
 							command.c_str()
 						);
 
-						CLI_LOGGER.log_complete(
+						LOGGER.log_complete(
 							result,
 							"qlogicae_cli view windows-registy",
 							console_log_configurations_1
@@ -493,7 +661,7 @@ namespace QLogicaeCLI
 
 			view_environment_variables_command
 				->add_option("--root-path",
-					CLI_STRING_INPUTS.get("view_environment_variables", "root_path"),
+					STRING_INPUTS.get("view_environment_variables", "root_path"),
 					"An environment variable root path"
 				)
 				->check(CLI::IsMember(
@@ -503,7 +671,7 @@ namespace QLogicaeCLI
 
 			view_environment_variables_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("view_environment_variables", "is_verbose"),
+					BOOLEAN_INPUTS.get("view_environment_variables", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -514,12 +682,12 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> result;
 
 					std::string view_environment_variables_command__root_path =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"view_environment_variables", "root_path"
 						);
 					
 					bool view_environment_variables_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get(
+						BOOLEAN_INPUTS.get(
 							"view_environment_variables", "is_verbose"
 						);
 
@@ -545,13 +713,13 @@ namespace QLogicaeCLI
 
 					try
 					{
-						CLI_LOGGER.log_running(
+						LOGGER.log_running(
 							result,
 							"qlogicae_cli view environment-variables",
 							console_log_configurations_1
 						);
 
-						CLI_LOGGER.log(
+						LOGGER.log(
 							result,
 							"Executing '" + command + "'",
 							console_log_configurations_2
@@ -560,7 +728,7 @@ namespace QLogicaeCLI
 							command.c_str()
 						);
 
-						CLI_LOGGER.log_complete(
+						LOGGER.log_complete(
 							result,
 							"qlogicae_cli view environment-variables",
 							console_log_configurations_1
@@ -615,14 +783,14 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--project",
-					CLI_STRING_INPUTS.get("run_vs2022_command", "project"),
+					STRING_INPUTS.get("run_vs2022_command", "project"),
 					"The selected visual studio 2022 project"
 				)
 				->default_str("");
 
 			run_vs2022_command
 				->add_option("--architecture",
-					CLI_STRING_INPUTS.get("run_vs2022_command", "architecture"),
+					STRING_INPUTS.get("run_vs2022_command", "architecture"),
 					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
@@ -632,7 +800,7 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--build-type",
-					CLI_STRING_INPUTS.get("run_vs2022_command", "build_type"),
+					STRING_INPUTS.get("run_vs2022_command", "build_type"),
 					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
@@ -642,7 +810,7 @@ namespace QLogicaeCLI
 
 			run_vs2022_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("run_vs2022_command", "is_verbose"),
+					BOOLEAN_INPUTS.get("run_vs2022_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -653,16 +821,16 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> result;
 
 					std::string run_vs2022_command__project =
-						CLI_STRING_INPUTS.get("run_vs2022_command", "project");
+						STRING_INPUTS.get("run_vs2022_command", "project");
 
 					std::string run_vs2022_command__architecture =
-						CLI_STRING_INPUTS.get("run_vs2022_command", "architecture");
+						STRING_INPUTS.get("run_vs2022_command", "architecture");
 
 					std::string run_vs2022_command__build_type =
-						CLI_STRING_INPUTS.get("run_vs2022_command", "build_type");
+						STRING_INPUTS.get("run_vs2022_command", "build_type");
 
 					bool run_vs2022_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get("run_vs2022_command", "is_verbose");
+						BOOLEAN_INPUTS.get("run_vs2022_command", "is_verbose");
 
 					std::string command;
 
@@ -680,7 +848,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						CLI_LOGGER.log_running(
+						LOGGER.log_running(
 							result,
 							"qlogicae_cli run vs2022",
 							console_log_configurations_1
@@ -700,7 +868,7 @@ namespace QLogicaeCLI
 									}
 								);
 
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Switching to Startup Project '" + run_vs2022_command__project + "'",
 								console_log_configurations_2
@@ -715,7 +883,7 @@ namespace QLogicaeCLI
 							".exe"
 						);
 
-						CLI_LOGGER.log(
+						LOGGER.log(
 							result,
 							"Executing '" + command + "'",
 							console_log_configurations_2
@@ -724,7 +892,7 @@ namespace QLogicaeCLI
 							command.c_str()
 						);
 
-						CLI_LOGGER.log_complete(
+						LOGGER.log_complete(
 							result,
 							"qlogicae_cli run vs2022",
 							console_log_configurations_1
@@ -753,14 +921,14 @@ namespace QLogicaeCLI
 
 			run_executable_command
 				->add_option("--path",
-					CLI_STRING_INPUTS.get("run_executable_command", "path"),
+					STRING_INPUTS.get("run_executable_command", "path"),
 					"The selected path to the executable"
 				)
 				->required();
 
 			run_executable_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("run_executable_command", "is_verbose"),
+					BOOLEAN_INPUTS.get("run_executable_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -771,12 +939,12 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> result;
 
 					std::string run_executable_command__path =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"run_executable_command", "path"
 						);
 
 					bool run_executable_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get(
+						BOOLEAN_INPUTS.get(
 							"run_executable_command", "is_verbose"
 						);
 
@@ -794,7 +962,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						CLI_LOGGER.log_running(
+						LOGGER.log_running(
 							result,
 							"qlogicae_cli run executable",
 							console_log_configurations_1
@@ -802,7 +970,7 @@ namespace QLogicaeCLI
 
 						if (!std::filesystem::exists(run_executable_command__path))
 						{
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Executable does not exist",
 								QLogicaeCore::DEFAULT_WARNING_LOG_CONFIGURATIONS
@@ -811,7 +979,7 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						CLI_LOGGER.log(
+						LOGGER.log(
 							result,
 							"Executing '" + run_executable_command__path + "'",
 							console_log_configurations_2
@@ -820,7 +988,7 @@ namespace QLogicaeCLI
 							run_executable_command__path.c_str()
 						);
 
-						CLI_LOGGER.log_complete(
+						LOGGER.log_complete(
 							result,
 							"qlogicae_cli run executable",
 							console_log_configurations_1
@@ -849,13 +1017,13 @@ namespace QLogicaeCLI
 
 			run_script_command
 				->add_option("--command",
-					CLI_STRING_INPUTS.get("run_script_command", "command"),
+					STRING_INPUTS.get("run_script_command", "command"),
 					"Selected qlogicae script command")
 				->required();
 
 			run_script_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("run_script_command", "is_verbose"),
+					BOOLEAN_INPUTS.get("run_script_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -866,12 +1034,12 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> result;
 
 					std::string run_script_command__command =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"run_script_command", "command"
 						);
 
 					bool run_script_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get(
+						BOOLEAN_INPUTS.get(
 							"run_script_command", "is_verbose"
 						);
 
@@ -889,7 +1057,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						CLI_LOGGER.log_running(
+						LOGGER.log_running(
 							result,
 							"qlogicae_cli run script",
 							console_log_configurations_1
@@ -910,7 +1078,7 @@ namespace QLogicaeCLI
 
 						if (!scripts.contains(run_script_command__command))
 						{
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Script '" + run_script_command__command +
 								"' does not exist",
@@ -920,7 +1088,7 @@ namespace QLogicaeCLI
 							return false;
 						}
 
-						CLI_LOGGER.log(
+						LOGGER.log(
 							result,
 							"Executing '" + script_command + "'",
 							console_log_configurations_2
@@ -929,7 +1097,7 @@ namespace QLogicaeCLI
 							script_command.c_str()
 						);
 
-						CLI_LOGGER.log_complete(
+						LOGGER.log_complete(
 							result,
 							"qlogicae_cli run script",
 							console_log_configurations_1
@@ -984,21 +1152,21 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--project",
-					CLI_STRING_INPUTS.get("build_vs2022_command", "project"),
+					STRING_INPUTS.get("build_vs2022_command", "project"),
 					"The selected visual studio 2022 project. Defaults to the starting project"
 				)
 				->default_val("");
 
 			build_vs2022_command
 				->add_option("--environment",
-					CLI_STRING_INPUTS.get("build_vs2022_command", "environment"),
+					STRING_INPUTS.get("build_vs2022_command", "environment"),
 					"The selected qlogicae environment type"
 				)
 				->default_val("development");
 
 			build_vs2022_command
 				->add_option("--architecture",
-					CLI_STRING_INPUTS.get("build_vs2022_command", "architecture"),
+					STRING_INPUTS.get("build_vs2022_command", "architecture"),
 					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
@@ -1008,7 +1176,7 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--build-type",
-					CLI_STRING_INPUTS.get("build_vs2022_command", "build_type"),
+					STRING_INPUTS.get("build_vs2022_command", "build_type"),
 					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
@@ -1018,7 +1186,7 @@ namespace QLogicaeCLI
 
 			build_vs2022_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("build_vs2022_command", "is_verbose"),
+					BOOLEAN_INPUTS.get("build_vs2022_command", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -1029,27 +1197,27 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> result;
 
 					std::string build_vs2022_command__project =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"build_vs2022_command", "project"
 						);
 
 					std::string build_vs2022_command__environment =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"build_vs2022_command", "environment"
 						);
 
 					std::string build_vs2022_command__architecture =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"build_vs2022_command", "architecture"
 						);
 
 					std::string build_vs2022_command__build_type =
-						CLI_STRING_INPUTS.get(
+						STRING_INPUTS.get(
 							"build_vs2022_command", "build_type"
 						);
 
 					bool build_vs2022_command__is_verbose =
-						CLI_BOOLEAN_INPUTS.get(
+						BOOLEAN_INPUTS.get(
 							"build_vs2022_command", "is_verbose"
 						);
 
@@ -1067,7 +1235,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						CLI_LOGGER.log_running(
+						LOGGER.log_running(
 							result,
 							"qlogicae_cli build vs2022",
 							console_log_configurations_1
@@ -1083,7 +1251,7 @@ namespace QLogicaeCLI
 								.get_string(
 									{ "application", "startup_project_name" }
 								);
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Switching to Startup Project '" + build_vs2022_command__project + "'",
 								console_log_configurations_2
@@ -1092,7 +1260,7 @@ namespace QLogicaeCLI
 
 						if (!std::filesystem::exists(build_vs2022_command__project))
 						{
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Selected visual studio 2022 project does not exist",
 								QLogicaeCore::DEFAULT_WARNING_LOG_CONFIGURATIONS
@@ -1115,7 +1283,7 @@ namespace QLogicaeCLI
 								build_vs2022_command__build_type
 							);
 
-						CLI_LOGGER.log(
+						LOGGER.log(
 							result,
 							"Executing '" + command + "'",
 							console_log_configurations_2
@@ -1124,7 +1292,7 @@ namespace QLogicaeCLI
 							command.c_str()
 						);
 
-						CLI_LOGGER.log_complete(
+						LOGGER.log_complete(
 							result,
 							"qlogicae_cli build vs2022",
 							console_log_configurations_1
@@ -1178,21 +1346,21 @@ namespace QLogicaeCLI
 
 			deploy_vs2022_command
 				->add_option("--project",
-					CLI_STRING_INPUTS.get("deploy_vs2022", "project"),
+					STRING_INPUTS.get("deploy_vs2022", "project"),
 					"The selected visual studio 2022 project. Defaults to the startup project"
 					)
 					->default_val("");
 
 			deploy_vs2022_command
 				->add_option("--environment",
-					CLI_STRING_INPUTS.get("deploy_vs2022", "environment"),
+					STRING_INPUTS.get("deploy_vs2022", "environment"),
 					"The selected qlogicae environment type"
 					)
 					->default_val("release");
 
 			deploy_vs2022_command
 				->add_option("--architecture",
-					CLI_STRING_INPUTS.get("deploy_vs2022", "architecture"),
+					STRING_INPUTS.get("deploy_vs2022", "architecture"),
 					"The visual studio 2022 project's instruction architecture"
 					)
 					->check(CLI::IsMember(
@@ -1202,7 +1370,7 @@ namespace QLogicaeCLI
 
 			deploy_vs2022_command
 				->add_option("--build-type",
-					CLI_STRING_INPUTS.get("deploy_vs2022", "build_type"),
+					STRING_INPUTS.get("deploy_vs2022", "build_type"),
 					"The visual studio 2022 project's build type"
 					)
 					->check(CLI::IsMember(
@@ -1212,7 +1380,7 @@ namespace QLogicaeCLI
 
 			deploy_vs2022_command
 				->add_option("--installer-type",
-					CLI_STRING_INPUTS.get("deploy_vs2022", "installer_type"),
+					STRING_INPUTS.get("deploy_vs2022", "installer_type"),
 					"The selected input folder path")
 					->check(CLI::IsMember(
 						UTILITIES.INSTALLER_TYPES
@@ -1221,20 +1389,20 @@ namespace QLogicaeCLI
 
 			deploy_vs2022_command
 				->add_option("--output-folder-path",
-					CLI_STRING_INPUTS.get("deploy_vs2022", "output_folder_path"),
+					STRING_INPUTS.get("deploy_vs2022", "output_folder_path"),
 					"The selected output folder path of the installer"
 					)
 					->default_val("");
 
 			deploy_vs2022_command
 				->add_option("--is-build-enabled",
-					CLI_BOOLEAN_INPUTS.get("deploy_vs2022", "is_build_enabled"),
+					BOOLEAN_INPUTS.get("deploy_vs2022", "is_build_enabled"),
 				"Enables or disables build")
 				->default_val(true);
 
 			deploy_vs2022_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("deploy_vs2022", "is_verbose"),
+					BOOLEAN_INPUTS.get("deploy_vs2022", "is_verbose"),
 				"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -1245,28 +1413,28 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> result;
 
 					std::string deploy_vs2022__project =
-						CLI_STRING_INPUTS.get("deploy_vs2022", "project");
+						STRING_INPUTS.get("deploy_vs2022", "project");
 
 					std::string deploy_vs2022__environment =
-						CLI_STRING_INPUTS.get("deploy_vs2022", "environment");
+						STRING_INPUTS.get("deploy_vs2022", "environment");
 
 					std::string deploy_vs2022__architecture =
-						CLI_STRING_INPUTS.get("deploy_vs2022", "architecture");
+						STRING_INPUTS.get("deploy_vs2022", "architecture");
 
 					std::string deploy_vs2022__build_type =
-						CLI_STRING_INPUTS.get("deploy_vs2022", "build_type");
+						STRING_INPUTS.get("deploy_vs2022", "build_type");
 
 					std::string deploy_vs2022__installer_type =
-						CLI_STRING_INPUTS.get("deploy_vs2022", "installer_type");
+						STRING_INPUTS.get("deploy_vs2022", "installer_type");
 
 					std::string deploy_vs2022__output_folder_path =
-						CLI_STRING_INPUTS.get("deploy_vs2022", "output_folder_path");
+						STRING_INPUTS.get("deploy_vs2022", "output_folder_path");
 
 					bool deploy_vs2022__is_build_enabled =
-						CLI_BOOLEAN_INPUTS.get("deploy_vs2022", "is_build_enabled");
+						BOOLEAN_INPUTS.get("deploy_vs2022", "is_build_enabled");
 
 					bool deploy_vs2022__is_verbose =
-						CLI_BOOLEAN_INPUTS.get("deploy_vs2022", "is_verbose");
+						BOOLEAN_INPUTS.get("deploy_vs2022", "is_verbose");
 
 					QLogicaeCore::LogConfigurations console_log_configurations_1 =
 					{
@@ -1282,7 +1450,7 @@ namespace QLogicaeCLI
 
 					try
 					{
-						CLI_LOGGER.log_running(
+						LOGGER.log_running(
 							result,
 							"qlogicae_cli deploy vs2022",
 							console_log_configurations_1
@@ -1290,7 +1458,7 @@ namespace QLogicaeCLI
 
 						if (deploy_vs2022__project.empty())
 						{
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Using startup project",
 								console_log_configurations_2
@@ -1307,7 +1475,7 @@ namespace QLogicaeCLI
 
 						if (deploy_vs2022__output_folder_path.empty())
 						{
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Using default release folder path",
 								console_log_configurations_2
@@ -1325,7 +1493,7 @@ namespace QLogicaeCLI
 
 						if (!std::filesystem::exists(deploy_vs2022__project))
 						{
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Selected visual studio 2022 project does not exist",
 								console_log_configurations_2
@@ -1342,7 +1510,7 @@ namespace QLogicaeCLI
 
 						if (deploy_vs2022__is_build_enabled)
 						{
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Building project",
 								console_log_configurations_2
@@ -1360,7 +1528,7 @@ namespace QLogicaeCLI
 
 						if (deploy_vs2022__installer_type == UTILITIES.INSTALLER_TYPES[0])
 						{
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								"Deploying project",
 								console_log_configurations_2
@@ -1376,7 +1544,7 @@ namespace QLogicaeCLI
 							)).c_str());
 						}
 
-						CLI_LOGGER.log(
+						LOGGER.log(
 							result,
 							"Updating ids",
 							console_log_configurations_2
@@ -1427,7 +1595,7 @@ namespace QLogicaeCLI
 							QLogicaeCore::GENERATOR.random_uuid4()
 						);
 
-						CLI_LOGGER.log_complete(
+						LOGGER.log_complete(
 							result,
 							"qlogicae_cli deploy vs2022",
 							console_log_configurations_1
@@ -1483,13 +1651,13 @@ namespace QLogicaeCLI
 			setup_windows_registry_command
 				->add_option(
 					"--environment",
-					CLI_STRING_INPUTS.get("setup_windows_registry", "environment"),
+					STRING_INPUTS.get("setup_windows_registry", "environment"),
 					"HKCU Selected environment type")
 				->default_val("development");
 
 			setup_windows_registry_command
 				->add_option("--is-verbose",
-					CLI_BOOLEAN_INPUTS.get("setup_windows_registry", "is_verbose"),
+					BOOLEAN_INPUTS.get("setup_windows_registry", "is_verbose"),
 				"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -1500,10 +1668,10 @@ namespace QLogicaeCLI
 						QLogicaeCore::Result<void> result;
 
 						std::string setup_windows_registry__environment =
-							CLI_STRING_INPUTS.get("setup_windows_registry", "environment");
+							STRING_INPUTS.get("setup_windows_registry", "environment");
 
 						bool setup_windows_registry__is_verbose =
-							CLI_BOOLEAN_INPUTS.get("setup_windows_registry", "is_verbose");
+							BOOLEAN_INPUTS.get("setup_windows_registry", "is_verbose");
 
 						QLogicaeCore::LogConfigurations console_log_configurations_1 =
 						{
@@ -1519,7 +1687,7 @@ namespace QLogicaeCLI
 
 						try
 						{
-							CLI_LOGGER.log_running(
+							LOGGER.log_running(
 								result,
 								"qlogicae_cli windows registry",
 								console_log_configurations_1
@@ -1533,7 +1701,7 @@ namespace QLogicaeCLI
 									setup_windows_registry__environment
 								);
 
-							CLI_LOGGER.log(
+							LOGGER.log(
 								result,
 								command,
 								console_log_configurations_2
@@ -1541,7 +1709,7 @@ namespace QLogicaeCLI
 
 							system(command.c_str());
 
-							CLI_LOGGER.log_complete(
+							LOGGER.log_complete(
 								result,
 								"qlogicae_cli windows registry",
 								console_log_configurations_1
@@ -1576,31 +1744,31 @@ namespace QLogicaeCLI
 
 				setup_vs2022_application_command
 					->add_option("--enable-property-setup",
-						CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_property_setup"),
+						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_property_setup"),
 						"Enables or disables complete setup")
 					->default_val(true);
 
 				setup_vs2022_application_command
 					->add_option("--enable-full-property-setup",
-						CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_full_property_setup"),
+						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_full_property_setup"),
 						"Enables or disables complete setup")
 					->default_val(false);
 
 				setup_vs2022_application_command
 					->add_option("--enable-filesystem-setup",
-						CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_filesystem_setup"),
+						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_filesystem_setup"),
 						"Enables or disables complete setup")
 					->default_val(true);
 
 				setup_vs2022_application_command
 					->add_option("--enable-id-setup",
-						CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_id_setup"),
+						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_id_setup"),
 						"Enables or disables complete setup")
 					->default_val(true);
 
 				setup_vs2022_application_command
 					->add_option("--is-verbose",
-						CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "is_verbose"),
+						BOOLEAN_INPUTS.get("setup_vs2022_application", "is_verbose"),
 						"Enables or disables verbose console logging")
 					->default_val(false);
 
@@ -1611,19 +1779,19 @@ namespace QLogicaeCLI
 						QLogicaeCore::Result<void> result;
 
 						bool setup_vs2022_application__enable_property_setup =
-							CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_property_setup");
+							BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_property_setup");
 
 						bool setup_vs2022_application__enable_full_property_setup =
-							CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_full_property_setup");
+							BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_full_property_setup");
 						
 						bool setup_vs2022_application__enable_filesystem_setup =
-							CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_filesystem_setup");
+							BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_filesystem_setup");
 						
 						bool setup_vs2022_application__enable_id_setup =
-							CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_id_setup");
+							BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_id_setup");
 						
 						bool setup_vs2022_application__is_verbose =
-							CLI_BOOLEAN_INPUTS.get("setup_vs2022_application", "is_verbose");
+							BOOLEAN_INPUTS.get("setup_vs2022_application", "is_verbose");
 
 						QLogicaeCore::LogConfigurations console_log_configurations_1 =
 						{
@@ -1639,7 +1807,7 @@ namespace QLogicaeCLI
 
 						try
 						{
-							CLI_LOGGER.log_running(
+							LOGGER.log_running(
 								result,
 								"qlogicae_cli setup vs2022 application",
 								console_log_configurations_1
@@ -1888,7 +2056,7 @@ namespace QLogicaeCLI
 								);
 							}
 
-							CLI_LOGGER.log_complete(
+							LOGGER.log_complete(
 								result,
 								"qlogicae_cli setup vs2022 application",
 								console_log_configurations_1
@@ -1917,7 +2085,7 @@ namespace QLogicaeCLI
 
 				setup_vs2022_ids_command
 					->add_option("--is-verbose",
-						CLI_BOOLEAN_INPUTS.get("setup_vs2022_ids", "is_verbose"),
+						BOOLEAN_INPUTS.get("setup_vs2022_ids", "is_verbose"),
 						"Enables or disables verbose console logging")
 					->default_val(false);
 
@@ -1928,7 +2096,7 @@ namespace QLogicaeCLI
 						QLogicaeCore::Result<void> result;
 
 						bool setup_vs2022_ids__is_verbose =
-							CLI_BOOLEAN_INPUTS.get("setup_vs2022_ids", "is_verbose");
+							BOOLEAN_INPUTS.get("setup_vs2022_ids", "is_verbose");
 
 						QLogicaeCore::LogConfigurations console_log_configurations_1 =
 						{
@@ -1944,7 +2112,7 @@ namespace QLogicaeCLI
 
 						try
 						{
-							CLI_LOGGER.log_running(
+							LOGGER.log_running(
 								result,
 								"qlogicae_cli setup vs2022 ids",
 								console_log_configurations_1
@@ -2005,7 +2173,7 @@ namespace QLogicaeCLI
 								QLogicaeCore::GENERATOR.random_uuid4()
 							);
 
-							CLI_LOGGER.log_complete(
+							LOGGER.log_complete(
 								result,
 								"qlogicae_cli setup vs2022 ids",
 								console_log_configurations_1

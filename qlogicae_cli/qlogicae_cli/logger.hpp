@@ -6,7 +6,7 @@
 
 namespace QLogicaeCLI
 {	
-	class CLILogger
+	class Logger
 	{
 	public:
 		bool setup();
@@ -26,6 +26,26 @@ namespace QLogicaeCLI
 		);
 
 		void setup_async(
+			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+		);
+
+		bool terminate();
+
+		std::future<bool> terminate_async();
+
+		void terminate_async(
+			QLogicaeCore::Result<std::future<void>>& result
+		);
+
+		void terminate(
+			QLogicaeCore::Result<void>& result
+		);
+
+		std::future<bool> terminate_async(
+			const std::function<void(const bool& result)>& callback
+		);
+
+		void terminate_async(
 			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 		);
 
@@ -149,34 +169,34 @@ namespace QLogicaeCLI
 				QLogicaeCore::DEFAULT_LOG_CONFIGURATIONS
 		);
 
-		static CLILogger& get_instance();
+		static Logger& get_instance();
 
 		static void get_instance(
-			QLogicaeCore::Result<CLILogger*>& result
+			QLogicaeCore::Result<Logger*>& result
 		);
 
 	protected:
-		CLILogger();
+		Logger();
 
-		~CLILogger();
+		~Logger();
 
-		CLILogger(
-			const CLILogger& instance
+		Logger(
+			const Logger& instance
 		) = delete;
 
-		CLILogger(
-			CLILogger&& instance
+		Logger(
+			Logger&& instance
 		) noexcept = delete;
 
-		CLILogger& operator = (
-			CLILogger&& instance
+		Logger& operator = (
+			Logger&& instance
 		) = delete;
 
-		CLILogger& operator = (
-			const CLILogger& instance
+		Logger& operator = (
+			const Logger& instance
 		) = delete;
 	};
 
-	static inline CLILogger& CLI_LOGGER =
-		CLILogger::get_instance();
+	static inline Logger& LOGGER =
+		Logger::get_instance();
 }

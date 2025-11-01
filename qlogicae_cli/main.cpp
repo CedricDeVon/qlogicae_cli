@@ -5,18 +5,11 @@
 int main(int argc, char** argv)
 {
     try
-    {        
-        QLogicaeCLI::Application& cli_application =
-            QLogicaeCLI::Application::get_instance();
-
-        const bool is_setup_successful =
-            cli_application.setup(
-                argc,
-                argv
-            );
-        if (!is_setup_successful)
+    {   
+        bool is_safe = QLogicaeCLI::APPLICATION.setup(argc, argv);
+        if (!is_safe)
         {
-            QLogicaeCore::LOGGER.handle_exception_async(
+            QLogicaeCore::LOGGER.handle_exception(
                 "main()",
                 "Setup failed"
             );
@@ -24,17 +17,33 @@ int main(int argc, char** argv)
             return EXIT_FAILURE;
         }
 
-        const bool cli_application_parse_result =
-            (cli_application.parse()) ?
-                EXIT_SUCCESS :
-                EXIT_FAILURE;        
+        is_safe = QLogicaeCLI::APPLICATION.parse();
+        if (!is_safe)
+        {
+            QLogicaeCore::LOGGER.handle_exception(
+                "main()",
+                "Parsing failed"
+            );
 
-        QLogicaeCore::UTILITIES.BOOST_ASIO_POOL.join();
-        return cli_application_parse_result;
+            return EXIT_FAILURE;
+        }
+
+        is_safe = QLogicaeCLI::APPLICATION.terminate();
+        if (!is_safe)
+        {
+            QLogicaeCore::LOGGER.handle_exception(
+                "main()",
+                "Termination failed"
+            );
+
+            return EXIT_FAILURE;
+        }
+
+        return EXIT_SUCCESS;
     }
     catch (const std::exception& exception)
     {
-        QLogicaeCore::LOGGER.handle_exception_async(
+        QLogicaeCore::LOGGER.handle_exception(
             "main()",
             exception.what()
         );

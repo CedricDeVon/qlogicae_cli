@@ -1,10 +1,10 @@
 #pragma once
 
 #include "utilities.hpp"
-#include "cli_logger.hpp"
-#include "cli_file_system.hpp"
-#include "cli_transformer.hpp"
-#include "cli_input_cache.hpp"
+#include "logger.hpp"
+#include "file_system.hpp"
+#include "transformer.hpp"
+#include "input_cache.hpp"
 
 #include "qlogicae_core/logger.hpp"
 #include "qlogicae_core/cli_io.hpp"
@@ -53,6 +53,26 @@ namespace QLogicaeCLI
 			char** argv
 		);
 
+		bool terminate();
+
+		std::future<bool> terminate_async();
+
+		void terminate_async(
+			QLogicaeCore::Result<std::future<void>>& result
+		);
+
+		void terminate(
+			QLogicaeCore::Result<void>& result
+		);
+
+		std::future<bool> terminate_async(
+			const std::function<void(const bool& result)>& callback
+		);
+
+		void terminate_async(
+			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+		);
+
 		bool parse();
 
 		static Application& get_instance();
@@ -96,6 +116,9 @@ namespace QLogicaeCLI
 
 		bool _setup_deploy_command();
 	};
+
+	inline static Application& APPLICATION =
+		Application::get_instance();
 }
 
 /*

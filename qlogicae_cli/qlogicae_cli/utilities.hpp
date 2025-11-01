@@ -318,6 +318,26 @@ namespace QLogicaeCLI
             const std::function<void(QLogicaeCore::Result<void>& result)>& callback
         );
 
+        bool terminate();
+
+        std::future<bool> terminate_async();
+
+        void terminate_async(
+            QLogicaeCore::Result<std::future<void>>& result
+        );
+
+        void terminate(
+            QLogicaeCore::Result<void>& result
+        );
+
+        std::future<bool> terminate_async(
+            const std::function<void(const bool& result)>& callback
+        );
+
+        void terminate_async(
+            const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+        );
+
         static Utilities& get_instance();
 
         static void get_instance(

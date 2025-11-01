@@ -6,7 +6,7 @@
 
 namespace QLogicaeCLI
 {
-	class CLITransformer
+	class Transformer
 	{
 	public:
 		bool setup();
@@ -26,6 +26,26 @@ namespace QLogicaeCLI
 		);
 
 		void setup_async(
+			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
+		);
+
+		bool terminate();
+
+		std::future<bool> terminate_async();
+
+		void terminate_async(
+			QLogicaeCore::Result<std::future<void>>& result
+		);
+
+		void terminate(
+			QLogicaeCore::Result<void>& result
+		);
+
+		std::future<bool> terminate_async(
+			const std::function<void(const bool& result)>& callback
+		);
+
+		void terminate_async(
 			const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 		);
 
@@ -68,34 +88,34 @@ namespace QLogicaeCLI
 			const bool& is_enabled = true
 		);
 
-		static CLITransformer& get_instance();
+		static Transformer& get_instance();
 
 		static void get_instance(
-			QLogicaeCore::Result<CLITransformer*>& result
+			QLogicaeCore::Result<Transformer*>& result
 		);
 
 	protected:
-		CLITransformer();
+		Transformer();
 
-		~CLITransformer();
+		~Transformer();
 
-		CLITransformer(
-			const CLITransformer& instance
+		Transformer(
+			const Transformer& instance
 		) = delete;
 
-		CLITransformer(
-			CLITransformer&& instance
+		Transformer(
+			Transformer&& instance
 		) noexcept = delete;
 
-		CLITransformer& operator = (
-			CLITransformer&& instance
+		Transformer& operator = (
+			Transformer&& instance
 		) = delete;
 
-		CLITransformer& operator = (
-			const CLITransformer& instance
+		Transformer& operator = (
+			const Transformer& instance
 		) = delete;
 	};
 
-	static inline CLITransformer& CLI_TRANSFORMER =
-		CLITransformer::get_instance();
+	static inline Transformer& TRANSFORMER =
+		Transformer::get_instance();
 }

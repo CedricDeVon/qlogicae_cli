@@ -1,33 +1,33 @@
 #pragma once
 
-#include "cli_transformer.hpp"
+#include "transformer.hpp"
 
 #include "qlogicae_core/result.hpp"
 
 namespace QLogicaeCLI
 {
 	template <typename Type>
-	class CLIInputCache
+	class InputCache
 	{
 	public:
-		CLIInputCache();
+		InputCache();
 
-		~CLIInputCache();
+		~InputCache();
 
-		CLIInputCache(
-			const CLIInputCache& instance
+		InputCache(
+			const InputCache& instance
 		) = delete;
 
-		CLIInputCache(
-			CLIInputCache&& instance
+		InputCache(
+			InputCache&& instance
 		) noexcept = delete;
 
-		CLIInputCache& operator = (
-			CLIInputCache&& instance
+		InputCache& operator = (
+			InputCache&& instance
 		) = delete;
 
-		CLIInputCache& operator = (
-			const CLIInputCache& instance
+		InputCache& operator = (
+			const InputCache& instance
 		) = delete;
 
 		bool setup();
@@ -85,19 +85,19 @@ namespace QLogicaeCLI
 	};
 
 	template <typename Type>
-	CLIInputCache<Type>::CLIInputCache()
+	InputCache<Type>::InputCache()
 	{
 
 	}
 
 	template <typename Type>
-	CLIInputCache<Type>::~CLIInputCache()
+	InputCache<Type>::~InputCache()
 	{
 
 	}
 
 	template <typename Type>
-	bool CLIInputCache<Type>::setup()
+	bool InputCache<Type>::setup()
 	{
 		try
 		{
@@ -110,7 +110,7 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception(
-				"CLIInputCache<Type>::setup()",
+				"InputCache<Type>::setup()",
 				exception.what()
 			);
 
@@ -119,7 +119,7 @@ namespace QLogicaeCLI
 	}
 
 	template <typename Type>
-	void CLIInputCache<Type>::setup(
+	void InputCache<Type>::setup(
 		QLogicaeCore::Result<void>& result
 	)
 	{
@@ -128,7 +128,7 @@ namespace QLogicaeCLI
 
 
 	template <typename Type>
-	std::future<bool> CLIInputCache<Type>::setup_async()
+	std::future<bool> InputCache<Type>::setup_async()
 	{
 		return std::async(
 			std::launch::async, [this]() -> bool
@@ -139,7 +139,7 @@ namespace QLogicaeCLI
 	}
 
 	template <typename Type>
-	void CLIInputCache<Type>::setup_async(
+	void InputCache<Type>::setup_async(
 		QLogicaeCore::Result<std::future<void>>& result
 	)
 	{
@@ -157,13 +157,13 @@ namespace QLogicaeCLI
 	}
 
 	template <typename Type>
-	bool CLIInputCache<Type>::clear()
+	bool InputCache<Type>::clear()
 	{
 		return true;
 	}
 
 	template <typename Type>
-	void CLIInputCache<Type>::clear(
+	void InputCache<Type>::clear(
 		QLogicaeCore::Result<void>& result
 	)
 	{
@@ -173,14 +173,14 @@ namespace QLogicaeCLI
 	}
 
 	template <typename Type>
-	Type& CLIInputCache<Type>::get(
+	Type& InputCache<Type>::get(
 		const std::string command_path,
 		const std::string command_key
 	)
 	{
 		return _inputs
 		[
-			CLI_TRANSFORMER.to_input_command_path(
+			TRANSFORMER.to_input_command_path(
 				command_path,
 				command_key
 			)
@@ -188,7 +188,7 @@ namespace QLogicaeCLI
 	}
 
 	template <typename Type>
-	void CLIInputCache<Type>::get(
+	void InputCache<Type>::get(
 		QLogicaeCore::Result<Type&>& result,
 		const std::string command_path,
 		const std::string command_key
@@ -197,7 +197,7 @@ namespace QLogicaeCLI
 		QLogicaeCore::Result<std::string>
 			input_command_path_result;
 
-		CLI_TRANSFORMER.to_input_command_path(
+		TRANSFORMER.to_input_command_path(
 			input_command_path_result,
 			command_path,
 			command_key
@@ -209,7 +209,7 @@ namespace QLogicaeCLI
 	}
 
 	template <typename Type>
-	bool CLIInputCache<Type>::set(
+	bool InputCache<Type>::set(
 		const std::string command_path,
 		const std::string command_key,
 		const Type& value
@@ -217,7 +217,7 @@ namespace QLogicaeCLI
 	{
 		_inputs
 		[
-			CLI_TRANSFORMER.to_input_command_path(
+			TRANSFORMER.to_input_command_path(
 				command_path,
 				command_key
 			)
@@ -227,7 +227,7 @@ namespace QLogicaeCLI
 	}
 
 	template <typename Type>
-	void CLIInputCache<Type>::set(
+	void InputCache<Type>::set(
 		QLogicaeCore::Result<void>& result,
 		const std::string command_path,
 		const std::string command_key,
@@ -237,7 +237,7 @@ namespace QLogicaeCLI
 		QLogicaeCore::Result<std::string>
 			input_command_path_result;
 
-		CLI_TRANSFORMER.to_input_command_path(
+		TRANSFORMER.to_input_command_path(
 			input_command_path_result,
 			command_path,
 			command_key
@@ -245,7 +245,7 @@ namespace QLogicaeCLI
 
 		_inputs
 		[
-			CLI_TRANSFORMER.to_input_command_path(
+			TRANSFORMER.to_input_command_path(
 				input_command_path_result,
 				command_path,
 				command_key
@@ -255,11 +255,11 @@ namespace QLogicaeCLI
 		result.set_to_good_status_without_value();
 	}
 
-	static inline CLIInputCache<bool> CLI_BOOLEAN_INPUTS;
+	static inline InputCache<bool> BOOLEAN_INPUTS;
 
-	static inline CLIInputCache<size_t> CLI_SIZE_T_INPUTS;
+	static inline InputCache<size_t> SIZE_T_INPUTS;
 
-	static inline CLIInputCache<double> CLI_DOUBLE_INPUTS;
+	static inline InputCache<double> DOUBLE_INPUTS;
 
-	static inline CLIInputCache<std::string> CLI_STRING_INPUTS;
+	static inline InputCache<std::string> STRING_INPUTS;
 }
