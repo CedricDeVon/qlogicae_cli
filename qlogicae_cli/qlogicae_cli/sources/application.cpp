@@ -157,7 +157,6 @@ namespace QLogicaeCLI
 		/*					
 			!_setup_get_command() ||
 			!_setup_set_command() ||
-			!_setup_generate_command() ||
 			!_setup_encrypt_command() ||
 			!_setup_decrypt_command() ||
 			!_setup_hash_command() ||
@@ -169,7 +168,8 @@ namespace QLogicaeCLI
 			!_setup_view_command() ||
 			!_setup_build_command() ||
 			!_setup_run_command() ||
-			!_setup_deploy_command()
+			!_setup_deploy_command() ||
+			!_setup_generate_command()
 		)
 		{
 			return result.set_to_bad_status_without_value();
@@ -2207,13 +2207,11 @@ namespace QLogicaeCLI
 			return false;
 		}
 	}
-}
 
-
-
-/*
 	bool Application::_setup_generate_command()
 	{
+		QLogicaeCore::Result<void> result;
+
 		try
 		{
 			CLI::App* generate_command =
@@ -2230,26 +2228,26 @@ namespace QLogicaeCLI
 
 			generate_uuid4_command
 				->add_option("--count",
-					_size_t_inputs["generate_uuid4__count"],
+					SIZE_T_INPUTS.get("generate_uuid4", "count"),
 					"The number of generated uuid4s")
-				->check(CLI::PositiveNumber)
-				->default_val(1);
+					->check(CLI::PositiveNumber)
+					->default_val(1);
 
 			generate_uuid4_command
 				->add_option("--output-file-path",
-					_string_inputs["generate_uuid4__output_file_path"],
+					STRING_INPUTS.get("generate_uuid4", "output_file_path"),
 					"Enabled with the option --is-file-output-enabled='true'")
-				->default_val("");
+					->default_val("");
 
 			generate_uuid4_command
 				->add_option("--is-file-output-enabled",
-					_boolean_inputs["generate_uuid4__is_file_output_enabled"],
+					BOOLEAN_INPUTS.get("generate_uuid4", "is_file_output_enabled"),
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 
 			generate_uuid4_command
 				->add_option("--is-verbose",
-					_boolean_inputs["generate_uuid4__is_verbose"],
+					BOOLEAN_INPUTS.get("generate_uuid4", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -2257,22 +2255,41 @@ namespace QLogicaeCLI
 				generate_uuid4_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+
 					size_t generate_uuid4__count =
-						_size_t_inputs["generate_uuid4__count"];
+						SIZE_T_INPUTS.get("generate_uuid4", "count");
+
 					std::string generate_uuid4__output_file_path =
-						_string_inputs["generate_uuid4__output_file_path"];
+						STRING_INPUTS.get("generate_uuid4", "output_file_path");
+
 					bool generate_uuid4__is_file_output_enabled =
-						_boolean_inputs["generate_uuid4__is_file_output_enabled"];
-					bool generate_uuid4__is_verbose =
-						_boolean_inputs["generate_uuid4__is_verbose"];
+						BOOLEAN_INPUTS.get("generate_uuid4", "is_file_output_enabled");
+
+						bool generate_uuid4__is_verbose =
+							BOOLEAN_INPUTS.get("generate_uuid4", "is_verbose");
+
+					QLogicaeCore::LogConfigurations console_log_configurations_1 =
+					{
+						.is_console_enabled = generate_uuid4__is_verbose,
+						.is_console_format_enabled = generate_uuid4__is_verbose
+					};
+
+					QLogicaeCore::LogConfigurations console_log_configurations_2 =
+					{
+						.is_console_enabled = true,
+						.is_console_format_enabled = generate_uuid4__is_verbose
+					};
 
 					try
 					{
-						UTILITIES.log_running_async(
-							generate_uuid4__is_verbose
+						LOGGER.log_running(
+							result,
+							"qlogicae_cli generate uud4",
+							console_log_configurations_1
 						);
 
-						std::string output_string = "";
+						std::string output_string = "\n";
 						size_t index_1, size_a = generate_uuid4__count - 1;
 
 						for (index_1 = 0;
@@ -2286,32 +2303,37 @@ namespace QLogicaeCLI
 							}
 						}
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (generate_uuid4__is_file_output_enabled)
 						{
-							UTILITIES.TEXT_FILE_IO.set_file_path(
-								UTILITIES.setup_result_output_file(
+							QLogicaeCore::TEXT_FILE_IO.set_file_path(
+								FILE_SYSTEM.setup_result_output_file(
 									generate_uuid4__output_file_path,
 									"generate\\uuid4",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
-							UTILITIES.TEXT_FILE_IO.write_async(output_string);
+							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_async(
-							generate_uuid4__is_verbose
+						LOGGER.log_complete(
+							result,
+							"qlogicae_cli generate uud4",
+							console_log_configurations_1
 						);
 
 						return true;
 					}
 					catch (const std::exception& exception)
 					{
-						UTILITIES.log_exception_async(
-							std::string("Exception at Application::_setup_generate_command(): ") +
+						QLogicaeCore::LOGGER.handle_exception(
+							result,
+							"QLogicaeCLI::Application::_setup_generate_command()",
 							exception.what()
 						);
 
@@ -2325,36 +2347,42 @@ namespace QLogicaeCLI
 					"string",
 					"Random string generation"
 				);
+			
 			generate_string_command
 				->add_option("--length",
-					_size_t_inputs["generate_string__length"],
+					SIZE_T_INPUTS.get("generate_string", "length"),
 					"The character length of each individual string output")
 				->check(CLI::PositiveNumber)
 				->default_val(32);
+			
 			generate_string_command
 				->add_option("--count",
-					_size_t_inputs["generate_string__count"],
+					SIZE_T_INPUTS.get("generate_string", "count"),
 					"The number of generated string outputs")
 				->check(CLI::PositiveNumber)
 				->default_val(1);
+			
 			generate_string_command
 				->add_option("--character-set",
-					_string_inputs["generate_string__character_set"],
+					STRING_INPUTS.get("generate_string", "character_set"),
 					"The string of characters where each individual character can possibly be found within each string output")
 				->default_val("");
+			
 			generate_string_command
 				->add_option("--output-file-path",
-					_string_inputs["generate_string__output_file_path"],
+					STRING_INPUTS.get("generate_string", "output_file_path"),
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
+			
 			generate_string_command
 				->add_option("--is-file-output-enabled",
-					_boolean_inputs["generate_string__is_file_output_enabled"],
+					BOOLEAN_INPUTS.get("generate_string", "is_file_output_enabled"),
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
+
 			generate_string_command
 				->add_option("--is-verbose",
-					_boolean_inputs["generate_string__is_verbose"],
+					BOOLEAN_INPUTS.get("generate_string", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
@@ -2362,27 +2390,48 @@ namespace QLogicaeCLI
 				generate_string_command,
 				[this]() -> bool
 				{
+					QLogicaeCore::Result<void> result;
+
 					size_t generate_string__length =
-						_size_t_inputs["generate_string__length"];
+						SIZE_T_INPUTS.get("generate_string", "length");
+
 					size_t generate_string__count =
-						_size_t_inputs["generate_string__count"];
+						SIZE_T_INPUTS.get("generate_string", "count");
+
 					std::string generate_string__output_file_path =
-						_string_inputs["generate_string__character_set"];
+						STRING_INPUTS.get("generate_string", "output_file_path");
+
 					std::string generate_string__character_set =
-						_string_inputs["generate_string__output_file_path"];
+						STRING_INPUTS.get("generate_string", "character_set");
+
 					bool generate_string__is_file_output_enabled =
-						_boolean_inputs["generate_string__is_file_output_enabled"];
+						BOOLEAN_INPUTS.get("generate_string", "is_file_output_enabled");
+
 					bool generate_string__is_verbose =
-						_boolean_inputs["generate_string__is_verbose"];
+						BOOLEAN_INPUTS.get("generate_string", "is_verbose");
+
+					QLogicaeCore::LogConfigurations console_log_configurations_1 =
+					{
+						.is_console_enabled = generate_string__is_verbose,
+						.is_console_format_enabled = generate_string__is_verbose
+					};
+
+					QLogicaeCore::LogConfigurations console_log_configurations_2 =
+					{
+						.is_console_enabled = true,
+						.is_console_format_enabled = generate_string__is_verbose
+					};
 
 					try
 					{
-						UTILITIES.log_running_async(
-							generate_string__is_verbose
+						LOGGER.log_running(
+							result,
+							"qlogicae_cli generate string",
+							console_log_configurations_1
 						);
 
 						size_t index_1, size_a = generate_string__count - 1;
-						std::string output_string = "",
+						std::string output_string = "\n",
 							character_set = (generate_string__character_set.empty()) ?
 
 							QLogicaeCore::UTILITIES.FULL_VISIBLE_ASCII_CHARACTERSET :
@@ -2402,32 +2451,37 @@ namespace QLogicaeCLI
 							}
 						}
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (generate_string__is_file_output_enabled)
 						{
-							UTILITIES.TEXT_FILE_IO.set_file_path(
-								UTILITIES.setup_result_output_file(
+							QLogicaeCore::TEXT_FILE_IO.set_file_path(
+								FILE_SYSTEM.setup_result_output_file(
 									generate_string__output_file_path,
 									"generate\\string",
 									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
-							UTILITIES.TEXT_FILE_IO.write_async(output_string);
+							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
 						}
 
-						UTILITIES.log_complete_async(
-							generate_string__is_verbose
+						LOGGER.log_complete(
+							result,
+							"qlogicae_cli generate string",
+							console_log_configurations_1
 						);
 
 						return true;
 					}
 					catch (const std::exception exception)
 					{
-						UTILITIES.log_exception_async(
-							std::string("Exception at Application::_setup_generate_command(): ") +
+						QLogicaeCore::LOGGER.handle_exception(
+							result,
+							"QLogicaeCLI::Application::_setup_generate_command()",
 							exception.what()
 						);
 
@@ -2440,12 +2494,22 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			UTILITIES.log_exception_async(std::string("Exception at Application::_setup_generate_command(): ") + exception.what());
+			QLogicaeCore::LOGGER.handle_exception(
+				result,
+				"QLogicaeCLI::Application::_setup_generate_command()",
+				exception.what()
+			);
 
 			return false;
 		}
 	}
 
+}
+
+
+
+/*
+	
 	bool Application::_setup_encrypt_command()
 	{
 		try

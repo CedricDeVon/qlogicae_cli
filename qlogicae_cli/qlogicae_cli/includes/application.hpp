@@ -115,6 +115,14 @@ namespace QLogicaeCLI
 		bool _setup_setup_command();
 
 		bool _setup_deploy_command();
+
+		bool _setup_generate_command();
+
+		bool _setup_encrypt_command();
+
+		bool _setup_decrypt_command();
+
+		bool _setup_hash_command();
 	};
 
 	inline static Application& APPLICATION =
@@ -122,15 +130,6 @@ namespace QLogicaeCLI
 }
 
 /*
-* 
-		
-bool _setup_generate_command();
-
-bool _setup_encrypt_command();
-
-bool _setup_decrypt_command();
-		
-bool _setup_hash_command();
 
 bool _setup_verify_command();
 
