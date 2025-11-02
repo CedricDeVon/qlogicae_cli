@@ -15,81 +15,87 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="qlogicae_cli.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="application.cpp">
+    <ClCompile Include="qlogicae_cli\sources\application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="globals.cpp">
+    <ClCompile Include="qlogicae_cli\sources\utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="qlogicae_cli\sources\input_cache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qlogicae_cli\sources\transformer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qlogicae_cli\sources\logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qlogicae_cli\sources\file_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qlogicae_cli\sources\assembly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qlogicae_cli\sources\all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="application.hpp">
+    <ClInclude Include="qlogicae_cli\includes\application.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qlogicae_cli.hpp">
+    <ClInclude Include="main.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="globals.hpp">
+    <ClInclude Include="qlogicae_cli\includes\utilities.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="qlogicae_cli\resources\resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qlogicae_cli\includes\input_cache.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qlogicae_cli\includes\transformer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qlogicae_cli\includes\logger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qlogicae_cli\includes\file_system.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qlogicae_cli\includes\assembly.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qlogicae_cli\includes\all.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource.aps" />
-    <None Include="resources.aps" />
     <None Include="templates\generic_documentation\qlogicae.gitignore" />
-    <None Include="qlogicae\application\configurations\qlogicae.public.json" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\scripts\qlogicae.inno_run.ps1" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\scripts\qlogicae.inno_setup.iss" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\configurations\qlogicae.private.json" />
-    <None Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\configurations\qlogicae.public.json" />
     <None Include="qlogicae\cli\tests\test.ps1" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\api\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\collaboration\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\development\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\file-system\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\introduction\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\legalities\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\project-state\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\quality-assurance\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\references\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\release-notes\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\security\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\index.md" />
-    <None Include="qlogicae\cli\templates\generic\documentation\README.md" />
+    <None Include="qlogicae_cli\assembly\x64_masm__main.asm">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources.rc">
+    <ResourceCompile Include="qlogicae_cli\resources\resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="qlogicae\application\assets\qlogicae.application.ico">
+    <Image Include="qlogicae\application\assets\application.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\assets\qlogicae.application.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\assets\application-icon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="qlogicae\cli\templates\vs2022\application\LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="LICENSE.txt" />
   </ItemGroup>
 </Project>

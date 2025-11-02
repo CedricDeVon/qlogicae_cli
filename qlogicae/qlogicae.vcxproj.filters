@@ -15,8 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <Image Include=".qlogicae\application\templates\default\build\qlogicae\cli\setup\vs2022\application\startup\qlogicae\application\assets\application.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

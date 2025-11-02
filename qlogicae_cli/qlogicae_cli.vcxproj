@@ -54,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -112,7 +113,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32_LEAN_AND_MEAN;HASH_LEN=32;PCRE2_CODE_UNIT_WIDTH=8;SALT_LEN=crypto_pwhash_SALTBYTES;_WIN32_WINNT=0x0A00;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -135,9 +136,8 @@
       <AdditionalLibraryDirectories>../$(IntDir)qlogicae_core</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)qlogicae\application" "$(OutDir)qlogicae\application" /E /Y /I
-xcopy "$(ProjectDir)qlogicae\cli" "$(OutDir)qlogicae\cli" /E /Y /I
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +146,7 @@ xcopy "$(ProjectDir)qlogicae\cli" "$(OutDir)qlogicae\cli" /E /Y /I
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32_LEAN_AND_MEAN;HASH_LEN=32;PCRE2_CODE_UNIT_WIDTH=8;SALT_LEN=crypto_pwhash_SALTBYTES;_WIN32_WINNT=0x0A00;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -157,6 +157,10 @@ xcopy "$(ProjectDir)qlogicae\cli" "$(OutDir)qlogicae\cli" /E /Y /I
       <StringPooling>true</StringPooling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OmitFramePointers>true</OmitFramePointers>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions101</EnableEnhancedInstructionSet>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,23 +170,36 @@ xcopy "$(ProjectDir)qlogicae\cli" "$(OutDir)qlogicae\cli" /E /Y /I
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)qlogicae\application" "$(OutDir)qlogicae\application" /E /Y /I
-xcopy "$(ProjectDir)qlogicae\cli" "$(OutDir)qlogicae\cli" /E /Y /I
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="application.cpp" />
-    <ClCompile Include="globals.cpp" />
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="qlogicae_cli.cpp" />
+    <ClInclude Include="qlogicae_cli\includes\all.hpp" />
+    <ClCompile Include="qlogicae_cli\sources\all.cpp" />
+    <ClCompile Include="qlogicae_cli\sources\assembly.cpp" />
+    <ClCompile Include="qlogicae_cli\sources\application.cpp" />
+    <ClCompile Include="qlogicae_cli\sources\file_system.cpp" />
+    <ClCompile Include="qlogicae_cli\sources\input_cache.cpp" />
+    <ClCompile Include="qlogicae_cli\sources\logger.cpp" />
+    <ClCompile Include="qlogicae_cli\sources\transformer.cpp" />
+    <ClCompile Include="qlogicae_cli\sources\utilities.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="application.hpp" />
-    <ClInclude Include="qlogicae_cli.hpp" />
-    <ClInclude Include="globals.hpp" />
+    <ClInclude Include="qlogicae_cli\includes\assembly.hpp" />
+    <ClInclude Include="qlogicae_cli\includes\application.hpp" />
+    <ClInclude Include="qlogicae_cli\includes\file_system.hpp" />
+    <ClInclude Include="qlogicae_cli\includes\input_cache.hpp" />
+    <ClInclude Include="qlogicae_cli\includes\logger.hpp" />
+    <ClInclude Include="qlogicae_cli\includes\transformer.hpp" />
+    <ClInclude Include="main.hpp" />
+    <ClInclude Include="qlogicae_cli\includes\utilities.hpp" />
     <ClInclude Include="pch.hpp" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="qlogicae_cli\resources\resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\api\index.md">
@@ -228,36 +245,20 @@ xcopy "$(ProjectDir)qlogicae\cli" "$(OutDir)qlogicae\cli" /E /Y /I
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </None>
     <None Include="qlogicae\cli\tests\test.ps1" />
-    <None Include="qlogicae\application\configurations\qlogicae.public.json" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\configurations\qlogicae.private.json" />
-    <None Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\configurations\qlogicae.public.json" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\scripts\qlogicae.inno_run.ps1" />
-    <None Include="qlogicae\cli\templates\vs2022\application\.qlogicae\application\scripts\qlogicae.inno_setup.iss" />
-    <None Include="resource.aps" />
-    <None Include="resources.aps" />
+    <None Include="qlogicae_cli\assembly\x64_masm__main.asm" />
     <None Include="templates\generic_documentation\qlogicae.gitignore">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources.rc" />
+    <ResourceCompile Include="qlogicae_cli\resources\resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="qlogicae\application\assets\qlogicae.application.ico" />
-    <Image Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\assets\application-icon.ico">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </Image>
-    <Image Include="qlogicae\cli\templates\vs2022\application\qlogicae\application\assets\qlogicae.application.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="LICENSE.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <Text Include="qlogicae\cli\templates\vs2022\application\LICENSE.txt" />
+    <Image Include="qlogicae\application\assets\application.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
   </ImportGroup>
 </Project>
