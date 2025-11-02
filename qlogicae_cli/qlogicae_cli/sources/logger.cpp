@@ -1,6 +1,6 @@
 #include "pch.hpp"
 
-#include "logger.hpp"
+#include "../includes/logger.hpp"
 
 namespace QLogicaeCLI
 {

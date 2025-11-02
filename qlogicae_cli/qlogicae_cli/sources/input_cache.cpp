@@ -1,6 +1,6 @@
 #include "pch.hpp"
 
-#include "input_cache.hpp"
+#include "../includes/input_cache.hpp"
 
 namespace QLogicaeCLI
 {

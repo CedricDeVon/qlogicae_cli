@@ -18,54 +18,66 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qlogicae_cli\application.cpp">
+    <ClCompile Include="qlogicae_cli\sources\application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qlogicae_cli\utilities.cpp">
+    <ClCompile Include="qlogicae_cli\sources\utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qlogicae_cli\input_cache.cpp">
+    <ClCompile Include="qlogicae_cli\sources\input_cache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qlogicae_cli\transformer.cpp">
+    <ClCompile Include="qlogicae_cli\sources\transformer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qlogicae_cli\logger.cpp">
+    <ClCompile Include="qlogicae_cli\sources\logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qlogicae_cli\file_system.cpp">
+    <ClCompile Include="qlogicae_cli\sources\file_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qlogicae_cli\sources\assembly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qlogicae_cli\sources\all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qlogicae_cli\includes\all.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="qlogicae_cli\application.hpp">
+    <ClInclude Include="qlogicae_cli\includes\application.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qlogicae_cli\utilities.hpp">
+    <ClInclude Include="qlogicae_cli\includes\utilities.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="qlogicae_cli\resources\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qlogicae_cli\input_cache.hpp">
+    <ClInclude Include="qlogicae_cli\includes\input_cache.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qlogicae_cli\transformer.hpp">
+    <ClInclude Include="qlogicae_cli\includes\transformer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qlogicae_cli\logger.hpp">
+    <ClInclude Include="qlogicae_cli\includes\logger.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qlogicae_cli\file_system.hpp">
+    <ClInclude Include="qlogicae_cli\includes\file_system.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qlogicae_cli\includes\assembly.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,9 +86,12 @@
     <None Include="resources.aps" />
     <None Include="templates\generic_documentation\qlogicae.gitignore" />
     <None Include="qlogicae\cli\tests\test.ps1" />
+    <None Include="qlogicae_cli\assembly\x64_masm__main.asm">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources.rc">
+    <ResourceCompile Include="qlogicae_cli\resources\resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

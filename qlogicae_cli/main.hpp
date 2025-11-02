@@ -1,7 +1,7 @@
 #pragma once
 
-#include "qlogicae_cli/utilities.hpp"
-#include "qlogicae_cli/application.hpp"
+#include "qlogicae_cli/includes/utilities.hpp"
+#include "qlogicae_cli/includes/application.hpp"
 
 int main(int, char**);
 

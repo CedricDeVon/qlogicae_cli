@@ -1,20 +1,20 @@
 #include "pch.hpp"
 
-#include "utilities.hpp"
+#include "../includes/file_system.hpp"
 
 namespace QLogicaeCLI
 {
-	Utilities::Utilities()
-	{
-		
-	}
-
-	Utilities::~Utilities()
+	FileSystem::FileSystem()
 	{
 
 	}
 
-	bool Utilities::setup()
+	FileSystem::~FileSystem()
+	{
+
+	}
+
+	bool FileSystem::setup()
 	{
 		try
 		{
@@ -27,7 +27,7 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception(
-				"QLogicaeCLI::Utilities::setup()",
+				"QLogicaeCLI::FileSystem::setup()",
 				exception.what()
 			);
 
@@ -35,7 +35,7 @@ namespace QLogicaeCLI
 		}
 	}
 
-	std::future<bool> Utilities::setup_async()
+	std::future<bool> FileSystem::setup_async()
 	{
 		std::promise<bool> promise;
 		auto future = promise.get_future();
@@ -54,7 +54,7 @@ namespace QLogicaeCLI
 		return future;
 	}
 
-	void Utilities::setup_async(
+	void FileSystem::setup_async(
 		QLogicaeCore::Result<std::future<void>>& result
 	)
 	{
@@ -81,14 +81,14 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void Utilities::setup(
+	void FileSystem::setup(
 		QLogicaeCore::Result<void>& result
 	)
 	{
 		result.set_to_good_status_without_value();
 	}
 
-	std::future<bool> Utilities::setup_async(
+	std::future<bool> FileSystem::setup_async(
 		const std::function<void(const bool& result)>& callback
 	)
 	{
@@ -103,7 +103,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void Utilities::setup_async(
+	void FileSystem::setup_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 	)
 	{
@@ -122,7 +122,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	bool Utilities::terminate()
+	bool FileSystem::terminate()
 	{
 		try
 		{
@@ -135,7 +135,7 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception(
-				"QLogicaeCLI::Utilities::terminate()",
+				"QLogicaeCLI::FileSystem::terminate()",
 				exception.what()
 			);
 
@@ -143,7 +143,7 @@ namespace QLogicaeCLI
 		}
 	}
 
-	std::future<bool> Utilities::terminate_async()
+	std::future<bool> FileSystem::terminate_async()
 	{
 		std::promise<bool> promise;
 		auto future = promise.get_future();
@@ -162,7 +162,7 @@ namespace QLogicaeCLI
 		return future;
 	}
 
-	void Utilities::terminate_async(
+	void FileSystem::terminate_async(
 		QLogicaeCore::Result<std::future<void>>& result
 	)
 	{
@@ -189,14 +189,14 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void Utilities::terminate(
+	void FileSystem::terminate(
 		QLogicaeCore::Result<void>& result
 	)
 	{
 		result.set_to_good_status_without_value();
 	}
 
-	std::future<bool> Utilities::terminate_async(
+	std::future<bool> FileSystem::terminate_async(
 		const std::function<void(const bool& result)>& callback
 	)
 	{
@@ -211,7 +211,7 @@ namespace QLogicaeCLI
 		);
 	}
 
-	void Utilities::terminate_async(
+	void FileSystem::terminate_async(
 		const std::function<void(QLogicaeCore::Result<void>& result)>& callback
 	)
 	{
@@ -230,61 +230,126 @@ namespace QLogicaeCLI
 		);
 	}
 
-	std::string Utilities::get_application_full_name()
+	bool FileSystem::replace_file_if_found(
+		const std::string& folder_path,
+		const std::string& file_path
+	)
 	{
-		try
+		if (!std::filesystem::exists(folder_path))
 		{
-			return QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_NAME + " " +
-				"(" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_VERSION + ")";
+			create_folder_path(folder_path);
 		}
-		catch (const std::exception& exception)
-		{
-			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Utilities::setup()",
-				exception.what()
-			);
 
-			return QLogicaeCore::UTILITIES.STRING_NONE_1;
+		if (std::filesystem::exists(file_path))
+		{
+			std::filesystem::remove(file_path);
 		}
+
+		return true;
 	}
 
-	std::string Utilities::get_application_about_details()
+	bool FileSystem::remove_file_or_folder_if_found(
+		const std::string& path
+	)
 	{
-		try
+		if (std::filesystem::exists(path))
 		{
-			return "\n" + get_application_full_name() + "\n\n" +
-				"ID:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_ID + "\n\n" +
-				"Description:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_DESCRIPTION + "\n\n" +
-				"Architecture:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_ARCHITECTURE + "\n\n" +
-				"Authors:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_AUTHORS + "\n\n" +
-				"Repository:\n" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_APPLICATION_URL + "\n";
+			std::filesystem::remove(path);
 		}
-		catch (const std::exception& exception)
-		{
-			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Utilities::setup()",
-				exception.what()
-			);
 
-			return QLogicaeCore::UTILITIES.STRING_NONE_1;
-		}
+		return true;
 	}
 
-	Utilities& Utilities::get_instance()
+	bool FileSystem::copy_file_or_folder(
+		const std::string& from_path,
+		const std::string& to_path
+	)
 	{
-		static Utilities instance;
+		std::filesystem::copy_file(
+			from_path,
+			to_path,
+			std::filesystem::copy_options::overwrite_existing
+		);
+
+		return true;
+	}
+
+	bool FileSystem::is_file_or_folder_path_found(
+		const std::string& path
+	)
+	{
+		if (!std::filesystem::exists(path))
+		{
+			QLogicaeCore::LOGGER.handle_exception_async(
+				"QLogicaeCLI::Application::setup()",
+				"File or folder path '" + path + "' does not exist"
+			);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	bool FileSystem::create_folder_path(
+		const std::string& path,
+		const bool& is_enabled
+	)
+	{
+		if (!is_enabled)
+		{
+			return false;
+		}
+
+		if (!std::filesystem::exists(path))
+		{
+			std::filesystem::create_directories(path);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	std::string FileSystem::setup_result_output_file(
+		const std::string& path,
+		const std::string& extended_folder_path,
+		const std::string& default_file_name,
+		const bool& is_enabled
+	)
+	{
+		if (!is_enabled)
+		{
+			return path;
+		}
+
+		if (path.empty())
+		{
+			create_folder_path(
+				UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_CLI_FOLDER_PATH +
+				"\\" + extended_folder_path
+			);
+
+			return UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_CLI_FOLDER_PATH +
+				"\\" + extended_folder_path + "\\" + default_file_name;
+		}
+
+		return path;
+	}
+
+	FileSystem& FileSystem::get_instance()
+	{
+		static FileSystem instance;
 
 		return instance;
 	}
 
-	void Utilities::get_instance(
-		QLogicaeCore::Result<Utilities*>& result
+	void FileSystem::get_instance(
+		QLogicaeCore::Result<FileSystem*>& result
 	)
 	{
-		static Utilities instance;
+		static FileSystem instance;
 
-		result.set_to_good_status_with_value(
-			&instance
-		);
+		result.set_to_good_status_with_value(&instance);
 	}
 }
