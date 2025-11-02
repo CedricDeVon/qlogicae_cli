@@ -2,7 +2,7 @@
 
 #include "utilities.hpp"
 
-#include "qlogicae_core/result.hpp"
+#include "qlogicae_core/includes/result.hpp"
 
 namespace QLogicaeCLI
 {

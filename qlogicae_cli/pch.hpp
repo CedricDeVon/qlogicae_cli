@@ -101,6 +101,7 @@
 #include <ctime>
 
 #include <windows.h>
+
 namespace QLogicaeCLI
 {
 	

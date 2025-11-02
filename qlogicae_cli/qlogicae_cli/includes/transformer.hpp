@@ -1,8 +1,8 @@
 #pragma once
 
-#include "qlogicae_core/result.hpp"
-#include "qlogicae_core/logger.hpp"
-#include "qlogicae_core/transformer.hpp"
+#include "qlogicae_core/includes/result.hpp"
+#include "qlogicae_core/includes/logger.hpp"
+#include "qlogicae_core/includes/transformer.hpp"
 
 namespace QLogicaeCLI
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace QLogicaeCLI
+namespace QLogicaeCore
 {
 
 }

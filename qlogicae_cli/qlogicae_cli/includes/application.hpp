@@ -6,11 +6,11 @@
 #include "transformer.hpp"
 #include "input_cache.hpp"
 
-#include "qlogicae_core/logger.hpp"
-#include "qlogicae_core/cli_io.hpp"
-#include "qlogicae_core/utilities.hpp"
-#include "qlogicae_core/application.hpp"
-#include "qlogicae_core/log_configurations.hpp"
+#include "qlogicae_core/includes/logger.hpp"
+#include "qlogicae_core/includes/cli_io.hpp"
+#include "qlogicae_core/includes/utilities.hpp"
+#include "qlogicae_core/includes/application.hpp"
+#include "qlogicae_core/includes/log_configurations.hpp"
 
 #include <CLI/CLI.hpp>
 

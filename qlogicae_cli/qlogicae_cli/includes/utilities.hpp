@@ -1,15 +1,15 @@
 #pragma once
 
-#include "qlogicae_core/result.hpp"
-#include "qlogicae_core/logger.hpp"
-#include "qlogicae_core/transformer.hpp"
-#include "qlogicae_core/text_file_io.hpp"
-#include "qlogicae_core/json_file_io.hpp"
-#include "qlogicae_core/application_utilities.hpp"
-#include "qlogicae_core/sha256_hash_cryptographer.hpp"
-#include "qlogicae_core/aes256_cipher_cryptographer.hpp"
-#include "qlogicae_core/argon2id_hash_cryptographer.hpp"
-#include "qlogicae_core/xchacha20_poly1305_cipher_cryptographer.hpp"
+#include "qlogicae_core/includes/result.hpp"
+#include "qlogicae_core/includes/logger.hpp"
+#include "qlogicae_core/includes/transformer.hpp"
+#include "qlogicae_core/includes/text_file_io.hpp"
+#include "qlogicae_core/includes/json_file_io.hpp"
+#include "qlogicae_core/includes/application_utilities.hpp"
+#include "qlogicae_core/includes/sha256_hash_cryptographer.hpp"
+#include "qlogicae_core/includes/aes256_cipher_cryptographer.hpp"
+#include "qlogicae_core/includes/argon2id_hash_cryptographer.hpp"
+#include "qlogicae_core/includes/xchacha20_poly1305_cipher_cryptographer.hpp"
 
 namespace QLogicaeCLI
 {

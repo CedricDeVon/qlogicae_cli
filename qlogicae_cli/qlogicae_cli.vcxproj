@@ -200,8 +200,6 @@
   <ItemGroup>
     <None Include="qlogicae\cli\tests\test.ps1" />
     <None Include="qlogicae_cli\assembly\x64_masm__main.asm" />
-    <None Include="resource.aps" />
-    <None Include="resources.aps" />
     <None Include="templates\generic_documentation\qlogicae.gitignore">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

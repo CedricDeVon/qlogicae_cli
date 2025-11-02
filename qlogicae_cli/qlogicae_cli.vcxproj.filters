@@ -82,8 +82,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource.aps" />
-    <None Include="resources.aps" />
     <None Include="templates\generic_documentation\qlogicae.gitignore" />
     <None Include="qlogicae\cli\tests\test.ps1" />
     <None Include="qlogicae_cli\assembly\x64_masm__main.asm">
