@@ -14,3 +14,8 @@ int WINAPI WinMain(
 {
     return main(__argc, __argv);
 }
+
+namespace QLogicaeCLI
+{
+
+}
