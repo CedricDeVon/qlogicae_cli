@@ -1,7 +1,7 @@
 #pragma once
 
-#include "utilities.hpp"
 #include "logger.hpp"
+#include "utilities.hpp"
 #include "file_system.hpp"
 #include "transformer.hpp"
 #include "input_cache.hpp"

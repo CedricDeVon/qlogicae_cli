@@ -45,9 +45,6 @@
     <ClCompile Include="qlogicae_cli\sources\all.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qlogicae_cli\includes\all.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qlogicae_cli\includes\application.hpp">
@@ -79,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="qlogicae_cli\includes\assembly.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qlogicae_cli\includes\all.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
