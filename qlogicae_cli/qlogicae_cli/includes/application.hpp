@@ -123,27 +123,16 @@ namespace QLogicaeCLI
 		bool _setup_decrypt_command();
 
 		bool _setup_hash_command();
+
+		bool _setup_verify_command();
+
+		bool _setup_get_command();
+
+		bool _setup_set_command();
+
+		bool _setup_clear_command();
 	};
 
 	inline static Application& APPLICATION =
 		Application::get_instance();
 }
-
-/*
-
-bool _setup_verify_command();
-
-bool _setup_get_command();
-
-bool _setup_set_command();
-
-
-std::unordered_map<std::string_view, bool> _boolean_inputs;
-
-std::unordered_map<std::string_view, size_t> _size_t_inputs;
-
-std::unordered_map<std::string_view, double> _double_inputs;
-
-std::unordered_map<std::string_view, std::string> _string_inputs;
-
-*/
