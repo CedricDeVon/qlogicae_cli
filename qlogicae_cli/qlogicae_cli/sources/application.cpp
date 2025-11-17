@@ -1618,8 +1618,7 @@ namespace QLogicaeCLI
 	}
 
 	bool Application::_setup_setup_command()
-	{
-		
+	{		
 		try
 		{
 			CLI::App* setup_command =
@@ -1800,6 +1799,7 @@ namespace QLogicaeCLI
 
 							bool is_running = true;
 							std::string startup;
+							std::string executable;
 							std::string name;
 							std::string version;
 							std::string company;
@@ -1821,10 +1821,13 @@ namespace QLogicaeCLI
 								url = "";
 								architecture = "x64";
 
+								executable = startup;
+
 								QLogicaeCore::CLI_IO.print(
 									"> Startup: "
 								);
 								startup = QLogicaeCore::CLI_IO.scan();
+								executable = startup;
 
 								if (setup_vs2022_application__enable_full_property_setup)
 								{
@@ -1909,27 +1912,35 @@ namespace QLogicaeCLI
 								"\\" + UTILITIES.RELATIVE_QLOGICAE_CLI_SETUP_VS2022_APPLICATION_FOLDER_PATH;
 
 							if (setup_vs2022_application__enable_filesystem_setup)
-							{
-								std::system((
-									"powershell -Command \"Copy-Item -Path '" +
-									root_input_folder + ".\\qlogicae' -Destination '" +
+							{								
+								QLogicaeCore::TEXT_FILE_IO.setup(
 									QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
-									"' -Recurse -Force\""
-									).c_str());
+									"\\LICENSE.txt"
+								);
 
-								std::system((
-									"powershell -Command \"Copy-Item -Path '" +
-									root_input_folder + "\\startup\\*' -Destination '" +
-									QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH + "\\" +
-									startup + "' -Recurse -Force\""
-									).c_str());
+								QLogicaeCore::TEXT_FILE_IO.write(
+									"MIT License\n\n"
 
-								std::system((
-									"powershell -Command \"Copy-Item -Path '" +
-									root_input_folder + "\\root\\*' -Destination '" +
-									QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
-									"' -Recurse -Force\""
-									).c_str());
+									"Copyright(c) " + absl::StrCat(QLogicaeCore::TIME.year()) + " " + company + "\n\n"
+
+									"Permission is hereby granted, free of charge, to any person obtaining a copy\n"
+									"of this software and associated documentation files(the \"Software\"), to deal\n"
+									"in the Software without restriction, including without limitation the rights\n"
+									"to use, copy, modify, merge, publish, distribute, sublicense, and /or sell\n"
+									"copies of the Software, and to permit persons to whom the Software is\n"
+									"furnished to do so, subject to the following conditions :\n\n"
+
+									"The above copyright notice and this permission notice shall be included in all\n"
+									"copies or substantial portions of the Software.\n\n"
+
+									"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
+									"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
+									"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE\n"
+									"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
+									"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
+									"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
+									"SOFTWARE."
+								);
 							}
 
 							if (setup_vs2022_application__enable_property_setup)
@@ -1942,6 +1953,11 @@ namespace QLogicaeCLI
 								QLogicaeCore::JSON_FILE_IO.update_string(
 									{ "application", "startup_project_name" },
 									startup
+								);
+
+								QLogicaeCore::JSON_FILE_IO.update_string(
+									{ "application", "executable_name" },
+									executable
 								);
 								
 								QLogicaeCore::JSON_FILE_IO.set_file_path(
