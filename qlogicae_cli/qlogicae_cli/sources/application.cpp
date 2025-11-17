@@ -20,7 +20,6 @@ namespace QLogicaeCLI
 	)
 	{
 		QLogicaeCore::Result<void> void_result;
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{			
@@ -35,7 +34,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{						
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::setup()",
 				exception.what()
 			);
@@ -106,13 +104,11 @@ namespace QLogicaeCLI
 		char** argv
 	)
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		QLogicaeCore::QLOGICAE_APPLICATION.setup(result);
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::parse()",
 				"Setup failed"
 			);
@@ -124,7 +120,6 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::parse()",
 				"Setup failed"
 			);
@@ -136,7 +131,6 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::parse()",
 				"Setup failed"
 			);
@@ -148,7 +142,6 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::parse()",
 				"Setup failed"
 			);
@@ -177,7 +170,6 @@ namespace QLogicaeCLI
 		)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::setup()",
 				"Parsing Failed"
 			);
@@ -194,7 +186,6 @@ namespace QLogicaeCLI
 			_application.exit(exception);
 
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::setup()",
 				exception.what()
 			);
@@ -206,7 +197,6 @@ namespace QLogicaeCLI
 			_application.exit(exception);
 			
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::setup()",
 				exception.what()
 			);
@@ -266,7 +256,6 @@ namespace QLogicaeCLI
 	bool Application::terminate()
 	{
 		QLogicaeCore::Result<void> void_result;
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 		
 		try
 		{
@@ -277,7 +266,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{			
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::terminate()",
 				exception.what()
 			);
@@ -337,13 +325,11 @@ namespace QLogicaeCLI
 	)
 	{
 		QLogicaeCore::Result<void> void_result;
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		QLogicaeCore::QLOGICAE_APPLICATION.terminate(result);
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCore::Application::terminate()",
 				"Termination failed"
 			);
@@ -355,7 +341,6 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::FileSystem::terminate()",
 				"Termination failed"
 			);
@@ -367,7 +352,6 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Logger::terminate()",
 				"Termination failed"
 			);
@@ -379,7 +363,6 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Transform::terminate()",
 				"Termination failed"
 			);
@@ -391,7 +374,6 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Utilities::terminate()",
 				"Termination failed"
 			);
@@ -439,7 +421,6 @@ namespace QLogicaeCLI
 	bool Application::parse()
 	{
 		QLogicaeCore::Result<void> void_result;
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -456,7 +437,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::parse()",
 				exception.what()
 			);
@@ -485,7 +465,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_view_command()
 	{		
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -512,7 +491,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					bool view_about_command__is_verbose =
 						BOOLEAN_INPUTS.get(
@@ -556,7 +534,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{						
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_view_command()",
 							exception.what()
 						);
@@ -585,9 +562,9 @@ namespace QLogicaeCLI
 					"The windows registry root path"
 				)
 				->check(CLI::IsMember(
-					UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
+					QLogicaeCore::UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
 				))
-				->default_val(UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
+				->default_val(QLogicaeCore::UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
 
 			view_windows_registy_command
 				->add_option("--is-verbose",
@@ -600,7 +577,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string view_windows_registy_command__environment =
 						STRING_INPUTS.get(
@@ -667,7 +643,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{						
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_view_command()",
 							exception.what()
 						);
@@ -689,9 +664,9 @@ namespace QLogicaeCLI
 					"An environment variable root path"
 				)
 				->check(CLI::IsMember(
-					UTILITIES.ENVIRONMENT_VARIABLE_TYPES
+					QLogicaeCore::UTILITIES.ENVIRONMENT_VARIABLE_TYPES
 				))
-				->default_val(UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
+				->default_val(QLogicaeCore::UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
 
 			view_environment_variables_command
 				->add_option("--is-verbose",
@@ -704,7 +679,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string view_environment_variables_command__root_path =
 						STRING_INPUTS.get(
@@ -764,7 +738,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{						
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_view_command()",
 							exception.what()
 						);
@@ -778,10 +751,8 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::Result<std::future<void>> future_void_result;
 
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_view_command()",
 				exception.what()
 			);
@@ -792,7 +763,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_run_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -821,9 +791,9 @@ namespace QLogicaeCLI
 					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
-					UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
+					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
 				))
-				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
+				->default_val(QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
 
 			run_vs2022_command
 				->add_option("--build-type",
@@ -831,9 +801,9 @@ namespace QLogicaeCLI
 					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
-					UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
+					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
 				))
-				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
+				->default_val(QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
 
 			run_vs2022_command
 				->add_option("--is-verbose",
@@ -846,7 +816,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string run_vs2022_command__project =
 						STRING_INPUTS.get("run_vs2022_command", "project");
@@ -931,7 +900,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_run_command()",
 							exception.what()
 						);
@@ -965,7 +933,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string run_executable_command__path =
 						STRING_INPUTS.get(
@@ -1028,7 +995,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_run_command()",
 							exception.what()
 						);
@@ -1061,7 +1027,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string run_script_command__command =
 						STRING_INPUTS.get(
@@ -1138,7 +1103,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_run_command()",
 							exception.what()
 						);
@@ -1153,7 +1117,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_run_command()",
 				exception.what()
 			);
@@ -1164,7 +1127,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_build_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -1200,9 +1162,9 @@ namespace QLogicaeCLI
 					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
-					UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
+					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
 				))
-				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
+				->default_val(QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
 
 			build_vs2022_command
 				->add_option("--build-type",
@@ -1210,9 +1172,9 @@ namespace QLogicaeCLI
 					"The visual studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
-					UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
+					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
 				))
-				->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
+				->default_val(QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
 
 			build_vs2022_command
 				->add_option("--is-verbose",
@@ -1225,7 +1187,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string build_vs2022_command__project =
 						STRING_INPUTS.get(
@@ -1334,7 +1295,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_build_command()",
 							exception.what()
 						);
@@ -1348,7 +1308,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_build_command()",
 				exception.what()
 			);
@@ -1359,7 +1318,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_deploy_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 		
 		try
 		{
@@ -1395,28 +1353,28 @@ namespace QLogicaeCLI
 					"The visual studio 2022 project's instruction architecture"
 					)
 					->check(CLI::IsMember(
-						UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
+						QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
 					))
-					->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
+				->default_val(QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES[0]);
 
 			deploy_vs2022_command
 				->add_option("--build-type",
 					STRING_INPUTS.get("deploy_vs2022", "build_type"),
 					"The visual studio 2022 project's build type"
-					)
-					->check(CLI::IsMember(
-						UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
-					))
-					->default_val(UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
+				)
+				->check(CLI::IsMember(
+					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
+				))
+				->default_val(QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
 
 			deploy_vs2022_command
 				->add_option("--installer-type",
 					STRING_INPUTS.get("deploy_vs2022", "installer_type"),
 					"The selected input folder path")
-					->check(CLI::IsMember(
-						UTILITIES.INSTALLER_TYPES
-					))
-					->default_val(UTILITIES.INSTALLER_TYPES[0]);
+				->check(CLI::IsMember(
+					QLogicaeCore::UTILITIES.INSTALLER_TYPES
+				))
+				->default_val(QLogicaeCore::UTILITIES.INSTALLER_TYPES[0]);
 
 			deploy_vs2022_command
 				->add_option("--output-folder-path",
@@ -1442,7 +1400,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string deploy_vs2022__project =
 						STRING_INPUTS.get("deploy_vs2022", "project");
@@ -1558,7 +1515,7 @@ namespace QLogicaeCLI
 							)).c_str());
 						}
 
-						if (deploy_vs2022__installer_type == UTILITIES.INSTALLER_TYPES[0])
+						if (deploy_vs2022__installer_type == QLogicaeCore::UTILITIES.INSTALLER_TYPES[0])
 						{
 							LOGGER.log(
 								void_result,
@@ -1638,7 +1595,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_deploy_command()",
 							exception.what()
 						);
@@ -1653,7 +1609,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_deploy_command()",
 				exception.what()
 			);
@@ -1664,7 +1619,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_setup_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 		
 		try
 		{
@@ -1698,7 +1652,6 @@ namespace QLogicaeCLI
 					[this]() -> bool
 					{
 						QLogicaeCore::Result<void> void_result;
-						QLogicaeCore::Result<std::future<void>> future_void_result;
 
 						std::string setup_windows_registry__environment =
 							STRING_INPUTS.get("setup_windows_registry", "environment");
@@ -1753,7 +1706,6 @@ namespace QLogicaeCLI
 						catch (const std::exception& exception)
 						{
 							QLogicaeCore::LOGGER.handle_exception_async(
-								future_void_result,
 								"QLogicaeCLI::Application::_setup_deploy_command()",
 								exception.what()
 							);
@@ -1810,7 +1762,6 @@ namespace QLogicaeCLI
 					[this]() -> bool
 					{
 						QLogicaeCore::Result<void> void_result;
-						QLogicaeCore::Result<std::future<void>> future_void_result;
 
 						bool setup_vs2022_application__enable_property_setup =
 							BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_property_setup");
@@ -2101,7 +2052,6 @@ namespace QLogicaeCLI
 						catch (const std::exception& exception)
 						{
 							QLogicaeCore::LOGGER.handle_exception_async(
-								future_void_result,
 								"QLogicaeCLI::Application::_setup_deploy_command()",
 								exception.what()
 							);
@@ -2128,7 +2078,6 @@ namespace QLogicaeCLI
 					[this]() -> bool
 					{
 						QLogicaeCore::Result<void> void_result;
-						QLogicaeCore::Result<std::future<void>> future_void_result;
 
 						bool setup_vs2022_ids__is_verbose =
 							BOOLEAN_INPUTS.get("setup_vs2022_ids", "is_verbose");
@@ -2219,7 +2168,6 @@ namespace QLogicaeCLI
 						catch (const std::exception& exception)
 						{
 							QLogicaeCore::LOGGER.handle_exception_async(
-								future_void_result,
 								"QLogicaeCLI::Application::_setup_deploy_command()",
 								exception.what()
 							);
@@ -2234,7 +2182,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_deploy_command()",
 				exception.what()
 			);
@@ -2245,7 +2192,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_generate_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -2291,7 +2237,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					size_t generate_uuid4__count =
 						SIZE_T_INPUTS.get("generate_uuid4", "count");
@@ -2351,7 +2296,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									generate_uuid4__output_file_path,
 									"generate\\uuid4",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -2368,7 +2313,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_generate_command()",
 							exception.what()
 						);
@@ -2427,7 +2371,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					size_t generate_string__length =
 						SIZE_T_INPUTS.get("generate_string", "length");
@@ -2500,7 +2443,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									generate_string__output_file_path,
 									"generate\\string",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -2517,7 +2460,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_generate_command()",
 							exception.what()
 						);
@@ -2532,7 +2474,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_generate_command()",
 				exception.what()
 			);
@@ -2543,7 +2484,6 @@ namespace QLogicaeCLI
 	
 	bool Application::_setup_encrypt_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -2602,7 +2542,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string encrypt_xchacha20poly1305__text =
 						STRING_INPUTS.get("encrypt_xchacha20poly1305", "text");
@@ -2673,7 +2612,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									encrypt_xchacha20poly1305__output_file_path,
 									"encrypt\\xchacha20poly1305",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -2690,7 +2629,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_encrypt_command()",
 							exception.what()
 						);
@@ -2749,7 +2687,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string encrypt_aes256__text =
 						STRING_INPUTS.get("encrypt_aes256", "text");
@@ -2820,7 +2757,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									encrypt_aes256__output_file_path,
 									"encrypt\\aes256",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -2837,7 +2774,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_encrypt_command()",
 							exception.what()
 						);
@@ -2852,7 +2788,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_encrypt_command()",
 				exception.what()
 			);
@@ -2863,7 +2798,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_decrypt_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -2922,7 +2856,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string decrypt_xchacha20poly1305__text =
 						STRING_INPUTS.get("decrypt_xchacha20poly1305", "text");
@@ -2992,7 +2925,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									decrypt_xchacha20poly1305__output_file_path,
 									"decrypt\\xchacha20poly1305",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -3009,7 +2942,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_decrypt_command()",
 							exception.what()
 						);
@@ -3068,7 +3000,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string decrypt_aes256__text =
 						STRING_INPUTS.get("decrypt_aes256", "text");
@@ -3138,7 +3069,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									decrypt_aes256__output_file_path,
 									"decrypt\\aes256",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -3155,7 +3086,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_decrypt_command()",
 							exception.what()
 						);
@@ -3170,7 +3100,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_decrypt_command()",
 				exception.what()
 			);
@@ -3181,7 +3110,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_hash_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -3226,7 +3154,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string hash_argon2id__text =
 						STRING_INPUTS.get("hash_argon2id", "text");
@@ -3275,7 +3202,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									hash_argon2id__output_file_path,
 									"hash\\argon2id",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -3292,7 +3219,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_hash_command()",
 							exception.what()
 						);
@@ -3337,7 +3263,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string hash_sha256__text =
 						STRING_INPUTS.get("hash_sha256", "text");
@@ -3386,7 +3311,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									hash_sha256__output_file_path,
 									"hash\\sha256",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -3403,7 +3328,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_hash_command()",
 							exception.what()
 						);
@@ -3418,7 +3342,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_hash_command()",
 				exception.what()
 			);
@@ -3429,7 +3352,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_verify_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -3480,7 +3402,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string verify_argon2id__hash =
 						STRING_INPUTS.get("verify_argon2id", "hash");
@@ -3545,7 +3466,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									verify_argon2id__output_file_path,
 									"verify\\argon2id",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -3562,7 +3483,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_verify_command()",
 							exception.what()
 						);
@@ -3613,7 +3533,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string verify_sha256__hash =
 						STRING_INPUTS.get("verify_sha256", "hash");
@@ -3678,7 +3597,7 @@ namespace QLogicaeCLI
 								FILE_SYSTEM.setup_result_output_file(
 									verify_sha256__output_file_path,
 									"verify\\argon2id",
-									UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
+									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
 							QLogicaeCore::TEXT_FILE_IO.write_async(output_string);
@@ -3695,7 +3614,6 @@ namespace QLogicaeCLI
 					catch (const std::exception exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_verify_command()",
 							exception.what()
 						);
@@ -3710,7 +3628,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_verify_command()",
 				exception.what()
 			);
@@ -3721,7 +3638,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_get_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -3742,9 +3658,9 @@ namespace QLogicaeCLI
 					STRING_INPUTS.get("get_windows_registry_command", "root_path"),
 					"Windows registry root path")
 				->check(CLI::IsMember(
-					UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
+					QLogicaeCore::UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
 				))
-				->default_val(UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
+				->default_val(QLogicaeCore::UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
 
 			get_windows_registry_command
 				->add_option("--sub-path",
@@ -3769,7 +3685,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string get_windows_registry_command__root_path =
 						STRING_INPUTS.get("get_windows_registry_command", "root_path");
@@ -3825,7 +3740,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_get_command()",
 							exception.what()
 						);
@@ -3847,9 +3761,9 @@ namespace QLogicaeCLI
 					STRING_INPUTS.get("get_environment_variables_command", "root_path"),
 					"Environment variable root path")
 				->check(CLI::IsMember(
-					UTILITIES.ENVIRONMENT_VARIABLE_TYPES
+					QLogicaeCore::UTILITIES.ENVIRONMENT_VARIABLE_TYPES
 				))
-				->default_val(UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
+				->default_val(QLogicaeCore::UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
 
 			get_environment_variables_command
 				->add_option("--key",
@@ -3868,7 +3782,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string get_environment_variables_command__root_path =
 						STRING_INPUTS.get("get_environment_variables_command", "root_path");
@@ -3919,7 +3832,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_get_command()",
 							exception.what()
 						);
@@ -3934,7 +3846,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_get_command()",
 				exception.what()
 			);
@@ -3945,7 +3856,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_set_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
@@ -3966,9 +3876,9 @@ namespace QLogicaeCLI
 					STRING_INPUTS.get("set_windows_registry_command", "root_path"),
 					"Windows registry root path")
 				->check(CLI::IsMember(
-					UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
+					QLogicaeCore::UTILITIES.WINDOWS_REGISTRY_ROOT_PATH
 				))
-				->default_val(UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
+				->default_val(QLogicaeCore::UTILITIES.WINDOWS_REGISTRY_ROOT_PATH[0]);
 
 			set_windows_registry_command
 				->add_option("--sub-path",
@@ -3999,7 +3909,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string set_windows_registry_command__root_path =
 						STRING_INPUTS.get("set_windows_registry_command", "root_path");
@@ -4060,7 +3969,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_set_command()",
 							exception.what()
 						);
@@ -4081,9 +3989,9 @@ namespace QLogicaeCLI
 					STRING_INPUTS.get("set_environment_variables_command", "root_path"),
 					"Windows registry root path")
 				->check(CLI::IsMember(
-					UTILITIES.ENVIRONMENT_VARIABLE_TYPES
+					QLogicaeCore::UTILITIES.ENVIRONMENT_VARIABLE_TYPES
 				))
-				->default_val(UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
+				->default_val(QLogicaeCore::UTILITIES.ENVIRONMENT_VARIABLE_TYPES[0]);
 
 			set_environment_variables_command
 				->add_option("--key",
@@ -4108,7 +4016,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					std::string set_environment_variables_command__root_path =
 						STRING_INPUTS.get("set_environment_variables_command", "root_path");
@@ -4164,7 +4071,6 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
 							"QLogicaeCLI::Application::_setup_set_command()",
 							exception.what()
 						);
@@ -4179,7 +4085,6 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
 				"QLogicaeCLI::Application::_setup_set_command()",
 				exception.what()
 			);
@@ -4190,20 +4095,75 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_clear_command()
 	{
-		QLogicaeCore::Result<std::future<void>> future_void_result;
 
 		try
 		{
-			CLI::App* set_command =
+			CLI::App* clear_command =
 				_application.add_subcommand(
 					"clear",
-					"cache, logs"
+					"appdata, caches, logs"
 				);
 
+			CLI::App* clear_appdata_command =
+				clear_command->add_subcommand(
+					"appdata",
+					"Clears all QLogicae CLI appdata files"
+				);
+
+			clear_appdata_command
+				->add_option("--is-verbose",
+					BOOLEAN_INPUTS.get("clear_appdata_command", "is_verbose"),
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["clear_appdata"] = std::make_pair(
+				clear_appdata_command,
+				[this]() -> bool
+				{
+					QLogicaeCore::Result<void> void_result;
+
+					bool clear_appdata_command__is_verbose =
+						BOOLEAN_INPUTS.get("clear_appdata_command", "is_verbose");
+
+					QLogicaeCore::LogConfigurations console_log_configurations_1 =
+					{
+						.is_console_enabled = clear_appdata_command__is_verbose,
+						.is_console_format_enabled = clear_appdata_command__is_verbose
+					};
+
+					QLogicaeCore::LogConfigurations console_log_configurations_2 =
+					{
+						.is_console_enabled = true,
+						.is_console_format_enabled = clear_appdata_command__is_verbose
+					};
+
+					try
+					{						
+						QLogicaeCore::ROCKSDB_DATABASE.clear();
+
+						QLogicaeCore::SYSTEM_ACCESS.clear_files(
+							void_result,
+							QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path
+						);
+						
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						QLogicaeCore::LOGGER.handle_exception_async(
+							"QLogicaeCLI::Application::_setup_clear_command()",
+							exception.what()
+						);
+
+						return false;
+					}
+				}
+			);
+
 			CLI::App* clear_cache_command =
-				set_command->add_subcommand(
-					"cache",
-					"Clears the cache"
+				clear_command->add_subcommand(
+					"caches",
+					"Clears all QLogicae CLI caches"
 				);
 
 			clear_cache_command
@@ -4217,7 +4177,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					bool clear_cache_command__is_verbose =
 						BOOLEAN_INPUTS.get("clear_cache_command", "is_verbose");
@@ -4238,29 +4197,15 @@ namespace QLogicaeCLI
 					{
 						LOGGER.log_running(
 							void_result,
-							"qlogicae_cli clear cache",
+							"qlogicae_cli clear caches",
 							console_log_configurations_1
 						);
 
-						std::cout << QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_CACHES.relative_root_folder_path << "\n";
-						std::cout << QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path << "\n";
-
-
-
-						/*
-						
-
-						QLogicaeCore::SYSTEM_ACCESS.clear_files(
-							void_result,
-							QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_CACHES.relative_root_folder_path
-						);
-						
-						
-						*/
+						QLogicaeCore::ROCKSDB_DATABASE.clear();
 
 						LOGGER.log_complete(
 							void_result,
-							"qlogicae_cli clear cache",
+							"qlogicae_cli clear caches",
 							console_log_configurations_1
 						);
 
@@ -4269,8 +4214,7 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
-							"QLogicaeCLI::Application::_setup_set_command()",
+							"QLogicaeCLI::Application::_setup_clear_command()",
 							exception.what()
 						);
 
@@ -4280,9 +4224,9 @@ namespace QLogicaeCLI
 			);
 
 			CLI::App* clear_logs_command =
-				set_command->add_subcommand(
+				clear_command->add_subcommand(
 					"logs",
-					"Clears the logs"
+					"Clears all QLogicae CLI logs"
 				);
 
 			clear_logs_command
@@ -4296,7 +4240,6 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
-					QLogicaeCore::Result<std::future<void>> future_void_result;
 
 					bool clear_logs_command__is_verbose =
 						BOOLEAN_INPUTS.get("clear_logs_command", "is_verbose");
@@ -4315,21 +4258,9 @@ namespace QLogicaeCLI
 
 					try
 					{
-						LOGGER.log_running(
-							void_result,
-							"qlogicae_cli clear logs",
-							console_log_configurations_1
-						);
-
 						QLogicaeCore::SYSTEM_ACCESS.clear_files(
 							void_result,
 							QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path
-						);
-
-						LOGGER.log_complete(
-							void_result,
-							"qlogicae_cli clear logs",
-							console_log_configurations_1
 						);
 
 						return true;
@@ -4337,8 +4268,7 @@ namespace QLogicaeCLI
 					catch (const std::exception& exception)
 					{
 						QLogicaeCore::LOGGER.handle_exception_async(
-							future_void_result,
-							"QLogicaeCLI::Application::_setup_set_command()",
+							"QLogicaeCLI::Application::_setup_clear_command()",
 							exception.what()
 						);
 
@@ -4352,8 +4282,7 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				future_void_result,
-				"QLogicaeCLI::Application::_setup_set_command()",
+				"QLogicaeCLI::Application::_setup_clear_command()",
 				exception.what()
 			);
 

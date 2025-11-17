@@ -26,7 +26,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception(
+			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Logger::setup()",
 				exception.what()
 			);
@@ -134,7 +134,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception(
+			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Logger::terminate()",
 				exception.what()
 			);
@@ -247,7 +247,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception(
+			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Logger::log_running()",
 				exception.what()
 			);
@@ -387,7 +387,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception(
+			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Logger::log()",
 				exception.what()
 			);
@@ -450,7 +450,7 @@ namespace QLogicaeCLI
 			text,
 			log_configurations
 		);
-		
+
 		result.set_to_good_status_without_value();
 	}
 
@@ -527,7 +527,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception(
+			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Logger::log_complete()",
 				exception.what()
 			);

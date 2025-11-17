@@ -26,7 +26,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception(
+			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Transformer::setup()",
 				exception.what()
 			);
@@ -134,7 +134,7 @@ namespace QLogicaeCLI
 		}
 		catch (const std::exception& exception)
 		{
-			QLogicaeCore::LOGGER.handle_exception(
+			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Transformer::terminate()",
 				exception.what()
 			);

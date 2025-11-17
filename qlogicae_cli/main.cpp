@@ -9,7 +9,7 @@ int main(int argc, char** argv)
         bool is_safe = QLogicaeCLI::APPLICATION.setup(argc, argv);
         if (!is_safe)
         {
-            QLogicaeCore::LOGGER.handle_exception(
+            QLogicaeCore::LOGGER.handle_exception_async(
                 "main()",
                 "Setup failed"
             );
@@ -20,7 +20,7 @@ int main(int argc, char** argv)
         is_safe = QLogicaeCLI::APPLICATION.parse();
         if (!is_safe)
         {
-            QLogicaeCore::LOGGER.handle_exception(
+            QLogicaeCore::LOGGER.handle_exception_async(
                 "main()",
                 "Parsing failed"
             );
@@ -31,19 +31,19 @@ int main(int argc, char** argv)
         is_safe = QLogicaeCLI::APPLICATION.terminate();
         if (!is_safe)
         {
-            QLogicaeCore::LOGGER.handle_exception(
+            QLogicaeCore::LOGGER.handle_exception_async(
                 "main()",
                 "Termination failed"
             );
 
             return EXIT_FAILURE;
         }
-
+        
         return EXIT_SUCCESS;
     }
     catch (const std::exception& exception)
     {
-        QLogicaeCore::LOGGER.handle_exception(
+        QLogicaeCore::LOGGER.handle_exception_async(
             "main()",
             exception.what()
         );
