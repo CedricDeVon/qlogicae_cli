@@ -3630,7 +3630,7 @@ namespace QLogicaeCLI
 							QLogicaeCore::TEXT_FILE_IO.set_file_path(
 								FILE_SYSTEM.setup_result_output_file(
 									verify_sha256__output_file_path,
-									"verify\\argon2id",
+									"verify\\sha256",
 									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
