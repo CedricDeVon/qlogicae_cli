@@ -185,12 +185,7 @@ namespace QLogicaeCLI
 		{
 			_application.exit(exception);
 
-			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Application::setup()",
-				exception.what()
-			);
-
-			std::exit(EXIT_SUCCESS);
+			return result.set_to_bad_status_without_value();
 		}
 		catch (const CLI::ParseError& exception)
 		{
@@ -4173,8 +4168,10 @@ namespace QLogicaeCLI
 					};
 
 					try
-					{						
+					{	
+						/*
 						QLogicaeCore::ROCKSDB_DATABASE.clear();
+						*/
 
 						QLogicaeCore::SYSTEM_ACCESS.clear_files(
 							void_result,
@@ -4236,7 +4233,9 @@ namespace QLogicaeCLI
 							console_log_configurations_1
 						);
 
+						/*
 						QLogicaeCore::ROCKSDB_DATABASE.clear();
+						*/
 
 						LOGGER.log_complete(
 							void_result,
