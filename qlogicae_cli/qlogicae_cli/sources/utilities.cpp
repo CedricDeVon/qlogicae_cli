@@ -285,7 +285,7 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Utilities::setup()",
+				"QLogicaeCLI::Utilities::get_application_full_name()",
 				exception.what()
 			);
 
@@ -308,7 +308,7 @@ namespace QLogicaeCLI
 		catch (const std::exception& exception)
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Utilities::setup()",
+				"QLogicaeCLI::Utilities::get_application_about_details()",
 				exception.what()
 			);
 

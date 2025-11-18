@@ -281,7 +281,7 @@ namespace QLogicaeCLI
 		if (!std::filesystem::exists(path))
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Application::setup()",
+				"QLogicaeCLI::FileSystem::is_file_or_folder_path_found()",
 				"File or folder path '" + path + "' does not exist"
 			);
 

@@ -337,7 +337,7 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCore::Application::terminate()",
+				"QLogicaeCLI::Application::terminate()",
 				"Termination failed"
 			);
 
@@ -348,7 +348,7 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::FileSystem::terminate()",
+				"QLogicaeCLI::Application::terminate()",
 				"Termination failed"
 			);
 
@@ -359,7 +359,7 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Logger::terminate()",
+				"QLogicaeCLI::Application::terminate()",
 				"Termination failed"
 			);
 
@@ -370,7 +370,7 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Transform::terminate()",
+				"QLogicaeCLI::Application::terminate()",
 				"Termination failed"
 			);
 
@@ -381,7 +381,7 @@ namespace QLogicaeCLI
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Utilities::terminate()",
+				"QLogicaeCLI::Application::terminate()",
 				"Termination failed"
 			);
 
@@ -472,7 +472,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_view_command()
 	{		
-
 		try
 		{
 			CLI::App* view_command =
@@ -3147,7 +3146,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_hash_command()
 	{
-
 		try
 		{
 			CLI::App* hash_command =
