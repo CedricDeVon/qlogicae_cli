@@ -188,7 +188,6 @@ namespace QLogicaeCLI
 		}
 		catch (const CLI::CallForHelp& exception)
 		{
-
 			QLogicaeCore::Result<std::future<void>> future_void_result;
 
 			QLogicaeCore::LOGGER.log_with_timestamp_to_files_async(
@@ -196,16 +195,12 @@ namespace QLogicaeCLI
 				"Help has been asked"
 			);
 
-
 			std::exit(_application.exit(exception));
 
 			return result.set_to_bad_status_without_value();
 		}
 		catch (const CLI::ParseError& exception)
-		{
-
-			_application.exit(exception);
-			
+		{			
 			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Application::setup()",
 				exception.what()
@@ -562,8 +557,8 @@ namespace QLogicaeCLI
 				);
 
 			view_windows_registy_command
-				->add_option("--environment",
-					STRING_INPUTS.get("view_windows_registy", "environment"),
+				->add_option("--environment-type",
+					STRING_INPUTS.get("view_windows_registy", "environment_type"),
 					"An existing environment type"
 				)
 				->default_val("development");
@@ -592,7 +587,7 @@ namespace QLogicaeCLI
 
 					std::string view_windows_registy_command__environment =
 						STRING_INPUTS.get(
-							"view_windows_registy", "environment"
+							"view_windows_registy", "environment_type"
 						);
 					
 					std::string view_windows_registy_command__root_path =
@@ -775,7 +770,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_run_command()
 	{
-
 		try
 		{
 			CLI::App* run_command =
@@ -791,15 +785,15 @@ namespace QLogicaeCLI
 				);
 
 			run_vs2022_command
-				->add_option("--project",
-					STRING_INPUTS.get("run_vs2022_command", "project"),
+				->add_option("--project-name",
+					STRING_INPUTS.get("run_vs2022_command", "project_name"),
 					"The selected visual studio 2022 project"
 				)
 				->default_str("");
 
 			run_vs2022_command
-				->add_option("--architecture",
-					STRING_INPUTS.get("run_vs2022_command", "architecture"),
+				->add_option("--architecture-type",
+					STRING_INPUTS.get("run_vs2022_command", "architecture_type"),
 					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
@@ -830,10 +824,10 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> void_result;
 
 					std::string run_vs2022_command__project =
-						STRING_INPUTS.get("run_vs2022_command", "project");
+						STRING_INPUTS.get("run_vs2022_command", "project_name");
 
 					std::string run_vs2022_command__architecture =
-						STRING_INPUTS.get("run_vs2022_command", "architecture");
+						STRING_INPUTS.get("run_vs2022_command", "architecture_type");
 
 					std::string run_vs2022_command__build_type =
 						STRING_INPUTS.get("run_vs2022_command", "build_type");
@@ -1155,22 +1149,22 @@ namespace QLogicaeCLI
 				);
 
 			build_vs2022_command
-				->add_option("--project",
-					STRING_INPUTS.get("build_vs2022_command", "project"),
+				->add_option("--project-name",
+					STRING_INPUTS.get("build_vs2022_command", "project_name"),
 					"The selected visual studio 2022 project. Defaults to the starting project"
 				)
 				->default_val("");
 
 			build_vs2022_command
-				->add_option("--environment",
-					STRING_INPUTS.get("build_vs2022_command", "environment"),
+				->add_option("--environment-type",
+					STRING_INPUTS.get("build_vs2022_command", "environment_type"),
 					"The selected qlogicae environment type"
 				)
 				->default_val("development");
 
 			build_vs2022_command
-				->add_option("--architecture",
-					STRING_INPUTS.get("build_vs2022_command", "architecture"),
+				->add_option("--architecture-type",
+					STRING_INPUTS.get("build_vs2022_command", "architecture_type"),
 					"The visual studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
@@ -1202,17 +1196,17 @@ namespace QLogicaeCLI
 
 					std::string build_vs2022_command__project =
 						STRING_INPUTS.get(
-							"build_vs2022_command", "project"
+							"build_vs2022_command", "project_name"
 						);
 
 					std::string build_vs2022_command__environment =
 						STRING_INPUTS.get(
-							"build_vs2022_command", "environment"
+							"build_vs2022_command", "environment_type"
 						);
 
 					std::string build_vs2022_command__architecture =
 						STRING_INPUTS.get(
-							"build_vs2022_command", "architecture"
+							"build_vs2022_command", "architecture_type"
 						);
 
 					std::string build_vs2022_command__build_type =
@@ -1329,8 +1323,7 @@ namespace QLogicaeCLI
 	}
 
 	bool Application::_setup_deploy_command()
-	{
-		
+	{		
 		try
 		{
 			CLI::App* deploy_command =
@@ -1346,22 +1339,22 @@ namespace QLogicaeCLI
 				);
 
 			deploy_vs2022_command
-				->add_option("--project",
-					STRING_INPUTS.get("deploy_vs2022", "project"),
+				->add_option("--project-name",
+					STRING_INPUTS.get("deploy_vs2022", "project_name"),
 					"The selected visual studio 2022 project. Defaults to the startup project"
 					)
 					->default_val("");
 
 			deploy_vs2022_command
-				->add_option("--environment",
-					STRING_INPUTS.get("deploy_vs2022", "environment"),
+				->add_option("--environment-type",
+					STRING_INPUTS.get("deploy_vs2022", "environment_type"),
 					"The selected qlogicae environment type"
 					)
 					->default_val("release");
 
 			deploy_vs2022_command
-				->add_option("--architecture",
-					STRING_INPUTS.get("deploy_vs2022", "architecture"),
+				->add_option("--architecture-type",
+					STRING_INPUTS.get("deploy_vs2022", "architecture_type"),
 					"The visual studio 2022 project's instruction architecture"
 					)
 					->check(CLI::IsMember(
@@ -1414,13 +1407,13 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> void_result;
 
 					std::string deploy_vs2022__project =
-						STRING_INPUTS.get("deploy_vs2022", "project");
+						STRING_INPUTS.get("deploy_vs2022", "project_name");
 
 					std::string deploy_vs2022__environment =
-						STRING_INPUTS.get("deploy_vs2022", "environment");
+						STRING_INPUTS.get("deploy_vs2022", "environment_type");
 
 					std::string deploy_vs2022__architecture =
-						STRING_INPUTS.get("deploy_vs2022", "architecture");
+						STRING_INPUTS.get("deploy_vs2022", "architecture_type");
 
 					std::string deploy_vs2022__build_type =
 						STRING_INPUTS.get("deploy_vs2022", "build_type");
@@ -1647,8 +1640,8 @@ namespace QLogicaeCLI
 
 			setup_windows_registry_command
 				->add_option(
-					"--environment",
-					STRING_INPUTS.get("setup_windows_registry", "environment"),
+					"--environment-type",
+					STRING_INPUTS.get("setup_windows_registry", "environment_type"),
 					"HKCU Selected environment type")
 				->default_val("development");
 
@@ -1665,7 +1658,7 @@ namespace QLogicaeCLI
 						QLogicaeCore::Result<void> void_result;
 
 						std::string setup_windows_registry__environment =
-							STRING_INPUTS.get("setup_windows_registry", "environment");
+							STRING_INPUTS.get("setup_windows_registry", "environment_type");
 
 						bool setup_windows_registry__is_verbose =
 							BOOLEAN_INPUTS.get("setup_windows_registry", "is_verbose");
@@ -2239,7 +2232,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_generate_command()
 	{
-
 		try
 		{
 			CLI::App* generate_command =
@@ -2255,8 +2247,8 @@ namespace QLogicaeCLI
 				);
 
 			generate_uuid4_command
-				->add_option("--count",
-					SIZE_T_INPUTS.get("generate_uuid4", "count"),
+				->add_option("--output-count",
+					SIZE_T_INPUTS.get("generate_uuid4", "output_count"),
 					"The number of generated uuid4s")
 					->check(CLI::PositiveNumber)
 					->default_val(1);
@@ -2285,8 +2277,8 @@ namespace QLogicaeCLI
 				{
 					QLogicaeCore::Result<void> result;
 
-					size_t generate_uuid4__count =
-						SIZE_T_INPUTS.get("generate_uuid4", "count");
+					size_t generate_uuid4__output_count =
+						SIZE_T_INPUTS.get("generate_uuid4", "output_count");
 
 					std::string generate_uuid4__output_file_path =
 						STRING_INPUTS.get("generate_uuid4", "output_file_path");
@@ -2318,10 +2310,10 @@ namespace QLogicaeCLI
 						);
 
 						std::string output_string = "\n";
-						size_t index_1, size_a = generate_uuid4__count - 1;
+						size_t index_1, size_a = generate_uuid4__output_count - 1;
 
 						for (index_1 = 0;
-							index_1 < generate_uuid4__count;
+							index_1 < generate_uuid4__output_count;
 							++index_1)
 						{
 							output_string += QLogicaeCore::GENERATOR.random_uuid4();
@@ -2376,15 +2368,15 @@ namespace QLogicaeCLI
 				);
 			
 			generate_string_command
-				->add_option("--length",
-					SIZE_T_INPUTS.get("generate_string", "length"),
+				->add_option("--string-length",
+					SIZE_T_INPUTS.get("generate_string", "string_length"),
 					"The character length of each individual string output")
 				->check(CLI::PositiveNumber)
 				->default_val(32);
 			
 			generate_string_command
-				->add_option("--count",
-					SIZE_T_INPUTS.get("generate_string", "count"),
+				->add_option("--output-count",
+					SIZE_T_INPUTS.get("generate_string", "output_count"),
 					"The number of generated string outputs")
 				->check(CLI::PositiveNumber)
 				->default_val(1);
@@ -2420,10 +2412,10 @@ namespace QLogicaeCLI
 					QLogicaeCore::Result<void> void_result;
 
 					size_t generate_string__length =
-						SIZE_T_INPUTS.get("generate_string", "length");
+						SIZE_T_INPUTS.get("generate_string", "string_length");
 
-					size_t generate_string__count =
-						SIZE_T_INPUTS.get("generate_string", "count");
+					size_t generate_string__output_count =
+						SIZE_T_INPUTS.get("generate_string", "output_count");
 
 					std::string generate_string__output_file_path =
 						STRING_INPUTS.get("generate_string", "output_file_path");
@@ -2457,7 +2449,7 @@ namespace QLogicaeCLI
 							console_log_configurations_1
 						);
 
-						size_t index_1, size_a = generate_string__count - 1;
+						size_t index_1, size_a = generate_string__output_count - 1;
 						std::string output_string = "\n",
 							character_set = (generate_string__character_set.empty()) ?
 
@@ -2465,7 +2457,7 @@ namespace QLogicaeCLI
 							generate_string__character_set;
 
 						for (index_1 = 0;
-							index_1 < generate_string__count;
+							index_1 < generate_string__output_count;
 							++index_1)
 						{
 							output_string += QLogicaeCore::GENERATOR.random_string(
@@ -2531,7 +2523,6 @@ namespace QLogicaeCLI
 	
 	bool Application::_setup_encrypt_command()
 	{
-
 		try
 		{
 			CLI::App* encrypt_command =
@@ -2845,7 +2836,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_decrypt_command()
 	{
-
 		try
 		{
 			CLI::App* decrypt_command =
@@ -3399,7 +3389,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_verify_command()
 	{
-
 		try
 		{
 			CLI::App* verify_command =
@@ -3685,7 +3674,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_get_command()
 	{
-
 		try
 		{
 			CLI::App* get_command =
@@ -3903,7 +3891,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_set_command()
 	{
-
 		try
 		{
 			CLI::App* set_command =
@@ -4144,7 +4131,6 @@ namespace QLogicaeCLI
 	{
 		try
 		{
-
 			CLI::App* clear_command =
 				_application.add_subcommand(
 					"clear",
@@ -4186,11 +4172,7 @@ namespace QLogicaeCLI
 					};
 
 					try
-					{	
-						/*
-						QLogicaeCore::ROCKSDB_DATABASE.clear();
-						*/
-
+					{							
 						QLogicaeCore::SYSTEM_ACCESS.clear_files(
 							void_result,
 							QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path
@@ -4250,10 +4232,6 @@ namespace QLogicaeCLI
 							"qlogicae_cli clear caches",
 							console_log_configurations_1
 						);
-
-						/*
-						QLogicaeCore::ROCKSDB_DATABASE.clear();
-						*/
 
 						LOGGER.log_complete(
 							void_result,
@@ -4344,15 +4322,3 @@ namespace QLogicaeCLI
 		return true;
 	}
 }
-
-
-/*
-Test Commands:
-
-- qlogicae_cli encrypt xchacha20poly1305 --is-verbose='true' --text='kq6WSuD87061majrOprXMM9ZHdjAfUs8v00YLhFL7/LVkbL5gCJNO0+gzAES1g==' --key='$Password_1234' --is-file-output-enabled='true' --output-file-path='qlogicae_cli/sample.txt'
-- qlogicae_cli decrypt xchacha20poly1305 --is-verbose='true' --text='A3NLKqAPgQB6XYfH26C9XfBGI1Szvvj3ARp8428RJMFcF28LYB7iK3eiiA41XS00O00ED20FG0RSdTOxPIrkslrWlSQmUBUT2PxK7gdMvds=' --nonce='RPgZWV4I8h6y8jfMbp8A73m3cUjJAzzS' --key='$Password_1234' --is-file-output-enabled='true' --output-file-path='qlogicae_cli/other.txt'
-
-- qlogicae_cli encrypt aes256 --is-verbose='true' --text='kq6WSuD87061majrOprXMM9ZHdjAfUs8v00YLhFL7/LVkbL5gCJNO0+gzAES1g==' --key='$Password_1234' --is-file-output-enabled='true' --output-file-path='qlogicae_cli/sample.txt'
-- qlogicae_cli decrypt aes256 --is-verbose='true' --text='RtM4wglLCS1vWs6RQfoK1I9u3XFmp6CN6jtI8QchVbmPU319ZPtXSNLl2DEhNc1La//t/iv8LIGutXQCRAHLPQO6L7TyMl8Zb4vbCnoCIWs=' --nonce='bRFK2o5SYLrBIyygNQTkQJD8sFWhX0VJ' --key='$Password_1234' --is-file-output-enabled='true' --output-file-path='qlogicae_cli/other.txt'
-
-*/
