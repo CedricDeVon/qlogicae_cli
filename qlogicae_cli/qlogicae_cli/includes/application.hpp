@@ -13,6 +13,8 @@
 #include "qlogicae_core/includes/log_configurations.hpp"
 
 #include <CLI/CLI.hpp>
+#include <CLI/Config.hpp>
+#include <CLI/Formatter.hpp>
 #include <absl/strings/str_replace.h>
 
 namespace QLogicaeCLI

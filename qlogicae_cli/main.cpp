@@ -7,6 +7,7 @@ int main(int argc, char** argv)
     try
     {   
         bool is_safe = QLogicaeCLI::APPLICATION.setup(argc, argv);
+
         if (!is_safe)
         {
             QLogicaeCore::LOGGER.handle_exception_async(
@@ -18,6 +19,7 @@ int main(int argc, char** argv)
         }
 
         is_safe = QLogicaeCLI::APPLICATION.parse();
+
         if (!is_safe)
         {
             QLogicaeCore::LOGGER.handle_exception_async(
@@ -29,6 +31,7 @@ int main(int argc, char** argv)
         }
 
         is_safe = QLogicaeCLI::APPLICATION.terminate();
+
         if (!is_safe)
         {
             QLogicaeCore::LOGGER.handle_exception_async(

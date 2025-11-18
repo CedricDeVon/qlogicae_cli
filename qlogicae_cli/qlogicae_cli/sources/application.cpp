@@ -104,49 +104,54 @@ namespace QLogicaeCLI
 		char** argv
 	)
 	{
+		QLogicaeCore::LogConfigurations console_log_configurations_1 =
+		{
+			.is_console_enabled = false,
+			.is_console_format_enabled = true
+		};
 
 		QLogicaeCore::QLOGICAE_APPLICATION.setup(result);
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCLI::Application::setup()",
 				"Setup failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		QLogicaeCLI::UTILITIES.setup(result);
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCLI::Application::setup()",
 				"Setup failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		QLogicaeCLI::LOGGER.setup(result);
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCLI::Application::setup()",
 				"Setup failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		QLogicaeCLI::TRANSFORMER.setup(result);
 		if (result.is_status_unsafe())
 		{
 			QLogicaeCore::LOGGER.handle_exception_async(
-				"QLogicaeCLI::Application::parse()",
+				"QLogicaeCLI::Application::setup()",
 				"Setup failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		_application.name(
@@ -168,7 +173,7 @@ namespace QLogicaeCLI
 			!_setup_hash_command() ||
 			!_setup_verify_command()
 		)
-		{
+		{			
 			QLogicaeCore::LOGGER.handle_exception_async(
 				"QLogicaeCLI::Application::setup()",
 				"Parsing Failed"
@@ -178,17 +183,27 @@ namespace QLogicaeCLI
 		}
 
 		try
-		{
+		{			
 			_application.parse(argc, argv);
 		}
 		catch (const CLI::CallForHelp& exception)
 		{
-			_application.exit(exception);
+
+			QLogicaeCore::Result<std::future<void>> future_void_result;
+
+			QLogicaeCore::LOGGER.log_with_timestamp_to_files_async(
+				future_void_result,
+				"Help has been asked"
+			);
+
+
+			std::exit(_application.exit(exception));
 
 			return result.set_to_bad_status_without_value();
 		}
 		catch (const CLI::ParseError& exception)
 		{
+
 			_application.exit(exception);
 			
 			QLogicaeCore::LOGGER.handle_exception_async(
@@ -196,10 +211,12 @@ namespace QLogicaeCLI
 				exception.what()
 			);
 			
+			std::exit(_application.exit(exception));
+
 			return result.set_to_bad_status_without_value();
 		}
 		
-		result.set_to_good_status_without_value();
+		return result.set_to_good_status_without_value();
 	}
 
 	std::future<bool> Application::setup_async(
@@ -329,7 +346,7 @@ namespace QLogicaeCLI
 				"Termination failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		FILE_SYSTEM.terminate(result);
@@ -340,7 +357,7 @@ namespace QLogicaeCLI
 				"Termination failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		LOGGER.terminate(result);
@@ -351,7 +368,7 @@ namespace QLogicaeCLI
 				"Termination failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		TRANSFORMER.terminate(result);
@@ -362,7 +379,7 @@ namespace QLogicaeCLI
 				"Termination failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		UTILITIES.terminate(result);
@@ -373,7 +390,7 @@ namespace QLogicaeCLI
 				"Termination failed"
 			);
 
-			return;
+			return result.set_to_bad_status_without_value();
 		}
 
 		result.set_to_good_status_without_value();
@@ -4125,9 +4142,9 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_clear_command()
 	{
-
 		try
 		{
+
 			CLI::App* clear_command =
 				_application.add_subcommand(
 					"clear",
@@ -4150,6 +4167,7 @@ namespace QLogicaeCLI
 				clear_appdata_command,
 				[this]() -> bool
 				{
+
 					QLogicaeCore::Result<void> void_result;
 
 					bool clear_appdata_command__is_verbose =

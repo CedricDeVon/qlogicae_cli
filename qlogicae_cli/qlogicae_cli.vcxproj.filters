@@ -87,6 +87,20 @@
     <None Include="qlogicae_cli\assembly\x64_masm__main.asm">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\api\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\collaboration\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\development\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\file-system\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\introduction\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\legalities\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\project-state\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\quality-assurance\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\references\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\release-notes\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\1.0.0\security\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\qlogicae\documentation\index.md" />
+    <None Include="qlogicae\cli\templates\generic\documentation\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="qlogicae_cli\resources\resources.rc">

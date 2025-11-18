@@ -1,6 +1,10 @@
 #pragma once
 
 #include <CLI/CLI.hpp>
+#include <CLI/Config.hpp>
+#include <CLI/Formatter.hpp>
+#include <absl/strings/str_replace.h>
+
 #include <absl/strings/str_cat.h>
 #include <absl/strings/str_replace.h>
 

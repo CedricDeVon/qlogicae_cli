@@ -73,7 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>qlogicae</TargetName>
     <LinkIncremental>
     </LinkIncremental>
   </PropertyGroup>
