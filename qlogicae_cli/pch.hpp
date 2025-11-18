@@ -2,6 +2,7 @@
 
 #include <CLI/CLI.hpp>
 #include <absl/strings/str_cat.h>
+#include <absl/strings/str_replace.h>
 
 #include <any>
 #include <variant>

@@ -1736,7 +1736,7 @@ namespace QLogicaeCLI
 					->add_option("--enable-full-property-setup",
 						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_full_property_setup"),
 						"Enables or disables complete setup")
-					->default_val(false);
+					->default_val(true);
 
 				setup_vs2022_application_command
 					->add_option("--enable-filesystem-setup",
@@ -1796,7 +1796,7 @@ namespace QLogicaeCLI
 								"qlogicae_cli setup vs2022 application",
 								console_log_configurations_1
 							);
-
+							
 							bool is_running = true;
 							std::string startup;
 							std::string executable;
@@ -1809,16 +1809,20 @@ namespace QLogicaeCLI
 							std::string architecture;
 							std::string confirmation;
 
-							while (setup_vs2022_application__enable_property_setup &&
-								is_running)
+							std::string text;
+							
+							while (
+								setup_vs2022_application__enable_property_setup &&
+								is_running
+							)
 							{
-								startup = "qlogicae_application";
-								name = "QLogicae Application";
+								startup = "startup_project";
+								name = "Project Name";
 								version = "1.0.0";
-								company = "";
-								authors = "";
-								description = "";
-								url = "";
+								company = "Company";
+								authors = "Author";
+								description = "Description";
+								url = "www.google.com";
 								architecture = "x64";
 
 								executable = startup;
@@ -1907,40 +1911,55 @@ namespace QLogicaeCLI
 								}
 							}
 
-							std::string root_input_folder =
-								QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH +
-								"\\" + UTILITIES.RELATIVE_QLOGICAE_CLI_SETUP_VS2022_APPLICATION_FOLDER_PATH;
-
 							if (setup_vs2022_application__enable_filesystem_setup)
-							{								
+							{										
+								std::string root_input_folder =
+									QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH +
+									"\\" + UTILITIES.RELATIVE_QLOGICAE_CLI_SETUP_VS2022_APPLICATION_FOLDER_PATH;
+
+								std::system((
+									"powershell -Command \"Copy-Item -Path '" +
+									root_input_folder + "\\root\\*' -Destination '" +
+									QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+									"' -Recurse -Force\""
+									).c_str());
+
 								QLogicaeCore::TEXT_FILE_IO.setup(
 									QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
 									"\\LICENSE.txt"
 								);
-
-								QLogicaeCore::TEXT_FILE_IO.write(
-									"MIT License\n\n"
-
-									"Copyright(c) " + absl::StrCat(QLogicaeCore::TIME.year()) + " " + company + "\n\n"
-
-									"Permission is hereby granted, free of charge, to any person obtaining a copy\n"
-									"of this software and associated documentation files(the \"Software\"), to deal\n"
-									"in the Software without restriction, including without limitation the rights\n"
-									"to use, copy, modify, merge, publish, distribute, sublicense, and /or sell\n"
-									"copies of the Software, and to permit persons to whom the Software is\n"
-									"furnished to do so, subject to the following conditions :\n\n"
-
-									"The above copyright notice and this permission notice shall be included in all\n"
-									"copies or substantial portions of the Software.\n\n"
-
-									"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
-									"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
-									"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE\n"
-									"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
-									"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
-									"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
-									"SOFTWARE."
+								QLogicaeCore::TEXT_FILE_IO.open(QLogicaeCore::FileMode::READ);
+								text = QLogicaeCore::TEXT_FILE_IO.read();
+								QLogicaeCore::TEXT_FILE_IO.close(QLogicaeCore::FileMode::READ);
+								text = absl::StrReplaceAll(text,
+									{
+										{ "[placeholder__year]", absl::StrCat(static_cast<int>(QLogicaeCore::TIME.year())) },
+										{ "[placeholder__company]", company }
+									}
 								);
+								QLogicaeCore::TEXT_FILE_IO.open(QLogicaeCore::FileMode::WRITE);
+								QLogicaeCore::TEXT_FILE_IO.write(text);
+								QLogicaeCore::TEXT_FILE_IO.close(QLogicaeCore::FileMode::WRITE);
+
+
+
+								QLogicaeCore::TEXT_FILE_IO.setup(
+									QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
+									"\\README.md"
+								);
+								QLogicaeCore::TEXT_FILE_IO.open(QLogicaeCore::FileMode::READ);
+								text = QLogicaeCore::TEXT_FILE_IO.read();
+								QLogicaeCore::TEXT_FILE_IO.close(QLogicaeCore::FileMode::READ);
+
+								text = absl::StrReplaceAll(text,
+									{
+										{ "[placeholder__name]", name },
+										{ "[placeholder__description]", description }
+									}
+								);
+								QLogicaeCore::TEXT_FILE_IO.open(QLogicaeCore::FileMode::WRITE);
+								QLogicaeCore::TEXT_FILE_IO.write(text);
+								QLogicaeCore::TEXT_FILE_IO.close(QLogicaeCore::FileMode::WRITE);
 							}
 
 							if (setup_vs2022_application__enable_property_setup)
@@ -2062,7 +2081,7 @@ namespace QLogicaeCLI
 								"qlogicae_cli setup vs2022 application",
 								console_log_configurations_1
 							);
-
+							
 							return true;
 						}
 						catch (const std::exception& exception)
