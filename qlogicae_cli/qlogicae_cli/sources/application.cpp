@@ -483,7 +483,7 @@ namespace QLogicaeCLI
 			CLI::App* view_about_command =
 				view_command->add_subcommand(
 					"about",
-					"Project and application details"
+					"Displays application details"
 				);
 
 			view_about_command
@@ -661,7 +661,7 @@ namespace QLogicaeCLI
 			CLI::App* view_environment_variables_command =
 				view_command->add_subcommand(
 					"environment-variables",
-					"#nvironment variable key-value pairs"
+					"Environment variable key-value pairs used by the application"
 				);
 
 			view_environment_variables_command
@@ -780,20 +780,20 @@ namespace QLogicaeCLI
 			CLI::App* run_vs2022_command =
 				run_command->add_subcommand(
 					"vs2022",
-					"Runs a visual studio 2022 project executable"
+					"Runs a Visual Studio 2022 project executable"
 				);
 
 			run_vs2022_command
 				->add_option("--project-name",
 					STRING_INPUTS.get("run_vs2022_command", "project_name"),
-					"The selected visual studio 2022 project"
+					"The selected Visual Studio 2022 project"
 				)
 				->default_str("");
 
 			run_vs2022_command
 				->add_option("--architecture-type",
 					STRING_INPUTS.get("run_vs2022_command", "architecture_type"),
-					"The visual studio 2022 project's instruction architecture"
+					"The Visual Studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
 					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
@@ -803,7 +803,7 @@ namespace QLogicaeCLI
 			run_vs2022_command
 				->add_option("--build-type",
 					STRING_INPUTS.get("run_vs2022_command", "build_type"),
-					"The visual studio 2022 project's build type"
+					"The Visual Studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
 					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
@@ -1144,27 +1144,27 @@ namespace QLogicaeCLI
 			CLI::App* build_vs2022_command =
 				build_command->add_subcommand(
 					"vs2022",
-					"Builds a project via visual studio 2022"
+					"Builds a project via Visual Studio 2022"
 				);
 
 			build_vs2022_command
 				->add_option("--project-name",
 					STRING_INPUTS.get("build_vs2022_command", "project_name"),
-					"The selected visual studio 2022 project. Defaults to the starting project"
+					"The selected Visual Studio 2022 project. Defaults to the starting project"
 				)
 				->default_val("");
 
 			build_vs2022_command
 				->add_option("--environment-type",
 					STRING_INPUTS.get("build_vs2022_command", "environment_type"),
-					"The selected qlogicae environment type"
+					"The selected QLogicae environment type"
 				)
 				->default_val("development");
 
 			build_vs2022_command
 				->add_option("--architecture-type",
 					STRING_INPUTS.get("build_vs2022_command", "architecture_type"),
-					"The visual studio 2022 project's instruction architecture"
+					"The Visual Studio 2022 project's instruction architecture"
 				)
 				->check(CLI::IsMember(
 					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
@@ -1174,7 +1174,7 @@ namespace QLogicaeCLI
 			build_vs2022_command
 				->add_option("--build-type",
 					STRING_INPUTS.get("build_vs2022_command", "build_type"),
-					"The visual studio 2022 project's build type"
+					"The Visual Studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
 					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
@@ -1259,7 +1259,7 @@ namespace QLogicaeCLI
 						{
 							LOGGER.log(
 								void_result,
-								"Selected visual studio 2022 project does not exist",
+								"Selected Visual Studio 2022 project does not exist",
 								QLogicaeCore::DEFAULT_WARNING_LOG_CONFIGURATIONS
 							);
 
@@ -1334,27 +1334,27 @@ namespace QLogicaeCLI
 			CLI::App* deploy_vs2022_command =
 				deploy_command->add_subcommand(
 					"vs2022",
-					"Deploys the visual studio 2022 project"
+					"Deploys the Visual Studio 2022 project"
 				);
 
 			deploy_vs2022_command
 				->add_option("--project-name",
 					STRING_INPUTS.get("deploy_vs2022", "project_name"),
-					"The selected visual studio 2022 project. Defaults to the startup project"
+					"The selected Visual Studio 2022 project. Defaults to the startup project"
 					)
 					->default_val("");
 
 			deploy_vs2022_command
 				->add_option("--environment-type",
 					STRING_INPUTS.get("deploy_vs2022", "environment_type"),
-					"The selected qlogicae environment type"
+					"The selected QLogicae environment type"
 					)
 					->default_val("release");
 
 			deploy_vs2022_command
 				->add_option("--architecture-type",
 					STRING_INPUTS.get("deploy_vs2022", "architecture_type"),
-					"The visual studio 2022 project's instruction architecture"
+					"The Visual Studio 2022 project's instruction architecture"
 					)
 					->check(CLI::IsMember(
 						QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_ARCHITECTURE_TYPES
@@ -1364,7 +1364,7 @@ namespace QLogicaeCLI
 			deploy_vs2022_command
 				->add_option("--build-type",
 					STRING_INPUTS.get("deploy_vs2022", "build_type"),
-					"The visual studio 2022 project's build type"
+					"The Visual Studio 2022 project's build type"
 				)
 				->check(CLI::IsMember(
 					QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES
@@ -1488,7 +1488,7 @@ namespace QLogicaeCLI
 						{
 							LOGGER.log(
 								void_result,
-								"Selected visual studio 2022 project does not exist",
+								"Selected Visual Studio 2022 project does not exist",
 								console_log_configurations_2
 							);
 
@@ -1733,25 +1733,25 @@ namespace QLogicaeCLI
 				setup_vs2022_application_command
 					->add_option("--enable-property-setup",
 						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_property_setup"),
-						"Enables or disables complete setup")
+						"Enables or disables a QLogicae project configuration input form")
 					->default_val(true);
 
 				setup_vs2022_application_command
 					->add_option("--enable-full-property-setup",
 						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_full_property_setup"),
-						"Enables or disables complete setup")
+						"Enables or disables the complete QLogicae project configuration input form")
 					->default_val(true);
 
 				setup_vs2022_application_command
 					->add_option("--enable-filesystem-setup",
 						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_filesystem_setup"),
-						"Enables or disables complete setup")
+						"Enables or disables the QLogicae file system setup")
 					->default_val(true);
 
 				setup_vs2022_application_command
 					->add_option("--enable-id-setup",
 						BOOLEAN_INPUTS.get("setup_vs2022_application", "enable_id_setup"),
-						"Enables or disables complete setup")
+						"Enables or disables the QLogicae configuration id setup")
 					->default_val(true);
 
 				setup_vs2022_application_command
@@ -2103,7 +2103,7 @@ namespace QLogicaeCLI
 				CLI::App* setup_vs2022_ids_command =
 					setup_vs2022_command->add_subcommand(
 						"ids",
-						"Setup QLogicae Application Template Environment IDs"
+						"Setup QLogicae application template environment ids"
 					);
 
 				setup_vs2022_ids_command
@@ -2551,7 +2551,7 @@ namespace QLogicaeCLI
 			encrypt_xchacha20poly1305_command
 				->add_option("--nonce",
 					STRING_INPUTS.get("encrypt_xchacha20poly1305", "nonce"),
-					"Encryption nonce. WARNING: Nonces must be 32 characters long")
+					"Encryption nonce. WARNING: Valid nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
 					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
@@ -2696,7 +2696,7 @@ namespace QLogicaeCLI
 			encrypt_aes256_command
 				->add_option("--nonce",
 					STRING_INPUTS.get("encrypt_aes256", "nonce"),
-					"Encryption nonce. WARNING: Nonces must be 32 characters long")
+					"Encryption nonce. WARNING: Valid nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
 					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
@@ -2864,7 +2864,7 @@ namespace QLogicaeCLI
 			decrypt_xchacha20poly1305_command
 				->add_option("--nonce",
 					STRING_INPUTS.get("decrypt_xchacha20poly1305", "nonce"),
-					"Encryption nonce. WARNING: Nonces must be 32 characters long")
+					"Encryption nonce. WARNING: Valid nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
 					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
@@ -3008,7 +3008,7 @@ namespace QLogicaeCLI
 			decrypt_aes256_command
 				->add_option("--nonce",
 					STRING_INPUTS.get("decrypt_aes256", "nonce"),
-					"Encryption nonce. WARNING: Nonces must be 32 characters long")
+					"Encryption nonce. WARNING: Valid nonces must be 32 characters long")
 				->default_val(QLogicaeCore::GENERATOR.random_string(
 					32, QLogicaeCore::UTILITIES.ALPHANUMERIC_CHARACTERSET)
 				);
