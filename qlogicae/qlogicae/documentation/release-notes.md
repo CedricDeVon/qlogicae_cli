@@ -3,7 +3,7 @@
 
 <p> > <a href="../../../README.md">Home</a> > <a href="./index.md">Versions</a></p>
 
-<h2>📦 1.2.0 (Latest Version)</h2>
+<h2>📦 1.2.0 (Latest)</h2>
 
 <h3>📜 Overview</h3>
 

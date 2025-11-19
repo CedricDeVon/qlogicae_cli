@@ -14,14 +14,32 @@
   <p style="font-style: italic;">A Multi-purpose C++ Software Development Tool</p>
 <div style="margin: 32px 64px;">
     
-![Version](https://img.shields.io/badge/Version-1.2.0-blue)
-![GTest](https://img.shields.io/badge/GTest-99.15%-green)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue)
+![GTest](https://img.shields.io/badge/GTest-NA-green)
 ![Windows](https://img.shields.io/badge/OS-Windows-blue)
-![License: MIT](https://img.shields.io/badge/License-MIT-red)
+![MIT](https://img.shields.io/badge/License-MIT-red)
 
 ![x64](https://img.shields.io/badge/Architecture-x64-yellow)
 ![C](https://img.shields.io/badge/Language-C-white)
-![C++](https://img.shields.io/badge/Language-C++-white)
+![C++](https://img.shields.io/badge/Language-C++20-white)
+
+<!--
+![iOS](https://img.shields.io/badge/OS-IOS-white)
+![Linux](https://img.shields.io/badge/OS-Linux-yellow)
+
+![x86](https://img.shields.io/badge/Architecture-x86-yellow)
+![x64 MASM](https://img.shields.io/badge/Language-MASM-white)
+![x86 MASM](https://img.shields.io/badge/Language-MASM-white)
+
+[![Gmail](https://img.shields.io/badge/Gmail-Visit-red)](sample@gmail.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Visit-white?logo=github)](https://github.com/sample)
+[![Facebook](https://img.shields.io/badge/Facebook-Visit-blue?logo=facebook)](https://facebook.com/sample)
+[![Twitter](https://img.shields.io/badge/Twitter-Visit-black?logo=x)](https://twitter.com/sample)
+[![Discord](https://img.shields.io/badge/Discord-Visit-indigo?logo=discord)](https://discord.gg/sample)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Visit-blue)](https://linkedin.com/in/sample)
+[![Slack](https://img.shields.io/badge/Slack-Visit-green?logo=slack)](https://sample.slack.com)
+[![Website](https://img.shields.io/badge/Website-Visit-white)](https://sample.com)
+-->
 
   </div>
 </div>
@@ -100,7 +118,7 @@
 <ul>
   <li><p>OS - Windows 10 (Or Higher)</p></li>
   <li><p>System Architecture - x64</p></li>
-  <li><p>Minimum Storage - At least 20 MB</p></li>
+  <li><p>Minimum Storage - At least 4 MB</p></li>
   <li><p>Minimum RAM - At least 1 GB</p></li>
   <li><p>PowerShell - 7.5.3.0 (Or Higher)</p></li>
 </ul>
