@@ -634,6 +634,7 @@ namespace QLogicaeCLI
 							"Executing '" + command + "'",
 							console_log_configurations_2
 						);
+
 						system(
 							command.c_str()
 						);
@@ -1093,6 +1094,7 @@ namespace QLogicaeCLI
 							"Executing '" + script_command + "'",
 							console_log_configurations_2
 						);
+
 						system(
 							script_command.c_str()
 						);
@@ -1132,7 +1134,6 @@ namespace QLogicaeCLI
 
 	bool Application::_setup_build_command()
 	{
-
 		try
 		{
 			CLI::App* build_command =
@@ -1248,6 +1249,7 @@ namespace QLogicaeCLI
 								.get_string(
 									{ "application", "startup_project_name" }
 								);
+
 							LOGGER.log(
 								void_result,
 								"Switching to Startup Project '" + build_vs2022_command__project + "'",
@@ -1789,7 +1791,7 @@ namespace QLogicaeCLI
 
 						QLogicaeCore::LogConfigurations console_log_configurations_2 =
 						{
-							.is_console_enabled = setup_vs2022_application__is_verbose,
+							.is_console_enabled = true,
 							.is_console_format_enabled = setup_vs2022_application__is_verbose
 						};
 
@@ -1814,6 +1816,8 @@ namespace QLogicaeCLI
 							std::string confirmation;
 
 							std::string text;
+
+							std::string command;
 							
 							while (
 								setup_vs2022_application__enable_property_setup &&
@@ -1831,46 +1835,62 @@ namespace QLogicaeCLI
 
 								executable = startup;
 
-								QLogicaeCore::CLI_IO.print(
-									"> Startup: "
+								LOGGER.log(
+									void_result,
+									"> Startup: ",
+									console_log_configurations_2
 								);
 								startup = QLogicaeCore::CLI_IO.scan();
 								executable = startup;
 
 								if (setup_vs2022_application__enable_full_property_setup)
 								{
-									QLogicaeCore::CLI_IO.print(
-										"> Name: "
+									LOGGER.log(
+										void_result,
+										"> Name: ",
+										console_log_configurations_2
 									);
 									name = QLogicaeCore::CLI_IO.scan();
 
-									QLogicaeCore::CLI_IO.print(
-										"> Version: "
+									LOGGER.log(
+										void_result,
+										"> Version: ",
+										console_log_configurations_2
 									);
 									version = QLogicaeCore::CLI_IO.scan();
 
-									QLogicaeCore::CLI_IO.print(
-										"> Company: "
+									LOGGER.log(
+										void_result,
+										"> Company: ",
+										console_log_configurations_2
 									);
 									company = QLogicaeCore::CLI_IO.scan();
 
-									QLogicaeCore::CLI_IO.print(
-										"> Authors: "
+									LOGGER.log(
+										void_result,
+										"> Authors: ",
+										console_log_configurations_2
 									);
 									authors = QLogicaeCore::CLI_IO.scan();
 
-									QLogicaeCore::CLI_IO.print(
-										"> Description: "
+									LOGGER.log(
+										void_result,
+										"> Description: ",
+										console_log_configurations_2
 									);
 									description = QLogicaeCore::CLI_IO.scan();
 
-									QLogicaeCore::CLI_IO.print(
-										"> URL: "
+									LOGGER.log(
+										void_result,
+										"> URL: ",
+										console_log_configurations_2
 									);
 									url = QLogicaeCore::CLI_IO.scan();
 
-									QLogicaeCore::CLI_IO.print(
-										"> Architecture [x64|x86]: "
+									LOGGER.log(
+										void_result,
+										"> Architecture [x64|x86]: ",
+										console_log_configurations_2 
 									);
 									while (true)
 									{
@@ -1887,7 +1907,8 @@ namespace QLogicaeCLI
 									}
 								}
 
-								QLogicaeCore::CLI_IO.print_with_new_line(
+								LOGGER.log(
+									void_result,
 									std::string("\n") +
 									"- Startup: " + startup + "\n" +
 									"- Name: " + name + "\n" +
@@ -1897,7 +1918,8 @@ namespace QLogicaeCLI
 									"- Description: " + description + "\n" +
 									"- URL: " + url + "\n" +
 									"- Architecture: " + architecture + "\n\n" +
-									"> Confirm? [y/n] "
+									"> Confirm? [y/n] ",
+									console_log_configurations_2
 								);
 
 								while (true)
@@ -1921,12 +1943,20 @@ namespace QLogicaeCLI
 									QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH +
 									"\\" + UTILITIES.RELATIVE_QLOGICAE_CLI_SETUP_VS2022_APPLICATION_FOLDER_PATH;
 
-								std::system((
-									"powershell -Command \"Copy-Item -Path '" +
+								command = "powershell -Command \"Copy-Item -Path '" +
 									root_input_folder + "\\root\\*' -Destination '" +
 									QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
-									"' -Recurse -Force\""
-									).c_str());
+									"' -Recurse -Force\"";
+
+								LOGGER.log(
+									void_result,
+									"Executing '" + command + "'",
+									console_log_configurations_1
+								);
+
+								std::system(
+									command.c_str()
+								);
 
 								QLogicaeCore::TEXT_FILE_IO.setup(
 									QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH +
@@ -2285,8 +2315,8 @@ namespace QLogicaeCLI
 					bool generate_uuid4__is_file_output_enabled =
 						BOOLEAN_INPUTS.get("generate_uuid4", "is_file_output_enabled");
 
-						bool generate_uuid4__is_verbose =
-							BOOLEAN_INPUTS.get("generate_uuid4", "is_verbose");
+					bool generate_uuid4__is_verbose =
+						BOOLEAN_INPUTS.get("generate_uuid4", "is_verbose");
 
 					QLogicaeCore::LogConfigurations console_log_configurations_1 =
 					{
@@ -2639,8 +2669,10 @@ namespace QLogicaeCLI
 							) + "\n" +
 							encrypt_xchacha20poly1305__nonce;
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							void_result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (encrypt_xchacha20poly1305__is_file_output_enabled)
@@ -2784,8 +2816,10 @@ namespace QLogicaeCLI
 							) + "\n" +
 							encrypt_aes256__nonce;
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							void_result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (encrypt_aes256__is_file_output_enabled)
@@ -2951,8 +2985,10 @@ namespace QLogicaeCLI
 								decrypt_xchacha20poly1305__nonce
 							);
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							void_result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (decrypt_xchacha20poly1305__is_file_output_enabled)
@@ -3095,8 +3131,10 @@ namespace QLogicaeCLI
 								decrypt_aes256__nonce
 							);
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							void_result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (decrypt_aes256__is_file_output_enabled)
@@ -3227,8 +3265,10 @@ namespace QLogicaeCLI
 								hash_argon2id__text
 							);
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							void_result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (hash_argon2id__is_file_output_enabled)
@@ -3336,8 +3376,10 @@ namespace QLogicaeCLI
 								hash_sha256__text
 							);
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							void_result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (hash_sha256__is_file_output_enabled)
@@ -3490,8 +3532,10 @@ namespace QLogicaeCLI
 								verify_argon2id__key
 							)) ? "true" : "false";
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							void_result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (verify_argon2id__is_file_output_enabled)
@@ -3621,8 +3665,10 @@ namespace QLogicaeCLI
 								verify_sha256__key
 							)) ? "true" : "false";
 
-						QLogicaeCore::CLI_IO.print_with_new_line_async(
-							output_string
+						LOGGER.log(
+							void_result,
+							output_string,
+							console_log_configurations_2
 						);
 
 						if (verify_sha256__is_file_output_enabled)
@@ -3739,7 +3785,7 @@ namespace QLogicaeCLI
 
 					QLogicaeCore::LogConfigurations console_log_configurations_2 =
 					{
-						.is_console_enabled = true,
+						.is_console_enabled = get_windows_registry_command__is_verbose,
 						.is_console_format_enabled = get_windows_registry_command__is_verbose
 					};
 
@@ -3751,16 +3797,28 @@ namespace QLogicaeCLI
 							console_log_configurations_1
 						);
 
-						system((absl::StrCat(
-							"powershell -ExecutionPolicy Bypass -File",
-							" \"qlogicae/.qlogicae/application/scripts/windows_registry/get.ps1\"",
-							" -RootPath ",
-							get_windows_registry_command__root_path,
-							" -SubPath ",
-							get_windows_registry_command__sub_path,
-							" -Key ",
-							get_windows_registry_command__key
-						)).c_str());
+						std::string command =
+							absl::StrCat(
+								"powershell -ExecutionPolicy Bypass -File",
+								" \"qlogicae/.qlogicae/application/scripts/windows_registry/get.ps1\"",
+								" -RootPath ",
+								get_windows_registry_command__root_path,
+								" -SubPath ",
+								get_windows_registry_command__sub_path,
+								" -Key ",
+								get_windows_registry_command__key
+							);
+
+						LOGGER.log(
+							void_result,
+							"Executing '" + command + "'",
+							console_log_configurations_2
+						);
+
+						system(
+							command.c_str()
+						);
+
 
 						LOGGER.log_complete(
 							void_result,
@@ -3781,7 +3839,6 @@ namespace QLogicaeCLI
 					}
 				}
 			);
-
 
 			CLI::App* get_environment_variables_command =
 				get_command->add_subcommand(
@@ -3833,7 +3890,7 @@ namespace QLogicaeCLI
 
 					QLogicaeCore::LogConfigurations console_log_configurations_2 =
 					{
-						.is_console_enabled = true,
+						.is_console_enabled = get_environment_variables_command__is_verbose,
 						.is_console_format_enabled = get_environment_variables_command__is_verbose
 					};
 
@@ -3845,14 +3902,25 @@ namespace QLogicaeCLI
 							console_log_configurations_1
 						);
 
-						system((absl::StrCat(
-							"powershell -ExecutionPolicy Bypass -File",
-							" \"qlogicae/.qlogicae/application/scripts/environment_variables/get.ps1\"",
-							" -RootPath ",
-							get_environment_variables_command__root_path,
-							" -Key ",
-							get_environment_variables_command__key
-						)).c_str());
+						std::string command =
+							absl::StrCat(
+								"powershell -ExecutionPolicy Bypass -File",
+								" \"qlogicae/.qlogicae/application/scripts/environment_variables/get.ps1\"",
+								" -RootPath ",
+								get_environment_variables_command__root_path,
+								" -Key ",
+								get_environment_variables_command__key
+							);
+
+						LOGGER.log(
+							void_result,
+							"Executing '" + command + "'",
+							console_log_configurations_2
+						);
+
+						system(
+							command.c_str()
+						);
 
 						LOGGER.log_complete(
 							void_result,
@@ -3965,7 +4033,7 @@ namespace QLogicaeCLI
 
 					QLogicaeCore::LogConfigurations console_log_configurations_2 =
 					{
-						.is_console_enabled = true,
+						.is_console_enabled = set_windows_registry_command__is_verbose,
 						.is_console_format_enabled = set_windows_registry_command__is_verbose
 					};
 
@@ -3977,18 +4045,27 @@ namespace QLogicaeCLI
 							console_log_configurations_1
 						);
 
-						system((absl::StrCat(
-							"powershell -ExecutionPolicy Bypass -File",
-							" \"qlogicae/.qlogicae/application/scripts/windows_registry/set.ps1\"",
-							" -RootPath ",
-							set_windows_registry_command__root_path,
-							" -SubPath ",
-							set_windows_registry_command__sub_path,
-							" -Key ",
-							set_windows_registry_command__key,
-							" -Value ",
-							set_windows_registry_command__value
-						)).c_str());
+						std::string command =
+							absl::StrCat(
+								"powershell -ExecutionPolicy Bypass -File",
+								" \"qlogicae/.qlogicae/application/scripts/windows_registry/set.ps1\"",
+								" -RootPath ",
+								set_windows_registry_command__root_path,
+								" -SubPath ",
+								set_windows_registry_command__sub_path,
+								" -Key ",
+								set_windows_registry_command__key,
+								" -Value ",
+								set_windows_registry_command__value
+							);
+
+						LOGGER.log(
+							void_result,
+							"Executing '" + command + "'",
+							console_log_configurations_2
+						);
+
+						system(command.c_str());
 
 						LOGGER.log_complete(
 							void_result,
@@ -4069,7 +4146,7 @@ namespace QLogicaeCLI
 
 					QLogicaeCore::LogConfigurations console_log_configurations_2 =
 					{
-						.is_console_enabled = true,
+						.is_console_enabled = set_environment_variables_command__is_verbose,
 						.is_console_format_enabled = set_environment_variables_command__is_verbose
 					};
 
@@ -4081,16 +4158,27 @@ namespace QLogicaeCLI
 							console_log_configurations_1
 						);
 
-						system((absl::StrCat(
-							"powershell -ExecutionPolicy Bypass -File",
-							" \"qlogicae/.qlogicae/application/scripts/environment_variables/set.ps1\"",
-							" -RootPath ",
-							set_environment_variables_command__root_path,
-							" -Key ",
-							set_environment_variables_command__key,
-							" -Value ",
-							set_environment_variables_command__value
-						)).c_str());
+						std::string command =
+							absl::StrCat(
+								"powershell -ExecutionPolicy Bypass -File",
+								" \"qlogicae/.qlogicae/application/scripts/environment_variables/set.ps1\"",
+								" -RootPath ",
+								set_environment_variables_command__root_path,
+								" -Key ",
+								set_environment_variables_command__key,
+								" -Value ",
+								set_environment_variables_command__value
+							);
+
+						LOGGER.log(
+							void_result,
+							"Executing '" + command + "'",
+							console_log_configurations_2
+						);
+
+						system(
+							command.c_str()
+						);
 
 						LOGGER.log_complete(
 							void_result,
