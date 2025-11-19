@@ -837,6 +837,8 @@ namespace QLogicaeCLI
 
 					std::string command;
 
+					std::string executable_name;
+
 					QLogicaeCore::LogConfigurations console_log_configurations_1 =
 					{
 						.is_console_enabled = run_vs2022_command__is_verbose,
@@ -857,12 +859,12 @@ namespace QLogicaeCLI
 							console_log_configurations_1
 						);
 
-						if (run_vs2022_command__project.empty())
-						{
-							QLogicaeCore::JSON_FILE_IO.set_file_path(
-								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
-							);
+						QLogicaeCore::JSON_FILE_IO.set_file_path(
+							UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
+						);
 
+						if (run_vs2022_command__project.empty())
+						{					
 							run_vs2022_command__project =
 								QLogicaeCore::JSON_FILE_IO.get_string(
 									{
@@ -878,11 +880,18 @@ namespace QLogicaeCLI
 							);
 						}
 
+						executable_name = QLogicaeCore::JSON_FILE_IO.get_string(
+							{
+								"application",
+								"executable_name"
+							}
+						);
+
 						command = absl::StrCat(
 							".\\", run_vs2022_command__architecture,
 							"\\", run_vs2022_command__build_type,
 							"\\", run_vs2022_command__project,
-							"\\", run_vs2022_command__project,
+							"\\", executable_name,
 							".exe"
 						);
 
@@ -891,6 +900,7 @@ namespace QLogicaeCLI
 							"Executing '" + command + "'",
 							console_log_configurations_2
 						);
+
 						system(
 							command.c_str()
 						);
@@ -1183,6 +1193,12 @@ namespace QLogicaeCLI
 				->default_val(QLogicaeCore::UTILITIES.VISUAL_STUDIO_2022_BUILD_TYPES[0]);
 
 			build_vs2022_command
+				->add_option("--is-run-enabled",
+					BOOLEAN_INPUTS.get("build_vs2022_command", "is_run_enabled"),
+					"Enables or disables application execution after build")
+				->default_val(true);
+
+			build_vs2022_command
 				->add_option("--is-verbose",
 					BOOLEAN_INPUTS.get("build_vs2022_command", "is_verbose"),
 					"Enables or disables verbose console logging")
@@ -1193,6 +1209,8 @@ namespace QLogicaeCLI
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
+
+					std::string executable_name = "";
 
 					std::string build_vs2022_command__project =
 						STRING_INPUTS.get(
@@ -1212,6 +1230,11 @@ namespace QLogicaeCLI
 					std::string build_vs2022_command__build_type =
 						STRING_INPUTS.get(
 							"build_vs2022_command", "build_type"
+						);
+
+					bool build_vs2022_command__is_run_enabled =
+						BOOLEAN_INPUTS.get(
+							"build_vs2022_command", "is_run_enabled"
 						);
 
 					bool build_vs2022_command__is_verbose =
@@ -1239,17 +1262,25 @@ namespace QLogicaeCLI
 							console_log_configurations_1
 						);
 
-						if (build_vs2022_command__project.empty())
-						{
-							QLogicaeCore::JSON_FILE_IO.set_file_path(
-								UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
+						QLogicaeCore::JSON_FILE_IO.set_file_path(
+							UTILITIES.RELATIVE_QLOGICAE_DOT_QLOGICAE_APPLICATION_CONFIGURATIONS_QLOGICAE_FILE_PATH
+						);
+
+						executable_name =
+							QLogicaeCore::JSON_FILE_IO
+								.get_string(
+								{ "application", "executable_name" }
 							);
+
+
+						if (build_vs2022_command__project.empty())
+						{							
 							build_vs2022_command__project =
 								QLogicaeCore::JSON_FILE_IO
 								.get_string(
 									{ "application", "startup_project_name" }
 								);
-
+							
 							LOGGER.log(
 								void_result,
 								"Switching to Startup Project '" + build_vs2022_command__project + "'",
@@ -1290,6 +1321,26 @@ namespace QLogicaeCLI
 						system(
 							command.c_str()
 						);
+
+						if (build_vs2022_command__is_run_enabled)
+						{
+							command = absl::StrCat(
+								".\\", build_vs2022_command__architecture,
+								"\\", build_vs2022_command__build_type,
+								"\\", build_vs2022_command__project,
+								"\\", executable_name,
+								".exe"
+							);
+
+							LOGGER.log(
+								void_result,
+								"Executing '" + command + "'",
+								console_log_configurations_2
+							);
+							system(
+								command.c_str()
+							);
+						}
 
 						LOGGER.log_complete(
 							void_result,
