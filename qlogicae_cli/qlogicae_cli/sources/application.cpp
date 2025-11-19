@@ -167,11 +167,12 @@ namespace QLogicaeCLI
 			!_setup_generate_command() ||
 			!_setup_get_command() ||
 			!_setup_set_command() ||
+			!_setup_evaluate_command() ||
 			!_setup_clear_command() ||
 			!_setup_encrypt_command() ||
 			!_setup_decrypt_command() ||
 			!_setup_hash_command() ||
-			!_setup_verify_command()
+			!_setup_verify_command() 
 		)
 		{			
 			QLogicaeCore::LOGGER.handle_exception_async(
@@ -187,7 +188,7 @@ namespace QLogicaeCLI
 			_application.parse(argc, argv);
 		}
 		catch (const CLI::CallForHelp& exception)
-		{
+		{			
 			QLogicaeCore::Result<std::future<void>> future_void_result;
 
 			QLogicaeCore::LOGGER.log_with_timestamp_to_files_async(
@@ -2317,57 +2318,57 @@ namespace QLogicaeCLI
 			CLI::App* generate_command =
 				_application.add_subcommand(
 					"generate",
-					"uuid4, string"
+					"uuid4s, strings"
 				);
 
 			CLI::App* generate_uuid4_command =
 				generate_command->add_subcommand(
-					"uuid4",
+					"uuid4s",
 					"Random UUID4 generation"
 				);
 
 			generate_uuid4_command
 				->add_option("--output-count",
-					SIZE_T_INPUTS.get("generate_uuid4", "output_count"),
+					SIZE_T_INPUTS.get("generate_uuid4s", "output_count"),
 					"The number of generated uuid4s")
 					->check(CLI::PositiveNumber)
 					->default_val(1);
 
 			generate_uuid4_command
 				->add_option("--output-file-path",
-					STRING_INPUTS.get("generate_uuid4", "output_file_path"),
+					STRING_INPUTS.get("generate_uuid4s", "output_file_path"),
 					"Enabled with the option --is-file-output-enabled='true'")
 					->default_val("");
 
 			generate_uuid4_command
 				->add_option("--is-file-output-enabled",
-					BOOLEAN_INPUTS.get("generate_uuid4", "is_file_output_enabled"),
+					BOOLEAN_INPUTS.get("generate_uuid4s", "is_file_output_enabled"),
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 
 			generate_uuid4_command
 				->add_option("--is-verbose",
-					BOOLEAN_INPUTS.get("generate_uuid4", "is_verbose"),
+					BOOLEAN_INPUTS.get("generate_uuid4s", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["generate_uuid4"] = std::make_pair(
+			_commands["generate_uuid4s"] = std::make_pair(
 				generate_uuid4_command,
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> result;
 
 					size_t generate_uuid4__output_count =
-						SIZE_T_INPUTS.get("generate_uuid4", "output_count");
+						SIZE_T_INPUTS.get("generate_uuid4s", "output_count");
 
 					std::string generate_uuid4__output_file_path =
-						STRING_INPUTS.get("generate_uuid4", "output_file_path");
+						STRING_INPUTS.get("generate_uuid4s", "output_file_path");
 
 					bool generate_uuid4__is_file_output_enabled =
-						BOOLEAN_INPUTS.get("generate_uuid4", "is_file_output_enabled");
+						BOOLEAN_INPUTS.get("generate_uuid4s", "is_file_output_enabled");
 
 					bool generate_uuid4__is_verbose =
-						BOOLEAN_INPUTS.get("generate_uuid4", "is_verbose");
+						BOOLEAN_INPUTS.get("generate_uuid4s", "is_verbose");
 
 					QLogicaeCore::LogConfigurations console_log_configurations_1 =
 					{
@@ -2385,7 +2386,7 @@ namespace QLogicaeCLI
 					{
 						LOGGER.log_running(
 							result,
-							"qlogicae_cli generate uud4",
+							"qlogicae_cli generate uud4s",
 							console_log_configurations_1
 						);
 
@@ -2396,12 +2397,10 @@ namespace QLogicaeCLI
 							index_1 < generate_uuid4__output_count;
 							++index_1)
 						{
-							output_string += QLogicaeCore::GENERATOR.random_uuid4();
-							if (index_1 < size_a)
-							{
-								output_string += "\n";
-							}
+							output_string += QLogicaeCore::GENERATOR.random_uuid4() + "\n";
 						}
+
+						output_string += "\n";
 
 						LOGGER.log(
 							result,
@@ -2414,7 +2413,7 @@ namespace QLogicaeCLI
 							QLogicaeCore::TEXT_FILE_IO.set_file_path(
 								FILE_SYSTEM.setup_result_output_file(
 									generate_uuid4__output_file_path,
-									"generate\\uuid4",
+									"generate\\uuid4s",
 									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
@@ -2423,7 +2422,7 @@ namespace QLogicaeCLI
 
 						LOGGER.log_complete(
 							result,
-							"qlogicae_cli generate uud4",
+							"qlogicae_cli generate uud4s",
 							console_log_configurations_1
 						);
 
@@ -2443,71 +2442,71 @@ namespace QLogicaeCLI
 
 			CLI::App* generate_string_command =
 				generate_command->add_subcommand(
-					"string",
+					"strings",
 					"Random string generation"
 				);
 			
 			generate_string_command
 				->add_option("--string-length",
-					SIZE_T_INPUTS.get("generate_string", "string_length"),
+					SIZE_T_INPUTS.get("generate_strings", "string_length"),
 					"The character length of each individual string output")
 				->check(CLI::PositiveNumber)
 				->default_val(32);
-			
+
 			generate_string_command
 				->add_option("--output-count",
-					SIZE_T_INPUTS.get("generate_string", "output_count"),
+					SIZE_T_INPUTS.get("generate_strings", "output_count"),
 					"The number of generated string outputs")
 				->check(CLI::PositiveNumber)
 				->default_val(1);
-			
+
 			generate_string_command
 				->add_option("--character-set",
-					STRING_INPUTS.get("generate_string", "character_set"),
+					STRING_INPUTS.get("generate_strings", "character_set"),
 					"The string of characters where each individual character can possibly be found within each string output")
 				->default_val("");
-			
+
 			generate_string_command
 				->add_option("--output-file-path",
-					STRING_INPUTS.get("generate_string", "output_file_path"),
+					STRING_INPUTS.get("generate_strings", "output_file_path"),
 					"Enabled with the option --is-file-output-enabled='true'")
 				->default_val("");
-			
+
 			generate_string_command
 				->add_option("--is-file-output-enabled",
-					BOOLEAN_INPUTS.get("generate_string", "is_file_output_enabled"),
+					BOOLEAN_INPUTS.get("generate_strings", "is_file_output_enabled"),
 					"Enables or disables the option '--output-file-path'")
 				->default_val(false);
 
 			generate_string_command
 				->add_option("--is-verbose",
-					BOOLEAN_INPUTS.get("generate_string", "is_verbose"),
+					BOOLEAN_INPUTS.get("generate_strings", "is_verbose"),
 					"Enables or disables verbose console logging")
 				->default_val(false);
 
-			_commands["generate_string"] = std::make_pair(
+			_commands["generate_strings"] = std::make_pair(
 				generate_string_command,
 				[this]() -> bool
 				{
 					QLogicaeCore::Result<void> void_result;
 
 					size_t generate_string__length =
-						SIZE_T_INPUTS.get("generate_string", "string_length");
+						SIZE_T_INPUTS.get("generate_strings", "string_length");
 
 					size_t generate_string__output_count =
-						SIZE_T_INPUTS.get("generate_string", "output_count");
+						SIZE_T_INPUTS.get("generate_strings", "output_count");
 
 					std::string generate_string__output_file_path =
-						STRING_INPUTS.get("generate_string", "output_file_path");
+						STRING_INPUTS.get("generate_strings", "output_file_path");
 
 					std::string generate_string__character_set =
-						STRING_INPUTS.get("generate_string", "character_set");
+						STRING_INPUTS.get("generate_strings", "character_set");
 
 					bool generate_string__is_file_output_enabled =
-						BOOLEAN_INPUTS.get("generate_string", "is_file_output_enabled");
+						BOOLEAN_INPUTS.get("generate_strings", "is_file_output_enabled");
 
 					bool generate_string__is_verbose =
-						BOOLEAN_INPUTS.get("generate_string", "is_verbose");
+						BOOLEAN_INPUTS.get("generate_strings", "is_verbose");
 
 					QLogicaeCore::LogConfigurations console_log_configurations_1 =
 					{
@@ -2543,12 +2542,10 @@ namespace QLogicaeCLI
 							output_string += QLogicaeCore::GENERATOR.random_string(
 								generate_string__length,
 								character_set
-							);
-							if (index_1 < size_a)
-							{
-								output_string += "\n";
-							}
+							) + "\n";
 						}
+
+						output_string += "\n";
 
 						LOGGER.log(
 							void_result,
@@ -2561,7 +2558,7 @@ namespace QLogicaeCLI
 							QLogicaeCore::TEXT_FILE_IO.set_file_path(
 								FILE_SYSTEM.setup_result_output_file(
 									generate_string__output_file_path,
-									"generate\\string",
+									"generate\\strings",
 									QLogicaeCore::UTILITIES.RELATIVE_DEFAULT_OUTPUT_FILE_PATH
 								)
 							);
@@ -2570,7 +2567,7 @@ namespace QLogicaeCLI
 
 						LOGGER.log_complete(
 							void_result,
-							"qlogicae_cli generate string",
+							"qlogicae_cli generate strings",
 							console_log_configurations_1
 						);
 
@@ -4456,6 +4453,98 @@ namespace QLogicaeCLI
 			return false;
 		}
 	
+		return true;
+	}
+
+	bool Application::_setup_evaluate_command()
+	{
+		try
+		{
+			CLI::App* evaluate_command =
+				_application.add_subcommand(
+					"evaluate",
+					"vs2022"
+				);
+
+			CLI::App* evaluate_vs2022_command =
+				evaluate_command->add_subcommand(
+					"vs2022",
+					"filesystem"
+				);
+
+			CLI::App* evaluate_vs2022_filesystem_command =
+				evaluate_vs2022_command->add_subcommand(
+					"filesystem",
+					"Visual Studio 2022 file system-related analytics"
+				);
+
+			evaluate_vs2022_filesystem_command
+				->add_option("--is-verbose",
+					BOOLEAN_INPUTS.get("evaluate_vs2022_filesystem_command", "is_verbose"),
+					"Enables or disables verbose console logging")
+				->default_val(false);
+
+			_commands["evaluate_vs2022_filesystem"] = std::make_pair(
+				evaluate_vs2022_filesystem_command,
+				[this]() -> bool
+				{
+					QLogicaeCore::Result<void> void_result;
+
+					bool evaluate_vs2022_filesystem_command__is_verbose =
+						BOOLEAN_INPUTS.get("evaluate_vs2022_filesystem_command", "is_verbose");
+
+					QLogicaeCore::LogConfigurations console_log_configurations_1 =
+					{
+						.is_console_enabled = evaluate_vs2022_filesystem_command__is_verbose,
+						.is_console_format_enabled = evaluate_vs2022_filesystem_command__is_verbose
+					};
+
+					QLogicaeCore::LogConfigurations console_log_configurations_2 =
+					{
+						.is_console_enabled = true,
+						.is_console_format_enabled = evaluate_vs2022_filesystem_command__is_verbose
+					};
+
+					try
+					{					
+						LOGGER.log_running(
+							void_result,
+							"qlogicae_cli evaluate vs2022 filesystem",
+							console_log_configurations_1
+						);
+
+						LOGGER.log_complete(
+							void_result,
+							"qlogicae_cli evaluate vs2022 filesystem",
+							console_log_configurations_1
+						);
+						
+						return true;
+					}
+					catch (const std::exception& exception)
+					{
+						QLogicaeCore::LOGGER.handle_exception_async(
+							"QLogicaeCLI::Application::_setup_evaluate_command()",
+							exception.what()
+						);
+
+						return false;
+					}
+				}
+			);
+
+			return true;
+		}
+		catch (const std::exception& exception)
+		{
+			QLogicaeCore::LOGGER.handle_exception_async(
+				"QLogicaeCLI::Application::_setup_evaluate_command()",
+				exception.what()
+			);
+
+			return false;
+		}
+
 		return true;
 	}
 }

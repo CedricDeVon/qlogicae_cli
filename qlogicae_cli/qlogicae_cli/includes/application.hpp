@@ -134,6 +134,8 @@ namespace QLogicaeCLI
 		bool _setup_set_command();
 
 		bool _setup_clear_command();
+
+		bool _setup_evaluate_command();
 	};
 
 	inline static Application& APPLICATION =
