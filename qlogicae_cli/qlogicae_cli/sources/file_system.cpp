@@ -339,17 +339,23 @@ namespace QLogicaeCLI
 
 	FileSystem& FileSystem::get_instance()
 	{
-		static FileSystem instance;
+		QLogicaeCore::Result<FileSystem*> result;
 
-		return instance;
+		get_instance(
+			result
+		);
+
+		return *result.get_value();
 	}
 
 	void FileSystem::get_instance(
 		QLogicaeCore::Result<FileSystem*>& result
 	)
-	{		
+	{
+		static FileSystem instance;
+
 		result.set_to_good_status_with_value(
-			&get_instance()
+			&instance
 		);
 	}
 }
