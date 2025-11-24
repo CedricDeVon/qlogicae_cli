@@ -8,9 +8,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qlogicae_core_test", "..\qlogicae_core\qlogicae_core_test\qlogicae_core_test.vcxproj", "{1122FCE4-3447-4777-A3EB-D0509714A64C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qlogicae_cli_sandbox", "qlogicae_cli_sandbox\qlogicae_cli_sandbox.vcxproj", "{D30B0028-F691-4991-A94E-3EFD2F6C8961}"
-	ProjectSection(ProjectDependencies) = postProject
-		{07F44EB2-776B-4BB0-B462-589523A3D3F3} = {07F44EB2-776B-4BB0-B462-589523A3D3F3}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qlogicae_cli_test", "qlogicae_cli_test\qlogicae_cli_test.vcxproj", "{BCA258A7-F6F5-4E81-BE69-C7FCA7534909}"
 	ProjectSection(ProjectDependencies) = postProject

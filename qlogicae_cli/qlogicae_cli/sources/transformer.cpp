@@ -346,9 +346,13 @@ namespace QLogicaeCLI
 
 	Transformer& Transformer::get_instance()
 	{
-		static Transformer instance;
+		QLogicaeCore::Result<Transformer*> result;
 
-		return instance;
+		get_instance(
+			result
+		);
+
+		return *result.get_value();
 	}
 
 	void Transformer::get_instance(
@@ -357,6 +361,8 @@ namespace QLogicaeCLI
 	{
 		static Transformer instance;
 
-		result.set_to_good_status_with_value(&instance);
+		result.set_to_good_status_with_value(
+			&instance
+		);
 	}
 }

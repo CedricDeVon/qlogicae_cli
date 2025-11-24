@@ -103,11 +103,7 @@ namespace QLogicaeCLI
 		
 		Application& operator = (
 			const Application& instance
-		) = delete;
-
-		CLI::App _application;
-		
-		std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> _commands;
+		) = delete;		
 
 		bool _setup_view_command();
 

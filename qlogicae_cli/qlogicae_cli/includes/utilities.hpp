@@ -11,6 +11,11 @@
 #include "qlogicae_core/includes/argon2id_hash_cryptographer.hpp"
 #include "qlogicae_core/includes/xchacha20_poly1305_cipher_cryptographer.hpp"
 
+#include <CLI/CLI.hpp>
+#include <CLI/Config.hpp>
+#include <CLI/Formatter.hpp>
+#include <absl/strings/str_replace.h>
+
 namespace QLogicaeCLI
 {
     class Utilities
@@ -31,6 +36,10 @@ namespace QLogicaeCLI
         std::string RELATIVE_BUILD_QLOGICAE_APPLICATION_CONFIGURATIONS_ENVIRONMENT_FILE_PATH;
 
         QLogicaeCore::JsonFileIO APPLICATION_QLOGICAE_FILE;
+
+        CLI::App CLI_APPLICATION;
+
+        std::unordered_map<std::string, std::pair<CLI::App*, std::function<bool()>>> CLI_APPLICATION_COMMANDS;
         
         std::string get_application_full_name();
 

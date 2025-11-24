@@ -652,9 +652,13 @@ namespace QLogicaeCLI
 
 	Logger& Logger::get_instance()
 	{
-		static Logger instance;
+		QLogicaeCore::Result<Logger*> result;
 
-		return instance;
+		get_instance(
+			result
+		);
+
+		return *result.get_value();
 	}
 
 	void Logger::get_instance(
@@ -663,6 +667,8 @@ namespace QLogicaeCLI
 	{
 		static Logger instance;
 
-		result.set_to_good_status_with_value(&instance);
+		result.set_to_good_status_with_value(
+			&instance
+		);
 	}
 }

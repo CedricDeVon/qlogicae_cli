@@ -318,9 +318,13 @@ namespace QLogicaeCLI
 
 	Utilities& Utilities::get_instance()
 	{
-		static Utilities instance;
+		QLogicaeCore::Result<Utilities*> result;
 
-		return instance;
+		get_instance(
+			result
+		);
+
+		return *result.get_value();
 	}
 
 	void Utilities::get_instance(

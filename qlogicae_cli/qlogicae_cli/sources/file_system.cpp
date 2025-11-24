@@ -347,9 +347,9 @@ namespace QLogicaeCLI
 	void FileSystem::get_instance(
 		QLogicaeCore::Result<FileSystem*>& result
 	)
-	{
-		static FileSystem instance;
-
-		result.set_to_good_status_with_value(&instance);
+	{		
+		result.set_to_good_status_with_value(
+			&get_instance()
+		);
 	}
 }
