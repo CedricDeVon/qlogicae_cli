@@ -97,7 +97,7 @@ namespace QLogicaeCLI
 			std::move(future)
 		);
 	}
-
+	
 	void Application::setup(
 		QLogicaeCore::Result<void>& result,
 		int argc,
@@ -4305,15 +4305,27 @@ namespace QLogicaeCLI
 
 					QLogicaeCore::LogConfigurations console_log_configurations_2 =
 					{
-						.is_console_enabled = true,
+						.is_console_enabled = clear_appdata_command__is_verbose,
 						.is_console_format_enabled = clear_appdata_command__is_verbose
 					};
 
 					try
 					{
-						QLogicaeCore::SYSTEM_ACCESS.clear_files(
+						std::string command =
+							absl::StrCat(
+								"powershell.exe -NoProfile -NoLogo -Command "
+								"\"Get-ChildItem -LiteralPath '" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path +
+								"' -Recurse -File | Remove-Item -Force\""
+							);
+
+						LOGGER.log(
 							void_result,
-							QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path
+							"Executing '" + command + "'",
+							console_log_configurations_2
+						);
+
+						system(
+							command.c_str()
 						);
 
 						return true;
@@ -4420,17 +4432,29 @@ namespace QLogicaeCLI
 
 					QLogicaeCore::LogConfigurations console_log_configurations_2 =
 					{
-						.is_console_enabled = true,
+						.is_console_enabled = clear_logs_command__is_verbose,
 						.is_console_format_enabled = clear_logs_command__is_verbose
 					};
 
 					try
 					{
-						QLogicaeCore::SYSTEM_ACCESS.clear_files(
+						std::string command =
+							absl::StrCat(
+								"powershell.exe -NoProfile -NoLogo -Command "
+								"\"Get-ChildItem -LiteralPath '" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path +
+								"' -Recurse -File | Remove-Item -Force\""
+							);
+
+						LOGGER.log(
 							void_result,
-							QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path
+							"Executing '" + command + "'",
+							console_log_configurations_2
 						);
 
+						system(
+							command.c_str()
+						);
+						
 						return true;
 					}
 					catch (const std::exception& exception)
