@@ -18,31 +18,38 @@
     <Image Include=".qlogicae\application\templates\default\build\qlogicae\cli\setup\vs2022\application\startup\qlogicae\application\assets\application.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="qlogicae\application\templates\default\build\qlogicae\application\assets\application.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="qlogicae\documentation\1.0.0\api.md" />
-    <None Include="qlogicae\documentation\1.0.0\collaboration.md" />
-    <None Include="qlogicae\documentation\1.0.0\development.md" />
-    <None Include="qlogicae\documentation\1.0.0\file-system.md" />
-    <None Include="qlogicae\documentation\1.0.0\index.md" />
-    <None Include="qlogicae\documentation\1.0.0\introduction.md" />
-    <None Include="qlogicae\documentation\1.0.0\legalities.md" />
-    <None Include="qlogicae\documentation\1.0.0\project-state.md" />
-    <None Include="qlogicae\documentation\1.0.0\quality-assurance.md" />
-    <None Include="qlogicae\documentation\1.0.0\references.md" />
-    <None Include="qlogicae\documentation\1.0.0\security.md" />
-    <None Include="qlogicae\documentation\1.1.0\api.md" />
-    <None Include="qlogicae\documentation\1.1.0\collaboration.md" />
-    <None Include="qlogicae\documentation\1.1.0\development.md" />
-    <None Include="qlogicae\documentation\1.1.0\file-system.md" />
-    <None Include="qlogicae\documentation\1.1.0\index.md" />
-    <None Include="qlogicae\documentation\1.1.0\introduction.md" />
-    <None Include="qlogicae\documentation\1.1.0\legalities.md" />
-    <None Include="qlogicae\documentation\1.1.0\project-state.md" />
-    <None Include="qlogicae\documentation\1.1.0\quality-assurance.md" />
-    <None Include="qlogicae\documentation\1.1.0\references.md" />
-    <None Include="qlogicae\documentation\1.1.0\security.md" />
-    <None Include="qlogicae\documentation\index.md" />
-    <None Include="qlogicae\documentation\release-notes.md" />
+    <None Include=".gitignore" />
+    <None Include="qlogicae\application\documentation\1.0.0\api.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\collaboration.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\development.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\file-system.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\index.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\introduction.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\legalities.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\project-state.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\quality-assurance.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\references.md" />
+    <None Include="qlogicae\application\documentation\1.0.0\security.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\api.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\collaboration.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\development.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\file-system.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\index.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\introduction.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\legalities.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\project-state.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\quality-assurance.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\references.md" />
+    <None Include="qlogicae\application\documentation\1.1.0\security.md" />
+    <None Include="qlogicae\application\documentation\index.md" />
+    <None Include="qlogicae\application\documentation\release-notes.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="qlogicae\application\templates\default\build\qlogicae\application\documentation\LICENSE.txt" />
   </ItemGroup>
 </Project>

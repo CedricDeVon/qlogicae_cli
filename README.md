@@ -2,7 +2,7 @@
 </br>
 
 <div style="width: 100%; display: flex; justify-content: center;">
-    <image src="./qlogicae/qlogicae/assets/application.ico" style="width: 128px;">
+    <image src="./qlogicae/qlogicae/application/templates/default/build/qlogicae/application/assets/application.ico" style="width: 128px;">
 </div>
 
 </br>
@@ -60,7 +60,7 @@
       <li><a href="#getting-started-pre-requisites">Pre-requisites</a></li>
     </ul>
   </li>
-  <li><a href="./qlogicae/qlogicae/documentation/index.md">Extended Documentation</a></li>  
+  <li><a href="./qlogicae/qlogicae/application/documentation/index.md">Extended Documentation</a></li>  
 </ul>
 
 </br>
@@ -121,6 +121,7 @@
   <li><p>Minimum Storage - At least 4 MB</p></li>
   <li><p>Minimum RAM - At least 1 GB</p></li>
   <li><p>PowerShell - 7.5.3.0 (Or Higher)</p></li>
+  <li><p>Inno Setup - 6.4.3 (Or Higher)</p></li>
 </ul>
 
 </br>
@@ -132,6 +133,6 @@
 <p>
   If you would like to know more, click the link below.
 </p>
-<a href="./qlogicae/qlogicae/documentation/index.md">🔗 Navigate To Page</a>
+<a href="./qlogicae/qlogicae/application/documentation/index.md">🔗 Navigate To Page</a>
 
 </br>

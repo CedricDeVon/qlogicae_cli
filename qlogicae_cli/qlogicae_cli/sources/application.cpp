@@ -607,7 +607,9 @@ namespace QLogicaeCLI
 					std::string command =
 						absl::StrCat(
 							"powershell -ExecutionPolicy Bypass -File",
-							" \"qlogicae/.qlogicae/application/scripts/windows_registry/view.ps1\"",
+							" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/windows_registry/view.ps1\"",
+							" -ExecutedPath ",
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 							" -EnvironmentType ",
 							view_windows_registy_command__environment,
 							" -RootPath ",
@@ -705,7 +707,9 @@ namespace QLogicaeCLI
 					std::string command =
 						absl::StrCat(
 							"powershell -ExecutionPolicy Bypass -File",
-							" \"qlogicae/.qlogicae/application/scripts/environment_variables/view.ps1\"",
+							" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/environment_variables/view.ps1\"",
+							" -ExecutedPath ",
+							QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 							" -RootPath ",
 							view_environment_variables_command__root_path
 						);
@@ -1307,7 +1311,9 @@ namespace QLogicaeCLI
 						std::string command =
 							absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/visual_studio_2022/build.ps1\"",
+								" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/visual_studio_2022/build.ps1\"",
+								" -ExecutedPath ",
+								QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 								" -VisualStudio2022InputProject ",
 								build_vs2022_command__project,
 								" -EnvironmentType ",
@@ -1569,7 +1575,8 @@ namespace QLogicaeCLI
 
 							system((absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/visual_studio_2022/build.ps1\"",
+								" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/visual_studio_2022/build.ps1\"",
+								" -ExecutedPath ", QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 								" -VisualStudio2022InputProject ", deploy_vs2022__project,
 								" -EnvironmentType ", deploy_vs2022__environment,
 								" -VisualStudio2022Architecture ", deploy_vs2022__architecture,
@@ -1587,7 +1594,8 @@ namespace QLogicaeCLI
 
 							system((absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/inno_setup/deploy.ps1\"",
+								" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/inno_setup/deploy.ps1\"",
+								" -ExecutedPath ", QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 								" -EnvironmentType ", deploy_vs2022__environment,
 								" -ProjectName ", deploy_vs2022__project,
 								" -InputFolderPath ", input_folder_path,
@@ -1743,7 +1751,9 @@ namespace QLogicaeCLI
 						std::string command =
 							absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/windows_registry/setup.ps1\"",
+								" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/windows_registry/setup.ps1\"",
+								" -ExecutedPath ",
+								QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 								" -EnvironmentType ",
 								setup_windows_registry__environment
 							);
@@ -3852,7 +3862,9 @@ namespace QLogicaeCLI
 						std::string command =
 							absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/windows_registry/get.ps1\"",
+								" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/windows_registry/get.ps1\"",
+								" -ExecutedPath ",
+								QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 								" -RootPath ",
 								get_windows_registry_command__root_path,
 								" -SubPath ",
@@ -3957,7 +3969,9 @@ namespace QLogicaeCLI
 						std::string command =
 							absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/environment_variables/get.ps1\"",
+								" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/environment_variables/get.ps1\"",
+								" -ExecutedPath ",
+								QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 								" -RootPath ",
 								get_environment_variables_command__root_path,
 								" -Key ",
@@ -4100,7 +4114,9 @@ namespace QLogicaeCLI
 						std::string command =
 							absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/windows_registry/set.ps1\"",
+								" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/windows_registry/set.ps1\"",
+								" -ExecutedPath ",
+								QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 								" -RootPath ",
 								set_windows_registry_command__root_path,
 								" -SubPath ",
@@ -4213,7 +4229,9 @@ namespace QLogicaeCLI
 						std::string command =
 							absl::StrCat(
 								"powershell -ExecutionPolicy Bypass -File",
-								" \"qlogicae/.qlogicae/application/scripts/environment_variables/set.ps1\"",
+								" \"", QLogicaeCore::UTILITIES.FULL_EXECUTABLE_FOLDER_PATH, "/qlogicae/cli/scripts/environment_variables/set.ps1\"",
+								" -ExecutedPath ",
+								QLogicaeCore::UTILITIES.FULL_EXECUTED_FOLDER_PATH,
 								" -RootPath ",
 								set_environment_variables_command__root_path,
 								" -Key ",
