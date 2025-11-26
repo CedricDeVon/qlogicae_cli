@@ -484,12 +484,14 @@ namespace QLogicaeCLI
 					"view",
 					"about, windows-registry, environment-variables"
 				);
+			view_command->alias("vw");
 
 			CLI::App* view_about_command =
 				view_command->add_subcommand(
 					"about",
 					"Displays application details"
 				);
+			view_about_command->alias("a");
 
 			view_about_command
 				->add_option("--is-verbose",
@@ -559,6 +561,7 @@ namespace QLogicaeCLI
 					"windows-registry",
 					"Windows registry key-value pairs used by the application"
 				);
+			view_windows_registy_command->alias("wr");
 
 			view_windows_registy_command
 				->add_option("--environment-type",
@@ -671,6 +674,7 @@ namespace QLogicaeCLI
 					"environment-variables",
 					"Environment variable key-value pairs used by the application"
 				);
+			view_environment_variables_command->alias("ev");
 
 			view_environment_variables_command
 				->add_option("--root-path",
@@ -784,14 +788,16 @@ namespace QLogicaeCLI
 			CLI::App* run_command =
 				UTILITIES.CLI_APPLICATION.add_subcommand(
 					"run",
-					"vs2022, executable, script"
+					"visual-studio-2022, executable, script"
 				);
+			run_command->alias("rn");
 
 			CLI::App* run_vs2022_command =
 				run_command->add_subcommand(
-					"vs2022",
+					"visual-studio-2022",
 					"Runs a Visual Studio 2022 project executable"
 				);
+			run_vs2022_command->alias("vs2022");
 
 			run_vs2022_command
 				->add_option("--project-name",
@@ -939,6 +945,7 @@ namespace QLogicaeCLI
 					"executable",
 					"Runs an executable"
 				);
+			run_executable_command->alias("exe");
 
 			run_executable_command
 				->add_option("--path",
@@ -1034,6 +1041,7 @@ namespace QLogicaeCLI
 					"script",
 					"Runs one or more QLogicae-defined script"
 				);
+			run_script_command->alias("s");
 
 			run_script_command
 				->add_option("--command",
@@ -1160,12 +1168,14 @@ namespace QLogicaeCLI
 					"build",
 					"vs2022"
 				);
+			build_command->alias("bld");
 
 			CLI::App* build_vs2022_command =
 				build_command->add_subcommand(
-					"vs2022",
+					"visual-studio-2022",
 					"Builds a project via Visual Studio 2022"
 				);
+			build_vs2022_command->alias("vs2022");
 
 			build_vs2022_command
 				->add_option("--project-name",
@@ -1394,12 +1404,14 @@ namespace QLogicaeCLI
 					"deploy",
 					"vs2022"
 				);
+			deploy_command->alias("dply");
 
 			CLI::App* deploy_vs2022_command =
 				deploy_command->add_subcommand(
-					"vs2022",
+					"visual-studio-2022",
 					"Deploys the Visual Studio 2022 project"
 				);
+			deploy_vs2022_command->alias("vs2022");
 
 			deploy_vs2022_command
 				->add_option("--project-name",
@@ -1694,14 +1706,16 @@ namespace QLogicaeCLI
 			CLI::App* setup_command =
 				UTILITIES.CLI_APPLICATION.add_subcommand(
 					"setup",
-					"vs2022, windows-registry"
+					"visual-studio-2022, windows-registry"
 				);
+			setup_command->alias("stp");
 
 			CLI::App* setup_windows_registry_command =
 				setup_command->add_subcommand(
 					"windows-registry",
 					"Creates or updates windows registry key-value pairs of a selected QLogicae environment preset"
 				);
+			setup_windows_registry_command->alias("wr");
 
 			setup_windows_registry_command
 				->add_option(
@@ -1788,15 +1802,17 @@ namespace QLogicaeCLI
 
 			CLI::App* setup_vs2022_command =
 				setup_command->add_subcommand(
-					"vs2022",
+					"visual-studio-2022",
 					"application, ids"
 				);
+			setup_vs2022_command->alias("vs2022");
 
 			CLI::App* setup_vs2022_application_command =
 				setup_vs2022_command->add_subcommand(
 					"application",
 					"Setup QLogicae Application Project"
 				);
+			setup_vs2022_application_command->alias("a");
 
 			setup_vs2022_application_command
 				->add_option("--enable-property-setup",
@@ -2201,6 +2217,7 @@ namespace QLogicaeCLI
 					"ids",
 					"Setup QLogicae application template environment ids"
 				);
+			setup_vs2022_ids_command->alias("i");
 
 			setup_vs2022_ids_command
 				->add_option("--is-verbose",
@@ -2334,12 +2351,14 @@ namespace QLogicaeCLI
 					"generate",
 					"uuid4s, strings"
 				);
+			generate_command->alias("gen");
 
 			CLI::App* generate_uuid4_command =
 				generate_command->add_subcommand(
 					"uuid4s",
 					"Random UUID4 generation"
 				);
+			generate_uuid4_command->alias("ui4");
 
 			generate_uuid4_command
 				->add_option("--output-count",
@@ -2459,6 +2478,7 @@ namespace QLogicaeCLI
 					"strings",
 					"Random string generation"
 				);
+			generate_string_command->alias("str");
 
 			generate_string_command
 				->add_option("--string-length",
@@ -2621,12 +2641,14 @@ namespace QLogicaeCLI
 					"encrypt",
 					"xchacha20poly1305, aes256"
 				);
+			encrypt_command->alias("enc");
 
 			CLI::App* encrypt_xchacha20poly1305_command =
 				encrypt_command->add_subcommand(
 					"xchacha20poly1305",
 					"Cipher XChaCha20-Poly1305 encryption"
 				);
+			encrypt_xchacha20poly1305_command->alias("xp");
 
 			encrypt_xchacha20poly1305_command
 				->add_option("--text",
@@ -2774,6 +2796,7 @@ namespace QLogicaeCLI
 					"aes256",
 					"Cipher AES256 encryption"
 				);
+			encrypt_aes256_command->alias("a");
 
 			encrypt_aes256_command
 				->add_option("--text",
@@ -2938,12 +2961,14 @@ namespace QLogicaeCLI
 					"decrypt",
 					"xchacha20poly1305, aes256"
 				);
+			decrypt_command->alias("dec");
 
 			CLI::App* decrypt_xchacha20poly1305_command =
 				decrypt_command->add_subcommand(
 					"xchacha20poly1305",
 					"Cipher XChaCha20-Poly1305 decryption"
 				);
+			decrypt_xchacha20poly1305_command->alias("xp");
 
 			decrypt_xchacha20poly1305_command
 				->add_option("--text",
@@ -3090,6 +3115,7 @@ namespace QLogicaeCLI
 					"aes256",
 					"Cipher AES256 decryption"
 				);
+			decrypt_aes256_command->alias("a");
 
 			decrypt_aes256_command
 				->add_option("--text",
@@ -3253,12 +3279,14 @@ namespace QLogicaeCLI
 					"hash",
 					"argon2id, sha256"
 				);
+			hash_command->alias("hs");
 
 			CLI::App* hash_argon2id_command =
 				hash_command->add_subcommand(
 					"argon2id",
 					"Hash Argon2ID creation"
 				);
+			hash_argon2id_command->alias("a");
 
 			hash_argon2id_command
 				->add_option("--text",
@@ -3370,6 +3398,7 @@ namespace QLogicaeCLI
 					"sha256",
 					"Hash SHA256 creation"
 				);
+			hash_sha256_command->alias("s");
 
 			hash_sha256_command
 				->add_option("--text",
@@ -3498,12 +3527,14 @@ namespace QLogicaeCLI
 					"verify",
 					"argon2id, sha256"
 				);
+			verify_command->alias("vfy");
 
 			CLI::App* verify_argon2id_command =
 				verify_command->add_subcommand(
 					"argon2id",
 					"Hash Argon2ID verification"
 				);
+			verify_argon2id_command->alias("a");
 
 			verify_argon2id_command
 				->add_option("--hash",
@@ -3637,6 +3668,7 @@ namespace QLogicaeCLI
 					"sha256",
 					"Hash SHA256 verification"
 				);
+			verify_sha256_command->alias("s");
 
 			verify_sha256_command
 				->add_option("--hash",
@@ -3787,12 +3819,14 @@ namespace QLogicaeCLI
 					"get",
 					"windows-registry, environment-variables"
 				);
+			get_command->alias("gt");
 
 			CLI::App* get_windows_registry_command =
 				get_command->add_subcommand(
 					"windows-registry",
 					"Gets a key-value pair of a selected windows registry path"
 				);
+			get_windows_registry_command->alias("wr");
 
 			get_windows_registry_command
 				->add_option("--root-path",
@@ -3909,6 +3943,7 @@ namespace QLogicaeCLI
 					"environment-variables",
 					"Gets a key-value pair of a selected environment variable"
 				);
+			get_environment_variables_command->alias("ev");
 
 			get_environment_variables_command
 				->add_option("--root-path",
@@ -4030,12 +4065,14 @@ namespace QLogicaeCLI
 					"set",
 					"windows-registry, environment-variables"
 				);
+			set_command->alias("st");
 
 			CLI::App* set_windows_registry_command =
 				set_command->add_subcommand(
 					"windows-registry",
 					"Creates or updates a key-value pair of a windows registry path"
 				);
+			set_windows_registry_command->alias("wr");
 
 			set_windows_registry_command
 				->add_option("--root-path",
@@ -4160,6 +4197,7 @@ namespace QLogicaeCLI
 					"environment-variables",
 					"Creates or updates a key-value pair of an environment variable"
 				);
+			set_environment_variables_command->alias("ev");
 
 			set_environment_variables_command
 				->add_option("--root-path",
@@ -4292,12 +4330,14 @@ namespace QLogicaeCLI
 					"clear",
 					"appdata, caches, logs"
 				);
+			clear_command->alias("clr");
 
 			CLI::App* clear_appdata_command =
 				clear_command->add_subcommand(
 					"appdata",
 					"Clears all QLogicae CLI appdata files"
 				);
+			clear_appdata_command->alias("ad");
 
 			clear_appdata_command
 				->add_option("--is-verbose",
@@ -4365,6 +4405,7 @@ namespace QLogicaeCLI
 					"caches",
 					"Clears all QLogicae CLI caches"
 				);
+			clear_cache_command->alias("c");
 
 			clear_cache_command
 				->add_option("--is-verbose",
@@ -4426,6 +4467,7 @@ namespace QLogicaeCLI
 					"logs",
 					"Clears all QLogicae CLI logs"
 				);
+			clear_logs_command->alias("l");
 
 			clear_logs_command
 				->add_option("--is-verbose",
@@ -4511,12 +4553,14 @@ namespace QLogicaeCLI
 					"evaluate",
 					"vs2022"
 				);
+			evaluate_command->alias("evl");
 
 			CLI::App* evaluate_vs2022_command =
 				evaluate_command->add_subcommand(
-					"vs2022",
+					"visual-studio-2022",
 					"filesystem"
 				);
+			evaluate_vs2022_command->alias("vs2022");
 
 			CLI::App* evaluate_vs2022_filesystem_command =
 				evaluate_vs2022_command->add_subcommand(
