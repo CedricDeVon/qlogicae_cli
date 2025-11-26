@@ -4368,16 +4368,9 @@ namespace QLogicaeCLI
 					};
 
 					try
-					{
-						std::string command =
-							absl::StrCat(
-								"powershell.exe -NoProfile -NoLogo -Command "
-								"\"Get-ChildItem -LiteralPath '" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path +
-								"' -Recurse -File | Remove-Item -Force\""
-							);
-
-						system(
-							command.c_str()
+					{						
+						QLogicaeCore::SYSTEM_ACCESS.clear_files_async(
+							QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path
 						);
 
 						return true;
@@ -4492,21 +4485,8 @@ namespace QLogicaeCLI
 
 					try
 					{
-						std::string command =
-							absl::StrCat(
-								"powershell.exe -NoProfile -NoLogo -Command "
-								"\"Get-ChildItem -LiteralPath '" + QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path +
-								"' -Recurse -File | Remove-Item -Force\""
-							);
-
-						LOGGER.log(
-							void_result,
-							"Executing '" + command + "'",
-							console_log_configurations_2
-						);
-
-						system(
-							command.c_str()
+						QLogicaeCore::SYSTEM_ACCESS.clear_files_async(
+							QLogicaeCore::QLOGICAE_APPLICATION_UTILITIES.CONFIGURATIONS_ENVIRONMENT_LOGGER.relative_root_folder_path
 						);
 						
 						return true;
@@ -4632,3 +4612,12 @@ namespace QLogicaeCLI
 		return true;
 	}
 }
+
+/*
+
+QLogicaeCore::LOGGER.log_with_timestamp_to_console_async(
+	"timestamp",
+	console_log_configurations_1
+);
+
+*/
