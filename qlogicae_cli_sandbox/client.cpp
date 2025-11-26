@@ -54,14 +54,6 @@ static void bench_createprocess_fast() {
     }
 }
 
-void boost_process()
-{
-    namespace bp = boost::process;
-
-    bp::child c("cmd.exe", "/c", "echo Hello");
-    c.wait();
-}
-
 static void bench_popen() {
     FILE* f = _popen("cmd /c echo.", "r");
     if (f) {
@@ -79,9 +71,9 @@ int main() {
     ankerl::nanobench::Bench()
         .warmup(1)
         .relative(true)
-        .minEpochIterations(100)
-        // .run("bench_createprocess_fast()", [] { bench_createprocess_fast(); })
-        // .run("bench_createprocess()", [] { bench_createprocess(); })
-        .run("boost_process()", [] { boost_process(); });
+        .minEpochIterations(1)
+        .run("bench_createprocess_fast()", [] { bench_createprocess_fast(); })
+        .run("bench_createprocess()", [] { bench_createprocess(); });
+        // .run("boost_process()", [] { boost_process(); });
         // .run("popen()", [] { bench_popen(); });
 }

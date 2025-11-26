@@ -4376,12 +4376,6 @@ namespace QLogicaeCLI
 								"' -Recurse -File | Remove-Item -Force\""
 							);
 
-						LOGGER.log(
-							void_result,
-							"Executing '" + command + "'",
-							console_log_configurations_2
-						);
-
 						system(
 							command.c_str()
 						);
